@@ -1,0 +1,32 @@
+.attachment-info {
+  .details {
+    .filename,
+    .uploaded,
+    .file-size,
+    .dimensions,
+    .edit-attachment {
+      display: none;
+    }
+  }
+}
+
+.attachments-browser {
+  .media-toolbar {
+    display: none;
+  }
+}
+
+.attachment-details {
+  .setting {
+    display: none !important;
+  }
+
+  .description {
+    display: none;
+  }
+}
+
+[data-setting="url"],
+[data-setting="alt"] {
+  display: none !important;
+}

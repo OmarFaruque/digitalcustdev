@@ -1,0 +1,5 @@
+Order deny,allow
+Deny from all
+<Files ~ "course-editor.php$|.(js|css)$">
+Allow from all
+</Files>

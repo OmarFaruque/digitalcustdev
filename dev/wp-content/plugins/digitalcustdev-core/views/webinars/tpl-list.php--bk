@@ -1,0 +1,32 @@
+<?php
+$profile  = LP_Profile::instance();
+$webinars = dcd_webinars()->get_webinars();
+
+global $frontend_editor;
+$post_manage = $frontend_editor->post_manage;
+?>
+<a class="btn btn-primary e-button-icon create-webinar pull-right mb-1" data-nonce="<?php echo wp_create_nonce( 'e-new-post' ); ?>" data-type="lp_course" href="<?php echo home_url( 'sozdat-kurs/edit-post?post-type=lp_course' ); ?>">New Webinar</a>
+<table class="table table-striped table-bordered render-webinars-frontend">
+    <thead>
+    <tr>
+        <th scope="col">Topic</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+	<?php
+	if ( ! empty( $webinars ) ) {
+		foreach ( $webinars as $webinar ) {
+			?>
+            <tr>
+                <td scope="row"><a href="<?php echo $post_manage->get_edit_post_link( get_post_type($webinar->ID), $webinar->ID ); ?>"><?php echo $webinar->post_title; ?></a></td>
+                <td><?php echo strtoupper( $webinar->post_status ); ?></td>
+                <td><a href="<?php echo $post_manage->get_edit_post_link( get_post_type($webinar->ID), $webinar->ID ); ?>"><i class="fa fa-edit"></i></a> <a class="delete-webinar" data-postid="<?php echo $webinar->ID; ?>" data-security="<?php echo wp_create_nonce( 'delete-webinar' ); ?>" href="javascript:void(0);"><i class="fa fa-trash"></i></a> <a href="<?php echo get_the_permalink( $webinar->ID ); ?>"><i class="fa fa-eye"></i></a></td>
+            </tr>
+			<?php
+		}
+	}
+	?>
+    </tbody>
+</table>

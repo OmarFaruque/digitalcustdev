@@ -1,0 +1,275 @@
+/*
+ Theme Name:   Eduma Child
+ Theme URI:    http://educationwp.thimpress.com/
+ Description:  Eduma Child Theme
+ Author:       ThimPress
+ Author URI:   http://thimpress.com
+ Template:     eduma
+ Version:      1.0.0
+ Text Domain:  eduma-child
+*/
+
+.learn-press .course-meta>div.course-author img {
+    display: none !important;
+}
+.thim-course-content .course-author .value a {
+	pointer-events: none;
+	cursor: default;
+	text-decoration: none;
+	color: black;
+}
+
+.thim-course-landing-button .course-price .value, body .learn-press .course-payment .course-price .value {
+	color: #00d637;
+	word-wrap: break-word;		
+	text-align: center; 
+	
+}
+.bg_header{
+	left: 0px!important;
+    right: 0px!important;
+}
+.container, .container-fluid {
+	padding-bottom: 10px;
+}
+.thim-course-landing-button{
+	text-align: center;
+}
+.thim-style-content-new-1 .thim-course-menu-landing .thim-course-landing-button .lp-course-buttons .button{
+    text-transform: uppercase;	
+    font-weight: 700;
+}
+
+@media only screen and (max-width: 767px){
+	.thim-style-content-new-1 .thim-course-menu-landing .thim-course-landing-button .lp-course-buttons .button{
+		margin-top: 10px;
+	}
+}
+
+.button{
+	border-radius:25px;
+}
+
+.heading_margin {
+	margin-left: 50px;
+}
+@media (max-width: 767px){
+	.thim-style-content-new-1 .sc_heading.clone_title .title{
+		margin-top: 35px!important;
+	}
+}
+.course_margin {
+    margin-right: 50px;
+    margin-left: 50px;
+}
+.text_SEO{
+    color: #fff;
+    font-family: "Roboto Slab";
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 25px;
+}
+@media (max-width: 767px){
+	.text_SEO{
+		font-size: 20px;
+		font-weight: 400;
+	}
+}
+@media (max-width: 767px){
+	.text_SEO ul {
+		margin-left: 15px;
+	}
+}
+@media (max-width: 767px){
+	.form_developer_course .content label {
+		line-height: 20px;
+		margin: 20px 0;
+	}
+}
+@media (max-width: 767px){
+	.counter-box .counter-box-content{
+		color: #2575fc;
+	}
+}	
+.wpcf7-form .wpcf7-submit {
+   border-radius: 20px;
+}
+
+#masthead.header_v4 .navigation .menu-right .thim-link-login .logout:before {
+   display: none;
+}
+.profile-container .profile-tabs .nav-tabs li.thim-profile-list-6:nth-child(2), .profile ul.learn-press-subtabs .change-password, .profile-container .profile-tabs .nav-tabs li.thim-profile-list-6:nth-child(5) {
+   display: none;
+}
+@media (max-width: 479px) {
+.menu-right .thim-link-login .profile {
+    display: inline-block;
+	}
+}
+
+.content label {
+	font-size:15px!important;
+	position: relative!important;
+}
+.mc4wp-form .mc4wp-form-fields input[type=email], .mc4wp-form .mc4wp-form-fields input[type=text] {
+	color: #666;
+	border:1px solid #eee;
+	border-radius: 7px;
+}
+.content input[type="submit"]{
+	border: 0px!important;
+    display: flex!important;
+    border-radius: 20px!important;
+    justify-content: center!important;
+    cursor: pointer!important;
+	width: 60%!important;
+	font-family:'Roboto'!important;
+	font-size:13px!important;
+	font-weight:400!important;
+	margin: 0 auto!important;
+}
+
+.content .field_item{
+	border-bottom: 0px!important;
+	padding-top: 0px!important;
+}
+.form_developer_course .head_form{
+	padding-bottom: 50px!important;
+	padding-top: 10px!important;
+}
+.form_developer_course .content{
+	padding-bottom: 50px!important;
+}
+
+.sc_heading .title{
+	margin-top: -5%!important;
+}
+.thim-style-content-new-1 #learn-press-course-curriculum ul.curriculum-sections .section-content .course-lesson .index {
+   display: none;
+}
+.thim-style-content-new-1 #learn-press-course-curriculum ul.curriculum-sections .section-content .course-lesson .meta-left {
+   min-width: 10px;
+}
+.thim-style-content-new-1 #learn-press-course-curriculum ul.curriculum-sections .section-content .course-quiz .index {
+   display: none;
+}
+.thim-style-content-new-1 #learn-press-course-curriculum ul.curriculum-sections .section-content .course-quiz .meta-left {
+   min-width: 10px;
+}
+@media (max-width: 767px){
+	.sc_heading	{
+		margin:0px;
+		padding-top: 0px;
+	}
+}
+@media (max-width: 767px){
+	.thim-style-content-new-1 .sc_heading.clone_title{
+		margin-bottom: 0px;
+	}
+}
+@media (max-width: 767px){
+	.wpcf7-form input[type="submit"]{
+		display: flex;
+		margin: auto;
+	}
+}	
+
+@media (min-width: 1025px) {
+    .site-header .menu-mobile-effect.navbar-toggle {
+        display: none;
+    }
+}
+
+@media (max-width: 767px){
+    .thim-style-content-new-1 #lp-single-course .thim-ralated-course .course-meta > div.course-price {
+		width:100%;
+	}
+}
+
+@media (max-width: 767px){
+    .thim-style-content-new-1 #lp-single-course .course-meta > div {
+        width:20%;
+    }
+}    
+    
+#respond.comment-respond .comment-form .comment-form-author input, #respond.comment-respond .comment-form .comment-form-email input, #respond.comment-respond .comment-form .comment-form-url input {
+display: none!important;
+}
+#respond.comment-respond .comment-form .comment-form-author, #respond.comment-respond .comment-form .comment-form-email, #respond.comment-respond .comment-form .comment-form-url{
+    margin-bottom: 0;
+}
+
+.thim-style-content-new-1 .vc_row.wpb_row {
+    margin-bottom: 30px;
+}
+
+.sc_heading {
+	padding-top: 6%;
+}
+@media (min-width: 767px){
+.vc_col-sm-6>.vc_column-inner {
+    padding: 10px!important;
+    }
+}
+.vc_col-sm-6 .wpb_content_element{
+    text-align: justify;
+}
+
+.mc4wp-form{
+    margin-left: 15px;
+}
+@media (max-width: 767px){
+    .mc4wp-form{
+        margin-top: 15px;
+        margin-left: 0px;
+    }    
+}
+@media (max-width: 767px){
+    .thim-course-grid .lpr_course[class*=course-grid-] {
+        padding-left: 0;
+        padding-right: 0;
+    }    
+}    
+    
+.thim-style-content-new-1 .row_content_course {
+        margin-bottom: 0;
+}    
+
+.thim-style-content-new-1 .header_single_content {
+    margin-bottom: 0;
+}
+
+.learn-press .course-meta .value > a {
+    pointer-events: none;
+	cursor: default;
+	text-decoration: none;
+}	
+
+.thim-style-content-new-1 #lp-single-course .course-meta>div.course-author .author-contain {
+    margin-top: 0;
+    padding-left: 15px;
+}
+@media (min-width: 767px){
+    .thim-style-content-new-1 #lp-single-course .course-meta>div.course-author .author-contain {
+        padding-left: 30px;
+    }
+}
+
+@media (max-width: 767px){
+    .thim-style-content-new-1 #lp-single-course .course-meta > div{
+        padding-left: 15px;
+    }    
+}
+@media (max-width: 767px){
+    .thim-style-content-new-1 #respond.comment-respond .comment-form .form-submit input#submit{
+        display: block;
+        margin: 0 auto;
+    }
+}
+@media (max-width: 767px){
+    #commentform .gglcptch{
+        margin: 10px auto;
+        width: 90%;
+    }
+}    

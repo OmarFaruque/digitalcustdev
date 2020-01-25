@@ -1,0 +1,58 @@
+.thim-widget-login-popup {
+  @media (min-width: 767px) {
+    .thim-switch-roles-sub-nav {
+      float: left;
+      overflow: hidden;
+
+      &:hover {
+        .thim-switch-roles-content {
+          display: block;
+        }
+      }
+
+      .thim-switch-roles-content {
+        display: none;
+        position: absolute;
+        top: 66px;
+        width: 20%;
+        z-index: 1;
+
+        button {
+          color: $pure_white;
+          border-radius: 0 !important;
+          margin-top: 10px;
+
+          &:before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 10px solid $black;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid $primary;
+            top: -8px;
+            left: 10px;
+            z-index: -1;
+            -webkit-transition: all .3s;
+            -khtml-transition: all .3s;
+            -moz-transition: all .3s;
+            -ms-transition: all .3s;
+            -o-transition: all .3s;
+            transition: all .3s;
+          }
+
+          &:hover:before {
+            border: 10px solid $black;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid $alt_secondary;
+          }
+        }
+      }
+    }
+  }
+}
+

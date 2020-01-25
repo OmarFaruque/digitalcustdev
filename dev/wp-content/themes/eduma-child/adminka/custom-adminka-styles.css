@@ -1,0 +1,27 @@
+.wp-admin {
+  background: #fff;
+}
+#wpadminbar{
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent */
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+}
+.postbox{
+    border: 0.1px solid #6020d2;
+}
+#adminmenu, #adminmenuback, #adminmenuwrap{
+    background: -moz-linear-gradient(top, rgba(249,241,255,0) 0%, rgba(246,225,255,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(249,241,255,0) 0%,rgba(246,225,255,1) 100%);
+    background: linear-gradient(to bottom, rgba(249,241,255,0) 0%,rgba(246,225,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00f9f1ff', endColorstr='#f6e1ff',GradientType=0 );
+}
+#adminmenu li.current a.menu-top, #adminmenu li.wp-has-current-submenu .wp-submenu .wp-submenu-head, #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu, .folded #adminmenu li.current.menu-top,
+#adminmenu a:hover, #adminmenu li.menu-top:hover, #adminmenu li.opensub>a.menu-top, #adminmenu li>a.menu-top:focus {
+    background: #6020d2;
+}
+#adminmenu .wp-has-current-submenu .wp-submenu, #adminmenu .wp-has-current-submenu .wp-submenu.sub-open, #adminmenu .wp-has-current-submenu.opensub .wp-submenu, #adminmenu a.wp-has-current-submenu:focus+.wp-submenu, .no-js li.wp-has-current-submenu:hover .wp-submenu{
+    border-top: 0.5px solid #6020d2;
+    border-bottom: 0.5px solid #6020d2;
+}

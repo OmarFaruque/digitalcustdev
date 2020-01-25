@@ -1,0 +1,703 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: LearnPress - Frontend Editor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-22 03:24+0000\n"
+"PO-Revision-Date: 2019-04-22 03:25+0000\n"
+"Last-Translator: admin <tunnhn@gmail.com>\n"
+"Language-Team: Français\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.2.0; wp-5.1.1"
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:32
+#, php-format
+msgid "%d items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:64
+#, php-format
+msgid "%d user"
+msgid_plural "%d users"
+msgstr[0] "%d học sinh"
+msgstr[1] "%d học sinh"
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:194
+#, php-format
+msgid "%s name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:34
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:50
+msgid "(No title)"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:96
+msgid "Actions"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:75
+msgid "Add Items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:218
+msgid "Add items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/form-fields.php:71
+msgid "Add Media"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:232
+msgid "Add option"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:216
+msgid "Add to quiz"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:89
+msgid "After..."
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:307
+#, php-format
+msgid "All %s"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:703
+msgid "Allow this user can access to admin for editing courses."
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:106
+msgid "And delete permanently items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:103
+msgid "And move items to trash"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:199
+msgid "Answers"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:208
+msgid "Are you sure you want to move this item to trash?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:209
+msgid "Are you sure you want to remove those items from course?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:210
+msgid "Are you sure you want to remove those items to trash?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration.php:388
+msgid "Assign"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:80
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:76
+msgid "Back"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/dashboard-no-header.php:32
+msgid "Back to Home Page"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/dashboard-no-header.php:34
+msgid "Back to List"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/post-edit.php:33
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:90
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:51
+msgid "Cancel"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:61
+msgid "Category"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:83
+msgid "Clear"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:188
+msgid "Content"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/table-nav-top.php:47
+msgid "Course Date"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/table-nav-top.php:46
+msgid "Course Name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:22
+msgid "Course name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/post-edit.php:19
+msgid "Course saved"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:516
+msgid "Course Settings"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:285
+msgctxt "courses-post-type-name"
+msgid "Courses"
+msgstr ""
+
+#. Description of the plugin
+msgid "Create your course in frontend."
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:51
+#, php-format
+msgid "Created by <strong>%s</strong>"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:425
+msgid "Curriculum"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:42
+msgid "date"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/form-fields.php:44
+msgid "Day"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:99
+msgid "Day(s)"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:30
+msgid "Delay access"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:100
+msgid "Delete Permanently"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/item.php:30
+msgid "Delete this item"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:40
+msgid "Delete this section"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:48
+msgid "Describe about this section"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:27
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:24
+msgid "Description"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-fe-admin-settings.php:46
+msgid "Disable WP Admin"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:220
+msgid "Do you want to change type of this question?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:213
+msgid "Do you want to move items to trash?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:221
+msgid "Do you want to move this question into trash?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:219
+msgid "Do you want to remove this item from course?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:222
+msgid "Do you want to remove this question?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:212
+msgid "Do you want to remove this section?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:223
+msgid "Do you want to trash this course?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:40
+msgid "Draft"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration.php:511
+msgid "Drip Items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration.php:399
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/global/edit-button.php:16
+msgid "Edit"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/dashboard-no-header.php:23
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:38
+msgid "Edit section content"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:900
+msgid "Editor"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:50
+msgid "Featured Image"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration.php:104
+msgid "Fill In Blank"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/editors/course.php:1112
+msgid "Forbidden access"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/load.php:82
+msgid "Frontend Course Editor"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/dashboard-no-header.php:19
+msgid "Frontend Editor"
+msgstr "Khóa học"
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-fe-admin-settings.php:40
+msgid "Frontend Editor Page"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-page-controller.php:196
+#, php-format
+msgid "Frontend Editor: The post type  &quot;%s&quot; does not exist."
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:420
+msgid "General"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/form-fields.php:43
+msgid "Hour"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:98
+msgid "Hour(s)"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://thimpress.com"
+msgstr ""
+
+#. URI of the plugin
+msgid "http://thimpress.com/learnpress"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:88
+msgid "Immediately"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-page-controller.php:51
+msgid "Invalid date"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/item.php:22
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/item.php:56
+msgid "Item name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:35
+msgid "items per page"
+msgstr ""
+
+#. Name of the plugin
+msgid "LearnPress - Frontend Editor"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:286
+msgctxt "lessons-post-type-name"
+msgid "Lessons"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/dashboard-no-header.php:26
+msgid "List courses"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-page-controller.php:270
+msgid "login"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:93
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:161
+msgid "Mark"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/form-fields.php:42
+msgid "Minute"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:97
+msgid "Minute(s)"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/form-fields.php:45
+msgid "Month"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:112
+msgid "Multiple choice"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:25
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:87
+msgid "Name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:39
+msgid "name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form-category.php:18
+msgid "No categories!"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:120
+msgid "No course found!"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:55
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:69
+msgid "No items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/table-nav-top.php:45
+msgid "None"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:69
+msgid "Not set"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/access-denied.php:12
+msgid "Ooops! You don't have permission to access this page"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:310
+#, php-format
+msgid "Pending %s"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:41
+msgid "Pending Review"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:35
+msgid "Please select an item or add a new one"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:979
+#, php-format
+msgctxt "post duration"
+msgid "%d day"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:976
+#, php-format
+msgctxt "post duration"
+msgid "%d hour"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:973
+#, php-format
+msgctxt "post duration"
+msgid "%d min"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:982
+#, php-format
+msgctxt "post duration"
+msgid "%d week"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:941
+msgctxt "post status"
+msgid "Draft"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:938
+msgctxt "post status"
+msgid "Pending"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:935
+msgctxt "post status"
+msgid "Publish"
+msgstr "XXXXXX"
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:944
+msgctxt "post status"
+msgid "Trashed"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:28
+msgid "Prerequisite"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-fe-admin-settings.php:50
+msgid "Prevent instructors from visiting wp-admin."
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:43
+msgid "Publish"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:308
+#, php-format
+msgid "Publish %s"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/editors/course.php:715
+msgid "Question invalid"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:141
+msgid "Question name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/view.php:9
+msgid "Question Passage"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:214
+msgid "Question requires at least one answer is checked. Continue?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:285
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:57
+msgid "Questions"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:288
+msgctxt "questions-post-type-name"
+msgid "Questions"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:177
+msgid "Quiz:"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:287
+msgctxt "quizzes-post-type-name"
+msgid "Quizzes"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:102
+msgid "Reload"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration.php:383
+msgid "Remove"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:35
+msgid "Reset"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:97
+msgid "Restore"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-page-controller.php:53
+msgid "Sale end date must after sale start date"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-page-controller.php:52
+msgid "Sale start date must before sale end date"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/post-edit.php:31
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:50
+msgid "Save"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:15
+msgid "Save items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/table-nav-top.php:30
+msgid "Search"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/table-nav-top.php:27
+msgid "Search course"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:20
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:34
+msgid "Section name"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:124
+msgid "Select"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:70
+msgid "Select Items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:15
+msgid "Select items"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:217
+msgid "Select questions"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:86
+msgid "Selected"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:284
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:430
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:33
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:63
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:252
+msgid "Settings"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:29
+msgid "Show"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/section.php:42
+msgid "Show/Hide items list"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:105
+msgid "Single choice"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:684
+msgid "Sorry, you are not allowed to access this page."
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/modal-items.php:36
+msgid "Sort by"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration.php:96
+msgid "Sorting Choices"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:90
+msgid "Specific date"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:34
+msgid "Status"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/form-fields.php:81
+msgid "Text"
+msgstr ""
+
+#. Author of the plugin
+msgid "ThimPress"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:211
+msgid ""
+"This answer was marked is TRUE. Are you sure you want to remove this answer?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/form.php:19
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:18
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:182
+msgid "Title"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:89
+msgid "Trash"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-manage.php:311
+#, php-format
+msgid "Trash %s"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:101
+msgid "True or False"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/course/item.php:26
+msgid "Turn this item is preview on or off"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:26
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/item-settings.php:90
+msgid "Type"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/editors/course.php:1194
+msgid "Updated"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:16
+msgid "Updating"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/list/list-table-lp_course.php:93
+msgid "View"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/templates/edit/editors/form-fields.php:77
+msgid "Visual"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/functions.php:215
+msgid "Warning! Question have all answers are checked. Continue?"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/integration/content-drip-items.php:100
+msgid "Week(s)"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/load.php:251
+msgid "You don't have permission to access this page"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-page-controller.php:175
+msgid "You don't have permission to edit this course."
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-page-controller.php:270
+#, php-format
+msgid ""
+"You don't have permission to edit this post. Please <a href=\"%s\">%s</a> to "
+"continue!"
+msgstr ""
+
+#: ../../../../../../foobla/repo/learnpress-addons/3.x.x/learnpress-frontend-editor/inc/class-post-list-table.php:26
+msgid "You should not locate new instance of this class directly."
+msgstr ""

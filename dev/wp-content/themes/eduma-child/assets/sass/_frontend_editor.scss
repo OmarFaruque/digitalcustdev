@@ -1,0 +1,269 @@
+#frontend-editor {
+  ul {
+    margin: 0;
+  }
+
+  .when-webinar {
+    .fa-calendar {
+      position: absolute;
+      padding: 12px;
+      color: $primary;
+    }
+
+    .webinar_start_time {
+      padding-left: 40px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+  }
+
+  .select2-container.select2-container--open,
+  input[type=text]:focus,
+  input[type=email]:focus,
+  input[type=password]:focus,
+  input[type=number]:focus,
+  input[type=url]:focus,
+  select:focus,
+  textarea:focus {
+    border-color: $primary;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+  }
+
+  .select2-container {
+    .selection {
+      outline:0;
+    }
+  }
+
+  .select2-container--default{
+    .select2-selection--single {
+      outline: 0;
+    }
+  }
+
+  input.error {
+    border: 1px solid #f22 !important;
+    font-size: 15px;
+    color: #f22 !important;
+  }
+
+  input[type=text],
+  input[type=email],
+  input[type=password],
+  input[type=number],
+  input[type=url],
+  select,
+  textarea,
+  textarea:not(.wp-editor-area) {
+    border: 1px solid $primary;
+    color: $primary;
+  }
+
+  input[type=text]::placeholder,
+  input[type=email]::placeholder,
+  input[type=password]::placeholder,
+  input[type=number]::placeholder,
+  input[type=url]::placeholder,
+  select::placeholder,
+  textarea::placeholder {
+    color: $primary;
+  }
+
+  .select2-container--default.select2-container--focus {
+    .select2-selection--multiple {
+      border-color: $primary !important;
+    }
+  }
+
+  .select2-container--default {
+    .select2-selection--multiple {
+      border: 1px solid #ddd;
+    }
+  }
+
+  .e-section-item {
+    &.placeholder {
+      .item-title-add-item {
+        display: block;
+
+        button {
+          float: right;
+          padding: 0 10px;
+          display: none;
+          border: none;
+          background: none;
+        }
+      }
+    }
+
+    .item-title-add-item {
+      display: none;
+    }
+  }
+
+  .e-question-loop {
+    &.placeholder {
+      .item-title-add-question-item {
+        display: inline-block;
+        flex: 0 0 94px;
+
+        button {
+          padding: 0 34px;
+          border: none;
+          background: none;
+        }
+      }
+    }
+
+    .item-title-add-question-item {
+      display: none;
+    }
+  }
+
+  .video-intro-msg {
+    .message-success {
+      margin-top: 31px;
+      background: $pure-white;
+      border: 1px solid $primary;
+      color: $primary;
+      font-size: 15px;
+      height: 184px;
+    }
+  }
+
+  .e-post-attachment:not(.has-attachment) {
+    height: 184px;
+  }
+
+  .e-post-attachment {
+    width: 100%;
+    height: 184px;
+    overflow: hidden;
+
+    .remove-attachment {
+      top: 54%;
+    }
+  }
+
+  .e-sortable {
+    .e-sort-item {
+      .e-item-input {
+        input.question-loop-title {
+          width: 85%;
+        }
+      }
+    }
+  }
+
+  .e-course-sections {
+    .e-section {
+      .e-select-items {
+        display: none;
+      }
+
+      .e-section-head {
+        .sort {
+          .drag-icon {
+            padding-left: 10px;
+            font-size: 20px;
+            padding-top: 3px;
+          }
+        }
+      }
+
+      .item-section-add-btn {
+        padding-top: 10px;
+        border: none;
+        background: none;
+      }
+    }
+  }
+
+  .e-tabs {
+    .e-tab {
+      .e-tab-label {
+        cursor: default;
+      }
+    }
+  }
+
+  .e-edit-question-form {
+    .e-list-questions-heading {
+      .e-list-questions-heading-frontend {
+        padding: 10px;
+        width: 100%;
+
+        &.question-correct-text {
+          width: 12%;
+        }
+      }
+    }
+  }
+
+  #frontend-course-editor {
+    .thim_course_media_intro {
+      &.error {
+        border-color: red;
+      }
+    }
+
+    .dcd-course-next-save,
+    .dcd-course-next-btn,
+    .dcd-course-prev-btn {
+      border-radius: 50px;
+      padding: 5px 25px;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 30px;
+      border: 0;
+      width: 150px;
+    }
+  }
+
+  .e-modal {
+    .e-modal-window {
+      margin: 20px 0 0 40px;
+    }
+  }
+
+  &.curriculum-active {
+    #e-page {
+      overflow: auto;
+      padding: 0;
+    }
+  }
+}
+
+body {
+  &.page-frontend-editor {
+    #wrapper-container {
+      #main-content {
+        z-index: 1;
+      }
+    }
+  }
+}
+
+#e-update-activity {
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 0;
+  border: none;
+  background: #c3c3c3b0;
+
+  .e-update-activity__icon {
+    font-size: 60px;
+    height: 60px;
+    width: 60px;
+    color: $primary;
+    margin-top: unset;
+    left: 50%;
+  }
+}

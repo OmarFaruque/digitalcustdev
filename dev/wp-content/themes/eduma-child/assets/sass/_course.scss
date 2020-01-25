@@ -1,0 +1,73 @@
+.profile-courses-list {
+  .course-item {
+    .course-meta {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+#frontend-editor {
+  .e-form-field-table {
+    .e-form-field {
+      border-bottom: 0;
+    }
+  }
+
+  .e-tabs {
+    .e-tab.active {
+      .e-tab-label {
+        span {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    .e-tab {
+      .e-tab-label {
+        //width:14%;
+        padding-right: 2px;
+
+        span {
+          font-size: 13px;
+          font-weight: 700;
+          background: #f9f9f9;
+          line-height: 29px;
+          float: none;
+          position: relative;
+          display: block;
+          padding: 10px 15px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
+          border-top: 1px solid #eee;
+          border-left: 1px solid #eee;
+          border-right: 1px solid #eee;
+          border-bottom: 0;
+          border-radius: 0;
+        }
+      }
+
+      .e-tab-content {
+        margin-top: 51px;
+        border-top: 1px solid #eee;
+        padding-top: 28px;
+      }
+    }
+  }
+}
+
+#learn-press-content-item {
+  .btn-join-webinar {
+    margin: 10px 0;
+    border-radius: 20px;
+    padding: 10px 20px;
+  }
+}
+
+.single-lp_course {
+  .course-thumbnail {
+    img {
+      width: 100%;
+    }
+  }
+}

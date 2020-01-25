@@ -1,0 +1,184 @@
+<?php
+
+function clone_course_item() {
+	$course_ID  = LP_Request::get( 'course_ID' );
+	$section_ID = LP_Request::get( 'section_ID' );
+	$item       = LP_Request::get( 'item' );
+	$result     = false;
+
+	$cloner = new DCD_FE_Cloner();
+	$result = $cloner->clone_course_item( $item, $section_ID, $course_ID );
+
+	learn_press_send_json( $result );
+	die();
+}
+
+function clone_question() {
+	$course_ID  = LP_Request::get( 'course_ID' );
+	$quiz_ID = LP_Request::get( 'quiz_ID' );
+	$question       = LP_Request::get( 'question' );
+	$result     = false;
+
+	$cloner = new DCD_FE_Cloner();
+	$result = $cloner->clone_question( $course_ID, $quiz_ID, $question );
+
+	learn_press_send_json( $result );
+	die();
+}
+
+class DCD_FE_Cloner extends FE_Course_Editor {
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	function clone_course_item( $item, $section_ID, $course_ID ) {
+		$itemData = wp_parse_args( $item );
+		$result   = array();
+
+		$post = get_post( $item['item_id'] );
+		if ( $post ) {
+			$itemData['title'] = $post->post_title;
+			unset( $itemData['item_id'] );
+		}
+
+		$isNew = ! ( $itemData['id'] && is_numeric( $itemData['id'] ) );
+
+		if ( $isNew ) {
+			$itemData['temp_id'] = $itemData['id'];
+			unset( $itemData['id'] );
+			if ( $new_items = $this->section_curd( $course_ID )->new_item( $section_ID, $itemData ) ) {
+
+				foreach ( $new_items as $new_item ) {
+					if ( ! isset( $new_item['temp_id'] ) ) {
+						continue;
+					}
+
+					if ( $new_item['temp_id'] === $itemData['temp_id'] ) {
+						$result['new_item'] = $new_item;
+						break;
+					}
+				}
+
+				$old_post_metas = get_post_meta( $post->ID );
+				if ( ! empty( $old_post_metas ) ) {
+					unset( $old_post_metas['_webinar_ID'] );
+					unset( $old_post_metas['_webinar_details'] );
+					foreach ( $old_post_metas as $k => $old_post_meta ) {
+						update_post_meta( $result['new_item']['id'], $k, $old_post_meta[0] );
+					}
+				}
+
+				if ( array_key_exists( 'position', $itemData ) && ! empty( $result['new_item'] ) ) {
+					$this->reorder_items( $section_ID, $result['new_item']['id'], absint( $itemData['position'] ) );
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	public function clone_question( $course_ID, $quiz_ID, $question ) {
+		die('here');
+		///LP_Debug::startTransaction();
+		$quiz_ID       = LP_Request::get( 'quiz_ID' );
+		$question_data = LP_Request::get( 'question' );
+		$context       = LP_Request::get( 'context' );
+		$is_new        = empty( $question_data['id'] ) || ! is_numeric( $question_data['id'] );
+		$result        = array( 'result' => 'success' );
+		try {
+			if ( $is_new ) {
+				$post_data = array(
+					'post_title'  => $question_data['title'],
+					'post_type'   => LP_QUESTION_CPT,
+					'post_status' => 'publish'
+				);
+
+				$question_ID = wp_insert_post( $post_data, true );
+
+				if ( is_wp_error( $question_ID ) ) {
+					throw new Exception( $question_ID->get_error_message(), $question_ID->get_error_code() );
+				}
+
+				$result['temp_id'] = $question_data['id'];
+
+			} else {
+				$question_ID = $question_data['id'];
+				if ( get_post_type( $question_ID ) !== LP_QUESTION_CPT ) {
+					throw new Exception( __( 'Question invalid', 'learnpress-frontend-editor' ) );
+				}
+			}
+
+			if ( ! empty( $question_data['type'] ) ) {
+				update_post_meta( $question_ID, '_lp_type', $question_data['type'] );
+			}
+
+			if ( $quiz_ID ) {
+				$this->quiz_curd()->add_question( $quiz_ID, $question_ID );
+			}
+
+			switch ( $context ) {
+				case 'title':
+				case 'content':
+					$postarr = array(
+						'ID'              => $question_ID,
+						"post_{$context}" => $question_data[ $context ]
+					);
+
+					if ( ! $is_new ) {
+						wp_update_post( $postarr );
+					} else {
+					}
+					break;
+				case 'change-type':
+					$question = learn_press_get_question( $question_ID );
+					if ( $newQuestion = $this->question_curd()->change_question_type( $question, $question_data['newType'], $question->get_data( 'answer_options' ) ) ) {
+						$result['answers'] = e_get_question_answers_array( $newQuestion );
+					}
+					break;
+				case 'update-answers':
+					$question_answer_ids           = $this->update_question_answers( $question_ID, $question_data['answers'] );
+					$result['question_answer_ids'] = $question_answer_ids;
+					break;
+				case 'settings':
+				default:
+					if ( ! empty( $question_data['settings'] ) ) {
+						foreach ( $question_data['settings'] as $field => $stt ) {
+							update_post_meta( $question_ID, $field, $stt );
+						}
+					}
+					break;
+			}
+
+			$result['id'] = $question_ID;
+
+			if ( $is_new ) {
+				$question          = LP_Question::get_question( $question_ID );
+				$defaultAnswers    = $question->get_default_answers();
+				$result['answers'] = array();
+
+				global $wpdb;
+				foreach ( $defaultAnswers as $k => $answer ) {
+					unset( $answer['question_answer_id'] );
+					$wpdb->insert(
+						$wpdb->learnpress_question_answers,
+						array(
+							'question_id'  => $question_ID,
+							'answer_data'  => serialize( $answer ),
+							'answer_order' => $k + 1
+						)
+					);
+				}
+
+				$result['answers'] = e_get_question_answers_array( $question );// $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->learnpress_question_answers} WHERE question_id = %d", $question_ID ) );
+			}
+		}
+		catch ( Exception $ex ) {
+			$result['result']  = 'error';
+			$result['message'] = $ex->getMessage();
+		}
+
+		//LP_Debug::rollbackTransaction();
+		learn_press_send_json( $result );
+	}
+}

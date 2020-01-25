@@ -1,0 +1,892 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: LearnPress - Assignments\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-08-07 17:30+0700\n"
+"PO-Revision-Date: 2018-08-24 04:30+0000\n"
+"Last-Translator: admin <tung@foobla.com>\n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100 >= 3 "
+"&& n%100<=10 ? 3 : n%100 >= 11 && n%100<=99 ? 4 : 5;\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: learnpress-assignments.php:52
+#, php-format
+msgid ""
+"<strong>%s</strong> addon version %s requires %s version %s or higher is "
+"<strong>installed</strong> and <strong>activated</strong>."
+msgstr ""
+
+#: learnpress-assignments.php:53
+msgid "LearnPress Assignment"
+msgstr ""
+
+#: learnpress-assignments.php:55
+msgid "LearnPress"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:34 inc/custom-post-types/assignment.php:79
+msgid "New Assignment"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:101
+msgid "<p>Op! ID not found</p>"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:105
+msgid "<p>Op! The assignment does not exist</p>"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:110
+msgid "<p>Sorry! You don't have permission to duplicate this assignment</p>"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:117
+msgid "<p>Sorry! Failed to duplicate assignment!</p>"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:138
+#, php-format
+msgid "Invalid assignment with ID \"%d\"."
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:310
+msgid "assignment"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:311
+msgid "assignments"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:325
+msgid "All"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:326
+msgid "Submitted"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:327
+#: inc/admin/class-student-list-table.php:224
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:74
+#: templates/profile/tabs/assignments.php:87
+msgid "Evaluated"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:328
+#: inc/admin/class-student-list-table.php:241
+msgid "Passed"
+msgstr ""
+
+#: inc/class-lp-assignment-curd.php:329
+#: inc/admin/class-student-list-table.php:241
+msgid "Failed"
+msgstr ""
+
+#: inc/class-lp-assignment.php:290 templates/content-assignment/intro.php:27
+msgid "Unlimited"
+msgstr ""
+
+#: inc/class-lp-assignment.php:305
+msgid "Finish assignment"
+msgstr ""
+
+#: inc/class-lp-assignment.php:306
+msgid "Are you sure you want to finish this assignment?"
+msgstr ""
+
+#: inc/class-lp-assignment.php:309
+msgid "Retake assignment"
+msgstr ""
+
+#: inc/class-lp-assignment.php:310
+msgid "Are you sure you want to retake this assignment?"
+msgstr ""
+
+#: inc/class-lp-assignment.php:313
+msgid "Time's up!"
+msgstr ""
+
+#: inc/class-lp-assignment.php:314
+msgid "The time is up! Your assignment will automate come to finish"
+msgstr ""
+
+#: inc/class-lp-assignment.php:316
+msgid "Congrats! You have finished this assignment"
+msgstr ""
+
+#: inc/class-lp-assignment.php:317
+msgid ""
+"Congrats! You have re-taken this assignment. Please wait a moment and the "
+"page will reload"
+msgstr ""
+
+#: inc/class-lp-assignment.php:362
+#, php-format
+msgid "The function %s doesn't exist"
+msgstr ""
+
+#: inc/functions.php:385
+msgid " day left"
+msgstr ""
+
+#: inc/functions.php:386
+msgid " days left"
+msgstr ""
+
+#: inc/functions.php:420
+msgid "You cannot start a assignment in preview mode."
+msgstr ""
+
+#: inc/functions.php:427
+msgid "Course does not exist or does not contain the assignment"
+msgstr ""
+
+#: inc/functions.php:432
+msgid "User has already finished the course of this assignment"
+msgstr ""
+
+#: inc/functions.php:439
+msgid "User has started or completed assignment"
+msgstr ""
+
+#: inc/functions.php:444
+msgid "You have to login for starting assignment."
+msgstr ""
+
+#: inc/functions.php:449
+msgid "Start assignment failed!"
+msgstr ""
+
+#: inc/functions.php:599
+msgid "Error: remove file failed, maybe there is issue with the permission!"
+msgstr ""
+
+#: inc/functions.php:601
+msgid "Error: The file is not existed!"
+msgstr ""
+
+#: inc/load.php:201
+msgid "My assignments"
+msgstr ""
+
+#: inc/load.php:205
+msgid "Public your profile assignments"
+msgstr ""
+
+#: inc/load.php:240 inc/admin/compatible/class-lp-assignment-buddypress.php:48
+#: inc/custom-post-types/assignment.php:72
+#: inc/custom-post-types/assignment.php:73
+#: inc/custom-post-types/assignment.php:77
+#: inc/custom-post-types/assignment.php:246
+#: inc/custom-post-types/assignment.php:273
+msgid "Assignments"
+msgstr ""
+
+#: inc/load.php:341
+msgid "Evaluated successful."
+msgstr ""
+
+#: inc/load.php:344
+msgid "Evaluation updated."
+msgstr ""
+
+#: inc/load.php:432
+#, php-format
+msgid "%d assignment"
+msgid_plural "%d assignments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/load.php:432
+msgid "0 assignment"
+msgstr ""
+
+#: inc/load.php:455 inc/load.php:456
+msgid "Assignment Student"
+msgstr ""
+
+#: inc/load.php:464 inc/load.php:465
+msgid "Assignment Evaluate"
+msgstr ""
+
+#: inc/load.php:603 templates/content-assignment/duration.php:23
+msgid "Unlimited Time"
+msgstr ""
+
+#: inc/load.php:698 inc/admin/views/students.php:41
+#: inc/custom-post-types/assignment.php:74
+#: inc/custom-post-types/assignment.php:309
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:31
+#: templates/profile/tabs/assignments.php:41
+msgid "Assignment"
+msgstr ""
+
+#: inc/load.php:724
+msgid "This is the result which was forced to send because of time up issue"
+msgstr ""
+
+#: inc/load.php:731
+msgid "Success"
+msgstr ""
+
+#: inc/load.php:735
+msgid "You should have answer first"
+msgstr ""
+
+#: inc/load.php:740
+msgid "Your progress was saved!"
+msgstr ""
+
+#: inc/load.php:758
+msgid " Your uploaded files reach the maximum amount!"
+msgstr ""
+
+#: inc/load.php:771
+#, php-format
+msgid ""
+" The size of your %s file is over %d Mb(s).\n"
+msgstr ""
+
+#: inc/load.php:777
+msgid " is not allowed!"
+msgstr ""
+
+#: inc/load.php:792
+#, php-format
+msgid " Please check file %s!"
+msgstr ""
+
+#: inc/load.php:798
+msgid "The progress was save! Your file(s) were uploaded successfully!"
+msgstr ""
+
+#: inc/load.php:800
+msgid "error"
+msgstr ""
+
+#: inc/load.php:805
+msgid ""
+"What you did was sent to the instructors, please wait the evaluated result!"
+msgstr ""
+
+#: inc/load.php:819
+msgid "Opps, something wrong while processing! "
+msgstr ""
+
+#: inc/load.php:912
+msgid "Re-send email for student to notify assignment has been evaluated?"
+msgstr ""
+
+#: inc/load.php:913
+msgid "Allow delete user's assignment and user can send it again?"
+msgstr ""
+
+#: inc/load.php:914
+msgid "Allow clear the result has evaluated?"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-admin-ajax.php:57
+msgid "Send mail to student successful!"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-admin-ajax.php:62
+msgid "Send mail to student fail!"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-admin-ajax.php:85
+msgid "Delete user's assignment successful!"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-admin-ajax.php:90
+msgid "Delete user's assignment fail!"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-admin-ajax.php:118
+msgid "Clear the result has evaluated successful!"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-admin-ajax.php:123
+msgid "Clear the result has evaluated fail!"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-evaluate.php:80
+#: inc/admin/class-student-list-table.php:60
+#: inc/custom-post-types/assignment.php:136
+#: inc/custom-post-types/assignment.php:484
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:32
+#: templates/profile/tabs/assignments.php:44
+msgid "Mark"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-evaluate.php:84
+msgid "Mark for user answer."
+msgstr ""
+
+#: inc/admin/class-lp-assignment-evaluate.php:91
+msgid "Instructor note"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-evaluate.php:95
+msgid "Note here..."
+msgstr ""
+
+#: inc/admin/class-lp-assignment-evaluate.php:96
+msgid "Note for send student."
+msgstr ""
+
+#: inc/admin/class-lp-assignment-evaluate.php:101
+msgid "Document"
+msgstr ""
+
+#: inc/admin/class-lp-assignment-evaluate.php:105
+msgid "Upload files for the right answers, reference, etc"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:55
+msgid "ID"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:56
+msgid "Name"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:57
+msgid "Email"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:58
+#, php-format
+msgid "<a href=\"%s\">Status</a>"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:59
+#, php-format
+msgid "<a href=\"%s\">Instructor</a>"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:61
+#, php-format
+msgid "<a href=\"%s\">Result</a>"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:62 inc/admin/views/evaluate.php:65
+#: inc/custom-post-types/assignment.php:487
+#: templates/profile/tabs/assignments.php:46
+msgid "Actions"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:182
+msgid "Search student"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:224
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:74
+#: templates/profile/tabs/assignments.php:87
+msgid "Not evaluate"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:251
+msgid "Evaluate"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:252
+msgid "Delete submission"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:254
+msgid "Reset result"
+msgstr ""
+
+#: inc/admin/class-student-list-table.php:255
+msgid "Send evaluated mail"
+msgstr ""
+
+#: inc/admin/compatible/class-lp-assignment-gradebook.php:111
+#, php-format
+msgid "%s/%s"
+msgstr ""
+
+#: inc/admin/compatible/class-lp-assignment-gradebook.php:127
+#, php-format
+msgid " - %s/%s"
+msgstr ""
+
+#: inc/admin/settings/email-groups/class-lp-settings-evaluated-assignment-emails.php:36
+#: inc/emails/class-lp-email-evaluated-assignment-admin.php:55
+#: inc/emails/class-lp-email-evaluated-assignment-user.php:55
+msgid "Evaluated Assignment"
+msgstr ""
+
+#: inc/admin/settings/email-groups/class-lp-settings-submitted-assignment-emails.php:36
+msgid "Submitted Assignment"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:18 inc/admin/views/students.php:17
+msgid "Sorry, you are not allowed to access this page."
+msgstr ""
+
+#: inc/admin/views/evaluate.php:25
+msgid "Invalid student"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:31
+msgid "Invalid course"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:52
+msgid "Evaluate Form"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:53
+msgid "Back to list students"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:72
+msgid "save"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:96
+msgid "Submission"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:97
+msgid "Include student assignment answer and attach files."
+msgstr ""
+
+#: inc/admin/views/evaluate.php:101
+msgid "Answer"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:108
+msgid ""
+"Instructor can not modify submission of student, every change has no effect."
+msgstr ""
+
+#: inc/admin/views/evaluate.php:113
+msgid "Attach File"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:125
+msgid "There is no assignments attach file(s)."
+msgstr ""
+
+#: inc/admin/views/evaluate.php:131
+msgid "Evaluation"
+msgstr ""
+
+#: inc/admin/views/evaluate.php:132
+msgid "Your evaluation about student submission."
+msgstr ""
+
+#: inc/admin/views/students.php:24
+msgid "Invalid assignment"
+msgstr ""
+
+#: inc/admin/views/students.php:38
+msgid "Assignment Students"
+msgstr ""
+
+#: inc/admin/views/students.php:44
+msgid "of course"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:75
+msgid "Add New Assignment"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:76
+msgid "Edit Assignment"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:78
+msgid "View Assignment"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:80
+msgid "Update Assignment"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:81
+msgid "Search Assignments"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:82
+#, php-format
+msgid ""
+"You have not got any assignments yet. Click <a href=\"%s\">Add new</a> to "
+"start"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:83
+msgid "No assignment found in Trash"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:121
+msgid "General Settings"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:127
+#: inc/custom-post-types/assignment.php:486
+#: templates/content-assignment/intro.php:30
+msgid "Duration"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:128
+msgid "Duration of the assignment. Set 0 to disable."
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:139
+msgid "Maximum mark can the students receive."
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:146
+#: inc/custom-post-types/assignment.php:485
+#: templates/profile/tabs/assignments.php:42
+msgid "Passing Grade"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:147
+msgid "Requires user reached this point to pass the assignment."
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:156
+msgid "Re-take"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:159
+msgid ""
+"How many times the user can re-take this assignment. Set to 0 to disable"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:164
+msgid "Upload files"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:167
+msgid ""
+"Number files the user can upload with this assignment. Set to 0 to disable"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:172
+msgid "File Extensions"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:175
+msgid "Which types of file will be allowed uploading?"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:179
+msgid "Size Limit"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:182
+msgid "Set Maximum Attachment size for upload ( set less than 128 MB)"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:198
+msgid "Documentations"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:204
+msgid "Attachments"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:205
+msgid "Attach the related documentations here!"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:210
+msgid "Introduction"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:211
+msgid "Introduction about assignment."
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:251
+#, php-format
+msgid "Example link is %s"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:277
+msgid "Public user profile assignments."
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:277
+msgid "Allow user to turn on/off sharing profile assignments option"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:335
+msgid ""
+"<br /><strong>Note! </strong>No final assignment in course, please add a "
+"final assignment"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:338
+msgid ""
+"Evaluate by results of final assignment in course. You have to add a "
+"assignment into end of course."
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:339
+msgid ""
+"<p>Evaluate by number of assignments completed per number of total "
+"assignments.</p>"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:340
+msgid ""
+"<p>E.g: Course has 20 assignments and user completed 15 assignments then the "
+"result = 15/20 = 75%.</p>"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:356
+msgid ""
+"This is conditional \"passing grade\" of Final assignment will apply for "
+"result of this course. When you change it here, the \"passing grade\" also "
+"change with new value for the Final assignment."
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:362
+msgid "Evaluate via results of the final assignment"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:450
+#, php-format
+msgid "Unassigned %s"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:481
+msgid "Author"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:482
+#: templates/profile/tabs/assignments.php:40
+msgid "Course"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:483
+msgid "Students"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:581
+msgid "Edit"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:583
+#: inc/custom-post-types/assignment.php:615
+#: templates/profile/tabs/assignments.php:109
+msgid "View"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:587
+msgid "Not assigned yet"
+msgstr ""
+
+#: inc/custom-post-types/assignment.php:656
+msgid "Assigned"
+msgstr ""
+
+#: inc/emails/class-lp-email-evaluated-assignment-admin.php:47
+#: inc/emails/class-lp-email-submitted-assignment-admin.php:47
+msgid "Admin"
+msgstr ""
+
+#: inc/emails/class-lp-email-evaluated-assignment-admin.php:48
+msgid "Send this email to admin when they have evaluated assignment."
+msgstr ""
+
+#: inc/emails/class-lp-email-evaluated-assignment-admin.php:54
+msgid "[{{site_title}}] You just evaluated assignment ({{assignment_name}})"
+msgstr ""
+
+#: inc/emails/class-lp-email-evaluated-assignment-user.php:47
+#: inc/emails/class-lp-email-submitted-assignment-user.php:46
+msgid "User"
+msgstr ""
+
+#: inc/emails/class-lp-email-evaluated-assignment-user.php:48
+msgid "Send this email to user when teacher have evaluated assignment."
+msgstr ""
+
+#: inc/emails/class-lp-email-evaluated-assignment-user.php:54
+msgid ""
+"[{{site_title}}] Your assignment has been evaluated ({{assignment_name}})"
+msgstr ""
+
+#: inc/emails/class-lp-email-submitted-assignment-admin.php:48
+msgid "Send this email to admin when user have submitted assignment."
+msgstr ""
+
+#: inc/emails/class-lp-email-submitted-assignment-admin.php:54
+msgid "[{{site_title}}] Student submit assignment ({{assignment_name}})"
+msgstr ""
+
+#: inc/emails/class-lp-email-submitted-assignment-admin.php:55
+#: inc/emails/class-lp-email-submitted-assignment-user.php:54
+msgid "New Submit Assignment"
+msgstr ""
+
+#: inc/emails/class-lp-email-submitted-assignment-user.php:47
+msgid "Send this email to user when they have submitted assignment."
+msgstr ""
+
+#: inc/emails/class-lp-email-submitted-assignment-user.php:53
+msgid "[{{site_title}}] You just submitted assignment ({{assignment_name}})"
+msgstr ""
+
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:33
+#: templates/profile/tabs/assignments.php:43
+msgid "Status"
+msgstr ""
+
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:34
+#: templates/profile/tabs/assignments.php:45
+msgid "Interval"
+msgstr ""
+
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:64
+#: templates/profile/tabs/assignments.php:95
+msgid "completed"
+msgstr ""
+
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:66
+#: templates/profile/tabs/assignments.php:97
+msgid "passed"
+msgstr ""
+
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:66
+#: templates/profile/tabs/assignments.php:97
+msgid "failed"
+msgstr ""
+
+#: templates/compatible/learnpress-buddypress/profile/assignments.php:95
+#: templates/profile/tabs/assignments.php:131
+msgid "No assignments!"
+msgstr ""
+
+#: templates/content-assignment/attachment.php:25
+msgid "Attachment Files:"
+msgstr ""
+
+#: templates/content-assignment/duration.php:21
+msgid " --:--:-- "
+msgstr ""
+
+#: templates/content-assignment/duration.php:23
+msgid "Time remaining"
+msgstr ""
+
+#: templates/content-assignment/duration.php:23
+msgid "Time Up!"
+msgstr ""
+
+#: templates/content-assignment/intro.php:26
+msgid "Attempts allowed"
+msgstr ""
+
+#: templates/content-assignment/intro.php:27
+msgid "No"
+msgstr ""
+
+#: templates/content-assignment/intro.php:34
+msgid "Passing grade"
+msgstr ""
+
+#: templates/content-assignment/intro.php:35
+#, php-format
+msgid "%d point(s)"
+msgstr ""
+
+#: templates/content-assignment/intro.php:40
+msgid "Overview:"
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:38
+msgid "Answer:"
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:47
+msgid "Maximum amount of files you can upload more: "
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:49
+msgid " And allow upload only these types: "
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:57
+#: templates/content-assignment/buttons/result.php:44
+#: templates/content-assignment/buttons/sent.php:31
+msgid "Your Uploaded File(s):"
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:83
+msgid "Do you want to remove this file?"
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:99
+msgid ""
+"Do you want to save the result? Your uploaded files will be replaced by the "
+"new ones if any!"
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:102
+msgid "Save"
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:107
+msgid ""
+"Do you want to send the result to instructor? Is this your final answer?"
+msgstr ""
+
+#: templates/content-assignment/buttons/controls.php:110
+msgid "Send"
+msgstr ""
+
+#: templates/content-assignment/buttons/result.php:32
+msgid "Your Result"
+msgstr ""
+
+#: templates/content-assignment/buttons/result.php:37
+#, php-format
+msgid "Your grade is <strong>%s</strong>"
+msgstr ""
+
+#: templates/content-assignment/buttons/result.php:37
+msgid "Ungraded"
+msgstr ""
+
+#: templates/content-assignment/buttons/result.php:41
+#: templates/content-assignment/buttons/sent.php:28
+msgid "Your Answer:"
+msgstr ""
+
+#: templates/content-assignment/buttons/result.php:57
+msgid "Instructor Message:"
+msgstr ""
+
+#: templates/content-assignment/buttons/result.php:61
+msgid "References:"
+msgstr ""
+
+#: templates/content-assignment/buttons/retake.php:31
+msgid "Retake"
+msgstr ""
+
+#: templates/content-assignment/buttons/start.php:28
+msgid "Start"
+msgstr ""
+
+#: templates/profile/tabs/assignments.php:26
+msgid "My Assignments"
+msgstr ""

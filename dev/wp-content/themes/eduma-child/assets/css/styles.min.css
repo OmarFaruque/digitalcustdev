@@ -1,0 +1,147 @@
+.navigation-sidebar-wrapper .nav-tab-main-menu{background:#2575fc;border-right:1px solid #e2e2e2;position:fixed;top:0;bottom:0;height:100%;left:0;width:60px;overflow:hidden;transition:width .05s linear;-webkit-transform:translateZ(0) scale(1,1);z-index:1000}
+.navigation-sidebar-wrapper .nav-tab-main-menu:hover,.navigation-sidebar-wrapper .nav-tab-main-menu .expanded{width:250px;overflow:visible}
+.navigation-sidebar-wrapper .nav-tab-main-menu>ul{margin:7px 0}.navigation-sidebar-wrapper .nav-tab-main-menu li{position:relative;display:block;width:250px}
+.navigation-sidebar-wrapper .nav-tab-main-menu li:hover{background-color:#5fa2db}
+.navigation-sidebar-wrapper .nav-tab-main-menu li>a{position:relative;display:table;border-collapse:collapse;border-spacing:0;color:#999;font-size:14px;text-decoration:none;-webkit-transform:translateZ(0) scale(1,1);transition:all .1s linear}
+.navigation-sidebar-wrapper .nav-tab-main-menu .nav-icon{position:relative;display:table-cell;width:60px;height:36px;text-align:center;vertical-align:middle;font-size:18px}
+.navigation-sidebar-wrapper .nav-tab-main-menu .text{position:relative;display:table-cell;vertical-align:middle;width:190px;padding:16px 16px 15px 12px;color:#fff}
+.navigation-sidebar-wrapper .nav-tab-main-menu .fa-2x{font-size:2em}.navigation-sidebar-wrapper .nav-tab-main-menu .fa{position:relative;display:table-cell;width:60px;height:36px;text-align:center;vertical-align:middle;font-size:28px;color:#fff}
+@media(max-width:767px){.navigation-sidebar-wrapper .nav-tab-main-menu{display:none}
+}.navigation-sidebar-wrapper .nav-tab-main-menu-top-padder{top:32px}.navigation-sidebar-wrapper .no-touch .scrollable .hover{overflow-y:hidden}
+.navigation-sidebar-wrapper .no-touch .scrollable .hover:hover{overflow-y:auto;overflow:visible}
+.navigation-sidebar-wrapper .nav-tab-main-menu li:hover>a,.navigation-sidebar-wrapper nav.nav-tab-main-menu li.active>a{color:#fff;border-left:4px solid #5fa2db}
+.navigation-sidebar-wrapper .side-nav-area{float:left;background:#e2e2e2;width:100%;height:100%}
+.digitalcustdev-profile-page #masthead{position:relative;z-index:2}.digitalcustdev-profile-page #masthead .menu-mobile-effect .icon-bar{color:#000}
+.digitalcustdev-profile-page #masthead .menu-right{float:right}.digitalcustdev-profile-page #masthead .menu-right .thim-link-login a{color:#000 !important}
+.digitalcustdev-profile-page #masthead .menu-right .thim-link-login a:hover{color:#000}
+.digitalcustdev-profile-page #masthead .menu-right .thim-link-login .logout{background-color:unset}
+@media(max-width:767px){.digitalcustdev-profile-page #masthead{z-index:2;background:#2575fc;height:50px}
+.digitalcustdev-profile-page #masthead .menu-mobile-effect{margin:10px 0}}.digitalcustdev-profile-page #main-content .profile-container .profile-tabs{width:100%;float:unset}
+.digitalcustdev-profile-page #main-content .profile-container .profile-tabs .tab-content{padding:0 !important}
+.digitalcustdev-profile-page .learn-press-user-profile .user-tab .author-name{padding:10px 0 20px;margin:25px 0 10px}
+.digitalcustdev-profile-page .learn-press-user-profile .user-tab .author-role{text-align:center;text-transform:capitalize}
+.digitalcustdev-profile-page .learn-press-subtab-content .form-search-fields{padding:20px 0}
+.digitalcustdev-profile-page .learn-press-subtab-content .form-search-fields .col-md-5.no-padding{padding:0}
+.digitalcustdev-profile-page .learn-press-subtab-content .form-search-fields .col-md-2{padding-left:10px}
+.digitalcustdev-profile-page .learn-press-subtab-content .form-search-fields .col-md-2 .digitalcustDev-create-post,.digitalcustdev-profile-page .learn-press-subtab-content .form-search-fields .col-md-2 .create-webinar{width:100%}
+.digitalcustdev-profile-page #profile-content-courses .form-group input,.digitalcustdev-profile-page #profile-content-courses .form-group select,.digitalcustdev-profile-page #profile-content-courses .form-group .e-new-post,.digitalcustdev-profile-page #profile-content-courses .form-group .digitalcustDev-create-post{margin:0 5px}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course{margin-bottom:20px}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-title-wrapper{display:-ms-flexbox;display:flex}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-title-wrapper h2,.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-title-wrapper span{display:-ms-inline-flexbox;display:inline-flex}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-title-wrapper .course-title{margin:3px 0 0}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-description{margin-bottom:10px; margin-top:3px; }
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-meta{display:block}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-meta>div{float:none;display:block}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-meta>div i{display:inline-block}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-published-status{border-radius:10px;-webkit-border-radius:10px;-moz-border-radius:10px;font-size:12px;display:-ms-inline-flexbox;display:inline-flex;text-transform:uppercase}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-published-status .active{background:#2575fc;color:#fff;padding:6px 20px}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-published-status .inactive{background:#ccc;padding:6px 20px}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-readmore a{background:0;color:#2575fc;padding:0 10px;margin:0}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-readmore a:hover{color:#7893c1;background:0}
+.digitalcustdev-profile-page .profile-courses-list .lpr_course .course-item .course-readmore a i{font-size:25px}
+@media(max-width:767px){.digitalcustdev-profile-page .mobile-menu-wrapper .mobile-menu-container li i{padding-right:10px}
+.digitalcustdev-profile-page .mobile-menu-wrapper .mobile-menu-container li .thim-link-login a{padding:5px 15px}
+.digitalcustdev-profile-page .mobile-menu-wrapper .mobile-menu-container li .thim-link-login .profile:before{font-family:FontAwesome;content:"\f007";padding-right:10px}
+}.profile-courses-list .course-item .course-meta{margin-bottom:20px}#frontend-editor .e-form-field-table .e-form-field{border-bottom:0}
+#frontend-editor .e-tabs .e-tab.active .e-tab-label span{border-bottom:0}#frontend-editor .e-tabs .e-tab .e-tab-label{padding-right:2px}
+#frontend-editor .e-tabs .e-tab .e-tab-label span{font-size:13px;font-weight:700;background:#f9f9f9;line-height:29px;float:none;position:relative;display:block;padding:10px 15px;overflow:hidden;text-overflow:ellipsis;text-align:center;border-top:1px solid #eee;border-left:1px solid #eee;border-right:1px solid #eee;border-bottom:0;border-radius:0}
+#frontend-editor .e-tabs .e-tab .e-tab-content{margin-top:51px;border-top:1px solid #eee;padding-top:28px}
+#learn-press-content-item .btn-join-webinar{margin:10px 0;border-radius:20px;padding:10px 20px}
+.single-lp_course .course-thumbnail img{width:100%}@media(min-width:767px){.thim-widget-login-popup .thim-switch-roles-sub-nav{float:left;overflow:hidden}
+.thim-widget-login-popup .thim-switch-roles-sub-nav:hover .thim-switch-roles-content{display:block}
+.thim-widget-login-popup .thim-switch-roles-sub-nav .thim-switch-roles-content{display:none;position:absolute;top:66px;width:20%;z-index:1}
+.thim-widget-login-popup .thim-switch-roles-sub-nav .thim-switch-roles-content button{color:#fff;border-radius:0 !important;margin-top:10px}
+.thim-widget-login-popup .thim-switch-roles-sub-nav .thim-switch-roles-content button:before{content:'';position:absolute;width:10px;height:10px;border:10px solid #000;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid transparent;border-bottom:10px solid #2575fc;top:-8px;left:10px;z-index:-1;transition:all .3s}
+.thim-widget-login-popup .thim-switch-roles-sub-nav .thim-switch-roles-content button:hover:before{border:10px solid #000;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid transparent;border-bottom:10px solid #0356e7}
+}#frontend-editor ul{margin:0}#frontend-editor .when-webinar .fa-calendar{position:absolute;padding:12px;color:#2575fc}
+#frontend-editor .when-webinar .webinar_start_time{padding-left:40px;font-size:15px;font-weight:500}
+#frontend-editor .select2-container.select2-container--open,#frontend-editor input[type=text]:focus,#frontend-editor input[type=email]:focus,#frontend-editor input[type=password]:focus,#frontend-editor input[type=number]:focus,#frontend-editor input[type=url]:focus,#frontend-editor select:focus,#frontend-editor textarea:focus{border-color:#2575fc;outline:0;box-shadow:inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(102,175,233,0.6)}
+#frontend-editor .select2-container .selection{outline:0}#frontend-editor .select2-container--default .select2-selection--single{outline:0}
+#frontend-editor input.error{border:1px solid #f22 !important;font-size:15px;color:#f22 !important}
+#frontend-editor input[type=text],#frontend-editor input[type=email],#frontend-editor input[type=password],#frontend-editor input[type=number],#frontend-editor input[type=url],#frontend-editor select,#frontend-editor textarea,#frontend-editor textarea:not(.wp-editor-area){border:1px solid #2575fc;color:#2575fc}
+#frontend-editor input[type=text]:-ms-input-placeholder,#frontend-editor input[type=email]:-ms-input-placeholder,#frontend-editor input[type=password]:-ms-input-placeholder,#frontend-editor input[type=number]:-ms-input-placeholder,#frontend-editor input[type=url]:-ms-input-placeholder,#frontend-editor select:-ms-input-placeholder,#frontend-editor textarea:-ms-input-placeholder{color:#2575fc}
+#frontend-editor input[type=text]::placeholder,#frontend-editor input[type=email]::placeholder,#frontend-editor input[type=password]::placeholder,#frontend-editor input[type=number]::placeholder,#frontend-editor input[type=url]::placeholder,#frontend-editor select::placeholder,#frontend-editor textarea::placeholder{color:#2575fc}
+#frontend-editor .select2-container--default.select2-container--focus .select2-selection--multiple{border-color:#2575fc !important}
+#frontend-editor .select2-container--default .select2-selection--multiple{border:1px solid #ddd}
+#frontend-editor .e-section-item.placeholder .item-title-add-item{display:block}#frontend-editor .e-section-item.placeholder .item-title-add-item button{float:right;padding:0 10px;display:none;border:0;background:0}
+#frontend-editor .e-section-item .item-title-add-item{display:none}#frontend-editor .e-question-loop.placeholder .item-title-add-question-item{display:inline-block;-ms-flex:0 0 94px;flex:0 0 94px}
+#frontend-editor .e-question-loop.placeholder .item-title-add-question-item button{padding:0 34px;border:0;background:0}
+#frontend-editor .e-question-loop .item-title-add-question-item{display:none}#frontend-editor .video-intro-msg .message-success{margin-top:31px;background:#fff;border:1px solid #2575fc;color:#2575fc;font-size:15px;height:184px}
+#frontend-editor .e-post-attachment:not(.has-attachment){height:184px}#frontend-editor .e-post-attachment{width:100%;height:184px;overflow:hidden}
+#frontend-editor .e-post-attachment .remove-attachment{top:54%}#frontend-editor .e-sortable .e-sort-item .e-item-input input.question-loop-title{width:85%}
+#frontend-editor .e-course-sections .e-section .e-select-items{display:none}#frontend-editor .e-course-sections .e-section .e-section-head .sort .drag-icon{padding-left:10px;font-size:20px;padding-top:3px}
+#frontend-editor .e-course-sections .e-section .item-section-add-btn{padding-top:10px;border:0;background:0}
+#frontend-editor .e-tabs .e-tab .e-tab-label{cursor:default}#frontend-editor .e-edit-question-form .e-list-questions-heading .e-list-questions-heading-frontend{padding:10px;width:100%}
+#frontend-editor .e-edit-question-form .e-list-questions-heading .e-list-questions-heading-frontend.question-correct-text{width:12%}
+#frontend-editor #frontend-course-editor .thim_course_media_intro.error{border-color:red}
+#frontend-editor #frontend-course-editor .dcd-course-next-save,#frontend-editor #frontend-course-editor .dcd-course-next-btn,#frontend-editor #frontend-course-editor .dcd-course-prev-btn{border-radius:50px;padding:5px 25px;text-transform:uppercase;font-size:13px;font-weight:700;line-height:30px;border:0;width:150px}
+#frontend-editor .e-modal .e-modal-window{margin:20px 0 0 40px}#frontend-editor.curriculum-active #e-page{overflow:auto;padding:0}
+body.page-frontend-editor #wrapper-container #main-content{z-index:1}#e-update-activity{max-width:100%;min-width:100%;min-height:100%;bottom:0;right:0;top:0;left:0;border:0;background:#c3c3c3b0}
+#e-update-activity .e-update-activity__icon{font-size:60px;height:60px;width:60px;color:#2575fc;margin-top:unset;left:50%}
+.attachment-info .details .filename,.attachment-info .details .uploaded,.attachment-info .details .file-size,.attachment-info .details .dimensions,.attachment-info .details .edit-attachment{display:none}
+.attachments-browser .media-toolbar{display:none}.attachment-details .setting{display:none !important}
+.attachment-details .description{display:none}[data-setting="url"],[data-setting="alt"]{display:none !important}
+.mt-0{margin-top:0}.mt-1{margin-top:10px}.mt-2{margin-top:20px}.mb-0{margin-bottom:0}
+.mb-1{margin-bottom:10px}.dcd-loader-wrapper{background:#000000a3;height:100%;width:100%;z-index:99999;top:0;left:0;position:fixed}
+.dcd-loader{position:relative;width:64px;height:64px;margin:24% auto}.dcd-loader div{position:absolute;top:27px;width:11px;height:11px;border-radius:50%;background:#fff;animation-timing-function:cubic-bezier(0,1,1,0)}
+.dcd-loader div:nth-child(1){left:6px;animation:dcd-loader1 .6s infinite}.dcd-loader div:nth-child(2){left:6px;animation:dcd-loader2 .6s infinite}
+.dcd-loader div:nth-child(3){left:26px;animation:dcd-loader2 .6s infinite}.dcd-loader div:nth-child(4){left:45px;animation:dcd-loader3 .6s infinite}
+@keyframes dcd-loader1{0%{transform:scale(0)}100%{transform:scale(1)}
+}@keyframes dcd-loader3{0%{transform:scale(1)}100%{transform:scale(0)}
+}@keyframes dcd-loader2{0%{transform:translate(0,0)}100%{transform:translate(19px,0)}
+}
+
+
+/*Custom */
+ /* Dropdown Button */
+.dropbtn {
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 1px;
+  top: -50px;
+  margin-right: -160px;
+  background-color: #2575fc;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 99;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: #fff;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content a:hover {background-color: #77A9FD;}
+
+/* Change color of dropdown links on hover */
+/*
+.dropdown-content a:hover {background-color: #ddd;}
+*/
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+/*
+.dropdown:hover .dropbtn {background-color: #3e8e41;} 
+*/
+
+.small {
+	font-size: 15px !important;
+}

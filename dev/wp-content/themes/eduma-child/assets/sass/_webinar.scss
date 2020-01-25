@@ -1,0 +1,111 @@
+#profile-content-webinars {
+  .webinar-wrapper {
+    .add-webinars {
+      margin-bottom: 16px;
+      color: $white;
+
+      &:hover {
+        color: $white;
+      }
+    }
+
+    .webinar-tabs {
+      .select2-selection--single {
+        border-color: #ccc;
+        border-radius: 4px;
+        height: 34px;
+
+        .select2-selection__rendered {
+          line-height: 33px;
+        }
+      }
+
+      .webinar-step-wrapper {
+        margin-top: 20px;
+      }
+
+      .webinar-add-prev,
+      .webinar-add-next {
+        border-radius: 50px;
+        padding: 5px 25px;
+        text-transform: uppercase;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 30px;
+        border: 0;
+      }
+
+      .nav-tabs {
+        li {
+          width: 18%;
+
+          a {
+            border-top: 1px solid #eee;
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
+            border-bottom: 0;
+            border-radius: 0;
+          }
+        }
+
+        .ui-state-active {
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 3px;
+            top: 0;
+            height: 4px;
+            z-index: 10;
+            background-color: #2575fc;
+          }
+        }
+      }
+
+      .create-new-sections-webinar {
+        text-align: center;
+        margin-top: 10px;
+        padding: 10px;
+        margin-bottom: 0;
+      }
+
+      .webinar-course-curriculum {
+        .accordion-content-wrap:last-child {
+          margin-bottom: 0px;
+        }
+
+        .accordion-content-wrap {
+          border-top: 1px solid $white;
+          border-left: 1px solid $white;
+          border-right: 1px solid $white;
+
+          &:last-child {
+            border-bottom: 1px solid $white;
+          }
+
+          .accordion-content {
+            display: block;
+            padding: 20px;
+
+            .webinar-section-description-links {
+              background: #f4fcff;
+              padding: 10px 20px;
+              margin: 15px 0;
+              border: 1px solid #e2e2e2;
+            }
+          }
+
+          .ui-accordion-header {
+            font-size: 18px;
+            margin: 0;
+            background-color: #f4fcff;
+            padding: 10px 20px;
+            position: relative;
+            transition: background 500ms ease-out;
+            border-bottom: #e2e2e2;
+          }
+        }
+      }
+    }
+  }
+}

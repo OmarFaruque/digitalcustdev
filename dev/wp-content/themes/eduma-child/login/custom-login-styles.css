@@ -1,0 +1,85 @@
+body.login {
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.login h1 a {
+  background-image: url('Logo.png');
+  background-size:200px 200px;
+  height:130px;
+  margin-bottom: 0;
+  padding: 0;
+  width: 200px;
+}
+
+.login label {
+  font-size: 12px;
+  color: #6020d2;
+}
+
+.login input[type="text"]{
+  background-color: #fff;
+  border-color:#6020d2;
+  -webkit-border-radius: 4px;
+}
+
+.login input[type="password"]{
+  background-color: #fff;
+  border-color:#6020d2;
+  -webkit-border-radius: 4px;
+}
+
+.login .button-primary {
+  width: 120px;
+  float:right;
+  background-color:#2575fc !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#2575fc), to(#2575fc));
+  background: -webkit-linear-gradient(top, #2575fc, #2575fc);
+  background: -moz-linear-gradient(top, #2575fc, #2575fc);
+  background: -ms-linear-gradient(top, #2575fc, #2575fc);
+  background: -o-linear-gradient(top, #2575fc, #2575fc);
+  background-image: -ms-linear-gradient(top, #2575fc 0%, #2575fc 100%);
+  color: #fff;
+  -webkit-border-radius: 20px;
+  border: 1px solid #2575fc;
+}
+
+.login .button-primary:hover {
+  background-color:#17a8e3 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#17a8e3), to(#0d9ed9 ));
+  background: -webkit-linear-gradient(top, #17a8e3, #0d9ed9 );
+  background: -moz-linear-gradient(top, #17a8e3, #0d9ed9 );
+  background: -ms-linear-gradient(top, #17a8e3, #0d9ed9 );
+  background: -o-linear-gradient(top, #17a8e3, #0d9ed9 );
+  background-image: -ms-linear-gradient(top, #0b436e 0%, #0d9ed9 100%);
+  color: #fff;
+  -webkit-border-radius: 20px;
+  border: 1px solid #0d9ed9;
+}
+
+.login .button-primary:active {
+  background-color:#2575fc !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#0d9ed9), to(#17a8e3));
+  background: -webkit-linear-gradient(top, #0d9ed9, #17a8e3);
+  background: -moz-linear-gradient(top, #0d9ed9, #17a8e3);
+  background: -ms-linear-gradient(top, #0d9ed9, #17a8e3);
+  background: -o-linear-gradient(top, #0d9ed9, #17a8e3);
+  background-image: -ms-linear-gradient(top, #0d9ed9 0%, #17a8e3 100%);
+  color: #fff;
+  -webkit-border-radius: 20px;
+  border: 1px solid #0d9ed9;
+}
+@media only screen and (max-width: 767px){
+    #login {
+        margin: 0 10px;
+    }
+}    
+p#nav,
+p#backtoblog{
+  display: none;
+}
+    #login {
+        padding: 4% 0 0;
+    }

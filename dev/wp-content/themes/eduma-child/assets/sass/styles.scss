@@ -1,0 +1,94 @@
+// Import variables
+@import "variable";
+@import "sidenavbar";
+@import "profile";
+//@import "webinar";
+@import "course";
+@import "navbar";
+@import "frontend_editor";
+@import "uploader";
+
+.mt-0 {
+  margin-top:0;
+}
+
+.mt-1 {
+  margin-top:10px;
+}
+
+.mt-2 {
+  margin-top:20px;
+}
+
+.mb-0 {
+  margin-bottom:0;
+}
+
+.mb-1 {
+  margin-bottom:10px;
+}
+
+.dcd-loader-wrapper {
+  background: #000000a3;
+  height: 100%;
+  width: 100%;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+.dcd-loader {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  margin: 24% auto;
+}
+.dcd-loader div {
+  position: absolute;
+  top: 27px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fff;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.dcd-loader div:nth-child(1) {
+  left: 6px;
+  animation: dcd-loader1 0.6s infinite;
+}
+.dcd-loader div:nth-child(2) {
+  left: 6px;
+  animation: dcd-loader2 0.6s infinite;
+}
+.dcd-loader div:nth-child(3) {
+  left: 26px;
+  animation: dcd-loader2 0.6s infinite;
+}
+.dcd-loader div:nth-child(4) {
+  left: 45px;
+  animation: dcd-loader3 0.6s infinite;
+}
+@keyframes dcd-loader1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes dcd-loader3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes dcd-loader2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
+}
