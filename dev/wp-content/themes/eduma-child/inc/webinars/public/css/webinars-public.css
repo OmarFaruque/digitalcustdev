@@ -6,7 +6,7 @@ ul#breadcrumbs li > span {
     padding-left: 0;
 }
 
-/* common */
+/** common */
 .ribbon {
     width: 150px;
     height: 150px;
