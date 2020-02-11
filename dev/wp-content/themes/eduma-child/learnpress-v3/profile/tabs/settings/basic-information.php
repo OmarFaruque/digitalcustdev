@@ -22,11 +22,11 @@ if ( ! isset( $section ) ) {
 
 $user = $profile->get_user();
 ?>
-
+<h3 class="profile-heading"><?php _e('General Settings', 'webinar'); ?></h3>
 <form method="post" id="your-profile" name="profile-basic-information"
       enctype="multipart/form-data" class="learn-press-form">
 
-    <div class="learn-press-subtab-content">
+    <div class="learn-press-subtab-content om4">
         <?php
         /**
          * @since 3.0.0

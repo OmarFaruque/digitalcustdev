@@ -65,12 +65,18 @@ jQuery(function ($) {
             $(e.target).closest('a').addClass('disabled');
             var nonce = $(this).data('nonce');
             var type = $(this).data('type');
-            var action = 'create_new_course';
+            var action = 'create_new_course';   //https://digitalcustdev.ru/dev/wp-admin/admin-ajax.php?action=create_new_course
+            console.log(nonce);
+            console.log('type: ' + type);
+            console.log('ajax url: ' + digitalcustdev.ajaxurl);
             $.ajax({
                 method: 'POST',
+                // dataType: 'JSON',
                 url: digitalcustdev.ajaxurl,
                 data: {nonce: nonce, type: type, action: action},
                 success: function (r) {
+                    console.log('success');
+                    console.log(r);
                     if (r.redirect) {
                         window.open(r.redirect);
                     }

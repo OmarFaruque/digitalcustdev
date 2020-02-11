@@ -24,12 +24,16 @@ defined( 'ABSPATH' ) || exit();
 
 
 $profile       = learn_press_get_profile();
+$user_id = $profile->get_user()->get_id();
+
+
+
 $filter_status = LP_Request::get_string( 'filter-status' );
 if ( $filter_status === "all" ) {
 	$filter_status = false;
 }
 
-$query = query_own_courses_custom( get_current_user_id(), array( 
+$query = query_own_courses_custom( $user_id, array( 
 	'limit' => 5, 
 	'status' => $filter_status,
 	'orderby' => 'post_date',
@@ -43,20 +47,12 @@ $query = query_own_courses_custom( get_current_user_id(), array(
 // 		'order'   => 'DESC'
 // 	) 
 // );
-// echo '<pre>';
-// 			print_r($query);
-// 			echo '</pre>';
-$draft_counter = 0;
-if ( ! empty( $query['items'] ) ) {
-	foreach ( $query['items'] as $item ) {
-		if ( get_post_status( $item ) == 'draft' ) {
-			$draft_counter ++;
-		}
-	}
-}
+
+$draft_counter = query_draft_counter($user_id, '');
+
 ?>
 
-<div class="learn-press-subtab-content">
+<div class="learn-press-subtab-content om5">
 
     <h3 class="profile-heading">
 		<?php _e( 'Courses', 'eduma' ); ?>
@@ -74,12 +70,12 @@ if ( ! empty( $query['items'] ) ) {
 		<?php } ?>
 		</div>
 	<div class="row mb-4">
-        <div class="<?php echo ($profile->is_current_user() && $draft_counter <= 3 ) ? 'col-md-5' : 'col-md-6';  ?>  no-padding-left">
+        <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3 ) ? 'col-md-5' : 'col-md-6';  ?>  no-padding-left">
             <input type="text" name="s" class="form-control courses-search" data-security="<?php echo wp_create_nonce( 'search-once' ); ?>" placeholder="Search course...">
         </div>
 
-        <div class="<?php echo ($profile->is_current_user() && $draft_counter <= 3 ) ? 'col-md-5' : 'col-md-6';  ?> no-padding">
-			<?php if ( $filters = $profile->get_own_courses_filters( $filter_status ) ) { ?>
+        <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3 ) ? 'col-md-5' : 'col-md-6';  ?> no-padding">
+			<?php if ( $filters = get_own_courses_filters_custom( $filter_status ) ) { ?>
                 <select class="form-control" onchange="location = this.value;">
 					<?php foreach ( $filters as $class => $link ) { ?>
                         <option value="?filter-status=<?php echo $class; ?>" <?php echo isset( $_GET['filter-status'] ) && $_GET['filter-status'] === $class ? 'selected' : false; ?>><?php echo $link; ?></option>
@@ -90,10 +86,10 @@ if ( ! empty( $query['items'] ) ) {
         
 			<?php
 			if ( $profile->is_current_user() ) {
-				if ( $draft_counter <= 3 ) {
+				if ( $draft_counter < 3 ) {
 					?>
 					<div class="col-md-2 no-padding">
-                    	<a class="btn btn-primary e-button-icon e-button add digitalcustDev-create-post" data-nonce="<?php echo wp_create_nonce( 'e-new-post' ); ?>" data-type="lp_course" href="<?php echo home_url( 'sozdat-kurs/edit-post?post-type=lp_course' ); ?>">New Course</a>
+                    	<a class="btn btn-primary btn-block e-button-icon e-button add digitalcustDev-create-post" data-nonce="<?php echo wp_create_nonce( 'e-new-post' ); ?>" data-type="lp_course" href="<?php echo home_url( 'sozdat-kurs/edit-post?post-type=lp_course' ); ?>">New Course</a>
 					</div>
 					<?php
 				}
@@ -108,7 +104,7 @@ if ( ! empty( $query['items'] ) ) {
         <div class=" omar thim-course-list profile-courses-list">
 			<?php
 			global $post;
-			foreach ( array_reverse($query['items']) as $item ) {
+			foreach ( $query['items'] as $item ) {
 				if ( get_post_status( $item ) == 'pending' ) {
 					
 					$viewing_user = $profile->get_user();

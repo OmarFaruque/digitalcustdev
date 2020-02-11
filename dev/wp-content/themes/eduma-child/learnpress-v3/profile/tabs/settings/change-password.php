@@ -18,7 +18,7 @@ $profile = LP_Profile::instance();
 if ( ! isset( $section ) ) {
 	$section = 'change-password';
 } ?>
-
+<h3 class="profile-heading"><?php _e('Change Password', 'webinar'); ?></h3>
 <form method="post" id="your-profile" name="profile-change-password" enctype="multipart/form-data" class="learn-press-form">
 
     <div class="learn-press-subtab-content">

@@ -599,7 +599,7 @@ if ( ! class_exists( 'LP_Addon_Assignment' ) ) {
 		 * @return array|bool|int|mixed
 		 */
 		public function learnpress_assignment_evaluate( $course_result, $user_course ) {
-			if ( ! $user_course->is_enrolled() ) {
+			if (is_object($user_course) && ! $user_course->is_enrolled() ) {
 				return false;
 			}
 			switch ( $course_result ) {

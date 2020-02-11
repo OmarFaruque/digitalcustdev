@@ -30,7 +30,7 @@ if ( ! empty( $query['items'] ) ) {
 }
 ?>
 
-<div class="learn-press-subtab-content">
+<div class="learn-press-subtab-content om1">
 
     <h3 class="profile-heading">
 		<?php _e( 'Webinar Courses', 'eduma' ); ?>

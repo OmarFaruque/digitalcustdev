@@ -40,7 +40,7 @@ if ( ! user_can( $profile_id, 'edit_lp_courses' ) ) {
 
 <?php //do_action( 'learn-press/before-profile-nav', $profile ); ?>
     <div class="navigation-sidebar-wrapper">
-        <div class="side-nav-area"></div>
+        <!-- <div class="side-nav-area"></div> -->
         <nav style="/*overflow-y: auto;*/" class="nav-tab-main-menu <?php echo is_admin_bar_showing() ? 'nav-tab-main-menu-top-padder' : false; ?>">
             <ul role="tablist" class="<?php echo $view;?>">
                 <li class="home">
@@ -226,12 +226,13 @@ if ( ! user_can( $profile_id, 'edit_lp_courses' ) ) {
 											<div class="dropdown-content">
 											<?php foreach($tab_data['sections'] as $sik => $single_section):
 												if($sik == 'publicity') break;
-												$link  = $profile->get_tab_link( $tab_key, false );
+												$link  = ($sik == 'gradebook') ? $profile->get_tab_link( $sik, false ) : $profile->get_tab_link( $tab_key, false );
+												$link = ($sik == 'gradebook') ? $link : $link . $sik;
 												?>
 												<?php if ( $sik == 'gradebook/courses' && is_plugin_active( 'learnpress-gradebook/learnpress-gradebook.php' ) ) { ?>
-													<a href="<?php echo esc_url( $link . $sik ); ?>"><?php echo $single_section['title']; ?></a>
+													<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?></a>
 												<?php }else{ ?>
-												<a href="<?php echo esc_url( $link . $sik ); ?>"><?php echo $single_section['title']; ?></a>
+												<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?></a>
 												<?php } endforeach; ?>
 											</div>
 									</li>

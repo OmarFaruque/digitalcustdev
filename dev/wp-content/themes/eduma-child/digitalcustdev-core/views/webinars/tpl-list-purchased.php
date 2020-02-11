@@ -12,19 +12,26 @@ $course = LP_Global::course();
 $course_item   = LP_Global::course_item();
 $profile  = LP_Profile::instance();
 $user     = LP_Global::user();
+$card       = new LP_User_CURD();
 $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(), 
     array(
         'limit' => 5
     )
 );
 
+
+$orders = $card->get_orders( $user->get_id(), array( 'status' => 'completed' ) );
+
 ?>
 <div class="row">
     <div class="form-search-fields om-56">
+        <div class="col-md-12 col-sm-12">
+            <h3 class="profile-heading"><?php _e('My Webinars', 'webinar'); ?></h3>
+        </div>
         <div class="form-group col-md-6">
             <input type="text" name="s" class="form-control courses-search" placeholder="Search">
         </div>
-        <?php if ( $filters = $profile->get_purchased_courses_filters( $filter_status ) ) { ?>
+        <?php if ( $filters = get_purchased_webinar_filters( $filter_status ) ) { ?>
             <div class="form-group col-md-6">
                 <select class="form-control" onchange="location = this.value;">
                     <?php foreach ( $filters as $class => $link ) { ?>
@@ -36,7 +43,7 @@ $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(),
     </div>
 </div>
 <table class="table table-striped table-bordered render-webinars-frontend">
-    <div class="container_wrap 2">
+    <div class="container_wrap 2 thim-course-list profile-courses-list">
     
     <?php
     if ( ! empty( $webinars['items'] ) ) {
@@ -66,29 +73,37 @@ $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(),
             
             $nextdate = '';
             $lessionNumber = 1;
-            
+            $status = '';
             foreach($lessons as $l => $sl){
+
+                $status = $user->get_item_grade( $sl, $webinar->get_id() );
+
                 $webinar_details = get_post_meta( $sl, '_webinar_details', true );
                 $webinar_when = get_post_meta( $sl, '_lp_webinar_when', true );
+                // echo 'webinar when: ' . $webinar_when . '<br/>';
                 $webinar_when = str_replace('/', '-', $webinar_when);
                 
                 $timezone = (isset($webinar_details->timezone)) ? $webinar_details->timezone : $timezone;
                 
                 $currentdate = strtotime("now");
                 if(strtotime($webinar_when) > strtotime("now")){
+                    // echo 'big <br/>';
                     $nextdate = ($previousd != '' && strtotime($previousd) > strtotime($webinar_when)) ? $webinar_when : $previousd; 
                     $nextid = ($previousd != '' && strtotime($previousd) > strtotime($webinar_when)) ? $sl : $nextlessonid; 
                     $lessionNumber = ($previousd != '' && strtotime($previousd) > strtotime($webinar_when)) ? $l + 1 : $lessionNumber; 
-                    
-                    $nextlesson = __('Next Webinar', 'webinar') . ': ' . get_the_title($nextid) . ', Date: ' . $nextdate . ', ' . $timezone;
+
+
+                    $nextlesson = __('Next Webinar', 'webinar') . ': ' . get_the_title($nextid) . ', <br/>Date: ' . $nextdate;
+                    if($timezone != '') $nextlesson .= ', ' . $timezone;
                     $previousd = $webinar_when;
                     $nextlessonid = $sl;
-                    
                     // break;
                 }
             // $start_time = $webinar_details->start_time;
             }
 
+            // echo 'next lession date: ' . $nextlesson . '<br/>';
+    
             
             $lessionID = ($lessionNumber > 0) ? $lessons[$lessionNumber - 1] : $lessons[$lessionNumber];
             // echo 'lession ID:  ' . $lessionID . '<br/>';
@@ -103,26 +118,29 @@ $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(),
             $leftduration = '';
             if($nextdate) $leftduration =  strtotime($nextdate) - strtotime('now');
             
-            
-            $duartiond = ($leftduration != '') ? custom_to_timer($leftduration, $format, true ) . ' left' : '';
+            if($leftduration != '') $nextlesson .= __('<br/>Time Left: ', 'webinar') . '<span class="duartionleft">' . custom_to_timer($leftduration, $format, true ) . '</span>';
+            // $duartiond = ($leftduration != '') ? custom_to_timer($leftduration, $format, true ) . ' left' : '';
 
             
             ?>
-                <div class="row mt-3">
-                <div class="col-md-3">                        
-                        <P>
-                            <a href="<?php echo $course->get_permalink(); ?>"><?php echo $course->get_image( 'course_thumbnail' ); ?></a>
-                        </P>
-                        
-                     </div>
-                <div class="col-md-5"> 
+                <div class=" mt-3">
+                <div class="course-item">
+                    <div class="course-thumbnail">
+                            <a class="thumb" href="<?php echo $course->get_permalink(); ?>">
+                            <?php
+                                echo thim_get_feature_image( get_post_thumbnail_id( $course->get_id() ), 'full', apply_filters( 'thim_course_thumbnail_width', 400 ), apply_filters( 'thim_course_thumbnail_height', 320 ), $course->get_title() );
+                            ?>
+                            </a>
+                        </div>
+                    <div class="thim-course-content position-relative om">
+                    <div class="information col-md-6 col-sm-6">
                     <div><span scope="col"></span>
                         <a href="<?php echo $course->get_permalink(); ?>">
                             <h2 class="course-title mt-0 line-height-30"><?php echo $course->get_title(); ?></h2>
                         </a>
                     </div>
                     <div><span scope="col"><?php _e('Instructor', 'webinar'); ?> : </span>
-                    <a>
+                    <a href="<?php echo get_author_posts_url($author_id); ?>">
                         <?php 
                         $author_id = get_post_field ('post_author', $webinar->get_id());
                             echo get_the_author_meta( 'display_name' , $author_id );  
@@ -131,11 +149,12 @@ $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(),
                     </div>
                     <!-- <div><span scope="col">Start Time : </span><span><?php// echo date( 'F j, Y, g:i a', strtotime( $start_time ) ); ?></span></div> -->
                     <div>
-                        <span scope="col"><?php _e('Enrolled Date', 'webinar'); ?> : </span>
+                        <span scope="col"><?php _e('Purchased Date', 'webinar'); ?> : </span>
                         <?php 
-                            $enrolled_date = $webinar->get_start_time();
+                            // $enrolled_date = $webinar->get_start_time();
+                            $purchaseddate = $orders[$webinar->get_id()][0];
                             // $date = get_post_field ('post_date', $webinar->get_id());
-                            echo date( 'F j, Y, g:i a', strtotime( $enrolled_date ) ); 
+                            echo get_the_date( 'F j, Y, g:i a', $purchaseddate ); 
                         ?>
                     </div>
                     <div>
@@ -149,11 +168,11 @@ $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(),
                             ?> </span>
                     </div>
                     <div><span scope="col">Timezone : </span><span><?php echo $timezone; ?></span></div>
-                    <div><span scope="col">Join : </span><span><?php echo ! empty( $webinar_exists ) && ! empty( $webinar_detail ) ? '<a href="'.$webinar_detail->join_url.'">Join Webinar</a>' : "N/A"; ?></span></div>
-                    <div><span scope="col">Action : </span><span><a href="<?php echo get_the_permalink( $webinar->get_id() ); ?>"><i class="fa fa-eye"></i></a></span></div>
+                    <!-- <div><span scope="col">Join : </span><span><?php // echo ! empty( $webinar_exists ) && ! empty( $webinar_detail ) ? '<a href="'.$webinar_detail->join_url.'">Join Webinar</a>' : "N/A"; ?></span></div> -->
+                    <!-- <div><span scope="col">Action : </span><span><a href="<?php // echo get_the_permalink( $webinar->get_id() ); ?>"><i class="fa fa-eye"></i></a></span></div> -->
                 </div>
-                <div class="col-md-4"> 
-                        <div class="course-progress">
+                <div class="col-md-6"> 
+                        <div class="course-progress newstyle">
                             <div class="lp-course-progress" data-value="0" data-passing-condition="80%">
                                <!-- <label class="lp-course-progress-heading">Course Creation Progress :
                                         
@@ -161,57 +180,50 @@ $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(),
                                 <div class="course-progress">
 
                                         <?php if ( false !== ( $heading = apply_filters( 'learn-press/course/result-heading', __( 'Course Creation Progress :', 'learnpress' ) ) ) ) { ?>
-                                            <h4 class="lp-course-progress-heading">
-                                                <?php echo esc_html( $heading ); ?>
-                                            </h4>
+                                            <!-- <h4 class="lp-course-progress-heading">
+                                                <?php // echo esc_html( $heading ); ?>
+                                            </h4> -->
                                         <?php } ?>
 
-                                        <div class="lp-course-status">
-                                            <span class="number"><?php echo round( $course_results['result'], 2 ); ?><span
-                                                        class="percentage-sign">%</span></span>
-                                            <?php if ( $grade = $course_results['grade'] ) { ?>
-                                                <span class="lp-label grade <?php echo esc_attr( $grade ); ?>">
-                                                <?php learn_press_course_grade_html( $grade ); ?>
-                                                </span>
-                                            <?php }
-                                             ?>
-                                        </div>
+                                    
 
-                                               
 
-                                        <div class="learn-press-progress lp-course-progress <?php echo $course_data->is_passed() ? ' passed' : ''; ?>"
-                                             data-value="<?php echo $course_results['result']; ?>"
-                                             data-passing-condition="<?php echo $passing_condition; ?>">
-                                            <div class="progress-bg lp-progress-bar">
-                                                <div class="progress-active lp-progress-value" style="left: <?php echo $course_results['result']; ?>%;">
-                                                </div>
+                                        <div class="course-progress mt-0">
+                                            <div class="lp-course-progress" data-value="<?php  echo $webinar->get_percent_result(); ?>" data-passing-condition="<?php  echo $course->get_passing_condition( true ); ?>">
+                                                <label class="lp-course-progress-heading color-green mb-0">
+                                                    <?php _e('Passing Grade', 'webinar'); ?> :
+                                                        <span class="value result"><?php echo $course->get_passing_condition( true ); // echo $course->get_passing_condition( true ); ?></span>
+                                                </label>
+                                            <div class="lp-progress-bar value">
+                                                <div class="lp-progress-value passingle-percentage" style="width: <?php  echo $course->get_passing_condition( true ); ?>"></div>
+                                                <div class="lp-progress-value percentage-sign newstyle" style="width: <?php  echo $webinar->get_percent_result(); ?>"></div>
                                             </div>
-                                            <div class="lp-passing-conditional"
-                                                 data-content="<?php printf( esc_html__( 'Passing condition: %s%%', 'learnpress' ), $passing_condition ); ?>"
-                                                 style="left: <?php echo $passing_condition; ?>%;">
+                                                <label class="lp-course-progress-heading color-blue"><?php _e('Course Progress', 'webinar'); ?> :
+                                                        <span class="value result"><?php echo $webinar->get_percent_result(); // echo $course->get_passing_condition( true ); ?></span>
+                                                </label>
+                                                <label class="lp-course-progress-heading color-blue ml-5"><?php _e('Status', 'webinar'); ?> :
+                                                        <span class="value result"><?php echo $status; // echo $course->get_passing_condition( true ); ?></span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                             
-                            <!--<div class="lp-progress-bar value">
-                                <div class="lp-progress-value percentage-sign" style="width: 80%">   
-                                </div>
-                            </div>-->
 
                             <?php if($course->get_post_status() === "publish" && $nextdate != ''){ ?>
                                 <div class="nextlesson student mt-1"><?php echo $nextlesson; ?></div>
                             <?php } ?>
-                            <?php if(!empty($duartiond)){ ?>
-									<span class="duartionleft"><?php echo $duartiond; ?></span>
-							<?php } ?>
+                           
 
                             </div>
-                        </div>
-                        <?php if(!empty($lessionID)): ?>
-								<a class="mt-2" href="<?php echo  get_the_permalink( $lessionID ); ?> ">
+                            </div>
+                            </div>
+                            <?php if(!empty($lessionID) && $course->get_post_status() === "publish" && $nextdate != ''): ?>
+								<a class="mt-2 next-webinar-lesson" href="<?php echo  get_the_permalink( $lessionID ); ?> ">
 									<button class="mt-1"><?php echo sprintf('Go to Webinar lession#%d', $lessionNumber); ?></button>
 								</a>
 						<?php endif; ?>
+                        </div>
+                       
                         
 
                 </div>

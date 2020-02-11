@@ -20,7 +20,7 @@ $custom_img   = $user->get_upload_profile_src();
 $gravatar_img = $user->get_profile_picture( 'gravatar' );
 $thumb_size   = learn_press_get_avatar_thumb_size();
 ?>
-
+<h3 class="profile-heading"><?php _e('Avatar', 'webinar'); ?></h3>
 <form id="your-profile" name="profile-avatar" method="post" enctype="multipart/form-data">
 
 	<?php

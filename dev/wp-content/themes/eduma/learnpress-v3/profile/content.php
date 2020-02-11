@@ -26,6 +26,7 @@ $current = $profile->get_current_tab();
 
 	<?php foreach ( $tabs as $tab_key => $tab_data ) {
 
+
 		if ( ! $profile->tab_is_visible_for_user( $tab_key ) ) {
 			continue;
 		}

@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="navigation col-sm-12">
 			<div class="tm-table">
-                <div class="menu-right table-cell table-right">
+                <div class="menu-right table-cell table-right om2">
                     <?php
                     $current_user = wp_get_current_user();
 

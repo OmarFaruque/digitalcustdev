@@ -79,37 +79,113 @@ class DigitalCustDev_CPT_Functions {
 						$where .= $wpdb->prepare( " AND post_status IN(" . join( ',', $where ) . ")", $a );
 					} else {
 						if ( 'pending' === $args['status'] ) {
-							$where .= $wpdb->prepare( " AND post_status IN( %s, %s )", array( 'draft', 'pending' ) );
-						} elseif ( $args['status'] !== '*' ) {
+							$where .= $wpdb->prepare( " AND post_status IN( %s )", array( 'pending' ) );
+						} elseif ('closest-webinar-lesson' != $args['status'] && $args['status'] !== '*' ) {
 							$where .= $wpdb->prepare( " AND post_status = %s", $args['status'] );
 						}
+						
 					}
 				} else {
 					$where .= $wpdb->prepare( " AND post_status NOT IN (%s, %s)", array( 'trash', 'auto-draft' ) );
 				}
 
-				$where .= $wpdb->prepare( " AND meta_key = %s", '_course_type' );
-				$where .= $wpdb->prepare( " AND meta_value = %s", 'webinar' );
+				$where .= $wpdb->prepare( " AND d.`meta_key` = %s", '_course_type' );
+				$where .= $wpdb->prepare( " AND d.`meta_value` = %s", 'webinar' );
+				// $where .= $wpdb->prepare( " AND d2.`meta_key` = %s", '_lp_webinar_when' );
 
 				$where = $where . $wpdb->prepare( " AND post_type = %s AND post_author = %d", LP_COURSE_CPT, $user_id );
 
-				$where = $where . " AND c.ID = d.post_id";
+				$where = $where . " AND c.`ID` = d.post_id";
+			
+				$where = $where . " GROUP BY c.`ID`";
+				
+				
 				if(isset($args['orderby']) && isset($args['order'])){
-					$where .= $wpdb->prepare( " ORDER BY post_date DESC");
+					$where .= $wpdb->prepare( " ORDER BY post_status ASC");
+					$where .= ", STR_TO_DATE(d2.`meta_value`, '%m/%d/%Y') DESC";
+					$where .= $wpdb->prepare( ", post_date DESC");
 				}
 
+				$leftjoin = " LEFT JOIN {$wpdb->postmeta} d ON d.`post_id`= c.`ID`";
+				$leftjoin .= " LEFT JOIN {$wpdb->learnpress_sections} ls ON ls.`section_course_id`= c.`ID`";
+				$leftjoin .= " LEFT JOIN {$wpdb->learnpress_section_items} lsi ON lsi.`section_id`= ls.`section_id`";
+				$leftjoin .= " LEFT JOIN {$wpdb->postmeta} d2 ON lsi.`item_id`= d2.`post_id`";
+
 				
-				$sql   = "
+				$sql = "
 					SELECT SQL_CALC_FOUND_ROWS ID
-					FROM {$wpdb->posts} c, {$wpdb->postmeta} d
+					FROM {$wpdb->posts} c
+					{$leftjoin} 
 					{$where} 
-					LIMIT {$offset}, {$limit}
+					LIMIT {$offset}, {$limit} 
 				";
-				
+
+				// {$wpdb->postmeta} d, 
+				// 	{$wpdb->learnpress_sections} ls, 
+				// 	{$wpdb->learnpress_section_items} lsi 
+				// echo 'sql: ' . $sql . '<br/>';
 				$items = $wpdb->get_results( $sql );
 
+				// echo '<pre>';
+				// print_r($items);
+				// echo '</pre>';
+				
+
+				if(isset($args['status']) && $args['status'] == 'closest-webinar-lesson'){
+					
+					$new_items = array();
+					foreach($items as $item){
+						/*
+						* Get Webinar lessons
+						*/
+						$lessons = get_course_lessons($item->ID);
+
+						$nextdate = '';	
+						$previousd = '';	
+						
+						
+						
+						foreach($lessons as $l => $sl){
+							$webinar_details = get_post_meta( $sl, '_webinar_details', true );
+							$webinar_when = get_post_meta( $sl, '_lp_webinar_when', true );
+							$webinar_when = str_replace('/', '-', $webinar_when);
+							
+							$timezone = (isset($webinar_details->timezone)) ? $webinar_details->timezone : $timezone;
+							
+							$currentdate = strtotime("now");
+							if(strtotime($webinar_when) > strtotime("now")){
+								// echo 'big <br/>';
+								$nextdate = ($previousd != '' && strtotime($previousd) > strtotime($webinar_when)) ? $webinar_when : $previousd; 
+
+								$previousd = $webinar_when;
+				
+								
+								// break;
+							}
+						// $start_time = $webinar_details->start_time;
+						}
+						// if(!empty($nextdate)) $new_items[strtotime($nextdate)] = $item;
+						if(!empty($nextdate)) $new_items[strtotime($nextdate)] = $item;
+					} // foreach($items as $item)
+					
+					$new_new = array();
+					foreach($new_items as $k => $ni){
+						$new_min = min(array_keys($new_items));
+					
+						array_push($new_new, $new_items[$new_min]);
+						unset($new_items[$new_min]);
+					}
+					
+					$items = $new_new;
+				
+				}
+
+
+
+				
+
 				if ( $items ) {
-					$count      = $wpdb->get_var( "SELECT FOUND_ROWS()" );
+					$count      = (isset($args['status']) && $args['status'] == 'closest-webinar-lesson') ? count($items) : $wpdb->get_var( "SELECT FOUND_ROWS()" );
 					$course_ids = wp_list_pluck( $items, 'ID' );
 					LP_Helper::cache_posts( $course_ids );
 
@@ -119,6 +195,8 @@ class DigitalCustDev_CPT_Functions {
 						$courses['items'][] = $item->ID;
 					}
 				}
+
+
 			} catch ( Exception $ex ) {
 				learn_press_add_message( $ex->getMessage() );
 			}
@@ -307,7 +385,7 @@ class DigitalCustDev_CPT_Functions {
 			array(
 				'paged'  => $paged,
 				'limit'  => 5,
-				'status' => ''
+				'status' => $_REQUEST['filter-status']
 			)
 		);
 
@@ -344,9 +422,7 @@ class DigitalCustDev_CPT_Functions {
 				// 	echo '</pre>';
 					
 				// }
-				// echo 'orders <br/><pre>';
-				// print_r($orders);
-				// echo '</pre>';
+				
 				
 
 				if ( ! $orders ) {
@@ -385,10 +461,8 @@ class DigitalCustDev_CPT_Functions {
 				$join = $wpdb->prepare( "INNER JOIN {$wpdb->posts} c ON c.ID = ui.item_id AND c.post_type = %s", LP_COURSE_CPT );
 
 				// WHERE
-				$where = $wpdb->prepare( "
-					WHERE ui.user_id = %d 
-					AND c.ID IN(" . join( ',', $course_ids ) . ")
-				", $user_id );
+				$where = $wpdb->prepare( "WHERE ui.user_id = %d", $user_id );
+				if(count($course_ids) > 0) $where .= " AND c.ID IN(" . join( ',', $course_ids ) . ")";
 
 				// HAVING
 				$having = "HAVING 1";
@@ -397,6 +471,11 @@ class DigitalCustDev_CPT_Functions {
 				// $orderby = "ORDER BY c.post_date DESC";
 
 				$unenrolled_course_ids = array();
+
+
+				// echo 'status: <br/><pre>';
+				// print_r($args);
+				// echo '</pre>';
 
 				if ( ! empty( $args['status'] ) ) {
 					switch ( $args['status'] ) {
@@ -422,6 +501,7 @@ class DigitalCustDev_CPT_Functions {
 							}
 
 							break;
+						
 						case 'not-enrolled':
 							$where .= $wpdb->prepare( " AND ui.status NOT IN( %s, %s, %s )", array(
 								'enrolled',
@@ -470,6 +550,8 @@ class DigitalCustDev_CPT_Functions {
 					}
 				}
 				//item_id, user_item_id
+
+			
 				$sql = "
 					SELECT SQL_CALC_FOUND_ROWS *
 					FROM
@@ -481,19 +563,71 @@ class DigitalCustDev_CPT_Functions {
 						{$having}
 						ORDER BY item_id, user_item_id, post_date DESC
 					) X 
-					GROUP BY item_id
-					{$orderby}
+					GROUP BY item_id 
+					{$orderby} 
 					LIMIT {$offset}, {$limit}
 				";
-				// echo 'sql: ' . $sql . '<br/>';
-
+				
+				// GROUP BY item_id
 				$items = $wpdb->get_results( $sql );
+				
+
+
+
+				if(isset($args['status']) && $args['status'] == 'closest-webinar-lesson'){
+					$new_items = array();
+					foreach($items as $item){
+						/*
+						* Get Webinar lessons
+						*/
+						$lessons = get_course_lessons($item->ID);
+
+						$nextdate = '';	
+						$previousd = '';				
+						
+						foreach($lessons as $l => $sl){
+							$webinar_details = get_post_meta( $sl, '_webinar_details', true );
+							$webinar_when = get_post_meta( $sl, '_lp_webinar_when', true );
+							// echo 'webinar when: ' . $webinar_when . '<br/>';
+							$webinar_when = str_replace('/', '-', $webinar_when);
+							
+							$timezone = (isset($webinar_details->timezone)) ? $webinar_details->timezone : $timezone;
+							
+							$currentdate = strtotime("now");
+							if(strtotime($webinar_when) > strtotime("now")){
+								// echo 'big <br/>';
+								$nextdate = ($previousd != '' && strtotime($previousd) > strtotime($webinar_when)) ? $webinar_when : $previousd; 
+
+								$previousd = $webinar_when;
+				
+								
+								// break;
+							}
+						// $start_time = $webinar_details->start_time;
+						}
+
+						// if(!empty($nextdate)) $new_items[strtotime($nextdate)] = $item;
+						if(!empty($nextdate)) $new_items[strtotime($nextdate)] = $item;
+					} // foreach($items as $item)
+
+					$new_new = array();
+					foreach($new_items as $k => $ni){
+						$new_min = min(array_keys($new_items));
+						array_push($new_new, $new_items[$new_min]);
+						unset($new_items[$new_min]);
+					}
+					
+					$items = $new_new;
+				
+				}
+
 
 				if ( $unenrolled_course_ids ) {
 					LP_Debug::rollbackTransaction();
 				}
 
 				if ( $items ) {
+				
 					$count      = $wpdb->get_var( "SELECT FOUND_ROWS()" );
 					$course_ids = wp_list_pluck( $items, 'item_id' );
 					LP_Helper::cache_posts( $course_ids );
@@ -520,6 +654,10 @@ class DigitalCustDev_CPT_Functions {
 
 		return new LP_Query_List_Table( $courses );
 	}
+
+
+
+
 
 	public function testFunction(){
 		echo 'tst OMar function';

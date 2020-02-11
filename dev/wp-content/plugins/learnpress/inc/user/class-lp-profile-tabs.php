@@ -321,10 +321,9 @@ class LP_Profile_Tabs extends LP_Array_Access {
 		if ( $all_tabs = $this->get() ) {
 			foreach ( $all_tabs as $key => $tab ) {
 				// If current user do not have permission and/or tab is invisible
-				if ( ! $profile->current_user_can( 'view-tab-' . $key ) ) {
-					continue;
-				}
-
+					// if ( ! $profile->current_user_can( 'view-tab-' . $key ) ) {
+				// 	continue;
+				// }
 				$tabs[ $key ] = $tab;
 			}
 		}

@@ -52,6 +52,15 @@ class DigitalCustDev_LearpressTemplateFunctions {
 		);
 
 
+
+		$tabs['events'] = array(
+			'title'    => __( 'Events', 'digitalcustdev-core' ),
+			'slug'     => 'events',
+			'callback' => array( 'DigitalCustDev_CPT_Functions', 'tab_events' ),
+			'priority' => 11,
+		);
+
+		
 		$tabs['students'] = array(
 			'title'    => __( 'Students', 'digitalcustdev-core' ),
 			'slug'     => 'students',
@@ -75,18 +84,19 @@ class DigitalCustDev_LearpressTemplateFunctions {
 				'communication' => array(
 					'title'    => __( 'Communication', 'digitalcustdev-core' ),
 					'slug'     => 'communication',
-					'callback' => array( 'DigitalCustDev_CPT_Functions', 'add_webinars' ),
+					'callback' => array( 'DigitalCustDev_CPT_Functions', 'list_salesandcommission' ),
 					'priority' => 20,
 					'hidden'   => false
 				)
 			)
 		);
 
-		$tabs['events'] = array(
-			'title'    => __( 'Events', 'digitalcustdev-core' ),
-			'slug'     => 'events',
-			'callback' => array( 'DigitalCustDev_CPT_Functions', 'tab_events' ),
+		$tabs['communication'] = array(
+			'title'    => __( 'Communication', 'digitalcustdev-core' ),
+			'slug'     => 'communication',
+			'callback' => array( 'DigitalCustDev_CPT_Functions', 'list_salesandcommission' ),
 			'priority' => 11,
+			'hidden' => true
 		);
 
 		$tabs['downloads'] = array(
@@ -145,6 +155,8 @@ class DigitalCustDev_LearpressTemplateFunctions {
 
 	function template_override( $template, $template_name, $template_path ) {
 		global $wp_query;
+		$vars = $wp_query->query_vars;
+		$user     = LP_Global::user();
 		$post_id = $wp_query->get( 'post-id' );
 		$type    = get_post_meta( $post_id, '_course_type', true );
 		if ( $type === "webinar" ) {
@@ -156,6 +168,37 @@ class DigitalCustDev_LearpressTemplateFunctions {
 
 				$template = DIGITALCUSTDEV_PLUGIN_PATH . 'templates/frontend-editor/edit/form.php';
 			}
+		}
+
+		
+		$profile2 = LP_Profile::instance();
+		$user = wp_get_current_user();
+		// echo 'roles <br/><pre>';
+		// print_r($user->roles);
+		// echo '</pre>';
+
+		$allowArray = array('administrator', 'lp_teacher');
+		$haveAccessProfile = !empty(array_intersect($allowArray, $user->roles));
+		
+
+		if($profile2->get_user_data( 'id' ) != get_current_user_id()){
+		switch($template_name){
+			// case 'content-profile-course.php':
+			// case 'profile/profile.php':
+			// case 'profile/tabs.php':
+			// case 'profile/tabs/sections.php':
+			case 'profile/tabs/courses/owned.php':
+			// case 'profile/content.php':
+			
+				if($template_name == 'content-profile-course.php') $template_name = 'content-course.php';
+				// echo 'template before change: ' . $template . '<br/>';
+				$template = get_template_directory() . '/' . $template_path . '/' . $template_name;
+				// echo 'template test: ' . $template5 . '<br/>';
+			break;
+			default:
+			$template = $template;
+
+		} // End Switch
 		}
 
 		return $template;

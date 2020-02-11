@@ -49,6 +49,7 @@ class LP_Gradebook_Course_Site {
 	}
 	
 	public function add_tab_gradebook_content( $args ) {
+		
 		learn_press_get_template( 'course-users.php', array(), learn_press_template_path() . '/addons/gradebook/', LP_ADDON_GRADEBOOK_PLUGIN_PATH.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR );
 	}
 

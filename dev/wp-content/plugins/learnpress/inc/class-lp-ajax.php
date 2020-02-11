@@ -98,7 +98,7 @@ if ( ! class_exists( 'LP_AJAX' ) ) {
 			}
 
 			if ( apply_filters( 'learn-press/course-redirect-external-link', $id ) ) {
-				wp_redirect( $link );
+				// wp_redirect( $link );
 				exit();
 			}
 		}

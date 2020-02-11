@@ -4,7 +4,8 @@
  * @param array $args
  */
 function learn_press_gradebook_get_template( $template_name, $args = array() ) {
-	learn_press_get_template( $template_name, $args, learn_press_template_path() . '/addons/gradebook/', LP_ADDON_GRADEBOOK_PLUGIN_PATH . '/templates/' );
+	$test = learn_press_get_template( $template_name, $args, learn_press_template_path() . '/addons/gradebook/', LP_ADDON_GRADEBOOK_PLUGIN_PATH . '/templates/' );
+	echo 'template name: ' . $template_name . '<br/>';
 }
 
 /**

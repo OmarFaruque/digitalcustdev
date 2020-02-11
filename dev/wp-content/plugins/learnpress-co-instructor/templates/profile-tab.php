@@ -21,7 +21,7 @@ $num_pages = learn_press_get_num_pages( $courses['count'], $limit );
 ?>
 
 <?php if ( $courses['rows'] ) { ?>
-    <div class="learn-press-subtab-content" style="display: block">
+    <div class="learn-press-subtab-content om2" style="display: block">
         <ul class="learn-press-courses profile-courses courses-list">
 			<?php foreach ( $courses['rows'] as $post ) {
 				setup_postdata( $post );

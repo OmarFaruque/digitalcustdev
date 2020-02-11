@@ -304,7 +304,9 @@ function dcc_rewrite_rules() {
 	$pages = array_filter($pages);
 	$paged = end($pages);
 	$webinar_page_id = learn_press_get_page_id( 'webinar' );
-    if(in_array('page', $pages) ) add_rewrite_rule('^webinars/(.+)/?$','index.php?page_id='.$webinar_page_id.'&paged='.$paged.'','top');
+	if(in_array('page', $pages) ) add_rewrite_rule('^webinars/(.+)/?$','index.php?page_id='.$webinar_page_id.'&paged='.$paged.'','top');
+	
+
 }
 
 if ( ! function_exists( 'thim_wrapper_loop_end' ) ) :
@@ -457,16 +459,28 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 	function query_own_courses_custom( $user_id, $args = '' ) {
 		global $wpdb, $wp;
 		$paged = 1;
+		if ( ! $user_id ) {
+			$user_id = get_current_user_id();
+		}
 		
-		$webinar_posts = get_posts(
-			array(
-			'post_type' => LP_COURSE_CPT,
-			'meta_key'         => '_course_type',
-			'posts_per_page' => -1,
-			'meta_value'       => 'webinar',
-			'post_author' => get_current_user_id()
-			)
-		);
+
+		$webinar_posts = $wpdb->get_results(
+			$wpdb->prepare("
+				SELECT p.ID   
+				FROM $wpdb->posts AS p
+				LEFT JOIN $wpdb->postmeta AS pmeta ON (pmeta.post_id = p.id) 
+				WHERE p.post_author = %d AND 
+				p.post_type = %s 
+				AND (pmeta.meta_key = '_course_type' AND pmeta.meta_value = 'webinar') 
+				", $user_id, LP_COURSE_CPT), OBJECT);
+	
+			
+		// $postMeta = get_post_meta( 11555, '_course_type', true );
+		// echo 'course type: ' . LP_COURSE_CPT . '</br>';
+		// echo 'post metas: ' . $postMeta . '<br/>';
+		// echo '<pre>';
+		// print_r($webinar_posts);
+		// echo '</pre>';
 
 		$excerptPosts = array();
 		foreach($webinar_posts as $swp) array_push($excerptPosts, $swp->ID);
@@ -485,9 +499,7 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 		);
 
 
-		if ( ! $user_id ) {
-			$user_id = get_current_user_id();
-		}
+		
 
 		$cache_key = sprintf( 'own-courses-%d-%s', $user_id, md5( build_query( $args ) ) );
 
@@ -523,7 +535,7 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 						$where .= $wpdb->prepare( " AND post_status IN(" . join( ',', $where ) . ")", $a );
 					} else {
 						if ( 'pending' === $args['status'] ) {
-							$where .= $wpdb->prepare( " AND post_status IN( %s, %s )", array( 'draft', 'pending' ) );
+							$where .= $wpdb->prepare( " AND post_status IN( %s )", array( 'pending' ) );
 						} elseif ( $args['status'] !== '*' ) {
 							$where .= $wpdb->prepare( " AND post_status = %s", $args['status'] );
 						}
@@ -537,7 +549,8 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 				$where = $where . $wpdb->prepare( " AND post_type = %s AND post_author = %d", LP_COURSE_CPT, $user_id );
 				
 				if(isset($args['orderby']) && isset($args['order'])){
-					$where .= $wpdb->prepare( " ORDER BY post_date DESC");
+					$where .= " ORDER BY post_status ASC";
+					$where .= ", post_date " . $args['order'];
 				} 
 				$sql   = "
 					SELECT SQL_CALC_FOUND_ROWS ID
@@ -549,7 +562,7 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 				// echo 'sql: ' . $sql . '<br/>';
 
 				$items = $wpdb->get_results( $sql );
-
+				
 				if ( $items ) {
 					$count      = $wpdb->get_var( "SELECT FOUND_ROWS()" );
 					$course_ids = wp_list_pluck( $items, 'ID' );
@@ -558,9 +571,6 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 					$courses['total'] = $count;
 					$courses['pages'] = ceil( $count / $args['limit'] );
 					foreach ( $items as $item ) {
-						// echo '<pre>';
-						// print_r(get_post_meta( $item->ID ));
-						// echo '<pre>' . '<br/>';
 						$courses['items'][] = $item->ID;
 					}
 				}
@@ -581,7 +591,84 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 
 
 
+	
+	/**
+	 * Draft Counter.
+	 *
+	 * @param int    $user_id
+	 * @param string $args
+	 *
+	 * @return LP_Query_List_Table
+	 */
+	function query_draft_counter($user_id, $course_type = '' ) {
+		global $wpdb, $wp;
+		$paged = 1;
+		if ( ! $user_id ) {
+			$user_id = get_current_user_id();
+		}
+		
+
+		if($course_type == 'webinar'){
+			$webinar_posts = $wpdb->get_results(
+				$wpdb->prepare("
+					SELECT p.ID   
+					FROM $wpdb->posts AS p
+					LEFT JOIN $wpdb->postmeta AS pmeta ON (pmeta.post_id = p.id) 
+					WHERE p.post_author = %d AND 
+					p.post_type = %s 
+					AND p.post_status = 'draft' 
+					AND (pmeta.meta_key = '_course_type' AND pmeta.meta_value = 'webinar') 
+					GROUP BY p.ID 
+					", $user_id, LP_COURSE_CPT), OBJECT);
+		}else{
+			$webinar_posts = $wpdb->get_results(
+				$wpdb->prepare("
+					SELECT p.ID   
+					FROM $wpdb->posts AS p
+					LEFT JOIN $wpdb->postmeta AS pmeta ON (pmeta.post_id = p.id) 
+					WHERE p.post_author = %d AND 
+					p.post_type = %s 
+					AND p.post_status = 'draft' 
+					AND (pmeta.meta_key = '_course_type' AND pmeta.meta_value = 'webinar') 
+					GROUP BY p.ID 
+					", $user_id, LP_COURSE_CPT), OBJECT);
+					
+
+					$excerptPosts = array();
+					foreach($webinar_posts as $swp) array_push($excerptPosts, $swp->ID);
+
+					$course_posts = $wpdb->get_results(
+						$wpdb->prepare("
+							SELECT p.ID   
+							FROM $wpdb->posts AS p
+							LEFT JOIN $wpdb->postmeta AS pmeta ON (pmeta.post_id = p.id) 
+							WHERE p.post_author = %d AND 
+							p.post_type = %s 
+							AND p.post_status = 'draft' 
+							AND p.ID NOT IN (" . implode(',', $excerptPosts) . ") 
+							GROUP BY p.ID 
+							", $user_id, LP_COURSE_CPT), OBJECT);
+		
+					$webinar_posts = $course_posts;		
+		}
+	
+
+		$excerptPosts = array();
+		foreach($webinar_posts as $swp) array_push($excerptPosts, $swp->ID);
+
+		return count($excerptPosts);
+	}
+
+
+
+
 	add_action( 'init', function () {
+
+		// echo '<pre>';
+		// print_r($_COOKIE);
+		// echo '</pre>';
+
+
 		$plugin_dir = ABSPATH . 'wp-content/plugins/learnpress/';
 		include_once $plugin_dir .'inc/admin/lp-admin-functions.php';
 		// call functions such as genesis_register_sidebar() in here
@@ -666,7 +753,7 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 		}
 
 		$parts['minute'] = $minute;
-		$parts['second'] = $second;
+		// $parts['second'] = $second;
 
 		foreach ( $parts as $k => $v ) {
 			if ( $v < 10 ) {
@@ -729,3 +816,93 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 			// $students = $wpdb->get_results( $query, ARRAY_A );
 			return $assignments;
 		}
+
+
+
+
+		/**
+		 * Get filters for own courses tab.
+		 *
+		 * @param string $current_filter
+		 *
+		 * @return array
+		 */
+		function get_own_courses_filters_custom( $current_filter = '' ) {
+			$profile = learn_press_get_profile();
+			$url      = $profile->get_current_url();
+			$defaults = array(
+				'all'     => sprintf( '<a href="%s">%s</a>', esc_url( $url ), __( 'All', 'learnpress' ) ),
+				'draft' => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'draft', $url ) ), __( 'Draft', 'learnpress' ) ),
+				'publish' => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'publish', $url ) ), __( 'Publish', 'learnpress' ) ),
+				'pending' => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'pending', $url ) ), __( 'Pending', 'learnpress' ) ),
+				'closest-webinar-lesson' => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'closest-webinar-lesson', $url ) ), __( 'Closest webinar lesson', 'learnpress' ) )
+			);
+
+			if ( ! $current_filter ) {
+				$keys           = array_keys( $defaults );
+				$current_filter = reset( $keys );
+			}
+
+			foreach ( $defaults as $k => $v ) {
+				if ( $k === $current_filter ) {
+					$defaults[ $k ] = sprintf( '<span>%s</span>', strip_tags( $v ) );
+				}
+			}
+
+			return apply_filters(
+				'learn-press/profile/own-courses-filters',
+				$defaults
+			);
+		}
+
+
+
+
+		/**
+		 * Get filters for purchased webinar tab.
+		 *
+		 * @param string $current_filter
+		 *
+		 * @return array
+		 */
+		function get_purchased_webinar_filters( $current_filter = '' ) {
+			$profile = learn_press_get_profile();
+			$url      = $profile->get_current_url( false );
+			$defaults = array(
+				'all'          		=> sprintf( '<a href="%s">%s</a>', esc_url( $url ), __( 'All', 'learnpress' ) ),
+				'finished'  		=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'finished', $url ) ), __( 'Finished', 'learnpress' ) ),
+				'passed'  			=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'passed', $url ) ), __( 'Passed', 'learnpress' ) ),
+				'failed'  			=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'failed', $url ) ), __( 'Failed', 'learnpress' ) ),
+				'closest-webinar-lesson'  	=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'closest-webinar-lesson', $url ) ), __( 'Closest webinar lesson', 'learnpress' ) )
+				// 'past'       		=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'past', $url ) ), __( 'Past Webinars', 'learnpress' ) )
+			);
+
+			if ( ! $current_filter ) {
+				$keys           = array_keys( $defaults );
+				$current_filter = reset( $keys );
+			}
+
+			foreach ( $defaults as $k => $v ) {
+				if ( $k === $current_filter ) {
+					$defaults[ $k ] = sprintf( '<span>%s</span>', strip_tags( $v ) );
+				}
+			}
+
+			return apply_filters(
+				'learn-press/profile/purchased-courses-filters',
+				$defaults
+			);
+		}
+
+
+		/*
+		* Logout hook for replace user switch meta key
+		*/
+		add_action( 'wp_login', 'switchusermetas', 10, 2);
+		function switchusermetas($user_login){			
+			$user = get_user_by('login', $user_login);
+			$role = $user->roles;
+			if (in_array('administrator', $role) || in_array('lp_teacher', $role)) update_user_meta( $user->ID, "lp_switch_view", 'instructor');
+		}
+
+

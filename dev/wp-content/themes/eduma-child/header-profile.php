@@ -38,27 +38,46 @@
 <div id="wrapper-container" class="wrapper-container">
     <div class="content-pusher">
         <header id="masthead" class=" omm site-header affix-top header-profile header_overlay header_v4">
-			<?php
-			if ( ! e_is_frontend_editor() ) {
-				//Toolbar
-				if ( get_theme_mod( 'thim_toolbar_show', true ) ) {
-					get_template_part( 'inc/header/toolbar' );
-				}
+            <?php
+            
+           
+                $profile = LP_Global::profile();
+                if ( ! e_is_frontend_editor() ) {
+                    //Toolbar
+                    if ( get_theme_mod( 'thim_toolbar_show', true ) ) {
+                        get_template_part( 'inc/header/toolbar' );
+                    }
 
-				//Header style
-				get_template_part( 'inc/header/' . 'header-vprofile' );
-			}
+                    //Header style
+                    if ( ! e_is_frontend_editor() && $profile->get_user()->get_id() == get_current_user_id()) 
+                    {
+                        get_template_part( 'inc/header/' . 'header-vprofile' );
+                    }
+                    
+                }
 
-			$profile = LP_Global::profile();
+                
+                // echo 'profile id: ' . $profile->get_user()->get_id() . '<br/>';
+                // echo 'current user id: ' . get_current_user_id() . '<br/>';
 
-			if ( $profile->get_user()->is_guest() ) {
-				return;
-			}
-
-			if ( ! e_is_frontend_editor() ) {
-				learn_press_get_template( 'profile/sidebar-navigation.php', array( 'user' => $profile->get_user() ) );
-			}
+                if ( $profile->get_user()->is_guest() ) {
+                    return;
+                }
+                
+                if(is_user_logged_in()){
+                    if ( ! e_is_frontend_editor() && $profile->get_user()->get_id() == get_current_user_id()) {
+                        learn_press_get_template( 'profile/sidebar-navigation.php', array( 'user' => $profile->get_user() ) );
+                    }
+                }
 			?>
         </header>
-
+                
         <div id="main-content">
+
+        <?php 
+
+$user     = LP_Global::user();
+// echo 'user id: ' . $user->get_id() . '<br/>';
+// echo 'current iser id: ' . get_current_user_id() . '<br/>';
+
+?>

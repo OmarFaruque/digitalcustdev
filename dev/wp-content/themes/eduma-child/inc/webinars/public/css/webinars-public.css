@@ -119,15 +119,18 @@ ul#breadcrumbs li > span {
   padding: 3px 20px;
 }
 
+.mb-1{margin-bottom: 1rem !important;}
 .mb-2{margin-bottom: 2rem;}
 .mb-3{margin-bottom: 3rem;}
 .mb-4{margin-bottom: 4rem;}
 .mb-5{margin-bottom: 5rem;}
 
+.mt-0{margin-top:0 !important;}
 .mt-2{margin-top: 2rem;}
 .mt-3{margin-top: 3rem;}
 .mt-4{margin-top: 4rem;}
 .mt-5{margin-top: 5rem;}
+.mt-6{margin-top: 6rem;}
 .position-relative 
 {
   position: relative;
@@ -188,4 +191,85 @@ header.header-profile .navigation-sidebar-wrapper .nav-tab-main-menu li:last-chi
 {
   top: unset;
   bottom: 0;
+}
+div#profile-content-courses select.form-control option[value="?filter-status=closest-webinar-lesson"],
+div#profile-content-webinars .course-wishlist-box,
+div#profile-content-courses .course-wishlist-box,
+div#profile-content-webinars .ribbon.ribbon-top-left {
+  display: none;
+}
+
+
+/*
+* Tooltip
+*/
+div.profile-courses-list div.tooltip {
+  position: absolute;
+  border-radius: 5px;
+  width: auto;
+  padding: 5px !important;
+  line-height: 15px;
+  font-size: 10px;
+  text-transform: capitalize;
+  z-index: 99999999999999999999999;
+  height: auto !important;
+}
+
+/* tooltip-arrow */
+.color-green
+{
+  color: green;
+}
+a.next-webinar-lesson{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.user-information {
+  text-align: justify;
+}
+.profile-tabs.not-view {
+  padding-left: 5%;
+}
+#profile-content-courses .learn-press-subtab-content ul.lp-sub-menu {
+  display: none !important;
+}
+div.learnpress .profile-container .profile-tabs .tab-content
+{
+  padding-top: 0 !important;
+}
+.lp-course-progress .lp-progress-bar .lp-progress-value.percentage-sign.newstyle{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 35px;
+    background-color: #3f48cc !important;
+}
+.lp-progress-bar.value {
+  position: relative;
+  margin: 0;
+}
+.course-progress.newstyle .lp-course-progress .lp-progress-bar .lp-progress-value
+{
+  background-color: #22b14c;
+  height: 35px;
+}
+.course-progress.newstyle .lp-course-progress .lp-progress-bar
+{
+  background-color: white;
+  height: 35px;
+  border: 3px solid #999;
+  margin: 0;
+}
+
+.color-blue 
+{
+  color: #3f48cc;
+}
+.ml-5 {
+  margin-left: 5rem;
+}
+.pull-right
+{
+  float: right;
 }

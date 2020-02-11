@@ -400,7 +400,7 @@ if ( ! function_exists( 'learn_press_user_profile_content' ) ) {
 		if ( $profile->get_user()->is_guest() ) {
 			return;
 		}
-
+	
 		learn_press_get_template( 'profile/content.php', array( 'user' => $user ) );
 	}
 }
@@ -2570,6 +2570,8 @@ function learn_press_locate_template( $template_name, $template_path = '', $defa
 		$default_path = LP_PLUGIN_PATH . 'templates/';
 	}
 
+
+
 	// Look within passed path within the theme - this is priority
 	$template = locate_template(
 		array(
@@ -2577,6 +2579,8 @@ function learn_press_locate_template( $template_name, $template_path = '', $defa
 			$template_name
 		)
 	);
+
+	// echo 'template name: ' . $template . '<br/>';
 
 	// Get default template
 	if ( ! $template ) {

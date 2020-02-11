@@ -60,13 +60,16 @@ class DigitalCustDev {
 
 	function enqueue_scripts() {
 		if ( is_user_logged_in() ) {
-			wp_register_style( 'digitalcustdev-datable', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/css/jquery.dataTables.min.css', false, '1.0.0' );
+			wp_register_style( 'digitalcustdev-datable-om', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/css/jquery.dataTables.min.css', false, '1.0.0' );
 			wp_register_style( 'digitalcustdev-datetimepicker', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/css/jquery.datetimepicker.css', false, '1.0.0' );
 			wp_register_style( 'digitalcustdev-magnific-popup', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/css/magnific-popup.min.css', false, '1.0.0' );
 
 			wp_register_script( 'digitalcustdev-datable-js', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/js/jquery.dataTables.min.js', array( 'jquery' ), '1.0.0', true );
 			wp_register_script( 'digitalcustdev-datetimepicker', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/js/jquery.datetimepicker.full.min.js', array( 'jquery' ), '1.0.0', true );
 			wp_register_script( 'digitalcustdev-magnific-popup', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/js/magnific-popup.min.js', array( 'jquery' ), '1.0.0', true );
+
+			// wp_enqueue_style( 'digitalcustdev-bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', false, '1.0.0' );
+			
 
 			wp_register_script( 'digitalcustdev-core', DIGITALCUSTDEV_PLUGIN_URL . 'assets/js/scripts.js', array( 'jquery', 'jquery-ui-accordion' ), '1.0.0', true );
 			wp_localize_script( 'digitalcustdev-core', 'dcd', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ), 'security' => wp_create_nonce( "_nonce_security" ) ) );

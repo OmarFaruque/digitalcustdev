@@ -5,8 +5,19 @@ if ( ! is_search() && ( is_page_template( 'page-templates/homepage.php' ) || is_
 
 	return;
 }
+global $wp_query;
+$vars = $wp_query->query_vars;
+$user = wp_get_current_user();
+	
 
-if ( is_page( 'profile' ) ) {
+$allowArray = array('administrator', 'lp_teacher');
+$haveAccessProfile = !empty(array_intersect($allowArray, $user->roles));
+
+$user     = LP_Global::user();
+$profile = LP_Profile::instance();
+
+if ( is_page( 'profile' ) && $profile->get_user_data( 'id' ) == get_current_user_id() && $haveAccessProfile) {
+	// echo 'its profile';
 	get_header( 'profile' );
 } else {
 	get_header();
@@ -15,7 +26,7 @@ if ( is_page( 'profile' ) ) {
     <section class="content-area">
 		<?php
 		
-		if ( !is_page( 'profile' ) ) {
+		if ( !is_page( 'profile' ) || (is_page( 'profile' ) && !isset($vars['view']) && $profile->get_user_data( 'id' ) != get_current_user_id() ) ) {
 			get_template_part( 'inc/templates/page-title' );
 		}
 		do_action( 'thim_wrapper_loop_start' );

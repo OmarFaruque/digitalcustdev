@@ -44,7 +44,7 @@
 				get_template_part( 'inc/header/toolbar' );
 			}
 
-			//Header style
+            //Header style
 			if ( get_theme_mod( 'thim_header_style', 'header_v1' ) ) {
 				get_template_part( 'inc/header/' . get_theme_mod( 'thim_header_style', 'header_v1' ) );
 			}

@@ -18,6 +18,7 @@ ini_set('error_reporting', E_ALL );
 define('WP_DEBUG', false);
 define('WP_DEBUG_DISPLAY', false);
 
+
 if ( ! isset( $user ) ) {
 	$user = learn_press_get_current_user();
 }
@@ -25,13 +26,13 @@ if ( ! isset( $user ) ) {
 $profile = learn_press_get_profile();
 $tabs    = $profile->get_tabs();
 $current = $profile->get_current_tab();
+
 ?>
-<div id="learn-press-profile-content om" class="tab-content">
+<div id="learn-press-profile-content" class="tab-content om">
 
 	<?php foreach ( $tabs as $tab_key => $tab_data ) {
-
-		if ( ! $profile->tab_is_visible_for_user( $tab_key ) ) {
-			continue;
+		if ( ! $profile->tab_is_visible_for_user( $tab_key )) {
+			if($tab_key !== 'courses') continue;
 		}
 		?>
 	
@@ -48,7 +49,6 @@ $current = $profile->get_current_tab();
 					do_action( 'learn-press/profile-content', $tab_key, $tab_data, $user );
 				}
 			} else {
-				// echo 'inside else <br/>';
 				foreach ( $tab_data['sections'] as $key => $section ) {
 					if ( $profile->get_current_section( '', false, false ) === $section['slug'] ) {
 						if ( is_callable( $tab_data['callback'] ) ) {
@@ -57,7 +57,6 @@ $current = $profile->get_current_tab();
 							echo call_user_func_array( $section['callback'], array( $key, $section, $user ) );
 						} else {
 							
-
 							
 							do_action( 'learn-press/profile-section-content', $key, $section, $user );
 						}

@@ -701,3 +701,15 @@ add_action( 'widgets_init', 'thim_widgets_2_inits' );
 
 // Call webinar files
 require_once( get_stylesheet_directory() . '/inc/webinars/webinars.php' );
+
+
+
+add_action( 'wp_ajax_create_new_course', 'create_new_post2' );
+function create_new_post2(){
+	echo json_encode(
+		array(
+			'test' => 'test'
+		)
+	);
+	wp_die();
+}

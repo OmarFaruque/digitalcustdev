@@ -14,11 +14,16 @@
  */
 defined( 'ABSPATH' ) || exit();
 
+
 if ( wp_doing_ajax() ) {
 	$user = wp_get_current_user();
 } else {
 	$user = LP_Global::user();
 }
+
+$draft_counter = query_draft_counter($user->get_id(), 'webinar');
+
+
 $theme_options_data         = get_theme_mods();
 $course_item_excerpt_length = intval( get_theme_mod( 'thim_learnpress_excerpt_length', 25 ) );
 
@@ -97,7 +102,7 @@ $post_manage = $frontend_editor->post_manage;
 		'day'    => _x( '%s day', 'duration', 'eduma' ),
 		'hour'   => _x( '%s hour', 'duration', 'eduma' ),
 		'minute' => _x( '%s min', 'duration', 'eduma' ),
-		'second' => _x( '%s sec', 'duration', 'eduma' ),
+		'second' => _x( '%s sec', 'duration', 'eduma' )
 	);
 
 	$leftduration = '';
@@ -129,7 +134,7 @@ $post_manage = $frontend_editor->post_manage;
             <div class="course-meta">
 				<?php // thim_course_ratings(); ?>
 				<div class="row">
-				<div class="<?php echo ( $course->get_post_status() !== "publish") ? 'col-sm-12 col-md-12': 'col-sm-6 col-md-6'; ?>">
+				<div class="<?php echo ( $course->get_post_status() !== "publish") ? 'col-sm-12 col-md-12': 'col-sm-8 col-md-8'; ?>">
                 <div class="course-students om2">
 					<div class="row">
 					<div class="col-md-3 col-xs-12 col-sm-3">
@@ -149,7 +154,7 @@ $post_manage = $frontend_editor->post_manage;
 							<span><?php echo esc_html( $count ); ?>&nbsp;<?php echo $count > 1 ? sprintf( __( 'users', 'learnpress' ) ) : sprintf( __( 'user', 'learnpress' ) ); ?></span>
                     	</div>
 					</div>
-					<div class="col-md-4 col-xs-12 col-sm-4">
+					<div class="<?php echo ( $course->get_post_status() !== "publish") ? 'col-md-4 col-xs-12 col-sm-4': 'col-md-6 col-xs-12 col-sm-6'; ?>">
                     	<span><i class="fa fa-calendar"></i></span><span><?php echo "<span>    </span>".get_the_date( 'F j, Y, g:i a', strtotime( $start_time ) ); ?></span>
 						<div>
 							<i class="fa fa-clock-o"></i>     
@@ -175,7 +180,7 @@ $post_manage = $frontend_editor->post_manage;
 				</div>
 				
 					<?php if ( $course->get_post_status() == "publish" ) { ?>
-						<div class="col-md-6 col-sm-6">
+						<div class="col-md-4 col-sm-4">
 							<div class="pull-right text-right">
 								<?php if(!empty($lessionID)): ?>
 								<a class="mt-2" href="<?php echo  get_the_permalink( $lessionID ); ?> ">
@@ -206,11 +211,15 @@ $post_manage = $frontend_editor->post_manage;
 
             <div class="course-readmore position-absulate-bottom">
 				<?php if ( $course->get_post_status() !== "pending" && $course->get_post_status() !== "publish") { ?>
-                    <a href="javascript:void(0);" data-security="<?php echo wp_create_nonce( 'deleting-post' ); ?>" data-postid="<?php echo get_the_ID(); ?>" class="delete-post-course-frontend"><i class="fa fa-trash"></i></a>
-                    <a href="<?php echo esc_url( get_permalink() ); ?>"><i class="fa fa-eye"></i></a>
-                 
+                    <a data-toggle="tooltip" data-placement="top" title="View" href="<?php echo esc_url( get_permalink() ); ?>"><i class="fa fa-eye"></i></a>
 				<?php } ?>
-                <a class="diuplicate_frontend" data-post-id="<?php echo get_the_ID(); ?>" href="#"><i class="fa fa-clone"></i></a>
+                <?php if($draft_counter < 3): ?>
+				<a data-toggle="tooltip" data-placement="top" title="Copy" class="diuplicate_frontend" data-post-id="<?php echo get_the_ID(); ?>" href="#"><i class="fa fa-clone"></i></a>
+				<?php endif; ?>
+				<?php if ( $course->get_post_status() !== "pending" && $course->get_post_status() !== "publish") { ?>
+                    <a data-toggle="tooltip" data-placement="top" title="Delete" href="javascript:void(0);" data-security="<?php echo wp_create_nonce( 'deleting-post' ); ?>" data-postid="<?php echo get_the_ID(); ?>" class="delete-post-course-frontend"><i class="fa fa-trash"></i></a>
+				<?php } ?>
+
             </div>
 
             <div class="clear"></div>

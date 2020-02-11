@@ -104,7 +104,12 @@ jQuery(document).ready(function($){
 	  * Course profile conent hiehgt
 	  */
 	 if(jQuery('div.thim-course-content').length){
-		console.log('sfasfasfasf test');
 		jQuery('.thim-course-content.position-relative').height(jQuery('.thim-course-list .course-item .course-thumbnail').height());
 	}
+
+
+	/*
+	* Bootstrap tooltip
+	*/
+	$('[data-toggle="tooltip"]').tooltip();
 });

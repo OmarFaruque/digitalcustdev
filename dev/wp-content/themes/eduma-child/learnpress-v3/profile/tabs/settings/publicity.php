@@ -19,7 +19,7 @@ $profile = LP_Profile::instance();
 
 <form method="post" id="your-profile" name="profile-publicity" enctype="multipart/form-data" class="learn-press-form">
 
-    <div class="learn-press-subtab-content">
+    <div class="learn-press-subtab-content om6">
         <?php
         /**
          * @since 3.0.0

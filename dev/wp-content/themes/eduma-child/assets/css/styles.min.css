@@ -16,7 +16,7 @@
 .digitalcustdev-profile-page #masthead .menu-right .thim-link-login a:hover{color:#000}
 .digitalcustdev-profile-page #masthead .menu-right .thim-link-login .logout{background-color:unset}
 @media(max-width:767px){.digitalcustdev-profile-page #masthead{z-index:2;background:#2575fc;height:50px}
-.digitalcustdev-profile-page #masthead .menu-mobile-effect{margin:10px 0}}.digitalcustdev-profile-page #main-content .profile-container .profile-tabs{width:100%;float:unset}
+.digitalcustdev-profile-page #masthead .menu-mobile-effect{margin:10px 0}}.digitalcustdev-profile-page #main-content .profile-container .profile-tabs.view{width:100%;float:unset}
 .digitalcustdev-profile-page #main-content .profile-container .profile-tabs .tab-content{padding:0 !important}
 .digitalcustdev-profile-page .learn-press-user-profile .user-tab .author-name{padding:10px 0 20px;margin:25px 0 10px}
 .digitalcustdev-profile-page .learn-press-user-profile .user-tab .author-role{text-align:center;text-transform:capitalize}
