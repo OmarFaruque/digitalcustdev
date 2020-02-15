@@ -66,8 +66,8 @@ define('NONCE_SALT',       'oXU7K8VfHL6xLtMqGICSs1UvLxyWC+y7McaRoujGRi93wxpzgPyu
  */
 $table_prefix  = 'sours8nl_';
 
-define( 'WP_MEMORY_LIMIT', '256M' );
-define( 'WP_DEBUG', true );
+// define( 'WP_MEMORY_LIMIT', '256M' );
+define( 'WP_DEBUG', false );
 // define('WP_DEBUG_LOG', false);
 // define('WP_DEBUG_DISPLAY', false);
 

@@ -4,6 +4,9 @@
  * @created_on 8/8/19
  */
 
+if(!class_exists('WP_List_Table')){
+	return;
+}
 class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 	/**

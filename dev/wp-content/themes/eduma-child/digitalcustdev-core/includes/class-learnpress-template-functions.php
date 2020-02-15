@@ -28,6 +28,7 @@ class DigitalCustDev_LearpressTemplateFunctions {
 
 	function profile_tabs( $tabs ) {
 		// Only admin or instructor can view
+		// if(!is_user_logged_in())
 		$tabs['webinars'] = array(
 			'title'    => __( 'Webinars', 'digitalcustdev-core' ),
 			'slug'     => 'webinars',
@@ -193,7 +194,7 @@ class DigitalCustDev_LearpressTemplateFunctions {
 				if($template_name == 'content-profile-course.php') $template_name = 'content-course.php';
 				// echo 'template before change: ' . $template . '<br/>';
 				$template = get_template_directory() . '/' . $template_path . '/' . $template_name;
-				// echo 'template test: ' . $template5 . '<br/>';
+				echo 'template test: ' . $template . '<br/>';
 			break;
 			default:
 			$template = $template;

@@ -7,8 +7,8 @@
 class DigitalCustDev_Ajax {
 
 	public function __construct() {
-		// add_action( 'wp_ajax_create_new_course', array( $this, 'create_new_post2' ) );
-		// add_action( 'wp_ajax_nopriv_create_new_course', array( $this, 'create_new_post2' ) );
+		add_action( 'wp_ajax_create_new_course', array( $this, 'create_new_post' ) );
+		// add_action( 'wp_ajax_nopriv_create_new_course', array( $this, 'create_new_course' ) );
 
 		add_action( 'wp_ajax_switch_role', array( $this, 'change_role' ) );
 
@@ -17,50 +17,41 @@ class DigitalCustDev_Ajax {
 		add_action( 'wp_ajax_delete_course_frontend', array( $this, 'delete_course' ) );
 	}
 
+	
+
 	/**
 	 * Create a new post type.
 	 */
 	public static function create_new_post() {
-		// $post_type = LP_Request::get_string( 'type' );
-		// $nonce     = LP_Request::get_string( 'nonce' );
+		$post_type = LP_Request::get_string( 'type' );
+		$nonce     = LP_Request::get_string( 'nonce' );
 
-		// if ( ! wp_verify_nonce( $nonce, 'e-new-post' ) ) {
-		// 	wp_die( 'Opp' );
-		// }
+		if ( ! wp_verify_nonce( $nonce, 'e-new-post' ) ) {
+			wp_die( 'Opp' );
+		}
 
-		// $post      = get_default_post_to_edit( $post_type, true );
-		// $post_data = array(
-		// 	'ID'          => $post->ID,
-		// 	'post_status' => 'draft',
-		// 	'post_title'  => $post->ID
-		// );
-		// $id        = wp_update_post( $post_data, true );
+		$post      = get_default_post_to_edit( $post_type, true );
+		$post_data = array(
+			'ID'          => $post->ID,
+			'post_status' => 'draft',
+			'post_title'  => $post->ID
+		);
+		$id        = wp_update_post( $post_data, true );
 
-		// // Remove default title as it is the ID of post
-		// if ( ! is_wp_error( $id ) ) {
-		// 	global $wpdb;
-		// 	$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_title = '' WHERE ID = %d", $id ) );
-		// }
+		// Remove default title as it is the ID of post
+		if ( ! is_wp_error( $id ) ) {
+			global $wpdb;
+			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_title = '' WHERE ID = %d", $id ) );
+		}
 
-		// $manage = new LP_Addon_Frontend_Editor_Post_Manage( 'lp_course' );
-		echo json_encode( array(
-			// 'redirect' => $manage->get_edit_post_link( $post_type, $post->ID )
-			'test' => 'test'
+		$manage = new LP_Addon_Frontend_Editor_Post_Manage( 'lp_course' );
+		wp_send_json( array(
+			'redirect' => $manage->get_edit_post_link( $post_type, $post->ID )
 		) );
 
 		wp_die();
 	}
 
-	public static function create_new_post2() {
-
-		// $manage = new LP_Addon_Frontend_Editor_Post_Manage( 'lp_course' );
-		echo json_encode( array(
-			// 'redirect' => $manage->get_edit_post_link( $post_type, $post->ID )
-			'test' => 'test'
-		) );
-
-		wp_die();
-	}
 
 	/**
 	 * Change User role here

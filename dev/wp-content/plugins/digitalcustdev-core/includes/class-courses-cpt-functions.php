@@ -150,6 +150,7 @@ class DigitalCustDev_CPT_Functions {
 	}
 
 	function list_webinars() {
+		echo 'test list';
 		wp_enqueue_style( 'digitalcustdev-datable' );
 		wp_enqueue_script( 'digitalcustdev-datable-js' );
 		wp_enqueue_script( 'digitalcustdev-core' );

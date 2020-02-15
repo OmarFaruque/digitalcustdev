@@ -501,8 +501,17 @@ add_action( 'init', function () {
 
 add_action( 'admin_init', 'only_admin', 1 );
     function only_admin() {
+        $return = false;
         if ( ! current_user_can( 'manage_options' ) && '/wp-admin/admin-ajax.php' != $_SERVER['PHP_SELF'] ) {
-                    wp_redirect( site_url() );
+            $return = true;            
+        }
+
+        if( ! current_user_can( 'edit_published_lp_courses' ) ){
+            $return = true;
+        }
+
+        if($return){
+            wp_redirect( site_url() );
         }
 }
 

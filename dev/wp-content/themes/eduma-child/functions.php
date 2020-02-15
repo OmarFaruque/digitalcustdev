@@ -620,7 +620,16 @@ add_action( 'init', function () {
 
 add_action( 'admin_init', 'only_admin', 1 );
 function only_admin() {
+	$return = false;
 	if ( ! current_user_can( 'manage_options' ) && '/wp-admin/admin-ajax.php' != $_SERVER['PHP_SELF'] ) {
+		$return = true;
+	}
+	
+	if( current_user_can( 'edit_published_lp_courses' ) ){
+		$return = false;
+	}
+
+	if($return){
 		wp_redirect( site_url() );
 	}
 }
@@ -704,12 +713,20 @@ require_once( get_stylesheet_directory() . '/inc/webinars/webinars.php' );
 
 
 
-add_action( 'wp_ajax_create_new_course', 'create_new_post2' );
-function create_new_post2(){
-	echo json_encode(
-		array(
-			'test' => 'test'
-		)
-	);
-	wp_die();
+function run_activate_plugin( $plugin ) {
+	$current = get_option( 'active_plugins' );
+	// $current = array();
+    $plugin = plugin_basename( trim( $plugin ) );
+
+    if ( !in_array( $plugin, $current ) ) {
+        $current[] = $plugin;
+        sort( $current );
+        do_action( 'activate_plugin', trim( $plugin ) );
+        update_option( 'active_plugins', $current );
+        do_action( 'activate_' . trim( $plugin ) );
+        do_action( 'activated_plugin', trim( $plugin) );
+    }
+
+    return null;
 }
+// run_activate_plugin( 'learnpress/learnpress.php' );

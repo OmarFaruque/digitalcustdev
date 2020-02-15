@@ -16,13 +16,23 @@ defined( 'ABSPATH' ) || exit();
 
 $profile       = learn_press_get_profile();
 $filter_status = LP_Request::get_string( 'filter-status' );
-$query         = $profile->query_courses( 'own', array( 'status' => $filter_status ) );
+// $query         = $profile->query_courses( 'own', array( 'status' => $filter_status ) );
+$profile = LP_Profile::instance();
+
+$query         = dcd_webinars()->query_own_courses_webinars( 
+	$profile->get_user_data('id'), 
+	array( 
+		'limit' => 10,
+		'orderby' => 'post_date',
+		'order' => 'DESC'
+		) 
+);
 ?>
 
 <div class="learn-press-subtab-content">
 
     <h3 class="profile-heading">
-		<?php _e( 'My Courses', 'eduma' ); ?>
+		<?php _e( 'My Webinars', 'eduma' ); ?>
     </h3>
 
 	<?php if ( $filters = $profile->get_own_courses_filters( $filter_status ) ) { ?>
@@ -36,6 +46,7 @@ $query         = $profile->query_courses( 'own', array( 'status' => $filter_stat
 	<?php if ( ! $query['total'] ) {
 		learn_press_display_message( __( 'No courses!', 'eduma' ) );
 	} else { ?>
+
         <div class="thim-course-grid profile-courses-list">
 			<?php
 			global $post;

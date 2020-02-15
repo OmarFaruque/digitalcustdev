@@ -81,11 +81,11 @@ $orders = $card->get_orders( $user->get_id(), array( 'status' => 'completed' ) )
                                 <h2 class="course-title mt-0 line-height-30 mb-1"><?php echo $course->get_title(); ?></h2>
                             </a>
                         </div>
-                        <div><span><?php _e('Instructor Name', 'webinar'); ?> : </span><?php
-                        $author_id = get_post_field ('post_author', $course->get_id());
-                        $display_name = get_the_author_meta( 'display_name' , $author_id ); 
-                        echo $display_name;
-                        ?></div>
+                        <div><span><?php _e('Instructor Name', 'webinar'); ?> : </span>
+                        <a href="<?php echo esc_url( learn_press_user_profile_link( get_post_field( 'post_author', $course->get_id() ) ) ); ?>">
+							    <?php echo get_the_author_meta( 'display_name', $course->post_author ); ?>
+						</a>
+                        </div>
                         <div><span><?php _e('Purchase Date', 'webinar'); ?> : </span>
                             <?php 
                              $purchaseddate = $orders[$course->get_id()][0];

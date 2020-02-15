@@ -140,12 +140,9 @@ $orders = $card->get_orders( $user->get_id(), array( 'status' => 'completed' ) )
                         </a>
                     </div>
                     <div><span scope="col"><?php _e('Instructor', 'webinar'); ?> : </span>
-                    <a href="<?php echo get_author_posts_url($author_id); ?>">
-                        <?php 
-                        $author_id = get_post_field ('post_author', $webinar->get_id());
-                            echo get_the_author_meta( 'display_name' , $author_id );  
-                        ?>
-                    </a>
+                    <a href="<?php echo esc_url( learn_press_user_profile_link( get_post_field( 'post_author', $course->get_id() ) ) ); ?>">
+							    <?php echo get_the_author_meta( 'display_name', $course->post_author ); ?>
+					</a>
                     </div>
                     <!-- <div><span scope="col">Start Time : </span><span><?php// echo date( 'F j, Y, g:i a', strtotime( $start_time ) ); ?></span></div> -->
                     <div>

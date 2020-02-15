@@ -25,8 +25,8 @@ if ( is_page( 'profile' ) && $profile->get_user_data( 'id' ) == get_current_user
 ?>
     <section class="content-area">
 		<?php
-		
-		if ( !is_page( 'profile' ) || (is_page( 'profile' ) && !isset($vars['view']) && $profile->get_user_data( 'id' ) != get_current_user_id() ) ) {
+		// echo 'view: ' . $vars['view'] . '<br/>';
+		if ( !is_page( 'profile' ) || (is_page( 'profile' ) && $profile->get_user_data( 'id' ) != get_current_user_id() ) ) {
 			get_template_part( 'inc/templates/page-title' );
 		}
 		do_action( 'thim_wrapper_loop_start' );

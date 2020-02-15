@@ -39,8 +39,8 @@ if ( is_user_logged_in() ) {
                 <div class="thim-switch-roles-sub-nav">
                 	<?php if ( is_page( 'profile' ) ) {
 							?>
-                    <a style="cursor: pointer;" class="profile profile-switch-roles" data-security="<?php echo wp_create_nonce( 'switching-role' ); ?>"> <?php echo in_array( 'lp_teacher', $current_user->roles ) ? 'Student' : 'Instructor'; ?> </a>
-
+                    <!-- <a style="cursor: pointer;" class="profile profile-switch-roles" data-security="<?php // echo wp_create_nonce( 'switching-role' ); ?>"> <?php // echo in_array( 'lp_teacher', $current_user->roles ) ? 'Student' : 'Instructor'; ?> </a> -->
+					<a class="profile" href="<?php echo esc_url( learn_press_user_profile_link() ); ?>"> <?php echo $profile_text; ?> </a>
                     <?php } 
                     else
                     { ?>

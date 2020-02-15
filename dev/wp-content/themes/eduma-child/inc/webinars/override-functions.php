@@ -108,7 +108,7 @@ if ( ! function_exists( 'thim_learnpress_breadcrumb' ) ) {
 		if ( is_front_page() || is_404() ) {
 			return;
 		}
-		$webinar_page_id  = learn_press_get_page_id( 'webinar' );
+		$webinar_page_id  = (function_exists('learn_press_get_page_id')) ? learn_press_get_page_id( 'webinar' ) : '';
 
         
 		// Get the query & post information
@@ -303,7 +303,7 @@ function dcc_rewrite_rules() {
 	$pages = explode('/', $_SERVER['REQUEST_URI']);
 	$pages = array_filter($pages);
 	$paged = end($pages);
-	$webinar_page_id = learn_press_get_page_id( 'webinar' );
+	$webinar_page_id = (function_exists('learn_press_get_page_id')) ? learn_press_get_page_id( 'webinar' ) : '';
 	if(in_array('page', $pages) ) add_rewrite_rule('^webinars/(.+)/?$','index.php?page_id='.$webinar_page_id.'&paged='.$paged.'','top');
 	
 
@@ -906,3 +906,13 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 		}
 
 
+		// add_action('wp_head', 'testfunction');
+		function testfunction(){
+			$data = get_userdata( get_current_user_id() ); 
+			if ( is_object( $data) ) {
+				$current_user_caps = $data->allcaps;
+				
+				// print it to the screen
+				echo '<pre>' . print_r( $current_user_caps, true ) . '</pre>';
+			}
+		}

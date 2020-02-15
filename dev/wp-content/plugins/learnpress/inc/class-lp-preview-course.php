@@ -150,7 +150,7 @@ class LP_Preview_Course {
 		}
 		catch ( Exception $ex ) {
 			learn_press_add_message( $ex->getMessage(), 'error' );
-			// wp_redirect( get_home_url() );
+			wp_redirect( get_home_url() );
 			exit();
 		}
 	}

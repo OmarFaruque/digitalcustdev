@@ -26,8 +26,6 @@ defined( 'ABSPATH' ) || exit();
 $profile       = learn_press_get_profile();
 $user_id = $profile->get_user()->get_id();
 
-
-
 $filter_status = LP_Request::get_string( 'filter-status' );
 if ( $filter_status === "all" ) {
 	$filter_status = false;

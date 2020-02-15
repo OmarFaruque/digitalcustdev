@@ -98,7 +98,7 @@ class LP_Request {
 				if ( ! $redirect = apply_filters( 'learn-press/enroll-course-redirect-login', learn_press_get_login_url( add_query_arg( 'enroll-course', $course_id, $course->get_permalink() ) ) ) ) {
 					$redirect = $course->get_permalink();
 				}
-				// wp_redirect( $redirect );
+				wp_redirect( $redirect );
 				exit();
 			}
 		}

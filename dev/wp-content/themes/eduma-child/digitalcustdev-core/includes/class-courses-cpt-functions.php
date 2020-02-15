@@ -45,6 +45,7 @@ class DigitalCustDev_CPT_Functions {
 			$user_id = get_current_user_id();
 		}
 
+		
 		$cache_key = sprintf( 'own-courses-%d-%s', $user_id, md5( build_query( $args ) ) );
 
 		if ( false === ( $courses = LP_Object_Cache::get( $cache_key, 'learn-press/user-courses' ) ) ) {
@@ -230,6 +231,13 @@ class DigitalCustDev_CPT_Functions {
 	}
 
 	function list_webinars() {
+		$profile = LP_Profile::instance();
+		$profileid = $profile->get_user_data( 'id' );
+		$tpllist = false;
+		if($profile->get_user_data( 'id' ) != get_current_user_id()) $tpllist = true;
+		
+
+
 		wp_enqueue_style( 'digitalcustdev-datable' );
 		wp_enqueue_script( 'digitalcustdev-datable-js' );
 		wp_enqueue_script( 'digitalcustdev-core' );
@@ -250,7 +258,11 @@ class DigitalCustDev_CPT_Functions {
 			?>
             <div class="webinar-wrapper omar4">
 				<?php
-				require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-list-purchased.php';
+				if(!$tpllist){
+					require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-list-purchased.php';
+				}else{
+					require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-unautorized-webinar.php';
+				}
 				?>
             </div>
 			<?php

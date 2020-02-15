@@ -5,7 +5,7 @@
  */
 
 
-if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) ) {
+if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Conferencing_Api') ) {
 
 	class DigitalCustDev_Zoom_API extends Zoom_Video_Conferencing_Api {
 

@@ -36,11 +36,15 @@ if($profile2->get_user_data( 'id' ) != get_current_user_id()){
     $tabs = array(
         'courses' => array(
             'title' => 'this is title'
-        )
+		),
+		'webinars' => array(
+			'title' => 'Webinars tab'
+		)
     );
 }else{
     $tabs = array();
 }
+// $tabs = $profile->get_tabs()->tabs();
 
 
 ?>
@@ -58,6 +62,7 @@ if($profile2->get_user_data( 'id' ) != get_current_user_id()){
 
 			$slug        = $profile->get_slug( $tab_data, $tab_key );
 			$link        = $profile->get_tab_link( $tab_key, true );
+			// echo 'Link: ' . $link . '<br/>';
 			$tab_classes = array( esc_attr( $tab_key ) );
 
 			if ( $profile->is_current_tab( $tab_key ) ) {
@@ -67,7 +72,7 @@ if($profile2->get_user_data( 'id' ) != get_current_user_id()){
 
 			<li class="<?php echo join( ' ', $tab_classes ) ?>">
 				<!--tabs 12-->
-				<a href="javascript:void(0)" data-slug="<?php echo esc_attr( $link ); ?>">
+				<a href="<?php echo esc_attr( $link ); ?>" data-slug="<?php echo esc_attr( $link ); ?>">
 					<?php echo apply_filters( 'learn_press_profile_' . $tab_key . '_tab_title', esc_html( $tab_data['title'] ), $tab_key ); ?>
 				</a>
 
