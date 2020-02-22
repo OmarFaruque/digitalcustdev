@@ -112,4 +112,7 @@ jQuery(document).ready(function($){
 	* Bootstrap tooltip
 	*/
 	$('[data-toggle="tooltip"]').tooltip();
+
+
+	
 });

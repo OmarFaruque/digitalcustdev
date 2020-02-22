@@ -92,6 +92,7 @@ jQuery(function ($) {
         },
 
         implementCourseSearch: function (event) {
+            
             clearTimeout(digitalCustTypingTimeout);
             if ((event.which && event.which == 39) || (event.keyCode && event.keyCode == 39) || (event.which && event.which == 37) || (event.keyCode && event.keyCode == 37)) {
                 //do nothing on left and right arrows
@@ -101,21 +102,32 @@ jQuery(function ($) {
             var ajaxsearchitem = $(event.target).val();
             var security = $(event.target).data('security');
             var type = $(event.target).data('searchtype');
+            var data_type = $(event.target).data('data_type');
+
             digitalCustTypingTimeout = setTimeout(function () {
-                digitalCustDev.implementAjaxSearch(ajaxsearchitem, security, type);
+                console.log('inside omar');
+                digitalCustDev.implementAjaxSearch(ajaxsearchitem, security, type, data_type);
             }, 500);
         },
 
-        implementAjaxSearch: function (searchItem, security, type) {
+        implementAjaxSearch: function (searchItem, security, type, data_type) {
+
+            // console.log('search item: ' + searchItem);
+            // console.log('data type: ' + data_type);
+            // console.log('type in ajax: ' + type);
+
             digitalCustDevDom.profileCourseListDiv.html('<p>Loading...</p>');
             var postData = {
                 action: 'search_courses',
                 s: searchItem,
                 security: security,
-                type: type
+                type: type,
+                data_type:data_type
             };
 
             $.post(digitalcustdev.ajaxurl, postData).done(function (response) {
+                console.log('ajax done');
+                console.log(response);
                 digitalCustDevDom.profileCourseListDiv.html(response);
             });
         },

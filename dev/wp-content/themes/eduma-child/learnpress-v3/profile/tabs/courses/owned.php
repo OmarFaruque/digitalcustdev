@@ -35,7 +35,7 @@ $query = query_own_courses_custom( $user_id, array(
 	'limit' => 5, 
 	'status' => $filter_status,
 	'orderby' => 'post_date',
-    'order'   => 'DESC'
+	'order'   => 'DESC'
 ) );
 // $query         = $profile->query_courses( 'own', 
 // 	array( 
@@ -59,7 +59,7 @@ $draft_counter = query_draft_counter($user_id, '');
 		<button data-security="<?php// echo wp_create_nonce( 'switching-role' ); ?>" class="profile-switch-roles"><?php //echo in_array( 'lp_teacher', $current_user->roles ) ? 'Owned' : 'Owned'; ?></button>
 		</div> -->
     <div class="form-search-fields_custom row mb-2">
-		<?php if ( $draft_counter > 3 ) { ?>
+		<?php if ( $draft_counter >= 3 ) { ?>
             <div class="col-md-12">
                 <div class="message message-info mb-0">
                     <p><?php _e('You cannot create new courses because you already have 3 courses in draft.', 'webinar'); ?></p>
@@ -69,7 +69,7 @@ $draft_counter = query_draft_counter($user_id, '');
 		</div>
 	<div class="row mb-4">
         <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3 ) ? 'col-md-5' : 'col-md-6';  ?>  no-padding-left">
-            <input type="text" name="s" class="form-control courses-search" data-security="<?php echo wp_create_nonce( 'search-once' ); ?>" placeholder="Search course...">
+            <input type="text" name="s" data-searchtype="courses" class="form-control courses-search" data-security="<?php echo wp_create_nonce( 'search-once' ); ?>" placeholder="Search course...">
         </div>
 
         <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3 ) ? 'col-md-5' : 'col-md-6';  ?> no-padding">

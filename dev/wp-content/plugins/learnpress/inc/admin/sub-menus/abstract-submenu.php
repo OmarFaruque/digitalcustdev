@@ -291,6 +291,7 @@ abstract class LP_Abstract_Submenu {
 	 * Display menu content
 	 */
 	public function display() {
+		// echo 'omar fa';
 		$tabs       = $this->get_tabs();
 		$active_tab = $this->get_active_tab();
 		$classes    = array( 'wrap', 'lp-submenu-page', $this->get_id() );

@@ -47,15 +47,43 @@ if($profile2->get_user_data( 'id' ) != get_current_user_id()){
 // $tabs = $profile->get_tabs()->tabs();
 
 
+
+$course_query = query_own_courses_custom( $profile_id, array( 
+	'limit' => 10, 
+	'status' => 'publish',
+	'orderby' => 'post_date',
+    'order'   => 'DESC'
+) );
+
+
+$webinar_query   = dcd_webinars()->query_own_courses_webinars( 
+	$profile_id, 
+	array( 
+		'status' => 'publish',
+		'limit' => 10,
+		'orderby' => 'post_date',
+		'order' => 'DESC'
+		) 
+);
 ?>
 
 <?php do_action( 'learn-press/before-profile-nav', $profile ); ?>
 
-	<ul class="nav nav-tabs" role="tablist">
-
+	<ul class="nav nav-tabs unauthorizedtab" role="tablist">
 		<?php
 		foreach ( $tabs as $tab_key => $tab_data ) {
-            // echo 'tab key: ' . $tab_key . '<br/>';
+			$publis = false;
+			switch($tab_key){
+				case 'courses':
+					if($course_query['total'] > 0) $publis = true;					
+				break;
+				case 'webinars':
+					if($webinar_query['total'] > 0) $publis = true;
+				break;
+				default:
+				$publis = true;
+			}
+
 			// if ( $tab_data->is_hidden() || ! $tab_data->user_can_view() ) {
 			// 	continue;
 			// }
@@ -68,6 +96,7 @@ if($profile2->get_user_data( 'id' ) != get_current_user_id()){
 			if ( $profile->is_current_tab( $tab_key ) ) {
 				$tab_classes[] = 'active';
 			}
+			if($publis){
 			?>
 
 			<li class="<?php echo join( ' ', $tab_classes ) ?>">
@@ -75,10 +104,23 @@ if($profile2->get_user_data( 'id' ) != get_current_user_id()){
 				<a href="<?php echo esc_attr( $link ); ?>" data-slug="<?php echo esc_attr( $link ); ?>">
 					<?php echo apply_filters( 'learn_press_profile_' . $tab_key . '_tab_title', esc_html( $tab_data['title'] ), $tab_key ); ?>
 				</a>
-
 			</li>
-		<?php } ?>
+		<?php 
+			} //if($publis)
+			} ?>
 
 	</ul>
+	<?php if($profile2->get_user_data( 'id' ) != get_current_user_id()){ ?>
+	<script>
+		jQuery(document).ready(function(){
+			if(jQuery('ul.unauthorizedtab').length){
+				if(!jQuery('ul.unauthorizedtab li.active').length){
+					var href = jQuery('ul.unauthorizedtab li:first-child').find('a').attr('href');
+					location.replace(href);
+				}
+			}
+		});
+	</script>
+	<?php } ?>
 
 <?php do_action( 'learn-press/after-profile-nav', $profile ); ?>

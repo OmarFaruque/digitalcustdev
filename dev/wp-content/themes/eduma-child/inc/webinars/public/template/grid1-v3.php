@@ -107,7 +107,7 @@ if ( $the_query->have_posts() ) :
 		?>
 			<div class="lpr_course <?php echo 'course-grid-' . $columns; ?>">
 				<div class="course-item">
-					<div class="course-thumbnail">
+					<div class="course-thumbnail om5">
 						<a href="<?php echo esc_url( get_the_permalink( get_the_ID() ) ); ?>">
 							<?php echo thim_get_feature_image( get_post_thumbnail_id( get_the_ID() ), 'full', $thumb_w, $thumb_h, get_the_title() ); ?>
 							<?php is_rebon($status); ?>

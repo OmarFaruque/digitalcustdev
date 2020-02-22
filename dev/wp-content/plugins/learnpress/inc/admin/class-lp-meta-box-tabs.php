@@ -60,6 +60,7 @@ if ( ! class_exists( 'LP_Meta_Box_Tabs' ) ) {
 		 * Display tabs
 		 */
 		public function display() {
+			// echo 'omar test';
 			if ( ! empty( $this->args['post_type'] ) ) {
 				if ( ! is_array( $this->args['post_type'] ) ) {
 					$this->args['post_type'] = preg_split( '!\s+!', $this->args['post_type'] );

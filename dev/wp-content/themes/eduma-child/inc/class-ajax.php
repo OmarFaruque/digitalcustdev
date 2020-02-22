@@ -104,34 +104,58 @@ class DigitalCustDev_Ajax {
 	function search_courses() {
 		$search      = filter_input( INPUT_POST, 's' );
 		$search_type = filter_input( INPUT_POST, 'type' );
+		$data_type = filter_input( INPUT_POST, 'data_type' );
 
 		$profile     = learn_press_get_profile();
 		$author      = $profile->get_user_data( 'ID' );
-		$postDataArr = array(
-			'posts_per_page'     => - 1,
-			'post_type'          => 'lp_course',
-			's'                  => esc_attr( $search ),
-			'author'             => $author,
-			'course_ajax_search' => true
-		);
 
-		if ( $search_type === "webinar" ) {
-			$postDataArr['meta_key']   = '_course_type';
-			$postDataArr['meta_value'] = 'webinar';
-		}
 
-		$posts = new WP_Query( $postDataArr );
-		if ( $posts->have_posts() ) {
-			while ( $posts->have_posts() ) {
-				$posts->the_post();
-				dcd_core_get_template( 'content-profile-webinar.php' );
+		if(!isset($data_type)){
+			$postDataArr = array(
+				'posts_per_page'     => -1,
+				'post_type'          => 'lp_course',
+				's'                  => esc_attr( $search ),
+				'author'             => $author,
+				'course_ajax_search' => true
+			);
+
+			if ( $search_type === "webinar" ) {
+				$postDataArr['meta_key']   = '_course_type';
+				$postDataArr['meta_value'] = 'webinar';
 			}
 
-			wp_reset_postdata();
-		} else {
-			learn_press_display_message( __( 'No courses!', 'eduma' ) );
-		}
+			$posts = new WP_Query( $postDataArr );
 
+			// $posts = $posts->posts;
+			if ( $posts->have_posts() ) {
+				while ( $posts->have_posts() ) {
+					$posts->the_post();
+					// $post_id = get_the_ID();
+					dcd_core_get_template( 'content-profile-webinar.php' );
+					// $post   = get_post( $post_id );
+					// setup_postdata( $post );
+					// learn_press_get_template( 'content-profile-course.php' );
+				}
+				wp_reset_postdata();
+			} else {
+				learn_press_display_message( __( 'No courses!', 'eduma' ) );
+			}
+		}else{
+			/*
+			* DATA Type webinar / course
+			*/
+			switch($data_type){
+				case 'purchased_courses':
+					// purchased_courses
+					learn_press_get_template('profile/tabs/courses/purchased-ajax.php', array('ajax' => true));
+				break;
+				case 'purchased_webinars':
+					learn_press_get_template('profile/tabs/courses/purchased-webinar-ajax.php', array('ajax' => true));
+				break;
+			}
+			
+
+		}
 		wp_die();
 	}
 

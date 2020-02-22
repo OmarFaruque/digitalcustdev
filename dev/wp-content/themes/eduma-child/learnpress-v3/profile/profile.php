@@ -37,7 +37,7 @@ if ( $profile->is_public() ) {
                 <?php do_action( 'learn-press/before-user-profile', $profile ); ?>
             </div>
         <?php endif; ?>
-        <div class="profile-tabs <?php echo ($profile2->get_user_data( 'id' ) != get_current_user_id()) ? 'not-view' : 'view';  ?>">
+        <div class="profile-tabs unauthorized <?php echo ($profile2->get_user_data( 'id' ) != get_current_user_id()) ? 'not-view' : 'view';  ?>">
             <?php
             /**
              * @since 3.0.0

@@ -216,9 +216,12 @@ if ( ! user_can( $profile_id, 'edit_lp_courses' ) ) {
 									case 'settings':
 									?>
 										<li class="Student Interaction dropdown">
+
 										<!--tabs 9-->
 										<a class="dropbtn" <?php echo (isset($tab_data['sections'])) ? "onClick='return false;'": ""; ?> href="" data-slug="http://localhost/digitalcustdev/profile/user3886106/events/">
 										<?php echo apply_filters( 'learn_press_profile_' . $tab_key . '_tab_title', esc_html( $tab_data['title'] ), $tab_key ); ?>
+									
+
 											<?php if(isset($tab_data['sections'])): ?>
 												<i class="fa fa-caret-right small"></i>
 											<?php endif; ?>
@@ -228,11 +231,17 @@ if ( ! user_can( $profile_id, 'edit_lp_courses' ) ) {
 												if($sik == 'publicity') break;
 												$link  = ($sik == 'gradebook') ? $profile->get_tab_link( $sik, false ) : $profile->get_tab_link( $tab_key, false );
 												$link = ($sik == 'gradebook') ? $link : $link . $sik;
+												
 												?>
 												<?php if ( $sik == 'gradebook/courses' && is_plugin_active( 'learnpress-gradebook/learnpress-gradebook.php' ) ) { ?>
 													<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?></a>
 												<?php }else{ ?>
-												<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?></a>
+												<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?>
+													<?php if($sik == 'assignments'): ?>
+														<span class="countr buble-counter third"><?php echo get_author_assignments_not_set_yet(); ?></span>
+													<?php endif; ?>
+												</a>
+
 												<?php } endforeach; ?>
 											</div>
 									</li>

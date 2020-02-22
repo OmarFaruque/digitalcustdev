@@ -470,7 +470,7 @@ if ( !function_exists( 'thim_course_loop_price_html' ) ) {
 if ( !function_exists( 'thim_courses_loop_item_thumbnail' ) ) {
 	function thim_courses_loop_item_thumbnail( $course = null ) {
 		$course = LP_Global::course();
-		echo '<div class="course-thumbnail">';
+		echo '<div class="course-thumbnail o4">';
 		echo '<a class="thumb" href="' . esc_url( get_the_permalink( $course->get_id() ) ) . '" >';
 		echo thim_get_feature_image( get_post_thumbnail_id( $course->get_id() ), 'full', apply_filters( 'thim_course_thumbnail_width', 450 ), apply_filters( 'thim_course_thumbnail_height', 450 ), $course->get_title() );
 		echo '</a>';
@@ -918,7 +918,7 @@ if ( !function_exists( 'thim_related_courses' ) ) {
 							?>
 							<article class="lpr_course">
 								<div class="course-item">
-									<div class="course-thumbnail">
+									<div class="course-thumbnail o78">
 										<a class="thumb" href="<?php echo get_the_permalink( $course_item->ID ); ?>">
 											<?php
 											if ( $layout_grid != '' && $layout_grid != 'layout_courses_1' ) {

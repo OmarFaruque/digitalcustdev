@@ -119,6 +119,7 @@ learn_press_admin_view( 'quiz/modal-choose-items' );
                 },
                 // addable new
                 addableNew: function () {
+                    console.log('test omar');
                     return !!this.new_question.title;
                 },
                 // all question types

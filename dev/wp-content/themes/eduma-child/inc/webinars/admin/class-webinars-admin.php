@@ -106,7 +106,7 @@ class Webinars_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/webinars-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, get_stylesheet_directory_uri() . '/inc/webinars/admin/css/webinars-admin.css', array(), $this->version, 'all' );
 
 	}
 
@@ -129,7 +129,7 @@ class Webinars_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/webinars-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, get_stylesheet_directory_uri() . '/inc/webinars/admin/js/webinars-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
 	function add_custom_taxonomies() {

@@ -19,17 +19,17 @@ $webinars = dcd_webinars()->get_purchased_webinars( $user->get_id(),
     )
 );
 
-
 $orders = $card->get_orders( $user->get_id(), array( 'status' => 'completed' ) );
 
 ?>
+
 <div class="row">
     <div class="form-search-fields om-56">
         <div class="col-md-12 col-sm-12">
             <h3 class="profile-heading"><?php _e('My Webinars', 'webinar'); ?></h3>
         </div>
         <div class="form-group col-md-6">
-            <input type="text" name="s" class="form-control courses-search" placeholder="Search">
+            <input type="text" data-data_type="purchased_webinars" name="s" class="form-control courses-search" placeholder="Search">
         </div>
         <?php if ( $filters = get_purchased_webinar_filters( $filter_status ) ) { ?>
             <div class="form-group col-md-6">

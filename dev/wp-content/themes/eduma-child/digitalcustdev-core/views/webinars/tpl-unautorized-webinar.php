@@ -22,6 +22,7 @@ $profile = LP_Profile::instance();
 $query         = dcd_webinars()->query_own_courses_webinars( 
 	$profile->get_user_data('id'), 
 	array( 
+		'status' => 'publish',
 		'limit' => 10,
 		'orderby' => 'post_date',
 		'order' => 'DESC'
@@ -29,20 +30,20 @@ $query         = dcd_webinars()->query_own_courses_webinars(
 );
 ?>
 
-<div class="learn-press-subtab-content">
-
+<div class="learn-press-subtab-content show-rebon">
     <h3 class="profile-heading">
 		<?php _e( 'My Webinars', 'eduma' ); ?>
     </h3>
 
-	<?php if ( $filters = $profile->get_own_courses_filters( $filter_status ) ) { ?>
-        <ul class="lp-sub-menu">
-			<?php foreach ( $filters as $class => $link ) { ?>
-                <li class="<?php echo $class; ?>"><?php echo $link; ?></li>
-			<?php } ?>
-        </ul>
-	<?php } ?>
+	<?php //if ( $filters = $profile->get_own_courses_filters( $filter_status ) ) { ?>
+        <!-- <ul class="lp-sub-menu">
+			<?php //foreach ( $filters as $class => $link ) { ?>
+                <li class="<?php //echo $class; ?>"><?php //echo $link; ?></li>
+			<?php // } ?>
+        </ul> -->
+	<?php // } ?>
 
+	
 	<?php if ( ! $query['total'] ) {
 		learn_press_display_message( __( 'No courses!', 'eduma' ) );
 	} else { ?>

@@ -5,7 +5,7 @@
  *
  * @since 3.0
  */
-class LP_User_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
+class LP_User_CURD_THEME extends LP_Object_Data_CURD implements LP_Interface_CURD {
 
 	/**
 	 * @var string
@@ -1274,10 +1274,10 @@ class LP_User_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 	 *
 	 * @return LP_Query_List_Table
 	 */
-	public function query_purchased_courses( $user_id = 0, $args = '' ) {
+	public function query_purchased_courses_theme( $user_id = 0, $args = '' ) {
 		global $wpdb, $wp;
 		$paged = 1;
-
+		
 		if ( ! empty( $wp->query_vars['view_id'] ) ) {
 			$paged = absint( $wp->query_vars['view_id'] );
 		}
@@ -1297,10 +1297,12 @@ class LP_User_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 			$user_id = get_current_user_id();
 		}
 
+
+
 		$cache_key = sprintf( 'purchased-courses-%d-%s', $user_id, md5( build_query( $args ) ) );
-
+			
 		if ( false === ( $courses = LP_Object_Cache::get( $cache_key, 'learn-press/user-courses' ) ) ) {
-
+			
 			$courses = array(
 				'total' => 0,
 				'paged' => $args['paged'],
@@ -1336,10 +1338,18 @@ class LP_User_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 
 				$valid_orders = array_keys( $orders );
 				$course_ids   = array_keys( $orders );
-				$query_args   = $course_ids;
-				$query_args[] = $user_id;
-				$limit        = $args['limit'];
-				$offset       = ( $args['paged'] - 1 ) * $limit;
+				$excerpt_webenars = array();
+				foreach($course_ids as $id){
+					if(get_post_meta($id, '_course_type', true) != 'webinar'){
+						array_push($excerpt_webenars, $id);	
+					} 
+				}
+				
+				$course_ids 	= $excerpt_webenars;
+				$query_args   	= $course_ids;
+				$query_args[] 	= $user_id;
+				$limit        	= $args['limit'];
+				$offset       	= ( $args['paged'] - 1 ) * $limit;
 
 				// SELECT
 				$select = "SELECT c.ID, c.post_title, ui.*";
@@ -1418,6 +1428,9 @@ class LP_User_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 					}
 				}
 
+				// Remove webinars
+				// if(count($excerptPosts) > 0) $where = $where . $wpdb->prepare( " AND c.ID NOT IN (" . implode(',', $excerptPosts) . ")" );
+
 				if ( empty( $args['status'] ) || $args['status'] === 'not-enrolled' ) {
 					$unenrolled_course_ids = $this->query_courses_by_order( $user_id );
 				}
@@ -1472,6 +1485,7 @@ class LP_User_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 					{$orderby}
 					LIMIT {$offset}, {$limit}
 				";
+
 
 				$items = $wpdb->get_results( $sql );
 

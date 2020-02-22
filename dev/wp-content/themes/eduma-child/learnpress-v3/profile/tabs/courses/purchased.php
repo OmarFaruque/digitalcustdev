@@ -12,26 +12,33 @@
 /**
  * Prevent loading this file directly
  */
+
+
 defined( 'ABSPATH' ) || exit();
 $course = LP_Global::course();
 $user = LP_Global::user();
-$card       = new LP_User_CURD();
+$card       = new LP_User_CURD_THEME();
 /*$instructor = $course->get_instructor();*/
 $profile       = learn_press_get_profile();
 $filter_status = LP_Request::get_string( 'filter-status' );
 if ( $filter_status === "all" ) {
 	$filter_status = false;
 }
-$query = $profile->query_courses( 'purchased', array( 'limit' => 5, 'status' => $filter_status ) );
+
+
+// purchased course 
+$query = $card->query_purchased_courses_theme($user->get_id(), array( 'limit' => 5, 'status' => $filter_status ));
+
 $orders = $card->get_orders( $user->get_id(), array( 'status' => 'completed' ) );
+
 ?>
 
 <div class="learn-press-subtab-content om8">
 <h3 class="profile-heading"><?php _e('My Courses', 'webinar'); ?></h3>
     <div class="mr-0">
     <div class="form-group form-search-fields purchase om">
-        <input type="text" name="s" class="form-control courses-search" placeholder="Search">
-		<?php if ( $filters = $profile->get_purchased_courses_filters( $filter_status ) ) {
+        <input type="text" data-data_type="purchased_courses" name="s" class="form-control courses-search" placeholder="Search">
+		<?php if ( $filters = get_purchased_courses_filters( $filter_status ) ) {
                 unset($filters['not-enrolled']);
             ?>
             <select class="form-control" onchange="location = this.value;">

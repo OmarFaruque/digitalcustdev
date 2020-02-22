@@ -131,16 +131,14 @@ class Webinars_Public {
 		$status = '';
 		if($past == true && $future == true) $status = 'Progress';
 		if($past == true && $future == false) $status = 'Passed';
-
-		echo '<div class="course-thumbnail">';
-		echo 'test o';
-		echo '<a class="thumb" href="' . esc_url( $url ) . '" >';
-		echo thim_get_feature_image( get_post_thumbnail_id( $course->get_id() ), 'full', apply_filters( 'thim_course_thumbnail_width', 400 ), apply_filters( 'thim_course_thumbnail_height', 320 ), $course->get_title() );
-		echo ($this->is_rebon($status));
-		echo '</a>';
-		do_action( 'thim_inner_thumbnail_course' );
-		echo '<a class="course-readmore" href="' . esc_url( get_the_permalink( $course->get_id() ) ) . '">' . esc_html__( 'Read More', 'eduma' ) . '</a>';
-		echo '</div>';
+			echo '<div class="course-thumbnail">';
+			echo '<a class="thumb" href="' . esc_url( $url ) . '" >';
+			// echo thim_get_feature_image( get_post_thumbnail_id( $course->get_id() ), 'full', apply_filters( 'thim_course_thumbnail_width', 400 ), apply_filters( 'thim_course_thumbnail_height', 320 ), $course->get_title() );
+			echo ($this->is_rebon($status));
+			echo '</a>';
+			do_action( 'thim_inner_thumbnail_course' );
+			echo '<a class="course-readmore" href="' . esc_url( get_the_permalink( $course->get_id() ) ) . '">' . esc_html__( 'Read More', 'eduma' ) . '</a>';
+			echo '</div>';
 	}
 
 

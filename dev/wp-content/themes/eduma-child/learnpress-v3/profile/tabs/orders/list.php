@@ -38,8 +38,15 @@ if ( ! $query_orders['items'] ) {
     </thead>
 
     <tbody>
-	<?php foreach ( $query_orders['items'] as $order_id ) {
-		$order = learn_press_get_order( $order_id ); ?>
+    <?php
+    
+        foreach ( $query_orders['items'] as $order_id ) {
+        $woo_order_id = get_post_meta( $order_id, '_woo_order_id', true );
+        $order = learn_press_get_order( $order_id ); 
+        $wc_order = new WC_Order($woo_order_id);
+        $woo_checkout_url = $wc_order->get_checkout_payment_url();
+        
+        ?>
         <tr class="order-row">
             <td class="column-order-number"><?php echo $order->get_order_number(); ?></td>
             <td class="column-order-date"><?php echo $order->get_order_date(); ?></td>
@@ -48,12 +55,15 @@ if ( ! $query_orders['items'] ) {
             </td>
             <td class="column-order-total"><?php echo $order->get_formatted_order_total(); ?></td>
             <td class="column-order-action">
-				<?php
+                <?php
 				if ( $actions = $order->get_profile_order_actions() ) {
 					foreach ( $actions as $action ) {
 						printf( '<a href="%s">%s</a>', $action['url'], $action['text'] );
 					}
-				}
+                }
+                if($order->get_status() == 'pending'){
+                    printf( '<a href="%s">%s</a>', $woo_checkout_url, __('Pay', 'webinars') );
+                }
 				?>
             </td>
         </tr>

@@ -210,6 +210,7 @@ class LP_Plugin_Install_List_Table extends WP_List_Table {
      * Override the parent display() so we can provide a different container.
      */
     public function display() {
+        // echo 'test omar';
         $data_attr = '';
         ?>
         <div class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">

@@ -18,7 +18,6 @@ $profile = learn_press_get_profile();
 $curd    = new LP_Assignment_CURD();
 $query   = $curd->profile_query_assignments( $profile->get_user_data( 'id' ), array( 'status' => '' ) );
 ?>
-
 <?php if ( $query['items'] ) { ?>
     <table class="lp-list-table profile-list-assignments profile-list-table">
         <thead>

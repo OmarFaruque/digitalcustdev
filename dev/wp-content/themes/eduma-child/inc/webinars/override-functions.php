@@ -421,6 +421,9 @@ function test($query){
 // lp_inheance file add 
 require_once(get_stylesheet_directory() . '/inc/webinars/admin/lp_enhance.php');
 
+// require_once 'inc/curds/class-lp-user-curd.php';
+require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-user-curd.php');
+
 // Move DigitalCustDev Core Theme Customizations plugin to child theme
 require_once(get_stylesheet_directory() . '/digitalcustdev-core/digitalcustdev-core.php');
 
@@ -431,7 +434,10 @@ function thim_tab_profile_filter_titlecustomize( $tab_title, $key ) {
 			$tab_title = '<i class="fa fa-male"></i><span class="text">' . esc_html__( 'Instructor', 'eduma' ) . '</span>';
 		break;
 		case 'students':
-			$tab_title = '<i class="fa fa-graduation-cap"></i><span class="text">' . esc_html__( 'Students', 'eduma' ) . '</span>';
+			$tab_title = '<i class="fa fa-graduation-cap"></i>
+			<span class="countr buble-counter">' . get_author_assignments_not_set_yet() . '</span>
+			<span class="text">' . esc_html__( 'Students', 'eduma' ) . '</span>
+			<span class="countr buble-counter second">' . get_author_assignments_not_set_yet() . '</span>';
 		break;
 		case 'reports':
 			$tab_title = '<i class="fa fa-file-text"></i><span class="text">' . esc_html__( 'Reports', 'eduma' ) . '</span>';
@@ -444,6 +450,8 @@ add_filter( 'learn_press_profile_students_tab_title', 'thim_tab_profile_filter_t
 add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_titlecustomize', 200, 2 );
 
 
+
+	
 
 
 
@@ -528,7 +536,10 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 				$limit  = $args['limit'];
 				$where  = "WHERE 1";
 				$offset = ( $args['paged'] - 1 ) * $limit;
-
+				
+				if(isset($args['s']) && !empty($args['s'])){
+					$where .= " AND post_title LIKE '%".$args['s']."%'";
+				}
 				if ( ! empty( $args['status'] ) ) {
 					if ( is_array( $args['status'] ) ) {
 						$a     = array_fill( 0, sizeof( $where ), '%d' );
@@ -559,7 +570,6 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 					LIMIT {$offset}, {$limit}
 				";
 				
-				// echo 'sql: ' . $sql . '<br/>';
 
 				$items = $wpdb->get_results( $sql );
 				
@@ -581,6 +591,7 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 
 			LP_Object_Cache::set( $cache_key, $courses, 'learn-press/user-courses' );
 		}
+
 
 		$courses['single'] = __( 'course', 'learnpress' );
 		$courses['plural'] = __( 'courses', 'learnpress' );
@@ -680,21 +691,27 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 	if ( !function_exists( 'thim_courses_loop_item_thumbnail' ) ) {
 		function thim_courses_loop_item_thumbnail( $course = null ) {
 			$course = LP_Global::course();
-		
 			global $frontend_editor;
 			global $wpdb;
 			$post_manage = $frontend_editor->post_manage;
-			$course = LP_Global::course();
-			// echo 'test: ';
-			$arraystatus = array('draft');
+			
+			
+			
+			$arraystatus = array('draft');		
+			
 			if(in_array($course->get_post_status(), $arraystatus)){
-				$url = $post_manage->get_edit_post_link( get_post_type(), get_the_id() );
+				if(!wp_doing_ajax()){
+					$url = $post_manage->get_edit_post_link( get_post_type(), get_the_id() );
+				}else{
+					$url = $frontend_editor->get_url( 'edit-post' . '/' . get_the_id() );
+				}
 			}
 			else {
 				$url = get_the_permalink( $course->get_id() );
 			}
+
 			
-			
+			// echo 'course status: ' . $course->get_post_status() . '<br/>';
 			$course_id = $course->get_id();
 			$lessons = get_course_lessons($course_id);
 			
@@ -713,7 +730,8 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 			$status = '';
 			if($past == true && $future == true) $status = 'Progress';
 			if($past == true && $future == false) $status = 'Passed';
-			echo '<div class="course-thumbnail">';
+				//echo 'status: ' . $status . '<br/>';
+			echo '<div class="course-thumbnail from-override">';
 			echo '<a class="thumb" href="' . esc_url( $url ) . '" >';
 			echo thim_get_feature_image( get_post_thumbnail_id( $course->get_id() ), 'full', apply_filters( 'thim_course_thumbnail_width', 400 ), apply_filters( 'thim_course_thumbnail_height', 320 ), $course->get_title() );
 			echo (is_rebon($status));
@@ -782,6 +800,16 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 
 
 
+		function get_author_assignments_not_set_yet($author_id = null){
+
+			$total = 0;
+			$assignments = get_author_assignments();
+			foreach($assignments as $sassignment){
+				$avutotal = not_avualate($sassignment->ID);
+				if($avutotal > 0) $total+=$avutotal;
+			}
+			return $total;
+		}
 
 
 	/**
@@ -818,6 +846,44 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 		}
 
 
+
+
+
+/**
+		 * Get filters for purchased courses tab.
+		 *
+		 * @param string $current_filter
+		 *Use in purchased.php
+		 * @return array
+		 */
+		function get_purchased_courses_filters( $current_filter = '' ) {
+			$profile = learn_press_get_profile();
+			$url      = $profile->get_current_url();
+
+			$defaults = array(
+				'all'          => sprintf( '<a href="%s">%s</a>', esc_url( $url ), __( 'All', 'learnpress' ) ),
+				'progress'     => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'progress', $url ) ), __( 'Progress', 'learnpress' ) ),
+				'passed'       => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'passed', $url ) ), __( 'Passed', 'learnpress' ) ),
+				'failed'       => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'failed', $url ) ), __( 'Failed', 'learnpress' ) ),
+				'not-enrolled' => sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'not-enrolled', $url ) ), __( 'Not enrolled', 'learnpress' ) )
+			);
+
+			if ( ! $current_filter ) {
+				$keys           = array_keys( $defaults );
+				$current_filter = reset( $keys );
+			}
+
+			foreach ( $defaults as $k => $v ) {
+				if ( $k === $current_filter ) {
+					$defaults[ $k ] = sprintf( '<span>%s</span>', strip_tags( $v ) );
+				}
+			}
+
+			return apply_filters(
+				'learn-press/profile/purchased-courses-filters',
+				$defaults
+			);
+		}
 
 
 		/**
@@ -870,7 +936,7 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 			$url      = $profile->get_current_url( false );
 			$defaults = array(
 				'all'          		=> sprintf( '<a href="%s">%s</a>', esc_url( $url ), __( 'All', 'learnpress' ) ),
-				'finished'  		=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'finished', $url ) ), __( 'Finished', 'learnpress' ) ),
+				'progress'  		=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'progress', $url ) ), __( 'Progress', 'learnpress' ) ),
 				'passed'  			=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'passed', $url ) ), __( 'Passed', 'learnpress' ) ),
 				'failed'  			=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'failed', $url ) ), __( 'Failed', 'learnpress' ) ),
 				'closest-webinar-lesson'  	=> sprintf( '<a href="%s">%s</a>', esc_url( add_query_arg( 'filter-status', 'closest-webinar-lesson', $url ) ), __( 'Closest webinar lesson', 'learnpress' ) )
@@ -906,13 +972,79 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 		}
 
 
+		function not_avualate($assignment_id){
+			global $wpdb;
+			$sql = "SELECT count(*) as `total` FROM $wpdb->learnpress_user_itemmeta lum 
+			LEFT JOIN $wpdb->learnpress_user_items lu ON lu.`user_item_id`=lum.`learnpress_user_item_id` 
+			WHERE lu.`item_id` = ".$assignment_id." AND lum.`meta_key`='_lp_assignment_evaluate_author' AND lum.`meta_value`='0'";
+			$results = $wpdb->get_row($sql, OBJECT);
+			return $results->total;
+		}
+
+
+		/*
+		* REturn evulated total
+		* Use in instructor-assignments.php
+		*/
+		function avualate($assignment_id){
+			global $wpdb;
+			$sql = "SELECT count(*) as `total` FROM $wpdb->learnpress_user_itemmeta lum 
+			LEFT JOIN $wpdb->learnpress_user_items lu ON lu.`user_item_id`=lum.`learnpress_user_item_id` 
+			WHERE lu.`item_id` = ".$assignment_id." AND lum.`meta_key`='_lp_assignment_evaluate_author' AND lum.`meta_value`!='0'";
+			$results = $wpdb->get_row($sql, OBJECT);
+			return $results->total;
+		}
+
 		// add_action('wp_head', 'testfunction');
 		function testfunction(){
-			$data = get_userdata( get_current_user_id() ); 
-			if ( is_object( $data) ) {
-				$current_user_caps = $data->allcaps;
-				
-				// print it to the screen
-				echo '<pre>' . print_r( $current_user_caps, true ) . '</pre>';
-			}
+			
+			// get_template_part( 'digitalcustdev-core\views\webinars\tpl-list', 'purchased' );
 		}
+
+	
+			/*
+			* get user grade from theme
+			*/ 
+
+		function get_item_grade_from_theme($sl, $course_id){
+			global $wpdb;
+			$sql = "SELECT lum.`meta_value` FROM $wpdb->learnpress_user_itemmeta lum 
+			LEFT JOIN $wpdb->learnpress_user_items lu ON lu.`user_item_id`=lum.`learnpress_user_item_id` 
+			LEFT JOIN $wpdb->postmeta pm ON lu.`user_id`= pm.`meta_value` AND lu.`ref_id` = pm.`post_id` 
+			WHERE lu.`item_id` = ".$course_id." AND lum.`meta_key`='grade' AND pm.`meta_key`='_user_id'";
+
+			$results = $wpdb->get_row($sql, OBJECT);
+			return $results->meta_value;
+
+		}
+
+
+add_filter( 'learn-press/update-profile-basic-information-data', 'updateProfileUserMeta');
+function updateProfileUserMeta(){
+	$user_id = get_current_user_id();
+
+	$update_data = array(
+		'ID'           => $user_id,
+		'first_name'   => filter_input( INPUT_POST, 'first_name', FILTER_SANITIZE_STRING ),
+		'last_name'    => filter_input( INPUT_POST, 'last_name', FILTER_SANITIZE_STRING ),
+		'display_name' => filter_input( INPUT_POST, 'display_name', FILTER_SANITIZE_STRING ),
+		'nickname'     => filter_input( INPUT_POST, 'nickname', FILTER_SANITIZE_STRING ),
+		'description'  => filter_input( INPUT_POST, 'description', FILTER_SANITIZE_STRING )
+	);
+
+	$metaArray = array(
+		'major' => filter_input( INPUT_POST, 'major', FILTER_SANITIZE_STRING ),
+		'facebook' => filter_input( INPUT_POST, 'facebook', FILTER_SANITIZE_STRING ), 
+		'twitter' => filter_input( INPUT_POST, 'twitter', FILTER_SANITIZE_STRING ),
+		'instagram' => filter_input( INPUT_POST, 'instagram', FILTER_SANITIZE_STRING ),
+		'google' => filter_input( INPUT_POST, 'google', FILTER_SANITIZE_STRING ),
+		'linkedin' => filter_input( INPUT_POST, 'linkedin', FILTER_SANITIZE_STRING ),
+		'youtube' => filter_input( INPUT_POST, 'youtube', FILTER_SANITIZE_STRING )
+	);
+
+	update_user_meta( $user_id, 'lp_info', $metaArray );
+
+
+	$return      = wp_update_user( $update_data );
+}
+		

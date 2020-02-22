@@ -184,6 +184,7 @@ if ( ! function_exists( 'learn_press_assignment_get_template' ) ) {
 	 * @param string $default_path
 	 */
 	function learn_press_assignment_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
+		// echo 'path: ' . learn_press_template_path() . '/addons/assignments/', LP_ADDON_ASSIGNMENT_PATH . '/templates/';
 		learn_press_get_template( $template_name, $args, learn_press_template_path() . '/addons/assignments/', LP_ADDON_ASSIGNMENT_PATH . '/templates/' );
 	}
 }

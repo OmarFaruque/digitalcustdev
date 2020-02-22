@@ -5,6 +5,7 @@
 
 $assignments = get_author_assignments();
 if(count($assignments) > 0):
+    $not_set_yet = 0;
 ?>
 
 <div id="assignments">
@@ -38,6 +39,7 @@ if(count($assignments) > 0):
                             }
                         } else {
                             _e( 'Not assigned yet', 'learnpress-assignments' );
+                            $not_set_yet++;
                         }
                     ?>
                     </td>

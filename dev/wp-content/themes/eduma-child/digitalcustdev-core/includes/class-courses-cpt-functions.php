@@ -48,8 +48,10 @@ class DigitalCustDev_CPT_Functions {
 		
 		$cache_key = sprintf( 'own-courses-%d-%s', $user_id, md5( build_query( $args ) ) );
 
-		if ( false === ( $courses = LP_Object_Cache::get( $cache_key, 'learn-press/user-courses' ) ) ) {
+		$courses = LP_Object_Cache::get( $cache_key, 'learn-press/user-webinars' );
 
+		if (get_current_user_id() != $user_id || false === ( $courses = LP_Object_Cache::get( $cache_key, 'learn-press/user-webinars' ) ) ) {
+			
 			$courses = array(
 				'total' => 0,
 				'paged' => $args['paged'],
@@ -202,7 +204,7 @@ class DigitalCustDev_CPT_Functions {
 				learn_press_add_message( $ex->getMessage() );
 			}
 
-			LP_Object_Cache::set( $cache_key, $courses, 'learn-press/user-courses' );
+			LP_Object_Cache::set( $cache_key, $courses, 'learn-press/user-webinars' );
 		}
 
 		$courses['single'] = __( 'course', 'learnpress' );
@@ -235,21 +237,24 @@ class DigitalCustDev_CPT_Functions {
 		$profileid = $profile->get_user_data( 'id' );
 		$tpllist = false;
 		if($profile->get_user_data( 'id' ) != get_current_user_id()) $tpllist = true;
-		
-
 
 		wp_enqueue_style( 'digitalcustdev-datable' );
 		wp_enqueue_script( 'digitalcustdev-datable-js' );
 		wp_enqueue_script( 'digitalcustdev-core' );
-		if ( current_user_can( 'lp_teacher' ) || current_user_can( 'administrator' ) ) {
+		if ( current_user_can( 'lp_teacher' ) || current_user_can( 'administrator')) {
 			?>
             <div class="webinar-wrapper omar3 5">
 				<?php
-				if(get_user_meta( get_current_user_id(), 'lp_switch_view', true) && get_user_meta( get_current_user_id(), 'lp_switch_view', true) == 'student'){
+				if(!$tpllist && get_user_meta( get_current_user_id(), 'lp_switch_view', true) && get_user_meta( get_current_user_id(), 'lp_switch_view', true) == 'student'){
 					require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-list-purchased.php';	
 				}else{
-					dcd_core_get_notification( __( 'Webinar course updated.', 'digitalcustdev-core' ) );
-					require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-list.php';
+					if(!$tpllist){
+						dcd_core_get_notification( __( 'Webinar course updated.', 'digitalcustdev-core' ) );
+						require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-list.php';
+					}else{
+						require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-unautorized-webinar.php';
+					}
+					
 				}
 				?>
             </div>
@@ -259,8 +264,10 @@ class DigitalCustDev_CPT_Functions {
             <div class="webinar-wrapper omar4">
 				<?php
 				if(!$tpllist){
+					
 					require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-list-purchased.php';
 				}else{
+					
 					require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tpl-unautorized-webinar.php';
 				}
 				?>
@@ -271,7 +278,9 @@ class DigitalCustDev_CPT_Functions {
 
 	function list_instructor_assignment(){
 		// echo 'tabs: ' . $_REQUEST['tab'] . '<br/>';
-		require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/instructor/list-assignment.php';
+		// require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/instructor/list-assignment.php';
+		// learn_press_assignment_get_template( 'compatible/learnpress-buddypress/profile/assignments.php', $args );
+		learn_press_assignment_get_template( 'profile/tabs/instructor-assignments.php' );
 	}
 
 	public function list_salesandcommission(){

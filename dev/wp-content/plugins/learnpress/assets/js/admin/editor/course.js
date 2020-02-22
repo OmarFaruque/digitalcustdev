@@ -353,6 +353,7 @@ var ModalCourseItems = {
     context.commit('TOGGLE');
   },
   searchItems: function searchItems(context, payload) {
+    
     context.commit('SEARCH_ITEMS_REQUEST');
     LP.Request({
       type: 'search-items',
@@ -385,6 +386,7 @@ var ModalCourseItems = {
   addItemsToSection: function addItemsToSection(context) {
     var items = context.getters.addedItems;
 
+    console.log('omar fa');
     if (items.length > 0) {
       LP.Request({
         type: 'add-items-to-section',

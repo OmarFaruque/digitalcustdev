@@ -198,6 +198,9 @@ div#profile-content-courses .course-wishlist-box,
 div#profile-content-webinars .ribbon.ribbon-top-left {
   display: none;
 }
+div#profile-content-webinars .show-rebon .ribbon.ribbon-top-left{
+  display: block;
+}
 
 
 /*
@@ -272,4 +275,72 @@ div.learnpress .profile-container .profile-tabs .tab-content
 .pull-right
 {
   float: right;
+}
+#profile-content-orders .profile-recover-order {
+  display: none;
+}
+.profile-orders td.column-order-action a:before {
+  content: '| ';
+  color: #999;
+}
+.profile-orders td.column-order-action a:first-child:before {
+  display: none;
+}
+span.countr.buble-counter {
+  position: absolute;
+  left: 40px;
+  background-color: #f71d1d;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 100px;
+  font-size: 10px;
+  color: white;
+}
+
+span.countr.buble-counter.second{
+  left: unset;
+  right: 65px;
+  top: 7px;
+}
+
+span.countr.buble-counter.third{
+  left: unset;
+  right: 20px;
+}
+
+
+
+/*
+* responsive
+*/
+@media only screen and (max-width: 786px){
+  div#wpadminbar {
+    display: none;
+  }
+  html.touch {
+    margin-top: 0 !important;
+  }
+  nav.mobile-menu-container .dropdown-content {
+    display: none;
+    position: relative;
+    right: unset;
+    top: 0;
+    margin-right: unset;
+    background-color: unset;
+    min-width: unset;
+    box-shadow: unset;
+    z-index: unset;
+    left: 30px;
+} 
+nav.mobile-menu-container .dropdown-content a {
+  color: #fff;
+  padding: 0px 10px;
+  text-decoration: none;
+  display: block;
+}
+span.countr.buble-counter{
+  left: 28px;
+}
 }

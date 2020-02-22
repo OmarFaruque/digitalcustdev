@@ -57,6 +57,7 @@ learn_press_admin_view( 'question/option' );
                 },
                 // addable new answer
                 addable: function () {
+                    console.log('tst 5');
                     return this.type !== 'true_or_false';
                 },
                 // question status

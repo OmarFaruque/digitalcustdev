@@ -191,10 +191,11 @@ class DigitalCustDev_LearpressTemplateFunctions {
 			case 'profile/tabs/courses/owned.php':
 			// case 'profile/content.php':
 			
-				if($template_name == 'content-profile-course.php') $template_name = 'content-course.php';
+				// if($template_name == 'content-profile-course.php') $template_name = 'content-course.php';	
 				// echo 'template before change: ' . $template . '<br/>';
-				$template = get_template_directory() . '/' . $template_path . '/' . $template_name;
-				echo 'template test: ' . $template . '<br/>';
+				$template_name = 'profile/tabs/courses/owned-unauthorized.php';
+				$template = get_stylesheet_directory() . '/' . $template_path . '/' . $template_name;
+				// echo 'template test: ' . $template . '<br/>';
 			break;
 			default:
 			$template = $template;
