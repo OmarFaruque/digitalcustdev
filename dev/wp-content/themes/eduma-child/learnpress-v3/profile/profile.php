@@ -25,7 +25,7 @@ $allowArray = array('administrator', 'lp_teacher');
 $haveAccessProfile = !empty(array_intersect($allowArray, $current_user->roles));
 
 // echo 'have access : ' . $haveAccessProfile . '<br/>';
-// echo 'profile user id : ' . $profile2->get_user_data( 'id' ) . '<br/>';
+/// echo 'profile user id : ' . $profile2->get_user_data( 'id' ) . '<br/>';
 // echo 'get current user id : ' . get_current_user_id() . '<br/>';
 
 if ( $profile->is_public() ) {

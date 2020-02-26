@@ -231,12 +231,13 @@ var CourseCurriculum = {
   },
   newSectionItem: function newSectionItem(context, payload) {
     context.commit('APPEND_EMPTY_ITEM_TO_SECTION', payload); //context.commit('UPDATE_SECTION_ITEMS', {section_id: payload.section_id, items: result.data});
-
+    
     LP.Request({
       type: 'new-section-item',
       section_id: payload.section_id,
       item: JSON.stringify(payload.item)
     }).then(function (response) {
+      // console.log('add new section item');
       var result = response.body;
 
       if (result.success) {

@@ -1266,6 +1266,10 @@ class LP_User_CURD_THEME extends LP_Object_Data_CURD implements LP_Interface_CUR
 		return new LP_Query_List_Table( $courses );
 	}
 
+
+
+
+
 	/**
 	 * Query courses by user
 	 *
@@ -1275,6 +1279,7 @@ class LP_User_CURD_THEME extends LP_Object_Data_CURD implements LP_Interface_CUR
 	 * @return LP_Query_List_Table
 	 */
 	public function query_purchased_courses_theme( $user_id = 0, $args = '' ) {
+		// $user = LP_Global::user();
 		global $wpdb, $wp;
 		$paged = 1;
 		
@@ -1346,6 +1351,14 @@ class LP_User_CURD_THEME extends LP_Object_Data_CURD implements LP_Interface_CUR
 				}
 				
 				$course_ids 	= $excerpt_webenars;
+
+
+
+
+
+
+
+
 				$query_args   	= $course_ids;
 				$query_args[] 	= $user_id;
 				$limit        	= $args['limit'];
@@ -1391,12 +1404,26 @@ class LP_User_CURD_THEME extends LP_Object_Data_CURD implements LP_Interface_CUR
 //				$having = "HAVING 1";
 //
 				// ORDER BY
+
+				if(isset($args['s']) && !empty($args['s'])){
+					$where .= $wpdb->prepare( " AND c.post_title LIKE %s", '%'.$args['s'].'%' );
+				}
+
 				$orderby = "ORDER BY start_time DESC";
 
 				$unenrolled_course_ids = array();
 
 				if ( ! empty( $args['status'] ) ) {
 					switch ( $args['status'] ) {
+						case 'progress':
+							$select .= ", uim.meta_value AS grade";
+								$join   .= $wpdb->prepare( "
+									LEFT JOIN {$wpdb->learnpress_user_itemmeta} uim ON uim.learnpress_user_item_id = ui.user_item_id AND uim.meta_key = %s
+								", 'grade' );
+								$having .= $wpdb->prepare( " AND grade = %s", 'in-progress' );
+
+						break;
+
 						case 'finished':
 						case 'passed':
 						case 'failed':

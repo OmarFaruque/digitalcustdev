@@ -108,6 +108,7 @@
     }
 
     function createNewPost(e) {
+        console.log('tsffff');
         e.preventDefault();
         $(e.target).closest('a').addClass('disabled');
         $.ajax({

@@ -147,10 +147,10 @@ class DigitalCustDev_Ajax {
 			switch($data_type){
 				case 'purchased_courses':
 					// purchased_courses
-					learn_press_get_template('profile/tabs/courses/purchased-ajax.php', array('ajax' => true));
+					learn_press_get_template('profile/tabs/courses/purchased-ajax.php', array('ajax' => true, 's' => esc_attr( $search )));
 				break;
 				case 'purchased_webinars':
-					learn_press_get_template('profile/tabs/courses/purchased-webinar-ajax.php', array('ajax' => true));
+					learn_press_get_template('profile/tabs/courses/purchased-webinar-ajax.php', array('ajax' => true, 's' => esc_attr( $search )));
 				break;
 			}
 			

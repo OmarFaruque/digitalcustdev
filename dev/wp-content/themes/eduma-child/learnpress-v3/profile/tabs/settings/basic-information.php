@@ -166,3 +166,7 @@ $user = $profile->get_user();
     </div>
 
 </form>
+
+<style>
+    .message.message-success{display:none;}
+</style>

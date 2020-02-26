@@ -28,7 +28,13 @@ if ( $filter_status === "all" ) {
 $userid = (isset($args['ajax']) && $args['ajax']) ? get_current_user_id() : $user->get_id();
 
 // purchased course 
-$query = $card->query_purchased_courses_theme($userid, array( 'limit' => 5, 'status' => $filter_status ));
+$query = $card->query_purchased_courses_theme($userid, 
+    array( 
+        'limit' => 5, 
+        'status' => $filter_status, 
+        's' => $args['s'] 
+    )
+);
 
 $orders = $card->get_orders( $userid, array( 'status' => 'completed' ) );
 
@@ -42,7 +48,8 @@ $orders = $card->get_orders( $userid, array( 'status' => 'completed' ) );
                 $lessons = get_course_lessons($user_course->get_id());   
                 $status = '';
                 foreach($lessons as $l => $sl){
-                    $status = $user->get_item_grade( $sl, $user_course->get_id() );
+                    $status = get_item_grade_from_theme($sl, $user_course->get_id());
+                    // $status = $user->get_item_grade( $sl, $user_course->get_id() );
                 } 
 
                     

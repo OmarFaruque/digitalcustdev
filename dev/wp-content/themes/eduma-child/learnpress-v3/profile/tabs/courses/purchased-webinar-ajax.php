@@ -17,7 +17,8 @@ $card       = new LP_User_CURD_THEME();
 $userid = (isset($args['ajax']) && $args['ajax']) ? get_current_user_id() : $user->get_id();
 $webinars = dcd_webinars()->get_purchased_webinars( $userid, 
     array(
-        'limit' => 5
+        'limit' => 5,
+        's' => $args['s']
     )
 );
 

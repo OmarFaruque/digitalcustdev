@@ -421,8 +421,7 @@ function test($query){
 // lp_inheance file add 
 require_once(get_stylesheet_directory() . '/inc/webinars/admin/lp_enhance.php');
 
-// require_once 'inc/curds/class-lp-user-curd.php';
-require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-user-curd.php');
+
 
 // Move DigitalCustDev Core Theme Customizations plugin to child theme
 require_once(get_stylesheet_directory() . '/digitalcustdev-core/digitalcustdev-core.php');
@@ -1044,7 +1043,15 @@ function updateProfileUserMeta(){
 
 	update_user_meta( $user_id, 'lp_info', $metaArray );
 
-
+	learn_press_remove_message( '', 'error' );
 	$return      = wp_update_user( $update_data );
 }
-		
+
+
+
+
+
+// require_once 'inc/curds/class-lp-user-curd.php';
+require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-section-curd.php');
+require_once(get_stylesheet_directory() . '/inc/webinars/admin/class-lp-admin-editor-course.php');
+require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-user-curd.php');

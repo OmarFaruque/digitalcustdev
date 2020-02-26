@@ -498,6 +498,11 @@ class DigitalCustDev_CPT_Functions {
 				// print_r($args);
 				// echo '</pre>';
 
+
+				if(isset($args['s']) && !empty($args['s'])){
+					$where .= $wpdb->prepare( " AND c.post_title LIKE %s", '%'.$args['s'].'%' );
+				}
+
 				if ( ! empty( $args['status'] ) ) {
 					switch ( $args['status'] ) {
 						case 'finished':
@@ -588,6 +593,11 @@ class DigitalCustDev_CPT_Functions {
 					{$orderby} 
 					LIMIT {$offset}, {$limit}
 				";
+
+
+			
+				
+
 				
 				// GROUP BY item_id
 				$items = $wpdb->get_results( $sql );

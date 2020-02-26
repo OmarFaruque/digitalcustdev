@@ -5,7 +5,7 @@
  *
  * @since 3.0.0
  */
-class LP_Section_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
+class LP_Section_CURD_THEME extends LP_Object_Data_CURD implements LP_Interface_CURD {
 	/**
 	 * @var int
 	 *
@@ -14,7 +14,7 @@ class LP_Section_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 	private $course_id = null;
 
 	/**
-	 * LP_Section_CURD constructor.
+	 * LP_Section_CURD cdonstructor.
 	 *
 	 * @since 3.0.0
 	 *
@@ -364,12 +364,10 @@ class LP_Section_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 		} else if ( $item['type'] == LP_QUIZ_CPT ) {
 			$quiz_curd  = new LP_Quiz_CURD();
 			$item['id'] = $quiz_curd->create( $args );
+		}else if( $item['type'] == LP_ASSIGNMENT_CPT){
+			$assignment_curd  = new LP_ASSIGNMENT_CURD();
+			$item['id'] = $assignment_curd->create( $args );
 		}
-		
-		// else if( $item['type'] == LP_ASSIGNMENT_CPT){
-		// 	$assignment_curd  = new LP_ASSIGNMENT_CURD();
-		// 	$item['id'] = $assignment_curd->create( $args );
-		// }
 		
 		else {
 			$item['id'] = apply_filters( 'learn-press/new-section-item-data', $item['id'], $item, $args, $this->course_id );

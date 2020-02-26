@@ -56,14 +56,20 @@ if ( ! $query_orders['items'] ) {
             <td class="column-order-total"><?php echo $order->get_formatted_order_total(); ?></td>
             <td class="column-order-action">
                 <?php
+
+
 				if ( $actions = $order->get_profile_order_actions() ) {
-					foreach ( $actions as $action ) {
-						printf( '<a href="%s">%s</a>', $action['url'], $action['text'] );
-					}
+                    if(isset($actions['view'])){
+                        printf( '<a href="%s">%s</a>', $actions['view']['url'], $actions['view']['text'] );
+                    }
+                    if($order->get_status() == 'pending'){
+                        printf( '<a href="%s">%s</a>', $woo_checkout_url, __('Pay', 'webinars') );
+                    }
+                    if(isset($actions['cancel'])){
+                        printf( '<a href="%s">%s</a>', $actions['cancel']['url'], $actions['cancel']['text'] );
+                    }	
                 }
-                if($order->get_status() == 'pending'){
-                    printf( '<a href="%s">%s</a>', $woo_checkout_url, __('Pay', 'webinars') );
-                }
+               
 				?>
             </td>
         </tr>

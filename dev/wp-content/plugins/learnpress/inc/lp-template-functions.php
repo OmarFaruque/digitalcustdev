@@ -2284,7 +2284,7 @@ function learn_press_remove_message( $id = '', $type = '' ) {
  */
 function learn_press_print_messages( $clear = true ) {
 	$messages = learn_press_session_get( learn_press_session_message_id() );
-	learn_press_get_template( 'global/message.php', array( 'messages' => $messages ) );
+	if(!empty($messages)) learn_press_get_template( 'global/message.php', array( 'messages' => $messages ) );
 	if ( $clear ) {
 		learn_press_session_set( learn_press_session_message_id(), array() );
 	}
