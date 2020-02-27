@@ -1053,5 +1053,6 @@ function updateProfileUserMeta(){
 
 // require_once 'inc/curds/class-lp-user-curd.php';
 require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-section-curd.php');
+include_once LP_PLUGIN_PATH . '/inc/admin/editor/class-lp-admin-editor.php';
 require_once(get_stylesheet_directory() . '/inc/webinars/admin/class-lp-admin-editor-course.php');
 require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-user-curd.php');

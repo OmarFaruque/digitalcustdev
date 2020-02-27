@@ -80,7 +80,7 @@ $user = $profile->get_user();
 			<?php endif; ?>
         </ul>
         <h3 class="author-name"><?php echo learn_press_get_profile_display_name( $user ); ?></h3>
-        <p class="author-role"><?php echo $user->get_role(); ?></p>
+        <!-- <p class="author-role"><?php //echo $user->get_role(); ?></p> -->
 
         <p><?php echo get_user_meta( $user->get_id(), 'description', true ); ?></p>
     </div>

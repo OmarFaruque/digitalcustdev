@@ -61,13 +61,15 @@ $post_manage = $frontend_editor->post_manage;
             <div class="thim-course-content position-relative om 1">
             	<div class="row">
                 <div class="course-title-wrapper">
-					<?php $instructor = $course->get_instructor(); ?>
-					<?php if ( $course->get_post_status() === "pending" ) {
+					<?php $instructor = $course->get_instructor(); 
+						// echo 'status: ' . $course->get_post_status() . '<br/>';
+					?>
+					<?php if ( $course->get_post_status() === "pending" || $course->get_post_status() === "publish" ) {
 						?>
-                        <h2 class="course-title"><a href="<?php echo $course->get_permalink();  ?>" rel="bookmark"><?php echo empty( get_the_title() ) ? 'New Webinar' : get_the_title(); ?></a></h2>
+                        <h2 class="course-title 1"><a href="<?php echo $course->get_permalink();  ?>" rel="bookmark"><?php echo empty( get_the_title() ) ? 'New Webinar' : get_the_title(); ?></a></h2>
 						<?php
 					} else { ?>
-                        <h2 class="course-title"><a target="_blank" href="<?php echo ! empty( $instructor->get_id() ) && $instructor->get_id() === $user->get_id() ? esc_url( $post_manage->get_edit_post_link( get_post_type(), get_the_id() ) ) : get_permalink(); ?>" rel="bookmark"><?php echo empty( get_the_title() ) ? 'New Course Title' : get_the_title(); ?></a></h2>
+                        <h2 class="course-title 2"><a target="_blank" href="<?php echo ! empty( $instructor->get_id() ) && $instructor->get_id() === $user->get_id() ? esc_url( $post_manage->get_edit_post_link( get_post_type(), get_the_id() ) ) : get_permalink(); ?>" rel="bookmark"><?php echo empty( get_the_title() ) ? 'New Course Title' : get_the_title(); ?></a></h2>
 					<?php } ?>
                 </div>
                 <div class="course-meta">

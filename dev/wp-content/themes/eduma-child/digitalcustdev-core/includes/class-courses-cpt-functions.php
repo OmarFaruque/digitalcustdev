@@ -280,7 +280,12 @@ class DigitalCustDev_CPT_Functions {
 		// echo 'tabs: ' . $_REQUEST['tab'] . '<br/>';
 		// require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/instructor/list-assignment.php';
 		// learn_press_assignment_get_template( 'compatible/learnpress-buddypress/profile/assignments.php', $args );
-		learn_press_assignment_get_template( 'profile/tabs/instructor-assignments.php' );
+
+		if(!$_REQUEST['cid']){
+			learn_press_assignment_get_template( 'profile/tabs/instructor-assignments.php' );
+		}else{
+			learn_press_assignment_get_template( 'profile/tabs/instructor-single-assignment.php' );
+		}
 	}
 
 	public function list_salesandcommission(){

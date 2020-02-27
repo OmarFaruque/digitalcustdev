@@ -9,16 +9,21 @@ $view = (empty($switched_view) ? $role : $switched_view);
 
 ?>
 
+<?php 
+
+if ( is_active_sidebar( 'menu_right_2' ) ) {
+	echo '<ul class="mobile_menu">';
+	dynamic_sidebar( 'menu_right_2' );
+	echo '</ul>';
+}
+?>
+
+
 <ul role="tablist" class="nav navbar-nav mobile <?php echo $view;?>">
 	<?php
 	
 	if ( ! user_can( $profile_id, 'edit_lp_courses' ) ) {
 		unset( $tabs['instructor'] );
-	}
-	if ( is_active_sidebar( 'menu_right_2' ) ) {
-		echo '<ul>';
-		dynamic_sidebar( 'menu_right_2' );
-		echo '</ul>';
 	}
 	?>
 		<li class="avatar mobile">
@@ -84,8 +89,9 @@ $view = (empty($switched_view) ? $role : $switched_view);
 					// foreach ( $tabs as $tab_key => $tab_data ):
 					// 	echo 'tabkey: ' . $tab_key . '<br/>';
 					// endforeach;
+					$additional_class = ($view == "user" || $view == 'student') ? 'student':'';
                 ?>
-                    <li class="Course dropdown">
+                    <li class="Course dropdown <?php echo $additional_class; ?>">
                         <!--tabs 1-->
                         <a class="dropbtn" href="" onClick="return false;" data-slug="@">
 							<i class="fa fa-book"></i><span class="text"><?php _e('My Courses', 'webinar'); ?></span>  <i class="fa fa-caret-right small"></i>                  
@@ -98,28 +104,28 @@ $view = (empty($switched_view) ? $role : $switched_view);
 						</div>
 					</li>
 					
-                    <li class="Webinars omar">
+                    <li class="Webinars omar <?php echo $additional_class; ?>">
                         <!--tabs 2-->
                         <a href="<?php echo $profile->get_tab_link( "webinars", true );?>" data-slug="">
 							<i class="fa fa-play-circle omar"></i><span class="text"><?php _e('My Webinars', 'webinar'); ?></span>
 						</a>
 					</li>
 					
-                    <li class="Events">
+                    <li class="Events <?php echo $additional_class; ?>">
                         <!--tabs 3-->
                         <a href="<?php echo $profile->get_tab_link( "events", true );?>" data-slug="">
 							<i class="fa fa-calendar"></i><span class="text"><?php _e('My Events', 'webinar'); ?></span>
 						</a>
 					</li>
 
-					<li class="Mytests">
+					<li class="Mytests <?php echo $additional_class; ?>">
                         <!--tabs 3-->
                         <a href="<?php echo $profile->get_tab_link( "quizzes", true );?>" data-slug="">
 						<i class="fa fa-question-circle"></i><span class="text"><?php _e('Quizzes', 'learnpress'); ?></span>
 						</a>
 					</li>
 					
-                    <li class="assignment">
+                    <li class="assignment <?php echo $additional_class; ?>">
                         <!--tabs 4-->
 							<a href="<?php echo $profile->get_tab_link( "assignment", true );?>">
 							<i class="fa fa-handshake-o"></i><span class="text"><?php _e('Assignments', 'learnpress'); ?></span>
@@ -127,14 +133,14 @@ $view = (empty($switched_view) ? $role : $switched_view);
 						
 					</li>
 					
-                    <li class="Communication">
+                    <li class="Communication <?php echo $additional_class; ?>">
                         <!--tabs 5-->
                         <a href="<?php echo $profile->get_tab_link('communication'); ?>" data-slug="">
 							<i class="fa fa-comment-o"></i><span class="text"><?php _e('Communication', 'webinar'); ?></span>
 						</a>
 					</li>
 					
-                    <li class="Additional dropdown">
+                    <li class="Additional dropdown <?php echo $additional_class; ?>">
                         <!--tabs 6-->
                         <a class="dropbtn" onClick="return false;" href="javascript:void(0);" data-slug="@">
 							<i class="fa fa-graduation-cap"></i><span class="text"><?php _e('Additional', 'webinar'); ?></span>  <i class="fa fa-caret-right small"></i>                   
@@ -145,7 +151,7 @@ $view = (empty($switched_view) ? $role : $switched_view);
 						</div>
 					</li>
                     
-                    <li class="Profile dropdown">
+                    <li class="Profile dropdown <?php echo $additional_class; ?>">
                         <!--tabs 7-->
                         <a onClick="return false;" class="dropbtn" href="" data-slug="">
 							<i class="fa fa-user"></i><span class="text"><?php _e('Profile Settings', 'webinar'); ?></span> <i class="fa fa-caret-right small"></i>
@@ -155,14 +161,12 @@ $view = (empty($switched_view) ? $role : $switched_view);
 							<a href="<?php echo $profile->get_tab_link('settings'); ?>avatar/"><?php _e('Avatar', 'webinar'); ?></a>
 							<a href="<?php echo $profile->get_tab_link('settings'); ?>change-password/"><?php _e('Password', 'webinar'); ?></a>
 						</div>
-
                     </li>
-             
-
                 <?php 
                 } 
                 elseif($view == "admin" || $view == "instructor") 
                 {
+					$additional_class = ($view == "admin" || $view == "instructor") ? 'instructor':'';
 					unset($tabs['instructor']);
 					unset($tabs['quizzes']);
 					unset($tabs['wishlist']);
@@ -189,7 +193,7 @@ $view = (empty($switched_view) ? $role : $switched_view);
 									case 'reports':
 									case 'settings':
 									?>
-										<li class="Student Interaction dropdown">
+										<li class="Student Interaction dropdown <?php echo $additional_class; ?>">
 
 										<!--tabs 9-->
 										<a class="dropbtn" <?php echo (isset($tab_data['sections'])) ? "onClick='return false;'": ""; ?> href="" data-slug="http://localhost/digitalcustdev/profile/user3886106/events/">
@@ -224,7 +228,7 @@ $view = (empty($switched_view) ? $role : $switched_view);
 									default: ?>
 
 
-								<li class="<?php echo join( ' ', $tab_classes ) ?>">
+								<li class="<?php echo join( ' ', $tab_classes ) ?> <?php echo $additional_class; ?>">
 									<!--tabs 8-->
 									<a href="<?php echo esc_url( $link ); ?>" data-slug="<?php echo esc_attr( $link ); ?>">
 										<?php echo apply_filters( 'learn_press_profile_' . $tab_key . '_tab_title', esc_html( $tab_data['title'] ), $tab_key ); ?>
@@ -246,4 +250,20 @@ $view = (empty($switched_view) ? $role : $switched_view);
 		// dynamic_sidebar( 'menu_right' );
 	}
 	?>
-<?php
+
+<!-- <script>
+	jQuery(document).ready(function(){
+		'use strict';
+		/*
+	  * MObile menu switcher 
+	  * Effect on menu-profilemobile.php
+	*/
+	jQuery('ul.mobile_menu .switch_menu a').addClass('test');
+	// jQuery('ul.mobile_menu .switch_menu ‍a').on('click', function(e) {
+	jQuery(document).on('click', 'ul.mobile_menu .switch_menu ‍a', function(e){
+	// jQuery().click(function(e){
+		e.preventDefault();
+		console.log('test omar');
+	});
+	});
+</script> -->

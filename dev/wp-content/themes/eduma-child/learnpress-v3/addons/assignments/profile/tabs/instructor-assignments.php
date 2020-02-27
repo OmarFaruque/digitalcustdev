@@ -21,7 +21,7 @@ $assignments = get_author_assignments();
 	<h3 class="profile-heading"><?php _e( 'Assignments - Courses', 'learnpress-assignments' ); ?></h3>
 
 	<?php if ( $assignments ) { ?>
-		<table class="lp-list-table profile-list-assignments profile-list-table">
+		<table class="lp-list-table profile-list-assignments profile-list-table cutm">
 			<thead>
 			<tr>
 				<th class="column-course"><?php _e( 'Course / Webinars', 'learnpress-assignments' ); ?></th>
@@ -46,23 +46,27 @@ $assignments = get_author_assignments();
 					continue;
 				}
 
+				if($not_avutotal <= 0 && $evulated_total <= 0){
+					continue;
+				}
+
                 $course       = learn_press_get_course( $courses[0]->ID );
                 
 				?>
 				<tr>
 					<td class="column-course">
 						<?php if ( $courses ) { ?>
-							<a href="<?php echo $course->get_permalink() ?>">
+							<a href="<?php echo '?cid=' . $user_assignment->ID; //$courses[0]->ID; //$course->get_permalink() ?>">
 								<?php echo $course->get_title( 'display' ); ?>
 							</a>
 						<?php } ?>
 					</td>
 					
 					<td class="column-not-evulated">
-						<?php echo $not_avutotal; ?>
+						<?php echo ($not_avutotal > 0 ) ? $not_avutotal : '-'; ?>
                     </td>
                     <td class="column-evulated">
-						<?php echo $evulated_total; ?>
+						<?php echo ($evulated_total > 0 ) ? $evulated_total : '-'; ?>
 					</td>
 				</tr>
 				<?php continue; ?>

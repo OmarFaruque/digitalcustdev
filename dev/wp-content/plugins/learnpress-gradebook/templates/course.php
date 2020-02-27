@@ -34,7 +34,7 @@ if ( ! isset( $course ) || ! is_a( $course, 'LP_Gradebook_Course' ) ) {
 
 <?php if ( $items = $course->get_items() ) { ?>
 
-    <div class="gradebook-top-nav">
+    <div class="gradebook-top-nav omar">
         <form method="get">
             <input type="text" name="search" placeholder="<?php _e( 'Student name, email', 'learnpress-gradebook' ); ?>"
                    value="<?php echo esc_html( LP_Request::get( 'search' ) ); ?>">

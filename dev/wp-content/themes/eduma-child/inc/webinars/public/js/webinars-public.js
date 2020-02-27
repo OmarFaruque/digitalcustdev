@@ -28,7 +28,7 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
-
+	
 	/*
 	* Webinar Form submit while select order
 	*/
@@ -93,7 +93,6 @@
 	  jQuery(document).on('click', 'a.diuplicate_frontend', duplicatePost);
 
 
-	  
 
 })( jQuery );
 
@@ -114,5 +113,7 @@ jQuery(document).ready(function($){
 	$('[data-toggle="tooltip"]').tooltip();
 
 
+	
+ 
 	
 });
