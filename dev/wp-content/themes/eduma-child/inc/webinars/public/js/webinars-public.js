@@ -102,7 +102,7 @@ jQuery(document).ready(function($){
 	/*
 	  * Course profile conent hiehgt
 	  */
-	 if(jQuery('div.thim-course-content').length){
+	if(jQuery('div.thim-course-content').length){
 		jQuery('.thim-course-content.position-relative').height(jQuery('.thim-course-list .course-item .course-thumbnail').height());
 	}
 
@@ -112,8 +112,45 @@ jQuery(document).ready(function($){
 	*/
 	$('[data-toggle="tooltip"]').tooltip();
 
+	/*
+	* Mobile menu initial set
+	*/
+	if(jQuery('.switch_menu').length){
+		// console.log(jQuery('ul.mobile_menu .switch_menu a.active').get(0));
+		mobile_switch(jQuery('ul.mobile_menu .switch_menu a.active').get(0));
+	}else{
+		jQuery('li.instructor').hide();
+		jQuery('li.student_menu').show();
+	}
 
-	
- 
-	
 });
+
+function mobile_switch(obj){
+	if(jQuery( window ).width() <= 768){
+		console.log(obj);
+		jQuery.ajax({
+			url: ajaxurl,
+			dataType: 'json',
+			data: {
+				text: obj.innerHTML,
+				action: 'mobileswitchcallback'
+			},
+			success: function success(data) {
+			  if (data.meta == 'student') {
+					jQuery('.switch_menu a').removeClass('active');
+					jQuery('.switch_menu a:nth-child(2)').addClass('active');
+					jQuery('li.instructor').hide();
+					jQuery('li.student_menu').show();
+			  }else{
+					jQuery('.switch_menu a').removeClass('active');
+					jQuery('.switch_menu a:first-child').addClass('active');  
+					jQuery('li.student_menu').hide();
+					jQuery('li.instructor').show();
+			  } 
+			}
+		  });
+		return false ;
+	}else{
+		return true;
+	}
+}

@@ -30,7 +30,7 @@
             </div>
         </div>
         <nav class="mobile-menu-container mobile-effect">
-			<?php get_template_part( 'inc/header/menu-profilemobile' ); ?>
+			<?php  get_template_part( 'inc/header/menu-profilemobile' ); ?>
         </nav>
     </div>
 </div>

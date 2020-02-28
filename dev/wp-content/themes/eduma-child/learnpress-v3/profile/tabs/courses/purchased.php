@@ -13,8 +13,10 @@
  * Prevent loading this file directly
  */
 
+//  echo 'current user id: ' . get_current_user_id() . '<br/>';
 
 defined( 'ABSPATH' ) || exit();
+// require_once WP_PLUGIN_DIR . 'learnpress/inc/class-lp-global.php';
 $course = LP_Global::course();
 $user = LP_Global::user();
 $card       = new LP_User_CURD_THEME();
@@ -58,7 +60,8 @@ $orders = $card->get_orders( $user->get_id(), array( 'status' => 'completed' ) )
                 $lessons = get_course_lessons($user_course->get_id());   
                 $status = '';
                 foreach($lessons as $l => $sl){
-                    $status = $user->get_item_grade( $sl, $user_course->get_id() );
+                    // $status = $user->get_item_grade( $sl, $user_course->get_id() );
+                    $status = get_item_grade_from_theme($sl, $user_course->get_id());
                 } 
 
                     

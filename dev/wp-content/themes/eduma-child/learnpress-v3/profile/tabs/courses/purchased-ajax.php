@@ -15,6 +15,7 @@
 
 
 defined( 'ABSPATH' ) || exit();
+
 $course = LP_Global::course();
 $user = LP_Global::user();
 $card       = new LP_User_CURD_THEME();
@@ -39,7 +40,6 @@ $query = $card->query_purchased_courses_theme($userid,
 $orders = $card->get_orders( $userid, array( 'status' => 'completed' ) );
 
 ?>
-
 <div class="learn-press-subtab-content omajax">
 	<?php if ( $query['items'] ) { ?>
         <table class="lp-list-table profile-list-courses profile-list-table">

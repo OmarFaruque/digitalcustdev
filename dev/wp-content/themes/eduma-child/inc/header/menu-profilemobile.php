@@ -1,3 +1,5 @@
+
+
 <?php 
 $profile    = LP_Profile::instance();
 $profile_id = $profile->get_user()->get_id();
@@ -84,12 +86,12 @@ if ( is_active_sidebar( 'menu_right_2' ) ) {
 				// $gradebook = learn_press_gradebook_get_user_data($profile->get_user()->get_id(), $cours_r);
 				
 
-				if ($view == "user" || $view == 'student') 
-				{
+				// if ($view == "user" || $view == 'student') 
+				// {
 					// foreach ( $tabs as $tab_key => $tab_data ):
 					// 	echo 'tabkey: ' . $tab_key . '<br/>';
 					// endforeach;
-					$additional_class = ($view == "user" || $view == 'student') ? 'student':'';
+					$additional_class = 'student_menu';
                 ?>
                     <li class="Course dropdown <?php echo $additional_class; ?>">
                         <!--tabs 1-->
@@ -163,10 +165,10 @@ if ( is_active_sidebar( 'menu_right_2' ) ) {
 						</div>
                     </li>
                 <?php 
-                } 
-                elseif($view == "admin" || $view == "instructor") 
-                {
-					$additional_class = ($view == "admin" || $view == "instructor") ? 'instructor':'';
+                // } 
+                // elseif($view == "admin" || $view == "instructor") 
+                // {
+					$additional_class = 'instructor';
 					unset($tabs['instructor']);
 					unset($tabs['quizzes']);
 					unset($tabs['wishlist']);
@@ -215,7 +217,7 @@ if ( is_active_sidebar( 'menu_right_2' ) ) {
 													<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?></a>
 												<?php }else{ ?>
 												<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?>
-													<?php if($sik == 'assignments'): ?>
+													<?php if($sik == 'assignments' && get_author_assignments_not_set_yet() > 0): ?>
 														<span class="countr buble-counter third"><?php echo get_author_assignments_not_set_yet(); ?></span>
 													<?php endif; ?>
 												</a>
@@ -241,7 +243,7 @@ if ( is_active_sidebar( 'menu_right_2' ) ) {
 					} 
                 	?>
                 <?php 
-                } 
+                // } 
                 ?>
             </ul>
 
@@ -251,19 +253,4 @@ if ( is_active_sidebar( 'menu_right_2' ) ) {
 	}
 	?>
 
-<!-- <script>
-	jQuery(document).ready(function(){
-		'use strict';
-		/*
-	  * MObile menu switcher 
-	  * Effect on menu-profilemobile.php
-	*/
-	jQuery('ul.mobile_menu .switch_menu a').addClass('test');
-	// jQuery('ul.mobile_menu .switch_menu ‍a').on('click', function(e) {
-	jQuery(document).on('click', 'ul.mobile_menu .switch_menu ‍a', function(e){
-	// jQuery().click(function(e){
-		e.preventDefault();
-		console.log('test omar');
-	});
-	});
-</script> -->
+

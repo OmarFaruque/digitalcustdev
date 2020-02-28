@@ -237,7 +237,7 @@ if ( ! user_can( $profile_id, 'edit_lp_courses' ) ) {
 													<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?></a>
 												<?php }else{ ?>
 												<a href="<?php echo esc_url( $link ); ?>"><?php echo $single_section['title']; ?>
-													<?php if($sik == 'assignments'): ?>
+													<?php if($sik == 'assignments' && get_author_assignments_not_set_yet() > 0): ?>
 														<span class="countr buble-counter third"><?php echo get_author_assignments_not_set_yet(); ?></span>
 													<?php endif; ?>
 												</a>

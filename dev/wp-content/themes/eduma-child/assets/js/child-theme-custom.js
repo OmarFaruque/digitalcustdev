@@ -107,6 +107,7 @@ jQuery(function ($) {
             digitalCustTypingTimeout = setTimeout(function () {
                 console.log('inside omar');
                 digitalCustDev.implementAjaxSearch(ajaxsearchitem, security, type, data_type);
+                
             }, 500);
         },
 
@@ -126,7 +127,8 @@ jQuery(function ($) {
             };
 
             $.post(digitalcustdev.ajaxurl, postData).done(function (response) {
-                console.log('ajax done');
+                // console.log('ajax done');
+                // jQuery('.ribbon-top-left').addClass('d-none');
                 console.log(response);
                 digitalCustDevDom.profileCourseListDiv.html(response);
             });

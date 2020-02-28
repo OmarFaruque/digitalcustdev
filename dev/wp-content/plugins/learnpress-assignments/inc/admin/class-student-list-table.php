@@ -261,7 +261,7 @@ if ( ! class_exists( 'LP_Student_Assignment_List_Table' ) ) {
                          data-recommend="<?php if(!$user_item_id){esc_attr__( 'Something wrong! Should delete this!', 'learnpress-assignments' );}?>"
                          data-user-item-id="<?php echo esc_attr( $user_item_id ); ?>">
 						<?php
-						printf( '<a href="%s" class="view" title="%s"><i class="dashicons dashicons-welcome-write-blog"></i></a>', learn_press_assignment_evaluate_url( array( 'user_id' => $user->get_id() ) ), esc_attr__( 'Evaluate', 'learnpress-assignments' ) );
+						printf( '<a href="%s" class="view o" title="%s"><i class="dashicons dashicons-welcome-write-blog"></i></a>', learn_press_assignment_evaluate_url( array( 'user_id' => $user->get_id() ) ), esc_attr__( 'Evaluate', 'learnpress-assignments' ) );
 						printf( '<a href="%s" class="delete" title="%s"><i class="dashicons dashicons-trash"></i></a>', '#', esc_attr__( 'Delete submission', 'learnpress-assignments' ) );
 						if ( $evaluated ) {
 							printf( '<a href="%s" class="reset" title="%s"><i class="dashicons dashicons-update"></i></a>', '#', esc_attr__( 'Reset result', 'learnpress-assignments' ) );

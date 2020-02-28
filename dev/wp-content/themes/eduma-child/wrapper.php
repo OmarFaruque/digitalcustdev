@@ -19,20 +19,32 @@ $profile = LP_Profile::instance();
 if ( is_page( 'profile' ) && $profile->get_user_data( 'id' ) == get_current_user_id() && $haveAccessProfile) {
 	// echo 'its profile';
 	get_header( 'profile' );
-} else {
+}elseif ( is_page( 'assignment-evaluate' ) && $profile->get_user_data( 'id' ) == get_current_user_id() && $haveAccessProfile) {
+	// echo 'its profile';
+	get_header( 'profile' );
+}else {
 	get_header();
 }
 ?>
     <section class="content-area">
 		<?php
 		// echo 'view: ' . $vars['view'] . '<br/>';
-		if ( !is_page( 'profile' ) || (is_page( 'profile' ) && $profile->get_user_data( 'id' ) != get_current_user_id() ) ) {
-			get_template_part( 'inc/templates/page-title' );
+		$show_banner = true;
+		if ( is_page( 'profile' ) || (is_page( 'profile' ) && $profile->get_user_data( 'id' ) != get_current_user_id() ) ) {
+			$show_banner = false;
 		}
+		if(is_page('assignment-evaluate')){
+			$show_banner = false;
+		}
+		if($show_banner){
+			get_template_part( 'inc/templates/page-title' );
+		} 
 		do_action( 'thim_wrapper_loop_start' );
 		load_template( $template_file );
 		do_action( 'thim_wrapper_loop_end' );
 		?>
     </section>
 <?php
-get_footer();
+
+	get_footer();
+

@@ -66,6 +66,32 @@ class Webinars_Public {
 		// do_action('wp_head', array($this, 'testfunction'));
 		// add_action( 'learn-press/section-summary', $section );
 		// add_action( 'learn-press/section-summary', array($this, 'sectionSummerychangetimestatus'), 10, 2 );
+
+		// Ajax callback 
+		// mobileswitchcallback
+		add_action( 'wp_ajax_mobileswitchcallback', array( $this, 'mobileswitchcallback' ) );
+		add_action( 'wp_ajax_nopriv_mobileswitchcallback', array( $this, 'mobileswitchcallback' ) );
+
+	}
+
+
+	/*
+	* Ajax callback
+	* use in webinars.public.js
+	*/
+	public function mobileswitchcallback(){
+
+		$swtich = (isset($_REQUEST['text']) && $_REQUEST['text'] == 'Student') ? 'student' : 'instructor';
+		update_user_meta( get_current_user_id(), "lp_switch_view", $swtich);
+		$user_meta = get_user_meta( get_current_user_id(), 'lp_switch_view', true );
+		
+		echo json_encode(
+			array(
+				'meta' => $user_meta
+			)
+		);
+
+		wp_die();
 	}
 
 	public function testfunction($content){

@@ -433,10 +433,10 @@ function thim_tab_profile_filter_titlecustomize( $tab_title, $key ) {
 			$tab_title = '<i class="fa fa-male"></i><span class="text">' . esc_html__( 'Instructor', 'eduma' ) . '</span>';
 		break;
 		case 'students':
-			$tab_title = '<i class="fa fa-graduation-cap"></i>
-			<span class="countr buble-counter">' . get_author_assignments_not_set_yet() . '</span>
-			<span class="text">' . esc_html__( 'Students', 'eduma' ) . '</span>
-			<span class="countr buble-counter second">' . get_author_assignments_not_set_yet() . '</span>';
+			$tab_title = '<i class="fa fa-graduation-cap"></i>';
+			if(get_author_assignments_not_set_yet() > 0) $tab_title .= '<span class="countr buble-counter">' . get_author_assignments_not_set_yet() . '</span>';
+			$tab_title .= '<span class="text">' . esc_html__( 'Students', 'eduma' ) . '</span>';
+			if(get_author_assignments_not_set_yet() > 0) $tab_title .= '<span class="countr buble-counter second">' . get_author_assignments_not_set_yet() . '</span>';
 		break;
 		case 'reports':
 			$tab_title = '<i class="fa fa-file-text"></i><span class="text">' . esc_html__( 'Reports', 'eduma' ) . '</span>';
@@ -1010,8 +1010,9 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 			$sql = "SELECT lum.`meta_value` FROM $wpdb->learnpress_user_itemmeta lum 
 			LEFT JOIN $wpdb->learnpress_user_items lu ON lu.`user_item_id`=lum.`learnpress_user_item_id` 
 			LEFT JOIN $wpdb->postmeta pm ON lu.`user_id`= pm.`meta_value` AND lu.`ref_id` = pm.`post_id` 
-			WHERE lu.`item_id` = ".$course_id." AND lum.`meta_key`='grade' AND pm.`meta_key`='_user_id'";
+			WHERE lu.`item_id` = ".$course_id." AND lu.`user_id` = ".get_current_user_id()." AND lum.`meta_key`='grade' AND pm.`meta_key`='_user_id'";
 
+			// echo 'sql: ' . $sql . '<br/>';
 			$results = $wpdb->get_row($sql, OBJECT);
 			return $results->meta_value;
 

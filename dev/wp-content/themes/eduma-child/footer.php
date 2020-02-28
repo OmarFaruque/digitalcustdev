@@ -1,9 +1,9 @@
 <?php do_action( 'thim_above_footer_area' ); ?>
 
 <footer id="colophon" class="<?php thim_footer_class();?>">
-	<?php
-	if(!is_page( 'assignment-evaluate' )){
-	if ( is_active_sidebar( 'footer' ) ) : ?>
+    <?php
+    if(!is_page( 'assignment-evaluate' )){
+    if ( is_active_sidebar( 'footer' ) ) : ?>
 		<div class="footer">
 			<div class="container">
 				<div class="row">
@@ -13,9 +13,9 @@
 		</div>
 	<?php endif; ?>
 
-	<?php do_action('thim_copyright_area'); 
-	}
-	?>
+    <?php do_action('thim_copyright_area'); 
+    }
+    ?>
 
 </footer><!-- #colophon -->
 </div><!--end main-content-->

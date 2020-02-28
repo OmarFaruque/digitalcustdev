@@ -35,8 +35,8 @@ class LPE_Profile_Menu extends WP_Widget {
 				{
 					echo "
 						<div class='switch_menu'>
-							<a class='".$insructorClass."' href='".get_the_permalink( $post->ID )."?switch=instructor'>".$instance['pm_instructor_label']."</a> | 
-							<a class='".$studentClass."' href='".get_the_permalink( $post->ID )."?switch=student'>".$instance['pm_student_label']."</a> | 
+							<a onClick='return mobile_switch(this)' class='".$insructorClass."' href='".get_the_permalink( $post->ID )."?switch=instructor'>".$instance['pm_instructor_label']."</a> | 
+							<a onClick='return mobile_switch(this)' class='".$studentClass."' href='".get_the_permalink( $post->ID )."?switch=student'>".$instance['pm_student_label']."</a> | 
 							<a href='".wp_logout_url(get_site_url())."'>".$instance['pm_logout_label']."</a>
 						</div>
 					";

@@ -344,3 +344,12 @@ span.countr.buble-counter{
   left: 28px;
 }
 }
+
+.mobile-menu-wrapper ul li.d-none,
+.d-none 
+{
+  display: none !important;
+}
+.thim-course-content.position-relative {
+  min-height: 215px;
+}

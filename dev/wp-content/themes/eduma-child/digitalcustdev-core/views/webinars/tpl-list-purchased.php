@@ -76,8 +76,8 @@ $orders = $card->get_orders( $user->get_id(), array( 'status' => 'completed' ) )
             $status = '';
             foreach($lessons as $l => $sl){
 
-                $status = $user->get_item_grade( $sl, $webinar->get_id() );
-
+                // $status = $user->get_item_grade( $sl, $webinar->get_id() );
+                $status = get_item_grade_from_theme( $sl, $webinar->get_id() );
                 $webinar_details = get_post_meta( $sl, '_webinar_details', true );
                 $webinar_when = get_post_meta( $sl, '_lp_webinar_when', true );
                 // echo 'webinar when: ' . $webinar_when . '<br/>';

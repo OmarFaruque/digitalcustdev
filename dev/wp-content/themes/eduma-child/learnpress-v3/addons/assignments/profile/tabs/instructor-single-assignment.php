@@ -95,7 +95,7 @@ $list_item      = $list_table->items;
                 $evaluated    = $user->has_item_status( array( 'evaluated' ), $assignment_id, $course->get_id() );
 				// $user        = learn_press_get_user( $user_id );
                 // $course_data = $user->get_course_data( $course->get_id() );
-                if(isset($_REQUEST['search'])){
+                if(isset($_REQUEST['search']) && $_REQUEST['search'] != ''){
                     $return = true;
                     if(stripos($user->get_display_name(), $_REQUEST['search'] ) !== FALSE ){
                         $return = false;    
@@ -145,14 +145,18 @@ $list_item      = $list_table->items;
                             data-user-item-id="<?php echo esc_attr( $user_item_id ); ?>">
 
                             <?php
-                            $editurl = wp_nonce_url( add_query_arg( array( 'user_id' => $user->get_id() ), 'admin.php?page=assignment-evaluate' ), 'learn-press-assignment-' . $lp_assignment->get_id(), 'assignment-nonce' ) . '&assignment_id=' . $lp_assignment->get_id();
-                            $editurl = get_admin_url() . $editurl;
-                            printf( '<a href="%s" class="view" title="%s"><i class="dashicons dashicons-welcome-write-blog"></i></a>', $editurl, esc_attr__( 'Evaluate', 'learnpress-assignments' ) );
+                            
+                            // $editurl = wp_nonce_url( add_query_arg( array( 'user_id' => $user->get_id() ), 'admin.php?page=assignment-evaluate' ), 'learn-press-assignment-' . $lp_assignment->get_id(), 'assignment-nonce' ) . '&assignment_id=' . $lp_assignment->get_id();
+                            // $editurl = get_admin_url() . $editurl;
+                            // https://digitalcustdev.ru/dev/wp-admin/admin.php?page=assignment-evaluate&amp;user_id=120&amp;assignment-nonce=507fa3d823&amp;assignment_id=10838
+                            
+                            $editurl = get_home_url() . '/assignment-evaluate/?assignment_id='.$lp_assignment->get_id().'&user_id=' . $user->get_id();
+                            printf( '<a href="%s" class="o view" title="%s"><i class="dashicons dashicons-welcome-write-blog"></i></a>', $editurl, esc_attr__( 'Evaluate', 'learnpress-assignments' ) );
                             // printf( '<a href="%s" class="delete" title="%s"><i class="dashicons dashicons-trash"></i></a>', '#', esc_attr__( 'Delete submission', 'learnpress-assignments' ) );
-                            printf( '<a href="%s" class="reset" title="%s"><i class="dashicons dashicons-update"></i></a>', '#', esc_attr__( 'Reset result', 'learnpress-assignments' ) );
+                            // printf( '<a href="%s" class="reset" title="%s"><i class="dashicons dashicons-update"></i></a>', '#', esc_attr__( 'Reset result', 'learnpress-assignments' ) );
                             if ( $evaluated ) {
                                 // printf( '<a href="%s" class="reset" title="%s"><i class="dashicons dashicons-update"></i></a>', '#', esc_attr__( 'Reset result', 'learnpress-assignments' ) );
-                                printf( '<a href="%s" class="send-mail" title="%s"><i class="dashicons dashicons-email-alt"></i></a>', '#', esc_attr__( 'Send evaluated mail', 'learnpress-assignments' ) );
+                                // printf( '<a href="%s" class="send-mail" title="%s"><i class="dashicons dashicons-email-alt"></i></a>', '#', esc_attr__( 'Send evaluated mail', 'learnpress-assignments' ) );
                             }
                             ?>
                         </div>
