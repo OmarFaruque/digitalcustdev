@@ -46,6 +46,8 @@ $query = query_own_courses_custom( $user_id, array(
 // 	) 
 // );
 
+
+
 $draft_counter = query_draft_counter($user_id, '');
 
 ?>
@@ -69,7 +71,7 @@ $draft_counter = query_draft_counter($user_id, '');
 		</div>
 	<div class="row mb-4">
         <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3 ) ? 'col-md-5' : 'col-md-6';  ?>  no-padding-left">
-            <input type="text" name="s" data-searchtype="courses" class="form-control courses-search" data-security="<?php echo wp_create_nonce( 'search-once' ); ?>" placeholder="Search course...">
+            <input type="text" data-data_type="own-course" name="s" data-searchtype="courses" class="form-control courses-search" data-security="<?php echo wp_create_nonce( 'search-once' ); ?>" placeholder="Search course...">
         </div>
 
         <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3 ) ? 'col-md-5' : 'col-md-6';  ?> no-padding">
@@ -99,7 +101,7 @@ $draft_counter = query_draft_counter($user_id, '');
 	<?php if ( ! $query['total'] ) {
 		learn_press_display_message( __( 'No courses!', 'eduma' ) );
 	} else { ?>
-        <div class=" omar thim-course-list profile-courses-list">
+        <div class=" 8-omar thim-course-list profile-courses-list">
 			<?php
 			global $post;
 			foreach ( $query['items'] as $item ) {

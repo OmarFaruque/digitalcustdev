@@ -729,7 +729,9 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 			$status = '';
 			if($past == true && $future == true) $status = 'Progress';
 			if($past == true && $future == false) $status = 'Passed';
-				//echo 'status: ' . $status . '<br/>';
+			if(get_user_meta(get_current_user_id(), 'lp_switch_view', true) == 'instructor') $status = '';
+			// echo 'status: ' . $status . '<br/>';
+			// echo (learn_press_is_ajax()) ? 'profile page' : 'not profil lpage';
 			echo '<div class="course-thumbnail from-override">';
 			echo '<a class="thumb" href="' . esc_url( $url ) . '" >';
 			echo thim_get_feature_image( get_post_thumbnail_id( $course->get_id() ), 'full', apply_filters( 'thim_course_thumbnail_width', 400 ), apply_filters( 'thim_course_thumbnail_height', 320 ), $course->get_title() );

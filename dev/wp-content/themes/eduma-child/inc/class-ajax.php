@@ -131,10 +131,10 @@ class DigitalCustDev_Ajax {
 				while ( $posts->have_posts() ) {
 					$posts->the_post();
 					// $post_id = get_the_ID();
-					dcd_core_get_template( 'content-profile-webinar.php' );
+					// dcd_core_get_template( 'content-profile-webinar.php' );
 					// $post   = get_post( $post_id );
 					// setup_postdata( $post );
-					// learn_press_get_template( 'content-profile-course.php' );
+					learn_press_get_template( 'content-profile-course.php' );
 				}
 				wp_reset_postdata();
 			} else {
@@ -151,6 +151,65 @@ class DigitalCustDev_Ajax {
 				break;
 				case 'purchased_webinars':
 					learn_press_get_template('profile/tabs/courses/purchased-webinar-ajax.php', array('ajax' => true, 's' => esc_attr( $search )));
+				break;
+				case 'own-course':
+					$profile       = learn_press_get_profile();
+					$user_id = $profile->get_user()->get_id();
+					$query = query_own_courses_custom( $user_id, array( 
+						'limit' => 10, 
+						's' => esc_attr( $search ),
+						'status' => $filter_status,
+						'orderby' => 'post_date',
+						'order'   => 'DESC'
+					) );
+					global $post;
+					foreach ( $query['items'] as $item ) {
+						if ( get_post_status( $item ) == 'pending' ) {
+							
+							$viewing_user = $profile->get_user();
+							if ( $viewing_user->get_id() != get_current_user_id() ) {
+								continue;
+							}
+						}
+						$course = learn_press_get_course( $item );
+						$post   = get_post( $item );
+						setup_postdata( $post );
+						learn_press_get_template( 'content-profile-course.php' );
+						
+					}
+					wp_reset_postdata();
+				break;
+				case 'own-webinars':
+
+					
+
+					$profile       = learn_press_get_profile();
+					$user_id = $profile->get_user()->get_id();
+					
+					$query         = dcd_webinars()->query_own_courses_webinars( 
+						$user_id, 
+						array( 
+							'status' => $filter_status,
+							'limit' => 10,
+							's' => esc_attr( $search ),
+							'orderby' => 'post_date',
+							'order' => 'DESC'
+							) 
+					);
+					global $post;
+					foreach ( $query['items'] as $item ) {
+						if ( get_post_status( $item ) == 'pending' ) {
+							$viewing_user = $profile->get_user();
+							if ( $viewing_user->get_id() != get_current_user_id() ) {
+								continue;
+							}
+						}
+						$course = learn_press_get_course( $item );
+						$post   = get_post( $item );
+						setup_postdata( $post );
+						dcd_core_get_template( 'content-profile-webinar.php' );
+					}
+					wp_reset_postdata();
 				break;
 			}
 			

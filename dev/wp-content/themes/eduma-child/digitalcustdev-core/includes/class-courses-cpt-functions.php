@@ -76,6 +76,9 @@ class DigitalCustDev_CPT_Functions {
 				$where  = "WHERE 1";
 				$offset = ( $args['paged'] - 1 ) * $limit;
 
+				if(isset($args['s']) && !empty($args['s'])){
+					$where .= " AND post_title LIKE '%".$args['s']."%'";
+				}
 				if ( ! empty( $args['status'] ) ) {
 					if ( is_array( $args['status'] ) ) {
 						$a     = array_fill( 0, sizeof( $where ), '%d' );

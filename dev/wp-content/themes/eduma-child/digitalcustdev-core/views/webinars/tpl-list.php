@@ -56,7 +56,7 @@ $draft_counter = query_draft_counter($user_id, 'webinar');
 		<?php } ?>
 		<div class="form-search-fields row Om2">
         <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3) ? 'col-md-5':'col-md-6'; ?> no-padding-left">
-            <input type="text" name="s" data-searchtype="webinar" class="form-control courses-search" data-security="<?php echo wp_create_nonce( 'search-once' ); ?>" placeholder="Search">
+            <input data-data_type="own-webinars" type="text" name="s" data-searchtype="webinar" class="form-control courses-search" data-security="<?php echo wp_create_nonce( 'search-once' ); ?>" placeholder="Search">
         </div>
         <div class="<?php echo ($profile->is_current_user() && $draft_counter < 3) ? 'col-md-5':'col-md-6'; ?> no-padding">
 			<?php if ( $filters = get_own_courses_filters_custom( $filter_status ) ) { ?>

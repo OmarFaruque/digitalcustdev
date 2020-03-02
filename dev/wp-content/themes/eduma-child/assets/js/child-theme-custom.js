@@ -113,9 +113,9 @@ jQuery(function ($) {
 
         implementAjaxSearch: function (searchItem, security, type, data_type) {
 
-            // console.log('search item: ' + searchItem);
-            // console.log('data type: ' + data_type);
-            // console.log('type in ajax: ' + type);
+            console.log('search item: ' + searchItem);
+            console.log('data type: ' + data_type);
+            console.log('type in ajax: ' + type);
 
             digitalCustDevDom.profileCourseListDiv.html('<p>Loading...</p>');
             var postData = {
@@ -129,7 +129,7 @@ jQuery(function ($) {
             $.post(digitalcustdev.ajaxurl, postData).done(function (response) {
                 // console.log('ajax done');
                 // jQuery('.ribbon-top-left').addClass('d-none');
-                console.log(response);
+                // console.log(response);
                 digitalCustDevDom.profileCourseListDiv.html(response);
             });
         },
