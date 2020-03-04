@@ -32,7 +32,10 @@ class LP_Addon_Frontend_Editor_Page_Controller {
 		self::$app = LP_Addon_Frontend_Editor::instance();
 
 		add_action( 'learn-press/frontend-editor/dashboard', array( __CLASS__, 'display_sub_page' ) );
-		add_action( 'pre_get_posts', array(__CLASS__,'load'), 99 ); // 99 instead of 10 because 10 will be conflict with Membership 2 plugin
+		add_action( 'pre_get_posts', array(
+			__CLASS__,
+			'load'
+		), 99 ); // 99 instead of 10 because 10 will be conflict with Membership 2 plugin
 		add_filter( 'body_class', array( __CLASS__, 'body_class' ) );
 		add_filter( 'wp_enqueue_scripts', array( __CLASS__, 'main_scripts' ) );
 		add_filter( 'template_include', array( __CLASS__, 'template_include' ), 1 );

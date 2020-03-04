@@ -15,8 +15,8 @@
 defined( 'ABSPATH' ) || exit();
 ini_set('display_errors','OFF');
 ini_set('error_reporting', E_ALL );
-define('WP_DEBUG', true);
-define('WP_DEBUG_DISPLAY', true);
+define('WP_DEBUG', false);
+define('WP_DEBUG_DISPLAY', false);
 
 
 if ( ! isset( $user ) ) {

@@ -31,13 +31,13 @@ if ( LP_Request::get( 'updated' ) ) {
     <input type="hidden" id="samplepermalinknonce" name="samplepermalinknonce"
            value="<?php echo esc_attr( wp_create_nonce( 'samplepermalink' ) ); ?>">
 </div>
-<form id="e-edit-post" method="post">
+<form id="e-edit-post" class="om" method="post">
 
 	<?php
 	$template = $frontend_editor->locate_template( 'edit/form-' . $post_manage->get_post_type() . '.php' );
 	if ( file_exists( $template ) ) {
 		include $template;
-		//echo $template;
+		echo 'template: ' . $template;
 	} else {
 		$frontend_editor->get_template( 'edit/form' );
 	}

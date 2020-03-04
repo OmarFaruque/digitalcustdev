@@ -30,8 +30,11 @@ if ( is_page( 'profile' ) && $profile->get_user_data( 'id' ) == get_current_user
 		<?php
 		// echo 'view: ' . $vars['view'] . '<br/>';
 		$show_banner = true;
-		if ( is_page( 'profile' ) || (is_page( 'profile' ) && $profile->get_user_data( 'id' ) != get_current_user_id() ) ) {
+		if ( is_page( 'profile' )) {
 			$show_banner = false;
+		}
+		if(is_page( 'profile' ) && $profile->get_user_data( 'id' ) != get_current_user_id()){
+			$show_banner = true;
 		}
 		if(is_page('assignment-evaluate')){
 			$show_banner = false;

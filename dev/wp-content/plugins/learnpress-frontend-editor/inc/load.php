@@ -105,13 +105,14 @@ if ( ! class_exists( 'LP_Addon_Frontend_Editor' ) ) {
 		 */
 		public function get_root_slug() {
 			$root_slug = 'frontend-editor';
-			
+
 			if ( ( $page_id = get_option( 'learn_press_frontend_editor_page_id' ) ) && $page_id ) {
 				if ( get_post( $page_id ) ) {
 					$root_slug          = get_post_field( 'post_name', $page_id );
 					$this->is_used_page = $page_id;
 				}
 			}
+
 			return apply_filters( 'learn-press/frontend-editor/root-slug', $root_slug );
 		}
 
@@ -249,7 +250,7 @@ if ( ! class_exists( 'LP_Addon_Frontend_Editor' ) ) {
 					if ( is_user_logged_in() ) {
 						wp_die( __( 'You don\'t have permission to access this page', 'learnpress-frontend-editor' ) );
 					} else {
-						if ( $redirect = apply_filters( 'e-login-redirect', learn_press_get_login_url() ) ) {
+						if ( $redirect = apply_filters( 'learn-press/frontend-editor/login-redirect', learn_press_get_login_url() ) ) {
 							wp_redirect( $redirect );
 							die();
 						}

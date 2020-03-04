@@ -14,6 +14,24 @@ $post_status = $frontend_editor->post_manage->get_post()->post_status;
 $tabs        = e_get_course_editor_tabs();
 $profile     = learn_press_get_profile();
 $course_type = get_post_meta( $frontend_editor->post_manage->get_post()->ID, '_course_type', true );
+
+/*
+* Set Default section to front-end editor
+*/
+$course_id = $frontend_editor->post_manage->get_post()->ID;
+$curd = new LP_Course_CURD();
+$course_sections = $curd->get_course_sections( $course_id, 'ids' );
+if(count($course_sections) <= 0){
+    /*
+    * function write on override-functions.php
+    */
+    set_default_section_to_editor($course_id);
+}
+echo '<pre>';
+print_r($course_sections);
+echo '</pre>';
+echo 'post o id: ' . $frontend_editor->post_manage->get_post()->ID . '<br/>';
+
 ?>
     <div id="frontend-course-editor">
 
