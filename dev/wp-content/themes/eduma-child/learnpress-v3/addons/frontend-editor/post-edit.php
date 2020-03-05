@@ -13,6 +13,21 @@ global $frontend_editor;
 
 $post_manage = $frontend_editor->post_manage;
 $post        = $post_manage->get_post();
+
+/*
+* Set Default section to front-end editor
+*/
+$course_id = $post->ID;
+$curd = new LP_Course_CURD();
+$course_sections = $curd->get_course_sections( $course_id, 'ids' );
+if(count($course_sections) <= 0){
+    /*
+    * function write on override-functions.php
+    */
+    set_default_section_to_editor($course_id);
+}
+
+
 list( $permalink, $post_name ) = get_sample_permalink( $post->ID );
 
 if ( LP_Request::get( 'updated' ) ) {
@@ -37,7 +52,6 @@ if ( LP_Request::get( 'updated' ) ) {
 	$template = $frontend_editor->locate_template( 'edit/form-' . $post_manage->get_post_type() . '.php' );
 	if ( file_exists( $template ) ) {
 		include $template;
-		echo 'template: ' . $template;
 	} else {
 		$frontend_editor->get_template( 'edit/form' );
 	}

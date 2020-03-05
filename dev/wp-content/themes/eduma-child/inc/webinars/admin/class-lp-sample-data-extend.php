@@ -12,14 +12,16 @@ if(!class_exists('LP_Install_Sample_Data_Extend')){
 	
 
     public function create_sectionscustom($course_id){
-        $section_length = 1;
+		$section_length = 1;
+		$return = false;
         for ( $i = 1; $i <= $section_length; $i ++ ) {
 			$section_id = $this->create_section( 'Section ' . $i, $course_id );
-			echo 'section id: ' . $section_id . '<br/>';
 			if ( $section_id ) {
 				$this->create_section_items( $section_id, $course_id );
+				return true;
 			}
 		}
+		return $return;
     }
 
 
@@ -40,7 +42,7 @@ if(!class_exists('LP_Install_Sample_Data_Extend')){
 		$item_length = 1;
 		for ( $i = 1; $i <= $item_length; $i ++ ) {
 			$lesson_id = $this->create_lesson( 'Lesson ' . $lesson_count ++, $section_id, $course_id );
-			echo 'lession id: ' . $lesson_id . '<br/>';
+			// echo 'lession id: ' . $lesson_id . '<br/>';
 			if ( $lesson_id ) {
 				if ( $i == 1 ) {
 					update_post_meta( $lesson_id, '_lp_preview', 'yes' );

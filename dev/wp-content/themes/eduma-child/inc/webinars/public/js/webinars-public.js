@@ -123,6 +123,17 @@ jQuery(document).ready(function($){
 		jQuery('li.student_menu').show();
 	}
 
+
+
+	/*
+	* Default time for webinar's
+	*/
+	jQuery(document).on('click', '.xdsoft_today_button', function(){
+	// jQuery(".xdsoft_today_button").on("touchend mousedown.xdsoft", function() {
+		console.log('test omar');
+		// J.data("changed", !0), j.setCurrentTime(0, !0), J.trigger("afterOpen.xdsoft");
+	});
+
 });
 
 function mobile_switch(obj){

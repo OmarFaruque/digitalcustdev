@@ -1068,10 +1068,11 @@ require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-user-curd.php'
 */
 
 function set_default_section_to_editor($course_id){
-	// echo 'plugin path: ' . LP_PLUGIN_PATH . '<br/>';
-	// echo 'file path: ' . LP_PLUGIN_PATH . 'inc/admin/class-lp-install-sample-data.php';
 	include_once LP_PLUGIN_PATH . 'inc/admin/class-lp-install-sample-data.php';
 	require_once(get_stylesheet_directory() . '/inc/webinars/admin/class-lp-sample-data-extend.php');
 	$simple_data = new LP_Install_Sample_Data_Extend();
-	$simple_data->create_sectionscustom($course_id);
+	$setdata = $simple_data->create_sectionscustom($course_id);
+	if($setdata){
+		echo '<script>location.reload();</script>';
+	}
 }

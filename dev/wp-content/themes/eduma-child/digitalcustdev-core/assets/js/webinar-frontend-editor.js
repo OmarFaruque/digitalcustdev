@@ -277,6 +277,18 @@
     }
 
     $(document).on('ready', function () {
+        $(document.body).on('change', 'input.form-control.webinar_start_time', function(){    
+                var thisvalue = $(this).val(), 
+                thisdate = new Date(thisvalue),
+                month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
+                minit = thisdate.getMinutes(),
+                newdate = thisdate.getDate() + '/' + month + '/' + thisdate.getFullYear() + ' ' + thisdate.getHours() + ':' + minit;
+                var mindvided = minit % 5;
+                console.log(mindvided);
+                
+        });
+
+
         $(".thim_course_media_intro").on('keyup', function (e) {
             if (this.value.length > 3) {
                 var url = $(this).val();
