@@ -14,7 +14,7 @@
     </div>
     <div class="form-group">
         <label><?php _e( 'When', 'digitalcustdev-core' ); ?></label>
-        <input type="text" class="form-control webinar_start_time" value="<?php echo date('Y/m/d H:i'); ?>" name="lesson_date"">
+        <input type="text" class="om form-control webinar_start_time" value="<?php echo date('Y/m/d H:i'); ?>" name="lesson_date"">
     </div>
     <div class="form-group">
         <label><?php _e( 'Duration', 'digitalcustdev-core' ); ?></label>

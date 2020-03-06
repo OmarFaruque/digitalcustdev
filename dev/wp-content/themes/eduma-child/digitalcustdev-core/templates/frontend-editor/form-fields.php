@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) or die;
         <label v-html="field.name"></label>
         <div class="e-form-field-input">
 			<?php $tzlists = zvc_get_timezone_options(); ?>
-            <select v-model="settingValue">
+            <select class="select2-select" v-model="settingValue">
 				<?php foreach ( $tzlists as $k => $tzlist ) { ?>
                     <option value="<?php echo $k; ?>"><?php echo $tzlist; ?></option>
 				<?php } ?>
@@ -35,8 +35,8 @@ defined( 'ABSPATH' ) or die;
 <script type="text/x-template" id="tmpl-e-form-field-lesson-duration">
     <li class="e-form-field lesson_duration">
         <label v-html="field.name"></label>
-        <div class="e-form-field-input">
-            <select v-model="settingValue">
+        <div class="o9 e-form-field-input">
+            <select class="form-control select2-select" v-model="settingValue">
                 <option value="30 minute"><?php esc_html_e( '30 Minute', 'learnpress-frontend-editor' ); ?></option>
                 <option value="45 minute"><?php esc_html_e( '45 Minute', 'learnpress-frontend-editor' ); ?></option>
                 <option value="1 hour"><?php esc_html_e( '1 Hour', 'learnpress-frontend-editor' ); ?></option>

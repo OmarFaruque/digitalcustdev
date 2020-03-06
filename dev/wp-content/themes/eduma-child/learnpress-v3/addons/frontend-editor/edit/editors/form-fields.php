@@ -8,6 +8,13 @@
  */
 
 defined( 'ABSPATH' ) or die;
+
+global $frontend_editor;
+
+$post_manage = $frontend_editor->post_manage;
+$post        = $post_manage->get_post();
+$post_type  = get_post_meta($post->ID, '_course_type', 'true');
+?>
 ?>
     <script type="text/x-template" id="tmpl-e-form-field">
         <component :is="includeFormField()" :field="field" :item-data="itemData" :settings="settings || {}"></component>
@@ -16,13 +23,17 @@ defined( 'ABSPATH' ) or die;
 
         <div :id="getEditorId()" class="e-tinymce-wrap wp-content-wrap"
              class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
-            <div id="wp-content-editor-tools" class="wp-editor-tools hide-if-no-js">
+            <div id="wp-content-editor-tools" class="omar-tinymce wp-editor-tools hide-if-no-js">
                 <div id="wp-content-media-buttons" class="wp-media-buttons">
+                    
+                    <?php if($post_type != 'webinar'): ?>                    
                     <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media"
                             :data-editor="id">
                         <span class="wp-media-buttons-icon"></span>
 						<?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
                     </button>
+                    <?php endif; ?>
+
                 </div>
                 <div class="wp-editor-tabs">
                     <button class="e-button" type="button" :id="id+'-tmce'" class="wp-switch-editor switch-tmce"
@@ -62,18 +73,25 @@ defined( 'ABSPATH' ) or die;
         <li class="e-form-field">
             <label v-html="field.name"></label>
             <div class="tooltip" style="margin-left: -215px;
-    margin-top: -2px;
-    margin-right: 27%;">?<span class="tooltiptext">Tooltip text</span>
-</div>
+                margin-top: -2px;
+                margin-right: 27%;">?<span class="tooltiptext">Tooltip text</span>
+            </div>
             <div class="e-form-field-input">
-                <input type="number" placeholder="1" v-model="settingValue[1]">
-                <select class="select">
-                    <option class="option" value="week" selected><?php esc_html_e( 'week', 'learnpress-frontend-editor' ); ?></option>
-                    <option class="option" value="hour"><?php esc_html_e( 'Hour', 'learnpress-frontend-editor' ); ?></option>
-                    <option class="option" value="day"><?php esc_html_e( 'Day', 'learnpress-frontend-editor' ); ?></option>
-                    <option class="option" value="month"><?php esc_html_e( 'Month', 'learnpress-frontend-editor' ); ?></option>
-                </select>
+                <div class="row">
+                    <div class="col-md-5 col-xs-12 col-sm-5">
+                        <input type="number" placeholder="1" v-model="settingValue[1]">
+                    </div>
+                    <div class="col-md-7 col-xs-12 col-sm-7">
+                    <select class="om5 select2-select">
+                        <option class="option" value="week" selected><?php esc_html_e( 'week', 'learnpress-frontend-editor' ); ?></option>
+                        <option class="option" value="hour"><?php esc_html_e( 'Hour', 'learnpress-frontend-editor' ); ?></option>
+                        <option class="option" value="day"><?php esc_html_e( 'Day', 'learnpress-frontend-editor' ); ?></option>
+                        <option class="option" value="month"><?php esc_html_e( 'Month', 'learnpress-frontend-editor' ); ?></option>
+                    </select>
+                    </div>
+                </div>
                 <p class="e-form-field-desc"  v-html="field.desc"></p>
+                
             </div>
         </li>
     </script>

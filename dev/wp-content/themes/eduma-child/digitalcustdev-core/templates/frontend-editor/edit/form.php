@@ -153,7 +153,7 @@ if ( ! empty( $duration_term ) ) {
                 <input type="number" value="<?php echo ! empty( $duration_term[0] ) ? $duration_term[0] : 1; ?>" min="1" max="32" class="form-control" name="webinar_duration_number" placeholder="2">
             </div>
             <div class="col-md-4">
-                <select class="form-control" name="webinar_duration_term">
+                <select class="form-control select2-select  " name="webinar_duration_term">
                     <option <?php selected( 'minute', $duration_term[1] ); ?> value="minute">Minute(s)</option>
                     <option <?php echo empty( $duration_term[1] ) ? 'selected' : selected( 'hour', $duration_term[1] ); ?> value="hour">Hour(s)</option>
                     <option <?php selected( 'day', $duration_term[1] ); ?> value="day">Day(s)</option>

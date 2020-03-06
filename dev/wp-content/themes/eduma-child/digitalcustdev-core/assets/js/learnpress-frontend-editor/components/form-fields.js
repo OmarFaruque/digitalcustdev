@@ -61,7 +61,11 @@
             }
         },
         created: function () {
-        }, mounted: function () {
+        }, 
+        mounted: function () {
+            $(this.$el).find('select').select2({
+                width: '100%'
+            });
         },
         methods: {
             redraw: function () {
@@ -98,9 +102,9 @@
         created: function () {
         },
         mounted: function () {
-            /*$(this.$el).find('select').select2({
+            $(this.$el).find('select').select2({
                 width: '100%'
-            });*/
+            });
         },
         methods: {
             redraw: function () {
@@ -202,6 +206,7 @@
         mounted: function () {
             this.content = this.value;
             this.init();
+            console.log(this.id);
         },
         methods: {
             init: function () {
@@ -223,6 +228,7 @@
                 var tags = $.extend({}, tinyMCEPreInit.qtInit['post_content']);
                 tags.id = this.id;
                 FE_Helpers.QuickTags(this.id, tags);
+                console.log('init call');
             },
             onChange: function () {
                 this.isTyping = true;

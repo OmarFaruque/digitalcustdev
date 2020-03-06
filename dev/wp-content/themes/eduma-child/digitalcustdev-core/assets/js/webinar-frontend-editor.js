@@ -123,6 +123,9 @@
         created: function () {
         },
         mounted: function () {
+            $(this.$el).find('select').select2({
+                width: '100%'
+            });
         },
         methods: {
             redraw: function () {
@@ -215,7 +218,7 @@
                     // formatTime: 'h:i a',
                     minDate: 0,
                     step: 15,
-                    closeOnDateSelect: true,
+                    closeOnDateSelect: false,
                     validateOnBlur: false,
                     yearStart: 2019,
                     onShow: function (ct) {
@@ -234,13 +237,13 @@
                     },
                     onChangeDateTime: function (dp, $input) {
                         var selectedDate = new Date($input.val());
-                        console.log(selectedDate);
+                        // console.log(selectedDate);
                         if (selectedDate !== "Invalid Date") {
                             var roundMinute = (Math.ceil(selectedDate.getMinutes() / 15) * 15) % 60;
                             selectedDate.setMinutes(roundMinute);
 
                             var finalDate = fmt.formatDate(selectedDate, 'd/m/Y H:i');
-                            console.log(finalDate);
+                            // console.log(finalDate);
                             if ($changeDate) {
                                 $vm.changeDate(finalDate);
                             }
@@ -282,10 +285,22 @@
                 thisdate = new Date(thisvalue),
                 month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
                 minit = thisdate.getMinutes(),
-                newdate = thisdate.getDate() + '/' + month + '/' + thisdate.getFullYear() + ' ' + thisdate.getHours() + ':' + minit;
-                var mindvided = minit % 5;
-                console.log(mindvided);
-                
+                shouldadd = 5 - (minit % 5),
+                newmint = (shouldadd < 5) ? minit + shouldadd : minit,
+                newmint = ("0" + newmint).slice(-2),
+                newgetdate = ("0" + thisdate.getDate()).slice(-2),
+                newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + thisdate.getHours() + ':' + newmint;
+                $(this).val(newdate);
+                // console.log(shouldadd);
+                // console.log('dif: ' + minit % 5);
+        });
+
+        $(document.body).on('keyup', 'input.form-control.webinar_start_time', function(){
+            $(this).val('');
+        });
+
+        $(document.body).on('click', 'button.xdsoft_today_button', function(){
+            // console.log('test');
         });
 
 

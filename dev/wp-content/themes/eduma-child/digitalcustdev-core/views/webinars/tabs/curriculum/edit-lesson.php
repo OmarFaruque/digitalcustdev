@@ -19,7 +19,7 @@ $start_time = get_post_meta( $lesson->get_id(), '_lp_start_time', true );
     </div>
     <div class="form-group">
         <label><?php _e( 'When', 'digitalcustdev-core' ); ?></label>
-        <input type="text" class="form-control webinar_start_time" value="<?php echo ! empty( $start_time ) ? $start_time : date('Y/m/d H:i'); ?>" name="lesson_date"">
+        <input type="text" class="om7 form-control webinar_start_time" value="<?php echo ! empty( $start_time ) ? $start_time : date('Y/m/d H:i'); ?>" name="lesson_date"">
     </div>
     <div class="form-group">
         <label><?php _e( 'Duration', 'digitalcustdev-core' ); ?></label>
