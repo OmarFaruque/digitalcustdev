@@ -362,6 +362,7 @@ class LP_Addon_Frontend_Editor_Page_Controller {
 			'i18n'              => e_get_localize(),
 			'rootURL'           => get_home_url()
 		);
+
 		?>
         <script type='text/javascript'>
             /* <![CDATA[ */

@@ -29,7 +29,7 @@
             </ul>
 
         </div>
-
+        
         <e-course-item-settings :item="item" :item-data="item || {xxx: 0}" request="$request"
                                 closeItemSettings="closeItemSettings"></e-course-item-settings>
 

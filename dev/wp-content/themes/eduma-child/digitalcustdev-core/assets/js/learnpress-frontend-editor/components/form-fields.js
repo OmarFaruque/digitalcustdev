@@ -1,26 +1,5 @@
 ;(function ($) {
-    Vue.component('e-form-field-text', {
-        template: '#tmpl-e-form-field-text',
-        props: ['item', 'itemData', 'request', 'field', 'settings'],
-        data: function () {
-            return {
-                drawComponent: true
-            }
-        },
-        created: function () {
-        },
-        mounted: function () {
-        },
-        methods: {
-            redraw: function () {
-                var vm = this;
-                vm.drawComponent = false;
-                Vue.nextTick(function () {
-                    vm.drawComponent = true;
-                });
-            }
-        }
-    });
+
 
     Vue.component('e-form-field-textarea', {
         template: '#tmpl-e-form-field-textarea',
@@ -44,6 +23,35 @@
             }
         }
     });
+
+
+    
+
+
+    Vue.component('e-form-field-text', {
+        template: '#tmpl-e-form-field-text',
+        props: ['item', 'itemData', 'request', 'field', 'settings'],
+        data: function () {
+            return {
+                drawComponent: true
+            }
+        },
+        created: function () {
+        },
+        mounted: function () {
+        },
+        methods: {
+            redraw: function () {
+                var vm = this;
+                vm.drawComponent = false;
+                Vue.nextTick(function () {
+                    vm.drawComponent = true;
+                });
+            }
+        }
+    });
+
+
 
     Vue.component('e-form-field-duration', {
         template: '#tmpl-e-form-field-duration',

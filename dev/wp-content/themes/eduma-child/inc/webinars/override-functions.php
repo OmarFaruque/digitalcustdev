@@ -996,12 +996,6 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 			return $results->total;
 		}
 
-		// add_action('wp_head', 'testfunction');
-		function testfunction(){
-			
-			// get_template_part( 'digitalcustdev-core\views\webinars\tpl-list', 'purchased' );
-		}
-
 	
 			/*
 			* get user grade from theme
@@ -1075,4 +1069,52 @@ function set_default_section_to_editor($course_id){
 	if($setdata){
 		echo '<script>location.reload();</script>';
 	}
+}
+
+
+
+
+add_action('wp_head', 'testfunction');
+function testfunction(){
+	
+	// get_template_part( 'digitalcustdev-core\views\webinars\tpl-list', 'purchased' );
+	$data = array(
+		'Course_Store_Data' => e_get_course_store_data(),
+		'i18n'              => e_get_localize(),
+		'rootURL'           => get_home_url()
+	);
+
+	// echo '<pre>';
+	// print_r($data['Course_Store_Data']['post_type_fields']['lp_assignment']);
+	// echo '</pre>';
+	$post_type = 'lp_assignment';
+	$datas = apply_filters( 'e-post-type-fields', LP()->session->get( 'fe_' . $post_type . '_meta_box' ), $post_type );
+	$searchArray = array_search('_lp_attachments', $datas);
+	echo 'Datas<pre>';
+	print_r($datas);
+	echo '</pre>';
+}
+
+
+add_filter('e-post-type-fields', 'testfunctiono');
+function testfunctiono($data){
+	$newarray = array();
+	$order = array('_lp_duration', '_lp_introduction', '_lp_attachments');
+	
+	foreach($data as $k => $s):
+		switch($s['id']){
+			case '_lp_introduction':
+				$newarray[0] = $s;
+			break;
+			case '_lp_duration':
+				$newarray[1] = $s;
+			break;
+			case '_lp_attachments':
+				$newarray[2] = $s;
+			break;
+		}
+	endforeach;
+	$newarray = array_multisort($newarray, SORT_DESC, $data);
+	return $newarray;
+
 }

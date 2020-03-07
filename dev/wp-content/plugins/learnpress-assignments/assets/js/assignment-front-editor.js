@@ -101,6 +101,7 @@
 
         created: function () {
             this.loadSettings(this.loadSettingsCallback);
+            console.log(this.itemData.settings);
         },
         methods: $.extend({}, __X, {})
     }

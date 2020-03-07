@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit(); ?>
 
 <script type="text/x-template" id="tmpl-e-course-item-settings-lp_assignment">
     <div class="e-item-settings-extra">
-        <ul class="e-form-field-table flex">
+        <ul class="e-form-field-table flex 89">
             <component v-for="i in getFields('lp_assignment')" :is="includeFormField(i)" :settings="settings"
                        :field="i"
                        v-if="drawComponent"

@@ -25,14 +25,11 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
              class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
             <div id="wp-content-editor-tools" class="omar-tinymce wp-editor-tools hide-if-no-js">
                 <div id="wp-content-media-buttons" class="wp-media-buttons">
-                    
-                    <?php if($post_type != 'webinar'): ?>                    
-                    <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media"
+                    <!-- <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media"
                             :data-editor="id">
                         <span class="wp-media-buttons-icon"></span>
 						<?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
-                    </button>
-                    <?php endif; ?>
+                    </button> -->
 
                 </div>
                 <div class="wp-editor-tabs">
@@ -54,7 +51,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
 
     </script>
         <script type="text/x-template" id="tmpl-e-form-field-textarea">
-        <li class="e-form-field textarea textabove">
+        <li class="omar89 e-form-field textarea textabove">
             <label v-html="field.name"></label>
              
        <div class="tooltip" style="margin-left: -215px;
@@ -66,11 +63,58 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
             <div class="e-form-field-input">
                 <textarea v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
                 <p class="e-form-field-desc" v-html="field.desc"></p>
+                    <?php if($post_type != 'webinar'): ?>  
+                    <div id="wp-content-media-buttons" class="wp-media-buttons">                  
+                        <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media">
+                            <span class="wp-media-buttons-icon"></span>
+                            <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
+                        </button>
+                    </div>
+                    <?php endif; ?>
             </div>
         </li>
     </script>
+
+
+
+
+    <script type="text/x-template" id="tmpl-e-form-field-file-advanced">
+	<li class="omar9 e-form-field file-advanced">
+		<label>{{field.name}}</label>
+        <div class="e-form-field-input">
+
+            <input class="rwmb-file_advanced" name="_lp_attachments" v-model="settings[field.id]" type="hidden" data-options="{&quot;mimeType&quot;:&quot;&quot;,&quot;maxFiles&quot;:0,&quot;forceDelete&quot;:false,&quot;maxStatus&quot;:true}">
+            <div class="rwmb-media-view">
+                <ul class="rwmb-media-list ui-sortable" id="fe-assignment-attach-contain">
+                    <li v-for="(attachment, attachmentIndex) in attachments" :key="attachmentIndex" class="rwmb-media-item attachment" :id="'fe-assignment-attach-list-' + attachment.id">
+                        <div class="rwmb-media-preview attachment-preview">
+                            <div class="rwmb-media-content thumbnail">
+                                <div class="centered">
+                                    <img :src="attachment.icon">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rwmb-media-info">
+                            <a :href="attachment.url" class="rwmb-media-title" target="_blank">
+                                {{attachment.filename}}
+                            </a>
+                            <a @click="_remove_attact($event, attachment.id)" :data-attachid="attachment.id"><span class="dashicons dashicons-trash"></span></a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="rwmb-media-status">
+
+                </div><div class="rwmb-media-add">
+                    <a class="button" @click="_selectMedia($event)">+ Add Media</a>
+                </div>
+                <input type="hidden" class="rwmb-field-name" value="_lp_attachments">
+            </div><p class="e-form-field-desc">{{field.desc}}</p>
+        </div>
+	</li>
+</script>
+
      <script type="text/x-template" id="tmpl-e-form-field-duration">
-        <li class="e-form-field">
+        <li class="omar2 e-form-field">
             <label v-html="field.name"></label>
             <div class="tooltip" style="margin-left: -215px;
                 margin-top: -2px;
@@ -98,7 +142,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
     
    
     <script type="text/x-template" id="tmpl-e-form-field-text">
-        <li class="e-form-field text textdown">
+        <li class="omar3 e-form-field text textdown">
             <label v-html="field.name"></label>
             <div class="e-form-field-input">
                 <input :type="field.xType ? field.xType : field.type" v-model="itemData.settings[field.id]">
@@ -110,7 +154,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
 
    
     <script type="text/x-template" id="tmpl-e-form-field-yes-no">
-        <li class="e-form-field yes-no">
+        <li class="omar4 e-form-field yes-no">
             <label v-html="field.name"></label>
             <div class="e-form-field-input">
                 <input type="checkbox" v-model="settingValue" true-value="yes" false-value="no">

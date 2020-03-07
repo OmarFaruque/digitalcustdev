@@ -8,7 +8,6 @@
  */
 global $frontend_editor;
 ?>
- 
     <script type="text/x-template" id="tmpl-e-course-item-settings">
         <div id="e-item-settings" :data-context="getContext()">
             <div class="e-settings-window">
@@ -21,24 +20,6 @@ global $frontend_editor;
                                 <input type="text" v-model="itemData.title" class="wide-fat">
                             </div>
                         </li>
-                        </div>
-                        </div>
-                        </script>
-                        <script type="text/x-template" id="tmpl-e-course-item-settings-lp_lesson">
-        <div class="e-item-settings-extra">
-            <ul class="e-form-field-table flex">
-                <component v-for="i in getFields('lp_lesson')" :is="includeFormField(i)" :settings="settings"
-                           :field="i"
-                           v-if="drawComponent"
-                           :item-data="itemData">
-                </component>
-            </ul>
-        </div>
-    </script>
-    <script type="text/x-template" id="tmpl-e-course-item-settings">
-        <div id="e-item-settings" :data-context="getContext()">
-            <div class="e-settings-window">
-                <div class="e-item-settings-content" v-if="itemData && itemData.id">
                         <li class="e-form-field">
                             <label><?php _e( 'Description', 'learnpress-frontend-editor' ); ?></label>
                             <div class="e-form-field-input">
@@ -54,10 +35,19 @@ global $frontend_editor;
                      class="e-no-item-selected"><?php esc_html_e( 'Please select an item or add a new one', 'learnpress-frontend-editor' ); ?></div>
             </div>
         </div>
-        </div>
     </script>
 
-   
+    <script type="text/x-template" id="tmpl-e-course-item-settings-lp_lesson">
+        <div class="e-item-settings-extra">
+            <ul class="e-form-field-table flex 9898">
+                <component v-for="i in getFields('lp_lesson')" :is="includeFormField(i)" :settings="settings"
+                           :field="i"
+                           v-if="drawComponent"
+                           :item-data="itemData">
+                </component>
+            </ul>
+        </div>
+    </script>
 
     <script type="text/x-template" id="tmpl-e-course-item-settings-lp_quiz">
         <div class="e-item-settings-extra">
@@ -72,7 +62,7 @@ global $frontend_editor;
 
             <div class="e-section-heading"><?php esc_html_e( 'Settings', 'learnpress-frontend-editor' ); ?></div>
             <div xv-show="showSettingsBox">
-                <ul class="e-form-field-table flex" v-show="isCurrent('settings')">
+                <ul class="e-form-field-table flex omar787" v-show="isCurrent('settings')">
                     <component v-for="i in getFields('lp_quiz')" :is="includeFormField(i)" :settings="settings"
                                :field="i" v-if="drawComponent" :item-data="itemData"></component>
                 </ul>
@@ -260,7 +250,7 @@ global $frontend_editor;
             </ul>
 
             <div class="e-section-heading"><?php esc_html_e( 'Settings', 'learnpress-frontend-editor' ); ?></div>
-            <ul class="e-form-field-table flex">
+            <ul class="e-form-field-table flex mmtt">
                 <e-form-field v-for="(field, i) in getDataStore().getters.questionFields" :field="field"
                               :item-datax="itemData"
                               :item-data="question"
