@@ -1119,41 +1119,13 @@ function addaddditionalfieldtosavedArray( $array ) {
 // add_action('wp_head', 'testfunction');
 function testfunction(){
 	
-	// get_template_part( 'digitalcustdev-core\views\webinars\tpl-list', 'purchased' );
-	$data = array(
-		'Course_Store_Data' => e_get_course_store_data(),
-		'i18n'              => e_get_localize(),
-		'rootURL'           => get_home_url()
-	);
-
-	// echo '<pre>';o
-	// print_r($data['Course_Store_Data']['post_type_fields']['lp_assignment']);
-	// echo '</pre>';
-	$post_type = 'lp_assignment';
-	$datas = apply_filters( 'e-post-type-fields', LP()->session->get( 'fe_' . $post_type . '_meta_box' ), $post_type );
-	$searchArray = array_search('_lp_duration', array_column($datas, 'id'));
-
-
-
-	// $newarray = array();
-
-	// // array_push($data, array('id' => 'e-item-content'));
-	// $order = array( '_lp_introduction', '_lp_attachments', '_lp_duration' );
-
-	// foreach($datas as $k => $s):
-	// 	$index = array_search($order[$k], array_column($datas, 'id'));
-	// 	array_push($newarray, $datas[$index]);
-	// endforeach;
-	// // return $newarray;
-
-
-	// echo 'Datas<pre>';
-	// print_r($newarray);
-	// echo '</pre>';
-
-	// echo 'searchArray<pre>';
-	// print_r($searchArray);
-	// echo '</pre>';
+	$user = wp_get_current_user();
+	global $wp_query;
+	global $wp;
+				$post_id = $wp_query->get( 'post-id' );
+	echo 'user<pre>';
+	print_r($wp->request);
+	echo '</pre>';
 }
 
 

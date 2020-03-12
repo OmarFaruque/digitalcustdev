@@ -14,6 +14,7 @@ $post_status = $frontend_editor->post_manage->get_post()->post_status;
 $tabs        = e_get_course_editor_tabs();
 $profile     = learn_press_get_profile();
 $course_type = get_post_meta( $frontend_editor->post_manage->get_post()->ID, '_course_type', true );
+set_transient( get_current_user_id() . 'e_post_id', $frontend_editor->post_manage->get_post()->ID, 86400 );
 ?>
     <div id="frontend-course-editor">
 

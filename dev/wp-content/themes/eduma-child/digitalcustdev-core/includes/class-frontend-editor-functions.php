@@ -130,9 +130,11 @@ class DigitalCustDev_FrontendEditor {
 	function change_directory_format( $param ) {
 		if ( is_user_logged_in() ) {
 			$user = wp_get_current_user();
-
-			$param['path'] = $param['basedir'] . '/fe-ups/' . $user->user_login;
-			$param['url']  = $param['baseurl'] . '/fe-ups/' . $user->user_login;
+			$post_id = get_transient( get_current_user_id() . 'e_post_id' );
+			if($post_id){
+				$param['path'] = $param['basedir'] .'/'. $user->data->user_nicename . '/' . $post_id;
+				$param['url']  = $param['baseurl'] .'/'. $user->data->user_nicename . '/' .  $post_id;
+			}
 		}
 
 		return $param;
