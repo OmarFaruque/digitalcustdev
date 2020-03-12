@@ -193,14 +193,21 @@
             },
 
             _changeDatePicker: function (e) {
-                var $vm = this;
+                var $vm = this,
+                lession_id = $('ul.e-course-sections ul.e-section-content li.e-selected').data('id');
+                
                 $('#frontend-editor').append('<div id="e-update-activity" class="updating"><span class="e-update-activity__icon"></span></div>');
                 $.ajax({
                     method: 'POST',
                     url: dcd_fe_object.ajax_url,
-                    data: {action: 'check_webinar_existing_date', selected: e.target.value},
+                    data: {
+                        action: 'check_webinar_existing_date', 
+                        selected: e.target.value,
+                        lession_id: lession_id
+                    },
                     success: function (result) {
                         var allowed_times = $vm.getTimesbyDate(result, e.target.value);
+                        // console.log(result);
                         if (result.disabled_date) {
                             $vm.showDatePicker($vm, e, allowed_times, true, result.disabled_date);
                         } else {
@@ -259,6 +266,8 @@
                 var allowed_times = [];
                 if (result.date === value) {
                     $.each(result.allowed_times, function (c, t) {
+                        // console.log('t: ' + t);
+                        // console.log('c: ' + c);
                         allowed_times.push(t);
                     });
                 }

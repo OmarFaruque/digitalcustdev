@@ -179,39 +179,50 @@ class DigitalCustDev_Webinars {
 		$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
 		$result  = array();
 
-		$args             = array(
-			'post_type' => 'lp_lesson',
-			'author'    => $user_id
-		);
-		$lessons          = get_posts( $args );
-		$times            = $this->webinar_times();
-		$selected         = filter_input( INPUT_POST, 'selected' );
-		$selected_compare = str_replace( '/', '-', $selected );
-		$selected_compare = date( 'Y/m/d', strtotime( $selected_compare ) );
-		if ( ! empty( $lessons ) ) {
-			foreach ( $lessons as $lesson ) {
+		// $args             = array(
+		// 	'post_type' => 'lp_lesson',
+		// 	'author'    => $user_id
+		// );
+		$lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
+		$lesson          	= get_post( $lession_id );
+		$times            	= $this->webinar_times();
+		$selected         	= filter_input( INPUT_POST, 'selected' );
+		$selected_compare 	= str_replace( '/', '-', $selected );
+		$selected_compare 	= date( 'Y/m/d', strtotime( $selected_compare ) );
+		$newtime 			= array();
+		if ( ! empty( $lesson ) ) {
+			// foreach ( $lessons as $lesson ) {
 				$start_time = get_post_meta( $lesson->ID, '_lp_webinar_when', true );
 				$timezone   = get_post_meta( $lesson->ID, '_lp_timezone', true );
 				$duration   = get_post_meta( $lesson->ID, '_lp_duration', true );
 
 				$change_sdate = str_replace( '/', '-', $start_time );
 				$start_time   = date( 'Y/m/d H:i', strtotime( $change_sdate ) );
+				
 				$end_time     = date( 'Y/m/d H:i', strtotime( $start_time . '+' . $duration ) );
+				
 				if ( $start_time < $end_time && date( 'Y/m/d', strtotime( $change_sdate ) ) === $selected_compare ) {
-					$time_starting = date( 'H:i', strtotime( $start_time ) );
-					$time_ending   = date( 'H:i', strtotime( $end_time ) );
+					$time_starting = date( 'H:i', strtotime("-15 minutes", strtotime( $start_time )) );
+					$time_ending   = date( 'H:i', strtotime("+15 minutes", strtotime( $end_time ) ) );
 					foreach ( $times as $k => $time ) {
 						if ( $time >= $time_starting && $time <= $time_ending ) {
-							unset( $times[ $k ] );
+							array_push($newtime, $time);
 						}
 					}
 				}
-			}
+			// }
 
 			if ( empty( $times ) ) {
-				$result = array( 'allowed_times' => false, 'date' => $selected, 'disabled_date' => $selected_compare );
+				$result = array( 
+					'allowed_times' => false, 
+					'date' => $selected, 
+					'disabled_date' => $selected_compare 
+				);
 			} else {
-				$result = array( 'allowed_times' => $times, 'date' => $selected );
+				$result = array( 
+					'allowed_times' => $newtime, 
+					'date' => $selected
+				);
 			}
 		}
 
