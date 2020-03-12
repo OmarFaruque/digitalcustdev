@@ -1073,8 +1073,50 @@ function set_default_section_to_editor($course_id){
 
 
 
+/*
+* Override html input for front-end editor
+*/
+function begin_html( $html, $field, $meta ) {
+	$page_id = get_option( 'learn_press_frontend_editor_page_id' );
+	if ( $page_id && is_page( $page_id ) ) {
+		global $frontend_editor;
+		$post_manage = $frontend_editor->post_manage;
+		$post        = $post_manage->get_post();
+		$checked = get_post_meta($post->ID, 'descount_access', true) == '1' ? 'checked' : '';
 
-add_action('wp_head', 'testfunction');
+		// echo 'field id: ' . $field['id'] . '<br/>';
+		// echo 
+		switch($field['id']){
+			case '_lp_sale_price':
+				$html = '<label class="switch mr-1">
+					<input type="checkbox" name="descount_access" value="1" '.$checked.'>
+					<span class="slider"></span>
+				</label>' . $html;
+			break;
+		}
+	}else{
+		if($field['id'] == '_lp_price'){
+			$field['min'] = 0;
+		}
+	}
+	return $html . ( ! empty( $field['after_input'] ) ? $field['after_input'] : '' );
+
+	
+}
+add_filter( 'rwmb_html', 'begin_html', 10, 3 );
+
+
+
+/*
+* add custom field to array
+*/
+
+add_filter('e-update-course-meta-data-props', 'addaddditionalfieldtosavedArray');
+function addaddditionalfieldtosavedArray( $array ) {
+	$array[] = 'descount_access';
+	return $array;
+}
+// add_action('wp_head', 'testfunction');
 function testfunction(){
 	
 	// get_template_part( 'digitalcustdev-core\views\webinars\tpl-list', 'purchased' );
@@ -1084,37 +1126,73 @@ function testfunction(){
 		'rootURL'           => get_home_url()
 	);
 
-	// echo '<pre>';
+	// echo '<pre>';o
 	// print_r($data['Course_Store_Data']['post_type_fields']['lp_assignment']);
 	// echo '</pre>';
 	$post_type = 'lp_assignment';
 	$datas = apply_filters( 'e-post-type-fields', LP()->session->get( 'fe_' . $post_type . '_meta_box' ), $post_type );
-	$searchArray = array_search('_lp_attachments', $datas);
-	echo 'Datas<pre>';
-	print_r($datas);
-	echo '</pre>';
+	$searchArray = array_search('_lp_duration', array_column($datas, 'id'));
+
+
+
+	// $newarray = array();
+
+	// // array_push($data, array('id' => 'e-item-content'));
+	// $order = array( '_lp_introduction', '_lp_attachments', '_lp_duration' );
+
+	// foreach($datas as $k => $s):
+	// 	$index = array_search($order[$k], array_column($datas, 'id'));
+	// 	array_push($newarray, $datas[$index]);
+	// endforeach;
+	// // return $newarray;
+
+
+	// echo 'Datas<pre>';
+	// print_r($newarray);
+	// echo '</pre>';
+
+	// echo 'searchArray<pre>';
+	// print_r($searchArray);
+	// echo '</pre>';
 }
 
 
 add_filter('e-post-type-fields', 'testfunctiono');
 function testfunctiono($data){
 	$newarray = array();
-	$order = array('_lp_duration', '_lp_introduction', '_lp_attachments');
-	
-	foreach($data as $k => $s):
-		switch($s['id']){
-			case '_lp_introduction':
-				$newarray[0] = $s;
-			break;
-			case '_lp_duration':
-				$newarray[1] = $s;
-			break;
-			case '_lp_attachments':
-				$newarray[2] = $s;
-			break;
-		}
-	endforeach;
-	$newarray = array_multisort($newarray, SORT_DESC, $data);
-	return $newarray;
 
+	// array_push($data, array('id' => 'e-item-content'));
+	$order = array( '_lp_introduction', '_lp_attachments', '_lp_duration' );
+
+	foreach($data as $k => $s):
+		$index = array_search($order[$k], array_column($data, 'id'));
+		array_push($newarray, $data[$index]);
+	endforeach;
+	return $newarray;
 }
+
+
+// add_action('rwmb_after_save_post', 'aftfersavePost');
+function aftfersavePost(){
+	echo 'test omar f';
+}
+
+
+add_filter('learn-press/course-settings/payments', 'course_settings_payment_field_override');
+function course_settings_payment_field_override($fields){
+	$index = array_search('_lp_price', array_column($fields['fields'], 'id'));
+	$fields['fields'][$index]['min'] = (!is_admin()) ? 2000 : 0;
+	return $fields;
+}
+
+function changeMceDefaults($in) {
+
+    // customize the buttons
+    $in['theme_advanced_buttons1'] = 'bold,italic,underline,bullist,numlist,hr,blockquote,link,unlink,justifyleft,justifycenter,justifyright,justifyfull,outdent,indent';         
+    $in['theme_advanced_buttons2'] = 'formatselect,pastetext,pasteword,charmap,undo,redo';
+
+    // Keep the "kitchen sink" open
+    $in[ 'wordpress_adv_hidden' ] = FALSE;
+    return $in;
+}
+add_filter( 'tiny_mce_before_init', 'changeMceDefaults' );

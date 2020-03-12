@@ -37,8 +37,12 @@
 
 <div id="wrapper-container" class="wrapper-container">
     <div class="content-pusher">
-        <header id="masthead" class="site-header affix-top<?php thim_header_class(); ?>">
-			<?php
+        <header id="masthead" class="om site-header affix-top<?php thim_header_class(); ?>">
+            <?php
+            $page_id = get_option( 'learn_press_frontend_editor_page_id' );
+
+            
+
 			//Toolbar
 			if ( get_theme_mod( 'thim_toolbar_show', true ) ) {
 				get_template_part( 'inc/header/toolbar' );
@@ -46,7 +50,7 @@
 
             //Header style
 			if ( get_theme_mod( 'thim_header_style', 'header_v1' ) ) {
-				get_template_part( 'inc/header/' . get_theme_mod( 'thim_header_style', 'header_v1' ) );
+                if ( !is_page( $page_id ) ) get_template_part( 'inc/header/' . get_theme_mod( 'thim_header_style', 'header_v1' ) );
 			}
 
 			?>

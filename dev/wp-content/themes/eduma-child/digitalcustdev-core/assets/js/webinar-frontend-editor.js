@@ -43,6 +43,7 @@
 
         getFields: function (type) {
             var $postTypeFields = this.$dataStore().post_type_fields;
+            // console.log('return: ' + $postTypeFields[type]);
             return $postTypeFields[type];
         },
 
@@ -352,12 +353,12 @@
 
         //Change Price Validations
         $('input[name="_lp_price"]').on('keyup', function (e) {
-            if ($(this).val() >= 1000) {
+            if ($(this).val() >= 2000) {
                 $(this).removeClass('error');
-                $('.dcd-course-next-save').show();
+                $('.dcd-course-next-save').removeClass('disabled');
             } else {
                 $(this).addClass('error');
-                $('.dcd-course-next-save').hide();
+                $('.dcd-course-next-save').addClass('disabled');
             }
         });
 

@@ -113,6 +113,10 @@ abstract class RWMB_Field {
 	 * @return string
 	 */
 	public static function begin_html( $meta, $field ) {
+
+		// echo '<pre>';
+		// print_r($field);
+		// echo '</pre>';
 		$field_label = '';
 		if ( $field['name'] ) {
 			$field_label = sprintf(
@@ -129,7 +133,7 @@ abstract class RWMB_Field {
 		$data_max_clone = is_numeric( $field['max_clone'] ) && $field['max_clone'] > 1 ? ' data-max-clone=' . $field['max_clone'] : '';
 
 		$input_open = sprintf(
-			'<div class="rwmb-input"%s>',
+			'<div class="Om rwmb-input"%s>',
 			$data_max_clone
 		);
 

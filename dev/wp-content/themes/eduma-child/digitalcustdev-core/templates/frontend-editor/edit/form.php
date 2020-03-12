@@ -23,6 +23,7 @@ if ( ! empty( $duration_term ) ) {
 <div class="row">
     <div class="e-form-field col-md-12">
         <label><?php esc_html_e( 'Title of your webinar course', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
             <input name="post_title" class="frontend-post-title" type="text" value="<?php echo ! empty( $post->post_title ) ? $post->post_title : 'New Course'; ?>"
                    placeholder="<?php esc_attr_e( 'Course name', 'learnpress-frontend-editor' ); ?>">
@@ -31,6 +32,7 @@ if ( ! empty( $duration_term ) ) {
 
     <div class="e-form-field col-md-4 mt-2">
         <label><?php esc_html_e( 'Choose webinar category', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
 			<?php #$frontend_editor->get_template( 'edit/form-category' ); ?>
 			<?php
@@ -59,6 +61,7 @@ if ( ! empty( $duration_term ) ) {
 
     <div class="e-form-field col-md-4 mt-2">
         <label><?php esc_html_e( 'Select Language', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
 			<?php $languages = json_decode( file_get_contents( DIGITALCUSTDEV_PLUGIN_PATH . 'assets/languages.json' ) ); ?>
             <select class="form-control select2-select" name="thim_course_language">
@@ -76,6 +79,7 @@ if ( ! empty( $duration_term ) ) {
 
     <div class="e-form-field col-md-4 mt-2">
         <label><?php esc_html_e( 'Select Skill Level', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <select class="form-control select2-select" name="thim_course_skill_level">
             <option value="Beginner" <?php selected( $skill_level, 'Beginner' ); ?>><?php _e( 'Beginner', 'digitalcustdev-core' ); ?></option>
             <option value="Medium" <?php selected( $skill_level, 'Medium' ); ?>><?php _e( 'Intermediate', 'digitalcustdev-core' ); ?></option>
@@ -85,6 +89,7 @@ if ( ! empty( $duration_term ) ) {
 
     <div class="e-form-field col-md-12 mt-2">
         <label><?php esc_html_e( 'Choose one from the list - its easier for users to find your course.', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-dropdown">
 			<?php
 			$tags = get_terms( array(
@@ -113,6 +118,7 @@ if ( ! empty( $duration_term ) ) {
     <div class="e-form-field col-md-4 mt-2">
 		<?php if ( post_type_supports( $post_manage->get_post_type(), 'thumbnail' ) ) { ?>
             <label><?php esc_html_e( 'Add a course Image', 'learnpress-frontend-editor' ); ?></label>
+            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
             <div class="e-form-field-input">
 				<?php $frontend_editor->get_template( 'edit/form-image' ); ?>
             </div>
@@ -135,6 +141,7 @@ if ( ! empty( $duration_term ) ) {
 
         <div class="e-form-field-input  hide-youtube-link-field">
             <label class="mt-2"><?php esc_html_e( 'Paste a link from youtube', 'learnpress-frontend-editor' ); ?></label>
+            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
             <input class="form-control thim_course_media_intro" name="thim_course_media_intro" type="url" value="<?php echo ! empty( $youtube_link ) ? $youtube_link : false; ?>" placeholder="<?php esc_attr_e( 'Paste youtube link', 'learnpress-frontend-editor' ); ?>">
             <div class="course_youtube_link_incorrect"></div>
         </div>
@@ -148,6 +155,7 @@ if ( ! empty( $duration_term ) ) {
 
     <div class="e-form-field col-md-12 mt-2">
         <label><?php esc_html_e( 'Webinar course length', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="row">
             <div class="col-md-2">
                 <input type="number" value="<?php echo ! empty( $duration_term[0] ) ? $duration_term[0] : 1; ?>" min="1" max="32" class="form-control" name="webinar_duration_number" placeholder="2">
@@ -165,6 +173,7 @@ if ( ! empty( $duration_term ) ) {
 
     <div class="e-form-field col-md-12 mt-2">
         <label><?php esc_html_e( 'Write a description for the webinar course', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
 			<?php wp_editor( $post->post_content, 'post_content', array( 'rows' => 50 ) ); ?>
         </div>

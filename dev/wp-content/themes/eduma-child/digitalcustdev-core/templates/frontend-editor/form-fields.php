@@ -12,7 +12,10 @@ defined( 'ABSPATH' ) or die;
 
 <script type="text/x-template" id="tmpl-e-form-field-when-webinar">
     <li class="e-form-field when-webinar">
-        <label v-html="field.name"></label>
+        <div class="rwmb-label">
+            <label v-html="field.name"></label>
+            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
+        </div>
         <div class="e-form-field-input">
             <i class="fa fa-calendar icon"></i>
             <input type="text" v-model="itemData.settings[field.id]" @click="_changeDatePicker($event)" class="form-control webinar_start_time">
@@ -34,7 +37,11 @@ defined( 'ABSPATH' ) or die;
 </script>
 <script type="text/x-template" id="tmpl-e-form-field-lesson-duration">
     <li class="e-form-field lesson_duration">
-        <label v-html="field.name"></label>
+        <div class="rwmb-label">
+            <label v-html="field.name"></label>
+            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
+        </div>
+        
         <div class="o9 e-form-field-input">
             <select class="form-control select2-select" v-model="settingValue">
                 <option value="30 minute"><?php esc_html_e( '30 Minute', 'learnpress-frontend-editor' ); ?></option>

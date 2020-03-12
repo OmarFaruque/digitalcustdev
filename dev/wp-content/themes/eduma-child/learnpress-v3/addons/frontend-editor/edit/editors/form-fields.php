@@ -19,6 +19,15 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
     <script type="text/x-template" id="tmpl-e-form-field">
         <component :is="includeFormField()" :field="field" :item-data="itemData" :settings="settings || {}"></component>
     </script>
+
+
+
+    <!-- <li class="e-form-field">
+                            <label class="omr"><?php _e( 'Description', 'learnpress-frontend-editor' ); ?></label>
+                            <div class="omf e-form-field-input">
+                                <e-tinymce :id="'e-item-content'" v-model="itemData.content"></e-tinymce>
+                            </div>
+                        </li> -->
     <script type="text/x-template" id="tmpl-e-tinymce">
 
         <div :id="getEditorId()" class="e-tinymce-wrap wp-content-wrap"
@@ -45,7 +54,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
             </div>
             <div id="wp-content-editor-container" class="wp-editor-container">
                 <div id="ed_toolbar" class="quicktags-toolbar"></div>
-                <textarea class="wp-editor-area" style="height: 300px" autocomplete="off" cols="40" name="content" :id="id"
+                <textarea class="wp-editor-area" style="height: 250px" autocomplete="off" cols="40" name="content" :id="id"
                           v-model="value"></textarea></div>
         </div>
 
@@ -56,7 +65,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
              
        <div class="tooltip" style="margin-left: -215px;
     margin-top: -2px;
-    margin-right: 27%;">?<span class="tooltiptext">Tooltip text</span>
+    margin-right: 27%;">?<span class="tooltiptext">Tooltip text 1</span>
 </div>
  
             
@@ -79,8 +88,11 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
 
 
     <script type="text/x-template" id="tmpl-e-form-field-file-advanced">
-	<li class="omar9 e-form-field file-advanced">
-		<label>{{field.name}}</label>
+	<li class="omar9 mt-32 e-form-field file-advanced">
+        <label>{{field.name}}
+         <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
+        </label>
+        
         <div class="e-form-field-input">
 
             <input class="rwmb-file_advanced" name="_lp_attachments" v-model="settings[field.id]" type="hidden" data-options="{&quot;mimeType&quot;:&quot;&quot;,&quot;maxFiles&quot;:0,&quot;forceDelete&quot;:false,&quot;maxStatus&quot;:true}">
@@ -118,7 +130,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
             <label v-html="field.name"></label>
             <div class="tooltip" style="margin-left: -215px;
                 margin-top: -2px;
-                margin-right: 27%;">?<span class="tooltiptext">Tooltip text</span>
+                margin-right: 27%;">?<span class="tooltiptext">Tooltip text 2</span>
             </div>
             <div class="e-form-field-input">
                 <div class="row">
@@ -143,7 +155,11 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
    
     <script type="text/x-template" id="tmpl-e-form-field-text">
         <li class="omar3 e-form-field text textdown">
-            <label v-html="field.name"></label>
+            <label v-html="field.name">
+
+            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
+            </label>
+            
             <div class="e-form-field-input">
                 <input :type="field.xType ? field.xType : field.type" v-model="itemData.settings[field.id]">
                 <p class="e-form-field-desc" v-html="field.desc"></p>
@@ -155,9 +171,13 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
    
     <script type="text/x-template" id="tmpl-e-form-field-yes-no">
         <li class="omar4 e-form-field yes-no">
-            <label v-html="field.name"></label>
+            <div class="rwmb-label">
+                <label v-html="field.name"></label>
+                 <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
+            </div>
             <div class="e-form-field-input">
                 <input type="checkbox" v-model="settingValue" true-value="yes" false-value="no">
+                
                 <p class="e-form-field-desc" v-html="field.desc"></p>
             </div>
         </li>

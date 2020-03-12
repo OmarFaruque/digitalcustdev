@@ -26,7 +26,10 @@
 	 * Ideally, it is not considered best practise to attach more than a
 	 * single DOM-ready or window-load handler for a particular page.
 	 * Although scripts in the WordPress core, Plugins and Themes may be
-	 * practising this, we should strive to set a better example in our own work.
+	 * practising this, we should strive to set a better example in our own work...
 	 */
 
+	jQuery('.rwmb-input').find('input[name="_lp_price"]').removeAttr('min');
+	jQuery('.rwmb-input').find('input[name="_lp_price"]').addClass('minOmar');
+	 console.log('test omar f');
 })( jQuery );

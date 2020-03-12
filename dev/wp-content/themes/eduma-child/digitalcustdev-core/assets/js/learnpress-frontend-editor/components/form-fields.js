@@ -229,14 +229,15 @@
                         }, self));
 
                     },
-                    height: 400
+                    height: 300
                 });
                 tinymce.init(tinyMCEInit);
 
                 var tags = $.extend({}, tinyMCEPreInit.qtInit['post_content']);
                 tags.id = this.id;
                 FE_Helpers.QuickTags(this.id, tags);
-                console.log('init call');
+                // console.log('init call');
+                // console.log('this id: ' . this.id);
             },
             onChange: function () {
                 this.isTyping = true;

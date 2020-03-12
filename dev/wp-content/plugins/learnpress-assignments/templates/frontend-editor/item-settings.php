@@ -14,6 +14,7 @@
  */
 defined( 'ABSPATH' ) || exit(); ?>
 
+
 <script type="text/x-template" id="tmpl-e-course-item-settings-lp_assignment">
     <div class="e-item-settings-extra">
         <ul class="e-form-field-table flex 89">

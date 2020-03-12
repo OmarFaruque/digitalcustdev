@@ -149,6 +149,7 @@ function dcd_e_course_editor_tab_settings() {
 				echo $tab['content'];
 			} elseif ( ! empty( $tab['callback'] ) && is_callable( $tab['callback'] ) ) {
 				call_user_func( $tab['callback'] );
+				
 			} else {
 				do_action( 'learn_press_meta_box_tab_content', $tab );
 			}

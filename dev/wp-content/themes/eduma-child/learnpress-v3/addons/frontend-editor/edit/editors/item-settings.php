@@ -26,9 +26,10 @@ global $frontend_editor;
             <div class="e-settings-window">
                 <div class="e-item-settings-content" v-if="itemData && itemData.id">
 
-                    <ul class="e-form-field-table">
+                    <ul class="e-form-field-table 0">
                         <li class="e-form-field">
-                            <label><?php _e( 'Title', 'learnpress-frontend-editor' ); ?></label>
+                            <label class="d-inline"><?php _e( 'Title', 'learnpress-frontend-editor' ); ?></label>
+                            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
                             <div class="e-form-field-input e-item-heading-input">
                                 <input type="text" v-model="itemData.title" class="wide-fat">
                             </div>
@@ -37,8 +38,9 @@ global $frontend_editor;
                      class="e-no-item-selected"><?php esc_html_e( 'Please select an item or add a new one', 'learnpress-frontend-editor' ); ?></div>
                      
                         <li class="e-form-field">
-                            <label><?php _e( 'Description', 'learnpress-frontend-editor' ); ?></label>
-                            <div class="e-form-field-input">
+                            <label class="omr d-inline"><?php _e( 'Description', 'learnpress-frontend-editor' ); ?></label>
+                            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
+                            <div class="h-300 e-form-field-input">
                                 <e-tinymce :id="'e-item-content'" v-model="itemData.content"></e-tinymce>
                             </div>
                         </li>
@@ -56,7 +58,7 @@ global $frontend_editor;
     <script type="text/x-template" id="tmpl-e-course-item-settings-lp_quiz">
         <div class="e-item-settings-extra">
 
-            <ul class="e-form-field-table">
+            <ul class="e-form-field-table 98">
                 <li id="e-quiz-editor-wrap" class="e-form-field">
                     <div class="e-section-heading"><?php esc_html_e( 'Questions', 'learnpress-frontend-editor' ); ?></div>
                     <e-quiz-editor :item="item" :item-data="itemData"
@@ -165,7 +167,7 @@ global $frontend_editor;
                 <a href="" @click="_back($event)"><?php esc_html_e( 'Quiz:', 'learnpress-frontend-editor' ); ?>
                     {{itemData.title}}</a>
                 <span>/ {{getQuestionIndex()}}. {{question.title}}</span></h3>
-            <ul class="e-form-field-table">
+            <ul class="e-form-field-table 09">
                 <li class="e-form-field">
                     <label><?php _e( 'Title', 'learnpress-frontend-editor' ); ?></label>
                     <div class="e-form-field-input">

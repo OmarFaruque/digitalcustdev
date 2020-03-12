@@ -43,7 +43,7 @@
 
         getFields: function (type) {
             var $postTypeFields = this.$dataStore().post_type_fields;
-
+            console.log('twrwrppp');
             return $postTypeFields[type];
         },
 

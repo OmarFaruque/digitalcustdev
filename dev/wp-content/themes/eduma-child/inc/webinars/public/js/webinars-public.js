@@ -126,6 +126,77 @@ jQuery(document).ready(function($){
 
 
 	/*
+	* if discount active
+	*/
+	jQuery(document).on('change', 'input[name="descount_access"]',
+	function(event) {
+		descountaccess(jQuery(this));
+	});
+	if(jQuery('input[name="descount_access"]').length){
+		descountaccess(jQuery('input[name="descount_access"]'));
+	}
+
+	if(jQuery('input[name="_lp_sale_price"]').length){
+		jQuery(document).on('change', 'input[name="_lp_sale_price"]', function(){
+			makebuttonnonclickable();
+		});
+	}
+
+	function descountaccess(d){
+		if(d.is(':checked')){
+			d.closest('label').next('input').show();
+			makebuttonnonclickable();
+		}else{
+			d.closest('label').next('input').hide();
+			makebuttonnonclickable();
+		}
+	}
+
+	/*
+	* Make button non-clicable 
+	*/
+	function makebuttonnonclickable(){
+		var price = jQuery('input[name="_lp_price"]').val(),
+		sales_price = jQuery('input[name="_lp_sale_price"]').val(),
+		desable = false;
+
+	
+		if(jQuery('input[name="descount_access"]').length){
+			if(jQuery('input[name="descount_access"]').is(':checked')){
+				if(sales_price < 999) desable = true;
+				if(sales_price >= price) desable = true;
+			}
+		}
+
+		if(desable){
+			jQuery('a.dcd-course-next-save.submit-for-review').addClass('disabled');
+			jQuery('input[name="_lp_sale_price"]').addClass('error');
+		}else{
+			jQuery('a.dcd-course-next-save.submit-for-review').removeClass('disabled');
+			jQuery('input[name="_lp_sale_price"]').removeClass('error');
+		}
+	}
+
+
+	/*
+	* Remove TynimCE hidden
+	*/
+	if(jQuery('.mce-container.mce-toolbar.mce-stack-layout-item.mce-last').length){
+		jQuery('.mce-container.mce-toolbar.mce-stack-layout-item.mce-last').show();
+	}
+
+
+	/*
+	* Set tooltip for metabox
+	*/
+	if(jQuery('#learn-press-admin-editor-metabox-settings').length){
+		jQuery('.rwmb-label').each(function( index ){
+			var label = jQuery(this).find('label').attr('for');
+			jQuery(this).append('<span class="tooltip">?<span class="tooltiptext">Tooltip text</span></span>');
+		});
+	}
+
+	/*
 	* Default time for webinar's
 	*/
 	jQuery(document).on('click', '.xdsoft_today_button', function(){

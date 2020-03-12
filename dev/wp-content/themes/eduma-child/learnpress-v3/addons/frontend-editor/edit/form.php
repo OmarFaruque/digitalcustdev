@@ -16,15 +16,10 @@ $skill_level  = get_post_meta( $post->ID, 'thim_course_skill_level', true );
 $course_lang  = get_post_meta( $post->ID, 'thim_course_language', true );
 $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 ?>
-<div class="row">
-   <div class="e-form-field col-md-12">
-       <div class="tooltip"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">?
-  </font></font><span class="tooltiptext"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tooltip text</font></font></span>
-</div>
-   </div>
-
+    <div class="row">
     <div class="e-form-field col-md-12">
         <label><?php esc_html_e( 'Title', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
             <input name="post_title" class="frontend-post-title" type="text" value="<?php echo $post->post_title; ?>"
                    placeholder="<?php esc_attr_e( 'Course name', 'learnpress-frontend-editor' ); ?>">
@@ -34,6 +29,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 
     <div class="e-form-field col-md-4 mt-2">
         <label><?php esc_html_e( 'Category', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
 
 			<?php #$frontend_editor->get_template( 'edit/form-category' ); ?>
@@ -64,6 +60,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 
     <div class="e-form-field col-md-4 mt-2">
         <label><?php esc_html_e( 'Select Language', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
 			<?php $languages = json_decode( file_get_contents( DIGITALCUSTDEV_PLUGIN_PATH . 'assets/languages.json' ) ); ?>
             <select class="form-control select2-select" name="post_language">
@@ -79,6 +76,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 
     <div class="e-form-field col-md-4 mt-2">
         <label><?php esc_html_e( 'Select Skill Level', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
             <select class="form-control select2-select" name="post_skill_level">
                 <option value="Beginner" <?php selected( $skill_level, 'Beginner' ); ?>><?php _e( 'Master', 'digitalcustdev-core' ); ?></option>
@@ -90,6 +88,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 
     <div class="e-form-field col-md-12 mt-2">
         <label><?php esc_html_e( 'Create tag for the course or choose one from the list - its easier for users to find your course.', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-dropdown">
 			<?php
 			$tags = get_terms( array(
@@ -118,6 +117,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
     <div class="e-form-field col-md-4 mt-2">
 		<?php if ( post_type_supports( $post_manage->get_post_type(), 'thumbnail' ) ) { ?>
             <label><?php esc_html_e( 'Add a course Image', 'learnpress-frontend-editor' ); ?></label>
+            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
             <div class="e-form-field-input">
 				<?php $frontend_editor->get_template( 'edit/form-image' ); ?>
             </div>
@@ -140,6 +140,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 
         <div class="e-form-field-input  hide-youtube-link-field">
             <label class="mt-2"><?php esc_html_e( 'Paste a link from youtube', 'learnpress-frontend-editor' ); ?></label>
+            <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
             <input class="form-control thim_course_media_intro" name="thim_course_media_intro" type="url" value="<?php echo ! empty( $youtube_link ) ? $youtube_link : false; ?>" placeholder="<?php esc_attr_e( 'Paste youtube link', 'learnpress-frontend-editor' ); ?>">
             <div class="course_youtube_link_incorrect"></div>
         </div>
@@ -153,6 +154,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 
     <div class="e-form-field col-md-12 mt-2">
         <label><?php esc_html_e( 'Description', 'learnpress-frontend-editor' ); ?></label>
+        <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
 			<?php wp_editor( $post->post_content, 'post_content', array( 'rows' => 50 ) ); ?>
         </div>
