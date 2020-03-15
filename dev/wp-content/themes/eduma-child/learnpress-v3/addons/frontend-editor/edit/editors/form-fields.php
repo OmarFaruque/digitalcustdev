@@ -15,7 +15,6 @@ $post_manage = $frontend_editor->post_manage;
 $post        = $post_manage->get_post();
 $post_type  = get_post_meta($post->ID, '_course_type', 'true');
 ?>
-?>
     <script type="text/x-template" id="tmpl-e-form-field">
         <component :is="includeFormField()" :field="field" :item-data="itemData" :settings="settings || {}"></component>
     </script>
@@ -60,26 +59,32 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
 
     </script>
         <script type="text/x-template" id="tmpl-e-form-field-textarea">
-        <li class="omar89 e-form-field textarea textabove">
-            <label v-html="field.name"></label>
-             
-       <div class="tooltip" style="margin-left: -215px;
-    margin-top: -2px;
-    margin-right: 27%;">?<span class="tooltiptext">Tooltip text 1</span>
-</div>
- 
-            
-            <div class="e-form-field-input">
-                <?php if($post_type != 'webinar'): ?>  
-                    <div id="wp-content-media-buttons" class="wp-media-buttons">                  
-                        <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media">
-                            <span class="wp-media-buttons-icon"></span>
-                            <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
-                        </button>
-                    </div>
-                <?php endif; ?>
-                <textarea v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
-                <p class="e-form-field-desc" v-html="field.desc"></p>
+        <li class="omar89 d-block e-form-field textarea textabove">
+            <?php if($post_type != 'webinar'): ?>  
+            <div class="single_sub_section add_video mb-2">
+                <div class="rwmb-label">
+                    <label><?php _e('Add Video', 'webinars'); ?></label>
+                    <div class="tooltip">?<span class="tooltiptext"><?php _e('Add Media', 'webinars'); ?></span></div>
+                </div>
+                <div class="e-form-field-input-media">
+                        <div id="wp-content-media-buttons" class="wp-media-buttons">                  
+                            <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media">
+                                <span class="wp-media-buttons-icon"></span>
+                                <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
+                            </button>
+                        </div>
+                </div>
+            </div>
+            <?php endif; ?>
+            <div class="single_sub_section">
+                <div class="rwmb-label">
+                    <label v-html="field.name"></label> 
+                    <div class="tooltip">?<span class="tooltiptext">Tooltip text 1</span></div>
+                </div>
+                <div class="e-form-field-input">
+                    <textarea v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
+                    <p class="e-form-field-desc" v-html="field.desc"></p>
+                </div>
             </div>
         </li>
     </script>

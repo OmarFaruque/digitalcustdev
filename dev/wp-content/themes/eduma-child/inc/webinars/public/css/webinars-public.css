@@ -431,6 +431,66 @@ input:checked + .slider:before {
 .d-inline{
   display: inline-block !important;
 }
+.single_sub_section > div.rwmb-label,
 #frontend-editor .e-form-field-table.flex .e-form-field > div.rwmb-label {
   flex: 0 0 300px;
+}
+
+.with-loader #e-update-activity,
+.foooter_loading #e-update-activity{
+  position: absolute;
+  top: -30px;
+  left: -70%;
+  max-width: 63px;
+  min-width: unset;
+  min-height: unset;
+  max-height: 75px;
+  padding: 0;
+}
+
+.with-loader #e-update-activity:after {
+  content: 'Seaving...';
+  position: absolute;
+  bottom: -10px;
+  width: 100%;
+  text-align: center;
+}
+
+.with-loader #e-update-activity .e-update-activity__icon {
+  left: 0;
+  top: 0;
+}
+.mb-0{
+  margin-bottom: 0 !important;
+}
+.top-0
+{
+  top: 0 !important;
+}
+
+
+div#e-item-settings[data-context="lp_assignment"] ul li div.add_video,
+div#e-item-settings[data-context="lp_assignment"] ul li div#wp-content-media-buttons
+{
+  display: none;
+}
+#frontend-editor .e-form-field-table.flex .e-form-field.d-block,
+.d-block{
+  display: block;
+}
+.single_sub_section {
+  display: flex;
+}
+.single_sub_section div.tooltip {
+  display: inline;
+}
+body.page-frontend-editor h2.media-frame-menu-heading,
+body.page-frontend-editor .media-frame-menu{
+  display: none;
+}
+body.page-frontend-editor .media-frame-router,
+body.page-frontend-editor .media-frame-content,
+body.page-frontend-editor .media-frame-toolbar,
+body.page-frontend-editor .media-frame-title{
+  left: 0;
 }
