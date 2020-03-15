@@ -1129,18 +1129,45 @@ function testfunction(){
 }
 
 
-add_filter('e-post-type-fields', 'testfunctiono');
+
+
+add_filter('e-course-data-store', 'course_data_override');
+function course_data_override($data){
+	
+	$order = array( '_lp_introduction', '_lp_attachments', '_lp_duration' );
+	if(isset($data['post_type_fields']['lp_assignment'])){
+		$newarray = array();
+		foreach($data['post_type_fields']['lp_assignment'] as $k => $s):
+			$index = array_search($order[$k], array_column($data['post_type_fields']['lp_assignment'], 'id'));
+			array_push($newarray, $data['post_type_fields']['lp_assignment'][$index]);
+		endforeach;
+		$data['post_type_fields']['lp_assignment'] = $newarray;
+	} // if(isset($data['post_type_fields']['lp_assignment']))
+	return $data;
+}
+
+// add_filter('e-post-type-fields', 'testfunctiono');
 function testfunctiono($data){
 	$newarray = array();
 
 	// array_push($data, array('id' => 'e-item-content'));
 	$order = array( '_lp_introduction', '_lp_attachments', '_lp_duration' );
-
+	// $indexf = array_search($order[2], array_column($data, 'id'));
+	$returnN = false;
 	foreach($data as $k => $s):
 		$index = array_search($order[$k], array_column($data, 'id'));
+		if($index0 && $index1 && $index2){
+			$returnN = true;		
+		}
 		array_push($newarray, $data[$index]);
 	endforeach;
-	return $newarray;
+	if($returnN){
+		echo 'return true omar f';
+	}else{
+		echo 'return false omar f';
+	}
+	$returnArray = ($returnN) ? $newarray : $data;
+	return $returnArray;
 }
 
 

@@ -33,14 +33,14 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
         <div :id="getEditorId()" class="e-tinymce-wrap wp-content-wrap"
              class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
             <div id="wp-content-editor-tools" class="omar-tinymce wp-editor-tools hide-if-no-js">
-                <div id="wp-content-media-buttons" class="wp-media-buttons">
+                <!-- <div id="wp-content-media-buttons" class="wp-media-buttons"> -->
                     <!-- <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media"
                             :data-editor="id">
                         <span class="wp-media-buttons-icon"></span>
 						<?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
                     </button> -->
 
-                </div>
+                <!-- </div> -->
                 <div class="wp-editor-tabs">
                     <button class="e-button" type="button" :id="id+'-tmce'" class="wp-switch-editor switch-tmce"
                             :data-wp-editor-id="id">
@@ -70,16 +70,16 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
  
             
             <div class="e-form-field-input">
-                <textarea v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
-                <p class="e-form-field-desc" v-html="field.desc"></p>
-                    <?php if($post_type != 'webinar'): ?>  
+                <?php if($post_type != 'webinar'): ?>  
                     <div id="wp-content-media-buttons" class="wp-media-buttons">                  
                         <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media">
                             <span class="wp-media-buttons-icon"></span>
                             <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
                         </button>
                     </div>
-                    <?php endif; ?>
+                <?php endif; ?>
+                <textarea v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
+                <p class="e-form-field-desc" v-html="field.desc"></p>
             </div>
         </li>
     </script>
@@ -88,7 +88,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
 
 
     <script type="text/x-template" id="tmpl-e-form-field-file-advanced">
-	<li class="omar9 mt-32 e-form-field file-advanced">
+	<li class="omar9 mt-29 e-form-field file-advanced">
         <label>{{field.name}}
          <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         </label>

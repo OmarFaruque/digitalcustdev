@@ -232,6 +232,15 @@ class DigitalCustDev_Ajax {
 			wp_delete_attachment( $attachment_id, true );
 		}
 
+		/*
+		* Delete related items
+		*/
+		$course    = learn_press_get_course( $post_id );
+		$items     = $course->get_items();
+		foreach($items as $lesson){
+			wp_delete_post( $lesson, true );	
+		}
+
 		//Delete Webinar Details
 		$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
 		if ( $webinar_id ) {

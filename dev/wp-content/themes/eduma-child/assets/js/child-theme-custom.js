@@ -105,7 +105,7 @@ jQuery(function ($) {
             var data_type = $(event.target).data('data_type');
 
             digitalCustTypingTimeout = setTimeout(function () {
-                console.log('inside omar');
+                // console.log('inside omar');
                 digitalCustDev.implementAjaxSearch(ajaxsearchitem, security, type, data_type);
                 
             }, 500);
@@ -113,9 +113,9 @@ jQuery(function ($) {
 
         implementAjaxSearch: function (searchItem, security, type, data_type) {
 
-            console.log('search item: ' + searchItem);
-            console.log('data type: ' + data_type);
-            console.log('type in ajax: ' + type);
+            // console.log('search item: ' + searchItem);
+            // console.log('data type: ' + data_type);
+            // console.log('type in ajax: ' + type);
 
             digitalCustDevDom.profileCourseListDiv.html('<p>Loading...</p>');
             var postData = {
@@ -148,6 +148,7 @@ jQuery(function ($) {
                 digitalCustDev.initLoader();
                 $.post(digitalcustdev.ajaxurl, postData).done(function (response) {
                     location.reload();
+                    // console.log(response);
                 });
             } else {
                 return false;
