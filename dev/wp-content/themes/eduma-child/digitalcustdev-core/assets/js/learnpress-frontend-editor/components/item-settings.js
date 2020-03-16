@@ -318,10 +318,14 @@
             //     deep: true
             // },
             'itemData.id': function () {
+                console.log('watch 2');
                 this.redraw();
             }
         },
 
+        mounted: function () {
+          console.log('test omar');
+        },
         created: function () {
             this.loadSettings(this.loadSettingsCallback);
         },

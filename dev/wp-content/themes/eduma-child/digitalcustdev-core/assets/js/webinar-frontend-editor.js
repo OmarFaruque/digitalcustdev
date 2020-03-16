@@ -77,6 +77,7 @@
             }
         },
         watch: {
+            
             // itemData: {
             //     handler: function (val) {
             //         console.log('Load Settings');
@@ -94,10 +95,26 @@
             //     deep: true
             // },
             'itemData.id': function () {
+                console.log('watch');
                 this.redraw();
             }
         },
-
+        mounted: function () {
+                    var thisvalue = $(this.$el).find('input').val(),
+                    thisvalue = thisvalue.split(':'),
+                    thisvalue = thisvalue[1] % 5;
+                    var thisdate = new Date();
+                    var month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
+                    minit = thisdate.getMinutes(),
+                    shouldadd = 5 - (minit % 5);
+                    if(thisvalue > 0){
+                        var newmint = (shouldadd < 5) ? minit + shouldadd : minit,
+                        newmint = ("0" + newmint).slice(-2),
+                        newgetdate = ("0" + thisdate.getDate()).slice(-2),
+                        newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + thisdate.getHours() + ':' + newmint;
+                        $(this.$el).find('input').val(newdate);
+                    }
+          },
         created: function () {
             this.loadSettings(this.loadSettingsCallback);
         },
@@ -213,7 +230,6 @@
                         } else {
                             $vm.showDatePicker($vm, e, allowed_times, true);
                         }
-
                         $('#e-update-activity').remove();
                     }
                 });
@@ -231,7 +247,6 @@
                     yearStart: 2019,
                     onShow: function (ct) {
                         var that = this;
-
                         // var currentTime = fmt.formatDate(ct, 'Y-m-d');
 
                         /*if ($.inArray(currentTime, disabledDates) !== -1) {
@@ -313,6 +328,7 @@
             // console.log('test');
         });
 
+        
 
         $(".thim_course_media_intro").on('keyup', function (e) {
             if (this.value.length > 3) {

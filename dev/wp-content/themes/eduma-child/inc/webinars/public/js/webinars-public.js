@@ -33,6 +33,12 @@
 	* Webinar Form submit while select order
 	*/
 	// jQuery("input[value=evaluate_final_quiz]").closest('div').hide();
+
+	/*
+	* Store browser date to cookies
+	*/
+	
+
 	jQuery(document).on('change', 'form#webnartopform select[name="orderby"]', function(e){
 		e.preventDefault();
 		jQuery(this).closest('form').submit();
@@ -236,3 +242,21 @@ function mobile_switch(obj){
 		return true;
 	}
 }
+
+
+
+
+/*
+* Set cookie current time
+*/
+jQuery(window).load(function(){
+	var newdate = new Date(),
+	month = ("0" + (newdate.getMonth() + 1)).slice(-2),
+	newgetdate = ("0" + newdate.getDate()).slice(-2),
+	minit = newdate.getMinutes(),
+    shouldadd = 5 - (minit % 5),
+    newmint = (shouldadd < 5) ? minit + shouldadd : minit,
+    newmint = ("0" + newmint).slice(-2)
+	cookiedate = newdate.getFullYear() + '-' + month + '-' + newgetdate + ' '+ newdate.getHours() + ':' + newmint
+	document.cookie = "nowdate=" + cookiedate;
+});

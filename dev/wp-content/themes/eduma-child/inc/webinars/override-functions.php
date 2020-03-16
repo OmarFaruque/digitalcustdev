@@ -1118,14 +1118,10 @@ function addaddditionalfieldtosavedArray( $array ) {
 }
 // add_action('wp_head', 'testfunction');
 function testfunction(){
+	$date = date_default_timezone_get();
 	
-	$user = wp_get_current_user();
-	global $wp_query;
-	global $wp;
-				$post_id = $wp_query->get( 'post-id' );
-	echo 'user<pre>';
-	print_r($wp->request);
-	echo '</pre>';
+	echo 'date omar: ' . date('Y-m-d H:i', strtotime($date)) . '<br/>';
+
 }
 
 

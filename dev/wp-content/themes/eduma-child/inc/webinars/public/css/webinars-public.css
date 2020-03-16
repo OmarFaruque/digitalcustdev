@@ -494,3 +494,6 @@ body.page-frontend-editor .media-frame-toolbar,
 body.page-frontend-editor .media-frame-title{
   left: 0;
 }
+div#learn-press-user-profile.profile-container {
+  padding-left: 0 !important;
+}

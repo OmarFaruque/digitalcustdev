@@ -42,10 +42,15 @@ if(!class_exists('LP_Install_Sample_Data_Extend')){
 		$item_length = 1;
 		for ( $i = 1; $i <= $item_length; $i ++ ) {
 			$lesson_id = $this->create_lesson( 'Lesson ' . $lesson_count ++, $section_id, $course_id );
-			// echo 'lession id: ' . $lesson_id . '<br/>';
 			if ( $lesson_id ) {
 				if ( $i == 1 ) {
-					update_post_meta( $lesson_id, '_lp_preview', 'yes' );
+					// date_default_timezone_set ( 'Europe/Moscow' );
+					// $date = date_default_timezone_get();
+					// $date = date('d/m/Y h:i', strtotime($date));
+					// $course_type    = get_post_meta( $course_id, '_course_type', true );
+					// if($course_type == 'webinar'){
+					// 	update_post_meta( $lesson_id, '_lp_webinar_when', $date );
+					// }
 				}
 			}
 		}
