@@ -1118,9 +1118,25 @@ function addaddditionalfieldtosavedArray( $array ) {
 }
 // add_action('wp_head', 'testfunction');
 function testfunction(){
-	$date = date_default_timezone_get();
-	
-	echo 'date omar: ' . date('Y-m-d H:i', strtotime($date)) . '<br/>';
+	$args             = array(
+		'post_type' => 'lp_lesson',
+		'author'    => '103',
+		'meta_query' => array(
+			array(
+				'key' => '_lp_webinar_when',
+				'value' => date( 'd/m/Y', strtotime( '28-03-2020' ) ),
+				'compare' => 'LIKE'
+			)
+		)
+	);
+	// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
+	$lessons          	= get_posts( $args );
+
+
+	echo 'date: ' . date( 'd/m/Y', strtotime( '28-03-2020' ) ) . '<br/>';
+	echo 'lessons <pre>';
+	print_r($lessons);
+	echo '</pre>';
 
 }
 

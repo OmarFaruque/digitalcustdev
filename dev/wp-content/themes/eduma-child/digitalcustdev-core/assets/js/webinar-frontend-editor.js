@@ -102,16 +102,19 @@
         mounted: function () {
                     var thisvalue = $(this.$el).find('input').val(),
                     thisvalue = thisvalue.split(':'),
-                    thisvalue = thisvalue[1] % 5;
-                    var thisdate = new Date();
-                    var month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
+                    thisvalue = thisvalue[1] % 5,
+                    thisdate = new Date(),
+                    month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
                     minit = thisdate.getMinutes(),
                     shouldadd = 5 - (minit % 5);
+                    
                     if(thisvalue > 0){
-                        var newmint = (shouldadd < 5) ? minit + shouldadd : minit,
-                        newmint = ("0" + newmint).slice(-2),
-                        newgetdate = ("0" + thisdate.getDate()).slice(-2),
-                        newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + thisdate.getHours() + ':' + newmint;
+                        var newmint = (shouldadd < 5) ? minit + shouldadd : minit;
+                        var hours   = (minit > 55 ) ? thisdate.getHours() + 1 : thisdate.getHours();
+                        var newmint = (minit > 55 ) ? '00' : newmint;
+                        var newmint = ("0" + newmint).slice(-2),
+                        newgetdate  = ("0" + thisdate.getDate()).slice(-2),
+                        newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + hours + ':' + newmint;
                         $(this.$el).find('input').val(newdate);
                     }
           },
@@ -173,6 +176,25 @@
 
         },
         mounted: function () {
+
+            var thisvalue = $(this.$el).find('input').val(),
+            thisvalue = thisvalue.split(':'),
+            thisvalue = thisvalue[1] % 5,
+            thisdate = new Date(),
+            month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
+            minit = thisdate.getMinutes(),
+            shouldadd = 5 - (minit % 5);
+            
+            if(thisvalue > 0){
+                var newmint = (shouldadd < 5) ? minit + shouldadd : minit;
+                var hours   = (minit > 55 ) ? thisdate.getHours() + 1 : thisdate.getHours();
+                var newmint = (minit > 55 ) ? '00' : newmint;
+                var newmint = ("0" + newmint).slice(-2),
+                newgetdate  = ("0" + thisdate.getDate()).slice(-2),
+                newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + hours + ':' + newmint;
+                $(this.$el).find('input').val(newdate);
+            }
+            // console.log('mounted omar');
             /*var $vm = this;
             $('.webinar_start_time').datetimepicker({
                 dateFormat: "Y-m-d",
@@ -224,13 +246,12 @@
                     },
                     success: function (result) {
                         var allowed_times = $vm.getTimesbyDate(result, e.target.value);
-                        // console.log(result);
-                        if (result.disabled_date) {
-                            $vm.showDatePicker($vm, e, allowed_times, true, result.disabled_date);
-                        } else {
-                            $vm.showDatePicker($vm, e, allowed_times, true);
-                        }
-                        $('#e-update-activity').remove();
+                            if (result.disabled_date) {
+                                $vm.showDatePicker($vm, e, allowed_times, true, result.disabled_date, );
+                            } else {
+                                $vm.showDatePicker($vm, e, allowed_times, true, result.hide_time);
+                            }
+                        $('#e-update-activity, .updating').remove();
                     }
                 });
             },
@@ -257,9 +278,47 @@
                             allowTimes: allowed_times,
                             disabledDates: [disabledDates]
                         });
+                        // console.log(ct);
+                        // console.log(that);
+                        // jQuery('.xdsoft_time').addClass('omar');
+                        $('.xdsoft_time_variant .xdsoft_time').each(function(index){
+                            // console.log('test omar');
+                        });
+
                     },
+
+
+                    onGenerate:function(ct,$i){
+                            $('.xdsoft_time_variant .xdsoft_time').each(function(index){
+                                var thistime = $(this).text();
+                                if(disabledDates.indexOf(thistime) !== -1){
+                                    $(this).addClass('xdsoft_disabled');
+                                }
+                            });
+                    }, 
                     onChangeDateTime: function (dp, $input) {
                         var selectedDate = new Date($input.val());
+                        $.ajax({
+                            method: 'POST',
+                            url: dcd_fe_object.ajax_url,
+                            data: {
+                                action: 'check_webinar_existing_date', 
+                                selected: $input.val()
+                            },
+                            success: function (result) {
+                                console.log(result);
+                                $('.xdsoft_time_variant .xdsoft_time').each(function(index){
+                                    var thistime = $(this).text(),
+                                    desabletime = result.hide_time;
+                                    if(desabletime.indexOf(thistime) !== -1){
+                                        $(this).addClass('xdsoft_disabled');
+                                    }
+                                });
+                            }
+                        });
+
+
+
                         // console.log(selectedDate);
                         if (selectedDate !== "Invalid Date") {
                             var roundMinute = (Math.ceil(selectedDate.getMinutes() / 15) * 15) % 60;

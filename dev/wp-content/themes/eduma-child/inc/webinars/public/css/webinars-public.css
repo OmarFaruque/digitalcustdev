@@ -497,3 +497,9 @@ body.page-frontend-editor .media-frame-title{
 div#learn-press-user-profile.profile-container {
   padding-left: 0 !important;
 }
+
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div.xdsoft_disabled.xdsoft_time:hover,
+.xdsoft_time.xdsoft_disabled, .xdsoft_time.xdsoft_disabled:hover {
+  background-color: #ff8000 !important;
+  color: #fff !important;
+}
