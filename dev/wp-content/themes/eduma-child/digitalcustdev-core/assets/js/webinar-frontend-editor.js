@@ -100,23 +100,23 @@
             }
         },
         mounted: function () {
-                    var thisvalue = $(this.$el).find('input').val(),
-                    thisvalue = thisvalue.split(':'),
-                    thisvalue = thisvalue[1] % 5,
-                    thisdate = new Date(),
-                    month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
-                    minit = thisdate.getMinutes(),
-                    shouldadd = 5 - (minit % 5);
+                    // var thisvalue = $(this.$el).find('input').val(),
+                    // thisvalue = thisvalue.split(':'),
+                    // thisvalue = thisvalue[1] % 5,
+                    // thisdate = new Date(),
+                    // month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
+                    // minit = thisdate.getMinutes(),
+                    // shouldadd = 5 - (minit % 5);
                     
-                    if(thisvalue > 0){
-                        var newmint = (shouldadd < 5) ? minit + shouldadd : minit;
-                        var hours   = (minit > 55 ) ? thisdate.getHours() + 1 : thisdate.getHours();
-                        var newmint = (minit > 55 ) ? '00' : newmint;
-                        var newmint = ("0" + newmint).slice(-2),
-                        newgetdate  = ("0" + thisdate.getDate()).slice(-2),
-                        newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + hours + ':' + newmint;
-                        $(this.$el).find('input').val(newdate);
-                    }
+                    // if(thisvalue > 0){
+                    //     var newmint = (shouldadd < 5) ? minit + shouldadd : minit;
+                    //     var hours   = (minit > 55 ) ? thisdate.getHours() + 1 : thisdate.getHours();
+                    //     var newmint = (minit > 55 ) ? '00' : newmint;
+                    //     var newmint = ("0" + newmint).slice(-2),
+                    //     newgetdate  = ("0" + thisdate.getDate()).slice(-2),
+                    //     newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + hours + ':' + newmint;
+                    //     $(this.$el).find('input').val(newdate);
+                    // }
           },
         created: function () {
             this.loadSettings(this.loadSettingsCallback);
@@ -177,23 +177,23 @@
         },
         mounted: function () {
 
-            var thisvalue = $(this.$el).find('input').val(),
-            thisvalue = thisvalue.split(':'),
-            thisvalue = thisvalue[1] % 5,
-            thisdate = new Date(),
-            month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
-            minit = thisdate.getMinutes(),
-            shouldadd = 5 - (minit % 5);
+            // var thisvalue = $(this.$el).find('input').val(),
+            // thisvalue = thisvalue.split(':'),
+            // thisvalue = thisvalue[1] % 5,
+            // thisdate = new Date(),
+            // month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
+            // minit = thisdate.getMinutes(),
+            // shouldadd = 5 - (minit % 5);
             
-            if(thisvalue > 0){
-                var newmint = (shouldadd < 5) ? minit + shouldadd : minit;
-                var hours   = (minit > 55 ) ? thisdate.getHours() + 1 : thisdate.getHours();
-                var newmint = (minit > 55 ) ? '00' : newmint;
-                var newmint = ("0" + newmint).slice(-2),
-                newgetdate  = ("0" + thisdate.getDate()).slice(-2),
-                newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + hours + ':' + newmint;
-                $(this.$el).find('input').val(newdate);
-            }
+            // if(thisvalue > 0){
+            //     var newmint = (shouldadd < 5) ? minit + shouldadd : minit;
+            //     var hours   = (minit > 55 ) ? thisdate.getHours() + 1 : thisdate.getHours();
+            //     var newmint = (minit > 55 ) ? '00' : newmint;
+            //     var newmint = ("0" + newmint).slice(-2),
+            //     newgetdate  = ("0" + thisdate.getDate()).slice(-2),
+            //     newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + hours + ':' + newmint;
+            //     $(this.$el).find('input').val(newdate);
+            // }
             // console.log('mounted omar');
             /*var $vm = this;
             $('.webinar_start_time').datetimepicker({
@@ -257,7 +257,9 @@
             },
 
             showDatePicker: function ($vm, $event, allowed_times, $changeDate, disabledDates = false) {
-                var fmt = new DateFormatter();
+                var fmt = new DateFormatter(),
+                cardate = new Date();
+
                 $($event.target).datetimepicker({
                     format: 'd/M/Y H:i',
                     // formatTime: 'h:i a',
@@ -265,7 +267,8 @@
                     step: 15,
                     closeOnDateSelect: false,
                     validateOnBlur: false,
-                    yearStart: 2019,
+                    yearStart: cardate.getFullYear(),
+                    yearEnd: cardate.getFullYear() + 1,
                     onShow: function (ct) {
                         var that = this;
                         // var currentTime = fmt.formatDate(ct, 'Y-m-d');
@@ -287,7 +290,18 @@
 
                     },
 
-
+                    onClose: function(time, input){
+                        var thisvalue = time, 
+                        thisdate = new Date(thisvalue),
+                        month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
+                        minit = thisdate.getMinutes(),
+                        shouldadd = 5 - (minit % 5),
+                        newmint = (shouldadd < 5) ? minit + shouldadd : minit,
+                        newmint = ("0" + newmint).slice(-2),
+                        newgetdate = ("0" + thisdate.getDate()).slice(-2),
+                        newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + thisdate.getHours() + ':' + newmint;
+                        input.val(newdate);
+                    },
                     onGenerate:function(ct,$i){
                             $('.xdsoft_time_variant .xdsoft_time').each(function(index){
                                 var thistime = $(this).text();
@@ -306,7 +320,7 @@
                                 selected: $input.val()
                             },
                             success: function (result) {
-                                console.log(result);
+                                // console.log(result);
                                 $('.xdsoft_time_variant .xdsoft_time').each(function(index){
                                     var thistime = $(this).text(),
                                     desabletime = result.hide_time;
@@ -364,28 +378,11 @@
     }
 
     $(document).on('ready', function () {
-        $(document.body).on('change', 'input.form-control.webinar_start_time', function(){    
-                var thisvalue = $(this).val(), 
-                thisdate = new Date(thisvalue),
-                month = ("0" + (thisdate.getMonth() + 1)).slice(-2),
-                minit = thisdate.getMinutes(),
-                shouldadd = 5 - (minit % 5),
-                newmint = (shouldadd < 5) ? minit + shouldadd : minit,
-                newmint = ("0" + newmint).slice(-2),
-                newgetdate = ("0" + thisdate.getDate()).slice(-2),
-                newdate = newgetdate + '/' + month + '/' + thisdate.getFullYear() + ' ' + thisdate.getHours() + ':' + newmint;
-                $(this).val(newdate);
-                // console.log(shouldadd);
-                // console.log('dif: ' + minit % 5);
-        });
 
         $(document.body).on('keyup', 'input.form-control.webinar_start_time', function(){
             $(this).val('');
         });
 
-        $(document.body).on('click', 'button.xdsoft_today_button', function(){
-            // console.log('test');
-        });
 
         
 

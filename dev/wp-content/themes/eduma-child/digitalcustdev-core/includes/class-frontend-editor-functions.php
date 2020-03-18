@@ -136,7 +136,6 @@ class DigitalCustDev_FrontendEditor {
 				$param['url']  = $param['baseurl'] .'/'. $user->data->user_nicename . '/' .  $post_id;
 			}
 		}
-
 		return $param;
 	}
 

@@ -148,8 +148,42 @@
         watchChangePostData();
         removeMessageFromUrl();
     }).on('click', '.e-post-attachment .set-attachment', function (event) {
+        console.log('test console');
         event.preventDefault();
         event.stopPropagation();
+
+
+
+        /*
+        * Check folder size
+        */
+       $.post(
+        _wpUtilSettings.ajax,
+        {
+            action: 'sample-permalink',
+            post_id: $('input[name="post_ID"]').val(),
+            new_slug: new_slug,
+            new_title: $('input[name="post_title"]').val(),
+            e_post: 1,
+            samplepermalinknonce: $('#samplepermalinknonce').val()
+        },
+        function (data) {
+            var $html = $(data);
+            $html.find('.edit-slug').addClass('e-button');
+            $('#e-wp-sample-permalink').html($html);
+
+            $edit.show();
+            $save.hide();
+            $cancel.hide();
+            $samplePermalink.show();
+            $samplePermalinkEditable.hide();
+            $('#post_name').val(new_slug);
+        }
+        ); // End ajax
+
+
+
+
 
         var imgContainer = $('.post-attachment');
         var hidden_id = $('#_thumbnail_id');
