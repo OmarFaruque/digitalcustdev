@@ -238,6 +238,13 @@ class DigitalCustDev_Ajax {
 		$course    = learn_press_get_course( $post_id );
 		$items     = $course->get_items();
 		foreach($items as $lesson){
+			$post_type = get_post_type( $lesson );
+			if($post_type == 'lp_quiz'){
+				$questions = learn_press_get_quiz_questions($lesson);
+				foreach($questions as $singleQueston){
+					wp_delete_post( $singleQueston, true );	
+				}
+			}
 			wp_delete_post( $lesson, true );	
 		}
 

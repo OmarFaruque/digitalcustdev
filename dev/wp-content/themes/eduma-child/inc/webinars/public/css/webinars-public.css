@@ -503,3 +503,15 @@ div#learn-press-user-profile.profile-container {
   background-color: #ff8000 !important;
   color: #fff !important;
 }
+
+span.crose_limit {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.1);
+  color: red;
+  display: block;
+  text-align: center;
+  padding-top: 38px;
+}

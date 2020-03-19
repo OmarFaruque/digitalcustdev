@@ -10,7 +10,64 @@ class DigitalCustDev_FrontendEditor {
 
 		add_filter( 'upload_dir', array( $this, 'change_directory_format' ) );
 		add_action( 'before_delete_post', array( $this, 'delete_attachments' ), 20 );
+
+		add_action( 'wp_ajax_check_foldersize', array( $this, 'check_foldersize' ) );
+		add_action( 'wp_ajax_nopriv_check_foldersize', array( $this, 'check_foldersize' ) );
+
+		// add_action('wp_head', array($this, 'testf'));
 	}
+
+
+	public function testf(){
+		$path = '/var/www/u0501458/data/www/digitalcustdev.ru/dev/wp-content/uploads/user9859113/13136';			
+		$totalSize = 0;
+		foreach (new DirectoryIterator($path) as $file) {
+			if ($file->isFile()) {
+				$totalSize += $file->getSize();
+			}
+		}
+		$totalSizemb = number_format($totalSize / 1073741824, 2);
+
+	}
+
+
+	/** 
+	* Check user upload folder size
+	* function source ajax from post.js check_foldersize
+	* @return foldersize
+	*/
+	public function check_foldersize(){
+		$param = wp_get_upload_dir();
+		$user_id = $_REQUEST['user_id'];
+		$post_id = $_REQUEST['post_id'];
+		$user = get_user_by('id', $user_id);
+		$msg = false;
+		if($post_id){
+			$path = $param['basedir'] .'/'. $user->data->user_nicename . '/' . $post_id;
+		}
+
+		$totalSize = 0;
+		foreach (new DirectoryIterator($path) as $file) {
+			if ($file->isFile()) {
+				$totalSize += $file->getSize();
+			}
+		}
+		// $totalSizeMb = number_format($totalSize / 1073741824, 2); // GB
+		$totalSizeMb = number_format($totalSize / 1048576, 2); // MB
+		if($totalSizeMb < 2000) $msg = true;
+
+		echo json_encode(
+			array(
+				'msg' => 'success', 
+				'file_upload' => $msg
+			)
+		);
+
+		wp_die();
+	}
+
+
+
 
 	/**
 	 * Duplicate section ajax call

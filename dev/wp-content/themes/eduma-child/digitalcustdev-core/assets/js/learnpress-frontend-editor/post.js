@@ -157,54 +157,50 @@
         /*
         * Check folder size
         */
+    //    action: 'sample-permalink',
+    
        $.post(
         _wpUtilSettings.ajax,
         {
-            action: 'sample-permalink',
+            action: 'check_foldersize',
+            dataType: 'json',
             post_id: $('input[name="post_ID"]').val(),
-            new_slug: new_slug,
-            new_title: $('input[name="post_title"]').val(),
-            e_post: 1,
-            samplepermalinknonce: $('#samplepermalinknonce').val()
+            user_id: userSettings.uid,
         },
         function (data) {
-            var $html = $(data);
-            $html.find('.edit-slug').addClass('e-button');
-            $('#e-wp-sample-permalink').html($html);
-
-            $edit.show();
-            $save.hide();
-            $cancel.hide();
-            $samplePermalink.show();
-            $samplePermalinkEditable.hide();
-            $('#post_name').val(new_slug);
+            data = JSON.parse(data);
+            if(data.file_upload){
+                var imgContainer = $('.post-attachment');
+                var hidden_id = $('#_thumbnail_id');
+                var post_attachment_wrapper = $('.e-post-attachment');
+        
+                // When an image is selected in the media frame...
+                wp.media.featuredImage.frame().on('select', function () {
+        
+                    // Get media attachment details from the frame state
+                    var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
+        
+                    // Send the attachment URL to our custom image input field.
+                    imgContainer.html('<img src="' + attachment.url + '" alt="" style="max-width:100%;"/>');
+        
+                    post_attachment_wrapper.addClass('has-attachment');
+        
+                    // Send the attachment id to our hidden input
+                    hidden_id.val(attachment.id);
+                });
+        
+                wp.media.featuredImage.frame().open();
+            }else{
+                $( '<span class="crose_limit">Your Limit is over.</span>').insertBefore( ".set-attachment" );
+                setTimeout(function (){
+                    jQuery('span.crose_limit').remove();
+                }, 3000);
+            }
         }
         ); // End ajax
 
 
 
-
-
-        var imgContainer = $('.post-attachment');
-        var hidden_id = $('#_thumbnail_id');
-        var post_attachment_wrapper = $('.e-post-attachment');
-
-        // When an image is selected in the media frame...
-        wp.media.featuredImage.frame().on('select', function () {
-
-            // Get media attachment details from the frame state
-            var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
-
-            // Send the attachment URL to our custom image input field.
-            imgContainer.html('<img src="' + attachment.url + '" alt="" style="max-width:100%;"/>');
-
-            post_attachment_wrapper.addClass('has-attachment');
-
-            // Send the attachment id to our hidden input
-            hidden_id.val(attachment.id);
-        });
-
-        wp.media.featuredImage.frame().open();
     }).on('click', '.e-post-attachment .remove-attachment a', function (event) {
         event.preventDefault();
         event.stopPropagation();
