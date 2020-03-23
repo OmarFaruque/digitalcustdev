@@ -44,6 +44,7 @@ jQuery( function ( $ ) {
 		//Initializes plupload
 		//Uses code from wp.Uploader
 		initUploader: function () {
+			console.log('omar 2');
 			var isIE = navigator.userAgent.indexOf( 'Trident/' ) != - 1 || navigator.userAgent.indexOf( 'MSIE ' ) != - 1,
 				self = this,
 				extensions = this.getExtensions().join( ',' ),
@@ -79,6 +80,7 @@ jQuery( function ( $ ) {
 			this.uploader.init();
 
 			this.uploader.bind( 'FilesAdded', function ( up, files ) {
+				console.log('this om2');
 				_.each( files, function ( file ) {
 					var attributes, image;
 
@@ -126,6 +128,7 @@ jQuery( function ( $ ) {
 			} );
 
 			this.uploader.bind( 'FileUploaded', function ( up, file, response ) {
+				console.log('test omar 8');
 				var complete;
 
 				try {

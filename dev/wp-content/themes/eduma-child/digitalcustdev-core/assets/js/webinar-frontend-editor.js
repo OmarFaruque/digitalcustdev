@@ -387,6 +387,7 @@
         
 
         $(".thim_course_media_intro").on('keyup', function (e) {
+            console.log('chagne o');
             if (this.value.length > 3) {
                 var url = $(this).val();
                 if (!validateURL(url)) {

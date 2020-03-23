@@ -129,7 +129,7 @@
         created: function () {
         },
         mounted: function () {
-
+            console.log('test omar');
             var $vm = this;
 
             this.fetchAttachments();
@@ -142,12 +142,14 @@
                 },
                 multiple: true
             }).on('select', function () {
+                console.log('omar test888');
                 var attachments = [],
                     selection = $vm.mediaFrame.state().get('selection').toJSON(),
                     attachmentIds = [],
                     i, n = selection.length;
                 console.log(attachments);console.log(selection);
                 for (i = 0; i < n; i++) {
+                    console.log('tttto');
                     if ($vm.hasAttachment(attachments, selection[i].id)) {
                         continue;
                     }
@@ -167,6 +169,7 @@
                 $vm.attachments = attachments;
 
             }).on('open', function () {
+                console.log('otttt');
                 var selection = $vm.mediaFrame.state().get('selection'),
                     attachmentIds = $vm.itemData.settings[$vm.field.id],
                     attachment, i, n = attachmentIds.length;
@@ -229,6 +232,7 @@
                 });
             },
             _selectMedia: function (e) {
+                console.log('tis is select media');
                 e.preventDefault();
 
                 this.mediaFrame.open();

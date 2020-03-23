@@ -16,7 +16,7 @@ jQuery( function ( $ ) {
 				title: rwmbFileInput.frameTitle
 			} );
 		}
-
+		console.log('test up');
 		// Open media uploader
 		frame.open();
 

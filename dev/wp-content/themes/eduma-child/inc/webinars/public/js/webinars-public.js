@@ -162,6 +162,9 @@ jQuery(document).ready(function($){
 	* Make button non-clicable 
 	*/
 	function makebuttonnonclickable(){
+		if(jQuery('input[name="_lp_sale_price"]').val() == ''){
+			jQuery('input[name="_lp_sale_price"]').val(1000);
+		}
 		var price = jQuery('input[name="_lp_price"]').val(),
 		sales_price = jQuery('input[name="_lp_sale_price"]').val(),
 		desable = false;
@@ -209,6 +212,23 @@ jQuery(document).ready(function($){
 	// jQuery(".xdsoft_today_button").on("touchend mousedown.xdsoft", function() {
 		console.log('test omar');
 		// J.data("changed", !0), j.setCurrentTime(0, !0), J.trigger("afterOpen.xdsoft");
+	});
+
+
+	/*
+	* Limit course / webinars name
+	*/
+	jQuery(document).on('keyup', '.e-form-field-input input[name="post_title"]', function(){
+		if(jQuery(this).val().length <= 3){
+			jQuery(this).addClass('error');
+		}else{
+			jQuery(this).removeClass('error');
+		}
+
+		/* Limit upto 100 carecter */ 
+		if(jQuery(this).val().length > 100){
+			
+		}
 	});
 
 });

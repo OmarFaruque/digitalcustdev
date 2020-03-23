@@ -21,7 +21,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
         <label><?php esc_html_e( 'Title', 'learnpress-frontend-editor' ); ?></label>
         <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
-            <input name="post_title" class="frontend-post-title" type="text" value="<?php echo $post->post_title; ?>"
+            <input name="post_title" class="frontend-post-title om3" maxlength="100" type="text" value="<?php echo $post->post_title; ?>"
                    placeholder="<?php esc_attr_e( 'Course name', 'learnpress-frontend-editor' ); ?>">
                    
         </div>

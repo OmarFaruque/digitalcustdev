@@ -279,6 +279,7 @@ jQuery(document).ready(function($){
               image_frame: new Array(),
               file_frame: new Array(),
               hooks:function(){
+
                   $(document).on('click','.simplePanelimageUpload,.simplePanelfileUpload', function( event ){
                       event.preventDefault();
                       if ($(this).hasClass('simplePanelfileUpload'))
@@ -313,6 +314,7 @@ jQuery(document).ready(function($){
                       inited.upload_File($(el));
               },
               upload_File: function(el){
+                console.log('tesffff');
                 // If the media frame already exists, reopen it.
                 var mime  = $(el).attr('data-mime_type') || '';
                 var ext   = $(el).attr("data-ext") || false;
@@ -328,7 +330,6 @@ jQuery(document).ready(function($){
                     return;
                 }
                 // Create the media frame.
-
                 inited.file_frame[name] = wp.media({
                     library: {
                         type: mime
@@ -368,6 +369,7 @@ jQuery(document).ready(function($){
                           return;
                   }
                   // Create the media frame.
+                  console.log('omar98');
                   inited.image_frame[name] =  wp.media({
                       library: {
                           type: 'image'
@@ -383,6 +385,7 @@ jQuery(document).ready(function($){
                     var selection = inited.image_frame[name].state().get('selection');
                     var att_ids = $(inited.file_id).val().split("|");
                     $.each(att_ids,function(i,v){
+                      console.log('eachomar');
                       if (v.length){
                         attachment = wp.media.attachment(v);
                         attachment.fetch();

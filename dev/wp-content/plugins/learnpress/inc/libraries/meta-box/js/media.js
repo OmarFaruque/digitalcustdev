@@ -267,6 +267,7 @@ jQuery( function ( $ ) {
 		},
 
 		switchItem: function ( item ) {
+			console.log('omg');
 			if ( this._switchFrame ) {
 				//this.stopListening( this._frame );
 				this._switchFrame.dispose();
@@ -298,6 +299,7 @@ jQuery( function ( $ ) {
 		},
 
 		editItem: function ( item ) {
+			console.log('test edit');
 			// Destroy the previous collection frame.
 			if ( this._editFrame ) {
 				//this.stopListening( this._frame );
@@ -397,6 +399,7 @@ jQuery( function ( $ ) {
 		template: wp.template( 'rwmb-media-button' ),
 		events: {
 			'click .button': function () {
+				console.log('this button click');
 				// Destroy the previous collection frame.
 				if ( this._frame ) {
 					//this.stopListening( this._frame );
@@ -521,6 +524,7 @@ jQuery( function ( $ ) {
 		}, media.controller.Library.prototype.defaults ),
 
 		activate: function () {
+			console.log('Oma');
 			var library = this.get( 'library' ),
 				edit = this.frame.options.edit;
 
@@ -554,6 +558,7 @@ jQuery( function ( $ ) {
 		 * Create the default states on the frame.
 		 */
 		createStates: function () {
+			console.log('rrrr');
 			var options = this.options;
 
 			if ( this.options.states ) {
