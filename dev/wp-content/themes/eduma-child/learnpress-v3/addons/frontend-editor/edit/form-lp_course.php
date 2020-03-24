@@ -39,7 +39,16 @@ set_transient( get_current_user_id() . 'e_post_id', $frontend_editor->post_manag
                                         <a href="javascript:void(0);" data-id="<?php echo $tab['id']; ?>" class="btn btn-primary dcd-course-prev-btn">Prev</a>
                                     </div>
 								<?php } ?>
-                                <div class="form-group pull-right">
+                                <div class="form-group pull-right with-loader position-relative">
+
+
+                                <div class="foooter_loading">
+                                    <div id="e-update-activity" v-if="activity" :class="[activityType||'updating']">
+                                        <span class="e-update-activity__icon"></span>
+                                        <p v-if="activity!==true" class="e-update-activity__message">{{activity}}</p>
+                                    </div>
+                                </div>
+
 									<?php
 									if ( $tab['callback'] === "dcd_e_course_editor_tab_settings" ) { ?>
                                         <a href="javascript:void(0);" data-redirect="<?php echo isset( $course_type ) && $course_type === "webinar" ? $profile->get_tab_link( 'webinars', true ) : $profile->get_tab_link(); ?>" data-id="<?php echo $tab['id']; ?>" class="btn btn-primary dcd-course-next-save submit-for-review"><?php echo $post_status === "draft" ? 'Submit Review' : 'Publish'; ?></a>

@@ -515,3 +515,10 @@ span.crose_limit {
   text-align: center;
   padding-top: 38px;
 }
+body.page-frontend-editor .attachment-display-settings
+{
+  display: none;
+}
+span.step_hide_error {
+  color: red;
+}

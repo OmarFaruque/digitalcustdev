@@ -31,6 +31,11 @@ function dcd_e_course_editor_tab_settings() {
 	$post = $post_manage->get_post();
 	setup_postdata( $post );
 
+	
+	$course_type = get_post_meta( $post->ID, '_course_type', true );
+	
+	
+
 	if ( ! isset( $GLOBALS['current_screen'] ) ) {
 		$GLOBALS['current_screen'] = WP_Screen::get( $post_manage->get_post_type() );
 		$load_screen               = true;
@@ -144,6 +149,9 @@ function dcd_e_course_editor_tab_settings() {
 				continue;
 			}
 
+			if($tab['id'] == 'course_coming_soon' && $course_type == 'webinar'){
+				continue;
+			}
 			echo '<li id="meta-box-tab-' . $tab['id'] . '" class="' . $tab['id'] . ( get_post_meta( $post->ID, '_fe_current_settings_tab', true ) == $tab['id'] ? ' active' : '' ) . '">';
 			if ( ! empty( $tab['content'] ) ) {
 				echo $tab['content'];

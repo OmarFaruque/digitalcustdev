@@ -421,7 +421,8 @@ function test($query){
 // lp_inheance file add 
 require_once(get_stylesheet_directory() . '/inc/webinars/admin/lp_enhance.php');
 
-
+// override yes-no.php from learnpress to theme
+require_once(get_stylesheet_directory() . '/inc/webinars/public/partials/yes-no.php');
 
 // Move DigitalCustDev Core Theme Customizations plugin to child theme
 require_once(get_stylesheet_directory() . '/digitalcustdev-core/digitalcustdev-core.php');
@@ -674,6 +675,9 @@ add_filter( 'learn_press_profile_reports_tab_title', 'thim_tab_profile_filter_ti
 
 	add_action( 'init', function () {
 
+		
+
+		// if($ipData['timezone']) setcookie("timezone", $ipData['timezone']);
 		// echo '<pre>';
 		// print_r($_COOKIE);
 		// echo '</pre>';
@@ -1050,7 +1054,14 @@ function updateProfileUserMeta(){
 
 // require_once 'inc/curds/class-lp-user-curd.php';
 require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-section-curd.php');
-include_once LP_PLUGIN_PATH . '/inc/admin/editor/class-lp-admin-editor.php';
+
+if ( ! class_exists( 'LP_Admin_Editor' ) ) {
+	include_once LP_PLUGIN_PATH . '/inc/admin/editor/class-lp-admin-editor.php';
+}
+if( ! class_exists( 'LP_Admin_Editor_Quiz' )){
+	include_once LP_PLUGIN_PATH . '/inc/admin/editor/class-lp-admin-editor-quiz.php';
+}
+
 require_once(get_stylesheet_directory() . '/inc/webinars/admin/class-lp-admin-editor-course.php');
 require_once(get_stylesheet_directory() . '/inc/webinars/class-lp-user-curd.php');
 
@@ -1093,6 +1104,25 @@ function begin_html( $html, $field, $meta ) {
 					<span class="slider"></span>
 				</label>' . $html;
 			break;
+			case '_lp_coming_soon':
+				$value = empty( $meta ) ? $field['std'] : $meta;
+				$true  = ! learn_press_is_negative_value( $value );
+				$yes   = 'yes';
+				$no    = 'no';
+				$html = sprintf(
+					'<label class="switch mr-1">
+					<input class="omartest from child" type="hidden" name="%s" value="%s">
+					<input type="checkbox" class="rwmb-yes-no" name="%s" id="%s" value="%s" %s>
+					<span class="slider"></span>
+					</label>',
+					$field['field_name'],
+					$no,
+					$field['field_name'],
+					$field['id'],
+					$yes,
+					checked( $true, true, false )
+				);
+			break;
 		}
 	}else{
 		if($field['id'] == '_lp_price'){
@@ -1107,36 +1137,47 @@ add_filter( 'rwmb_html', 'begin_html', 10, 3 );
 
 
 
+
+
 /*
 * add custom field to array
 */
 
 add_filter('e-update-course-meta-data-props', 'addaddditionalfieldtosavedArray');
 function addaddditionalfieldtosavedArray( $array ) {
+	
 	$array[] = 'descount_access';
 	return $array;
 }
 // add_action('wp_head', 'testfunction');
 function testfunction(){
-	$args             = array(
-		'post_type' => 'lp_lesson',
-		'author'    => '103',
-		'meta_query' => array(
-			array(
-				'key' => '_lp_webinar_when',
-				'value' => date( 'd/m/Y', strtotime( '28-03-2020' ) ),
-				'compare' => 'LIKE'
-			)
-		)
-	);
-	// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
-	$lessons          	= get_posts( $args );
+	$tzlists = zvc_get_timezone_options();
 
-
-	echo 'date: ' . date( 'd/m/Y', strtotime( '28-03-2020' ) ) . '<br/>';
+	// echo 'date: ' . date( 'd/m/Y', strtotime( '28-03-2020' ) ) . '<br/>';
 	echo 'lessons <pre>';
-	print_r($lessons);
+	print_r($_COOKIE);
 	echo '</pre>';
+
+	if ($_COOKIE['timezone']) {
+		$tz = new DateTimeZone( $_COOKIE['timezone']);
+		$now = new DateTime( 'now', $tz); // DateTime object corellated to user's timezone
+		echo '<pre>';
+		print_r($now);
+		echo '</pre>';
+
+		$nowdate = $now->date;
+		$mint = date('i', strtotime($nowdate));
+		echo 'mint: ' . $mint . '<br/>';
+		$extra = $mint % 5;
+		$addminit = 5 - $extra;
+		$addminit = ($addminit < 5) ? $addminit : 0;
+		echo 'should add: ' . $addminit . '<br/>';
+
+		$date = date('d/m/Y H:i', strtotime( '+'.$addminit.' minutes', strtotime($nowdate)));
+		echo 'round date: ' . $date . '<br/>';
+	} else {
+	// we can't determine a timezone - do something else...
+	}
 
 }
 
@@ -1193,6 +1234,7 @@ add_filter('learn-press/course-settings/payments', 'course_settings_payment_fiel
 function course_settings_payment_field_override($fields){
 	$index = array_search('_lp_price', array_column($fields['fields'], 'id'));
 	$fields['fields'][$index]['min'] = (!is_admin()) ? 2000 : 0;
+	// $fields['fields'][$index]['min'] = (!is_admin()) ? 2000 : 0;
 	return $fields;
 }
 
@@ -1207,3 +1249,10 @@ function changeMceDefaults($in) {
     return $in;
 }
 add_filter( 'tiny_mce_before_init', 'changeMceDefaults' );
+
+
+
+// add_filter( 'rwmb_html', 'functiontestomar');
+function functiontestomar($outer_html, $field, $meta){
+	return 'test omar';	
+}

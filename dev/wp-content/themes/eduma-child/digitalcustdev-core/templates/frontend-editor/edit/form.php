@@ -25,7 +25,7 @@ if ( ! empty( $duration_term ) ) {
         <label><?php esc_html_e( 'Title of your webinar course', 'learnpress-frontend-editor' ); ?></label>
         <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
-            <input name="post_title" class="frontend-post-title om1" type="text" value="<?php echo ! empty( $post->post_title ) ? $post->post_title : 'New Course'; ?>"
+            <input name="post_title" maxlength="100" class="frontend-post-title om1" type="text" value="<?php echo ! empty( $post->post_title ) ? $post->post_title : 'New Course'; ?>"
                    placeholder="<?php esc_attr_e( 'Course name', 'learnpress-frontend-editor' ); ?>">
         </div>
     </div>

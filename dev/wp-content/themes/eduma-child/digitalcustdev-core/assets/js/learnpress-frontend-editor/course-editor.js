@@ -185,9 +185,12 @@
                         }
 
                         if ($sections_exists) {
+                            $('span.step_hide_error').remove();
                             $('.dcd-course-next-curriculum').show();
                         } else {
-                            $('.dcd-course-next-curriculum').hide();
+                           var steperror = '<span class="step_hide_error d-block text-right error">'+lp_webinars.lesson_create_msg+'</span>';
+                           $('.dcd-course-next-curriculum').closest('div.e-form-field').append(steperror);
+                           $('.dcd-course-next-curriculum').hide();
                         }
                     }, 300, this),
                     deep: true

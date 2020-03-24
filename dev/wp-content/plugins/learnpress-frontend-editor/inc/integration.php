@@ -320,8 +320,8 @@ function e_update_course_meta_data_props( $props ) {
 	// Gradebook
 
 	// Random quiz
-
-	//print_r( $_REQUEST );
+	// echo 'test omar omar';
+	// print_r( $props );
 
 	return $props;
 }

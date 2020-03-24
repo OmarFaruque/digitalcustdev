@@ -262,6 +262,7 @@ function e_get_course_editor_sections( $course_id = 0 ) {
 						if ( empty( $field['id'] ) ) {
 							continue;
 						}
+						// echo 'field id: ' . $field['id'] . '<br/>';
 						$item_settings[ $field['id'] ] = ! empty( $field['std'] ) ? $field['std'] : '';
 						if ( metadata_exists( 'post', $item['id'], $field['id'] ) ) {
 							$metaValue = get_post_meta( $item['id'], $field['id'], true );
@@ -291,6 +292,7 @@ function e_get_course_editor_sections( $course_id = 0 ) {
 		}
 	}
 
+	
 	return $sections;
 }
 
@@ -602,7 +604,7 @@ function e_course_editor_tab_settings() {
 					if ( empty( $tab['title'] ) ) {
 						continue;
 					}
-					echo '<li id="meta-box-tab-' . $tab['id'] . '" class="' . $tab['id'] . ( get_post_meta( $post->ID, '_fe_current_settings_tab', true ) == $tab['id'] ? ' active' : '' ) . '">';
+					echo '<li id="meta-box-tab-' . $tab['id'] . '" class="om23 ' . $tab['id'] . ( get_post_meta( $post->ID, '_fe_current_settings_tab', true ) == $tab['id'] ? ' active' : '' ) . '">';
 					if ( ! empty( $tab['content'] ) ) {
 						echo $tab['content'];
 					} elseif ( ! empty( $tab['callback'] ) && is_callable( $tab['callback'] ) ) {

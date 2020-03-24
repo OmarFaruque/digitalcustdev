@@ -231,7 +231,8 @@ class Webinars_Public {
 		// 
 		wp_localize_script( 'webinarsPublicJS', 'lp_webinars', array(
 			'instructor' => $this->customize_root_slug(),
-			'instructor_url' => get_home_url( '/') . '/' .  $this->customize_root_slug()
+			'instructor_url' => get_home_url( '/') . '/' .  $this->customize_root_slug(),
+			'lesson_create_msg' => __('Please, create at last 1 lesson to move to next step.', 'webinar')
 		) );
 
 	}

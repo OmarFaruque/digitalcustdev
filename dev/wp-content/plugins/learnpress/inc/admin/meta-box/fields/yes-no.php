@@ -40,7 +40,7 @@ if ( ! class_exists( 'RWMB_Yes_No_Field' ) ) {
 			}
 
 			return sprintf(
-				'<input type="hidden" name="%s" value="%s">
+				'<input class="omartest" type="hidden" name="%s" value="%s">
 				<input type="checkbox" class="rwmb-yes-no" name="%s" id="%s" value="%s" %s>',
 				$field['field_name'],
 				$no,

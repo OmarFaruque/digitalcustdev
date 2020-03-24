@@ -96,7 +96,7 @@ $current_tab = !empty( $_REQUEST['tab'] ) ? $_REQUEST['tab'] : '';
 				if ( empty( $tab['title'] ) ) {
 					continue;
 				}
-				echo '<li id="meta-box-tab-' . $tab['id'] . '" class="' . $tab['id'] . ( is_array( $current_tab ) && $current_tab['id'] == $tab['id'] ? ' active' : '' ) . '">';
+				echo '<li id="meta-box-tab-' . $tab['id'] . '" class="omar9 ' . $tab['id'] . ( is_array( $current_tab ) && $current_tab['id'] == $tab['id'] ? ' active' : '' ) . '">';
 				if ( ! empty( $tab['content'] ) ) {
 					echo $tab['content'];
 				} elseif ( ! empty( $tab['callback'] ) && is_callable( $tab['callback'] ) ) {
