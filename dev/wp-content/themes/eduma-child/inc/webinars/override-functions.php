@@ -1269,3 +1269,50 @@ function visiable_review_submit(){
 		return true;
 	}
 }
+
+
+/*
+* return course making success rate
+* Use in profile webinar & course list
+*/
+function course_making_success($course_id){
+	// echo 'Omar course id: ' . $course_id . '<br/>';
+	$post = get_post($course_id);
+	$marks = 0;
+	if(!empty($post->post_title)){
+		$marks += 15;
+	}
+	if(!empty($post->post_content)){
+		$marks += 10;
+	}
+	if(has_post_thumbnail($post->ID)){
+		$marks += 15;
+	}
+	$terms = get_the_terms($post->ID, 'course_category');
+	if(!empty($terms)){
+		$marks += 10; 
+	}
+	
+	$course    = learn_press_get_course( $course_id );
+	$items     = $course->get_items();
+	if ( ! empty( $items ) ) {
+		foreach ( $items as $item ) {
+			$post_type = get_post_type( $item );
+			switch($post_type){
+				case 'lp_lesson':
+					$marks += 15;
+				break;
+				case 'lp_quiz':
+					$marks += 10;
+				break;
+				case 'lp_assignment':
+					$marks += 15;
+				break;
+			}
+		}
+	}
+
+	$price = get_post_meta($post->ID, '_lp_price', true);
+	if(!empty($price)) $marks += 10;
+	return $marks;
+}

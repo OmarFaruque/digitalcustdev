@@ -1479,6 +1479,9 @@ ul.rwmb-input-list li:nth-child(6) {
     top: 410px;
     width: 92%;
 }
+#e-item-settings[data-context='lp_lesson'] ul.e-form-field-table li:nth-child(2):not(.webinar){
+    top: 540px;
+}
 #e-item-settings[data-context='lp_lesson'] ul.flex li:nth-child(2) {
     position: unset !important;
     top: unset !important;

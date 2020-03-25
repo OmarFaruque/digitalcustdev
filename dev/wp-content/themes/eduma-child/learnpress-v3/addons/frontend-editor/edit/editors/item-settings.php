@@ -7,6 +7,9 @@
  * @package LearnPress/JSTemplate
  */
 global $frontend_editor;
+$post_manage = $frontend_editor->post_manage;
+$post        = $post_manage->get_post();
+$course_type = get_post_meta($post->ID, '_course_type', true);
 ?>
  <script type="text/x-template" id="tmpl-e-course-item-settings-lp_lesson">
   <div class="e-item-settings-extra">
@@ -37,7 +40,7 @@ global $frontend_editor;
                           <div v-else
                      class="e-no-item-selected"><?php esc_html_e( 'Please select an item or add a new one', 'learnpress-frontend-editor' ); ?></div>
                      
-                        <li class="e-form-field">
+                        <li class="e-form-field <?php echo $course_type; ?>">
                             <label class="omr d-inline"><?php _e( 'Description', 'learnpress-frontend-editor' ); ?></label>
                             <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
                             <div class="h-300 e-form-field-input">

@@ -37,6 +37,7 @@ $count  = $course->get_users_enrolled();
 global $frontend_editor;
 $post_manage = $frontend_editor->post_manage;
 // $type        = get_post_meta( get_the_ID(), '_course_type', true );
+$success_rate = course_making_success(get_the_ID());
 	?>
 
     <div id="post-<?php the_ID(); ?>" <?php post_class( $class ); ?>>
@@ -104,9 +105,9 @@ $post_manage = $frontend_editor->post_manage;
 
 						<?php if ( $course->get_post_status() !== "pending" && $course->get_post_status() !== "publish" ) { ?>
                 		<div class="f course-progress col-md-5 col-sm-5 col-xs-12 pull-right">
-                            <div class="lp-course-progress" data-value="0" data-passing-condition="80%">
+                            <div class="lp-course-progress" data-value="0" data-passing-condition="<?php echo $success_rate; ?>%">
                             <div class="lp-progress-bar value">
-                                <div class="lp-progress-value percentage-sign" style="width: 80%">   
+                                <div class="lp-progress-value percentage-sign" style="width: <?php echo $success_rate; ?>%">   
                                 </div>
                             </div>
 							<label class="lp-course-progress-heading"><?php _e('Course  creation progress', 'webinar'); ?> :</label>
