@@ -52,7 +52,7 @@ if ( isset( $_GET['id'] ) ) {
                 <div class="webinar-step-wrapper tab-pane" id="step-three">
 	                <?php require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/webinars/tabs/price.php'; ?>
                     <div class="col-md-12">
-                        <div class="form-group pull-right">
+                        <div class="form-group pull-right omar1">
                             <a href="javascript:void(0);" class="btn btn-primary webinar-add-prev">Prev</a>
                             <input type="submit" name="submit_webinar" value="<?php echo isset( $_GET['id'] ) && get_post_status( $_GET['id'] ) === "publish" ? 'Save' : 'Submit for Review'; ?>">
                         </div>

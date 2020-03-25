@@ -40,11 +40,23 @@ class DigitalCustDev {
 	}
 
 	function enqueue_scripts_learnpress() {
+		$type = '';
+		$page_id = get_option( 'learn_press_frontend_editor_page_id' );
+		if ( $page_id && is_page( $page_id ) ) {
+			global $frontend_editor;
+			$post_manage = $frontend_editor->post_manage;
+			$post        = $post_manage->get_post();
+			$type    = get_post_meta( $post->ID, '_course_type', true );
+		}
+		
+		
+
 		wp_enqueue_script( 'dcd-frontend-course-editor', DIGITALCUSTDEV_PLUGIN_URL . 'assets/js/webinar-frontend-editor.js', array(
 			'frontend-course-editor-custom'
 		) );
 		wp_localize_script( 'dcd-frontend-course-editor', 'dcd_fe_object', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'course_type' => $type
 			) );
 
 		wp_enqueue_script( 'learn-press-assignment-custom', plugins_url( '/assets/js/assignment-front-editor.js', LP_ADDON_ASSIGNMENT_FILE ), array(

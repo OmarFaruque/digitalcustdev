@@ -110,7 +110,7 @@
 	</div>
 </div>
 <div class="col-md-12">
-	<div class="form-group pull-right">
+	<div class="form-group pull-right omar2">
 		<a href="javascript:void(0);" class="btn btn-primary webinar-add-next">Next</a>
 	</div>
 </div>

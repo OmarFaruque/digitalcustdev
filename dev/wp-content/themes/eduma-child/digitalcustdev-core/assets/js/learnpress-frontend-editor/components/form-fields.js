@@ -12,25 +12,23 @@
         created: function () {
         },
         mounted: function () {
-            jQuery(document).on('click', 'button#insert-media-button', function(e){
+            jQuery(document).on('click', 'button#insert-media-button.insert-media_cus', function(e){
                 // console.log('tst omar');
                 e.preventDefault();
                 var $button = $(this);
-                wp.media({
-                    multiple: false
-                });
+                
 
                 // Create the media frame.
-                // var file_frame = wp.media.frames.file_frame = wp.media({
-                //     title: 'Select or upload image',
-                //     library: { // remove these to show all
-                //         type: 'image' // specific mime
-                //     },
-                //     button: {
-                //         text: 'Select'
-                //     },
-                //     multiple: false  // Set to true to allow multiple files to be selected
-                // });
+                var file_frame = wp.media.frames.file_frame = wp.media({
+                    title: 'Select or upload file',
+                    library: { // remove these to show all
+                        type: ['image', 'video'] // specific mime
+                    },
+                    button: {
+                        text: 'Select'
+                    },
+                    multiple: false  // Set to true to allow multiple files to be selected
+                });
 
                 // file_frame.close();
                 // file_frame.on('select', function () {
@@ -43,7 +41,7 @@
                 //  });
            
                  // Finally, open the modal
-                //  file_frame.open();
+                 file_frame.open();
             });
         },
         methods: {

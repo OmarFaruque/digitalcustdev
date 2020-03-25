@@ -16,7 +16,7 @@ $post_type_list = $post_manage->get_post_type_list();
 ?>
 
     <div id="frontend-editor">
-        <div id="e-page">
+        <div id="e-page" class="top-0">
             <div id="e-main" class="container site-content">
 				<?php if ( has_action( 'learn-press/frontend-editor/dashboard' ) ) {
 					do_action( 'learn-press/frontend-editor/dashboard' );
@@ -26,10 +26,12 @@ $post_type_list = $post_manage->get_post_type_list();
             </div>
         </div>
 
-        <div id="e-update-activity" v-if="activity" :class="[activityType||'updating']">
-            <span class="e-update-activity__icon"></span>
-            <p v-if="activity!==true" class="e-update-activity__message">{{activity}}</p>
-        </div>
+        <!-- <div class="omartestomar 2">
+            <div id="e-update-activity" v-if="activity" :class="[activityType||'updating']">
+                <span class="e-update-activity__icon"></span>
+                <p v-if="activity!==true" class="e-update-activity__message">{{activity}}</p>
+            </div>
+        </div> -->
     </div>
 <?php
 

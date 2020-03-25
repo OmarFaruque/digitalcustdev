@@ -65,6 +65,10 @@ class Admin_DigitalCustDev_Webinar {
 	public function load_webinar_list_table() {
 		// query, filter, and sort the data
 		$this->webinar_list_table->prepare_items();
+		
+		// echo 'omar test<pre>';
+		// print_r($this->webinar_list_table->prepare_items());
+		// echo '</pre>';
 
 		// render the List Table
 		include_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list.php';

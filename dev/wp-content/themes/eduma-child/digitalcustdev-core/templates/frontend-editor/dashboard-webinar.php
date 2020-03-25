@@ -32,9 +32,11 @@ $post_type_list = $post_manage->get_post_type_list();
             </div>
         </div>
 
+        <div class="omartestomar">
         <div id="e-update-activity" v-if="activity" :class="[activityType||'updating']">
             <span class="e-update-activity__icon"></span>
             <p v-if="activity!==true" class="e-update-activity__message">{{activity}}</p>
+        </div>
         </div>
     </div>
 <?php

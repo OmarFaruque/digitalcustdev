@@ -68,7 +68,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                 </div>
                 <div class="e-form-field-input-media">
                         <div id="wp-content-media-buttons" class="wp-media-buttons">                  
-                            <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media">
+                            <button class="e-button" type="button" id="insert-media-button" class="button insert-media_cus add_media">
                                 <span class="wp-media-buttons-icon"></span>
                                 <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
                             </button>
@@ -181,8 +181,16 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                  <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
             </div>
             <div class="e-form-field-input">
+            <label class="switch mr-1">
                 <input type="checkbox" v-model="settingValue" true-value="yes" false-value="no">
                 
+
+
+                
+					
+					<span class="slider"></span>
+				</label>
+
                 <p class="e-form-field-desc" v-html="field.desc"></p>
             </div>
         </li>

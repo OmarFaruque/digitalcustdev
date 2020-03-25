@@ -23,10 +23,11 @@ class DigitalCustDev_FE_Course {
 
 	function payment_metabox( $meta_box ) { //Remove Sale Price
 		unset( $meta_box['fields'][4] ); //Remove No requirement for enroll
-
+		$page_id = get_option( 'learn_press_frontend_editor_page_id' );
+		$default_price = (!is_page($page_id)) ? '' : 2000;
 		if ( $meta_box['fields'][0]['id'] === "_lp_price" ) {
 			$meta_box['fields'][0]['min'] = 1000;
-			$meta_box['fields'][0]['std'] = 2000;
+			$meta_box['fields'][0]['std'] = $default_price;
 		}
 
 		return $meta_box;

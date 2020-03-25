@@ -71,7 +71,8 @@ body {font-family: Arial;}
         <div id="webinar-post-body">
             <form id="webinar-list-form" method="get">
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
-				<?php
+        <?php
+        // echo 'test Omar';
 				$this->webinar_list_table->search_box( __( 'Search Webinars', 'webinars' ), 'nds-user-find' );
 				$this->webinar_list_table->display();
 				?>

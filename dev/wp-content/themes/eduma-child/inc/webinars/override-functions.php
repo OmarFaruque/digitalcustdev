@@ -1151,33 +1151,27 @@ function addaddditionalfieldtosavedArray( $array ) {
 }
 // add_action('wp_head', 'testfunction');
 function testfunction(){
-	$tzlists = zvc_get_timezone_options();
+	$latest_post = wp_get_recent_posts( array(
+        'author'      	=> get_current_user_id(),
+		'orderby'       => 'post_date',
+        'order'         => 'DESC',
+		'post_type' 	=> 'lp_course',
+        'numberposts' 	=> 1
+	));
+	$postdate = $latest_post[0]['post_date'];
+	$posted = get_the_time('U', $latest_post[0]['ID']);
+	$dif = human_time_diff($posted, current_time( 'U' ));
 
-	// echo 'date: ' . date( 'd/m/Y', strtotime( '28-03-2020' ) ) . '<br/>';
-	echo 'lessons <pre>';
-	print_r($_COOKIE);
-	echo '</pre>';
+	echo 'strto time: ' . strtotime($dif) . '<br/>';
+	echo '24 hours strto time: ' . strtotime('24 hours') . '<br/>';
 
-	if ($_COOKIE['timezone']) {
-		$tz = new DateTimeZone( $_COOKIE['timezone']);
-		$now = new DateTime( 'now', $tz); // DateTime object corellated to user's timezone
-		echo '<pre>';
-		print_r($now);
-		echo '</pre>';
-
-		$nowdate = $now->date;
-		$mint = date('i', strtotime($nowdate));
-		echo 'mint: ' . $mint . '<br/>';
-		$extra = $mint % 5;
-		$addminit = 5 - $extra;
-		$addminit = ($addminit < 5) ? $addminit : 0;
-		echo 'should add: ' . $addminit . '<br/>';
-
-		$date = date('d/m/Y H:i', strtotime( '+'.$addminit.' minutes', strtotime($nowdate)));
-		echo 'round date: ' . $date . '<br/>';
-	} else {
-	// we can't determine a timezone - do something else...
+	if(strtotime($dif) < strtotime('24 hours')){
+		return false;
 	}
+
+	
+
+
 
 }
 
@@ -1255,4 +1249,23 @@ add_filter( 'tiny_mce_before_init', 'changeMceDefaults' );
 // add_filter( 'rwmb_html', 'functiontestomar');
 function functiontestomar($outer_html, $field, $meta){
 	return 'test omar';	
+}
+
+function visiable_review_submit(){
+	$latest_post = wp_get_recent_posts( array(
+        'author'      	=> get_current_user_id(),
+		'orderby'       => 'post_date',
+        'order'         => 'DESC',
+		'post_type' 	=> 'lp_course',
+        'numberposts' 	=> 1
+	));
+	$postdate = $latest_post[0]['post_date'];
+	$posted = get_the_time('U', $latest_post[0]['ID']);
+	$dif = human_time_diff($posted, current_time( 'U' ));
+
+	if(strtotime($dif) < strtotime('24 hours')){
+		return false;
+	}else{
+		return true;
+	}
 }

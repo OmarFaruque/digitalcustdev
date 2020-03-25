@@ -72,8 +72,87 @@ class Webinars_Public {
 		add_action( 'wp_ajax_mobileswitchcallback', array( $this, 'mobileswitchcallback' ) );
 		add_action( 'wp_ajax_nopriv_mobileswitchcallback', array( $this, 'mobileswitchcallback' ) );
 
+		// check occupied date for webinar lession 
+		add_action( 'wp_ajax_check_webinar_ocuppied_lesson_time', array( $this, 'check_webinar_ocuppied_lesson_time' ) );
+		add_action( 'wp_ajax_nopriv_check_webinar_ocuppied_lesson_time', array( $this, 'check_webinar_ocuppied_lesson_time' ) );
+		
+
 	}
 
+
+	/*
+	* check ocupaid date for webinar when
+	*/
+	public function check_webinar_ocuppied_lesson_time(){
+		$course_id 	= $_REQUEST['postid'];
+		$course    	= learn_press_get_course( $course_id );
+		$items     	= $course->get_items();
+		$user_id 	= get_current_user_id(); 
+		$message 	= array();
+
+		$start_time_array = array();
+		$end_time_array = array();
+		if ( ! empty( $items ) ) {
+			foreach ( $items as $item ) {
+				$post_type = get_post_type( $item );
+				if ( $post_type === "lp_lesson" ) {
+					$duration = get_post_meta($item, '_lp_duration', true);
+					$when = get_post_meta($item, '_lp_webinar_when', true);
+					// $webinar = get_post_meta( $item);
+					$change_sdate 		= str_replace( '/', '-', $when );
+					$start_time   		= date( 'Y/m/d H:i', strtotime( $change_sdate ) );
+					$selected_compare 	= date( 'Y/m/d', strtotime( $start_time ) );
+					$end_time     		= date( 'Y/m/d H:i', strtotime( $start_time . '+' . $duration ) );
+
+					$time_starting1 = date( 'Y/m/d H:i', strtotime("-15 minutes", strtotime( $start_time )) );
+					$time_ending1   = date( 'Y/m/d H:i', strtotime("+15 minutes", strtotime( $end_time ) ) );
+
+
+
+					$args = array(
+						'post_type' => 'lp_lesson',
+						'post_status' => array('publish','pending'),
+						'post__not_in' => array($item),
+						'author'    => $user_id,
+						'meta_query' => array(
+							array(
+								'key' => '_lp_webinar_when',
+								'value' => date( 'd/m/Y', strtotime( $selected_compare ) ),
+								'compare' => 'LIKE'
+							)
+						)
+					);
+					// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
+					$lessons          	= get_posts( $args );
+					foreach ( $lessons as $lesson ){
+							$start_time = get_post_meta( $lesson->ID, '_lp_webinar_when', true );
+							$duration   = get_post_meta( $lesson->ID, '_lp_duration', true );
+							
+							$change_sdate = str_replace( '/', '-', $start_time );
+							$start_time   = date( 'Y/m/d H:i', strtotime( $change_sdate ) );
+							// $start_time   = date( 'Y/m/d H:i', strtotime("-15 minutes", strtotime( $start_time )) );
+							
+							if( $start_time > $time_starting1 && $start_time < $time_ending1 ) {
+								$message = array(
+									get_the_title( $item ) . ': ' . __('The webinar time is already occupied by the previous lesson, the webinar should start 15 minutes after the end of the previous - correct it to submit your webinar.', 'webinar'),
+									get_the_title( $item ) . ': '. __('It can\'t be earlier than the previous lesson - correct it to submit your webinar.', 'webinar'),
+									get_the_title( $item ) . ': '. __('Webinar time is already occupied, please update the date on the calendar.', 'webinar'),
+								);
+							}
+					} // End foreach ($lessons)
+				}
+			}
+		}
+
+		$msg = (!empty($message)) ? 'has_error' : 'no_error';
+		wp_send_json(
+			array(
+				'msg' => $msg,
+				'errors' => $message
+			)
+		);
+		wp_die();
+	}
 
 	/*
 	* Ajax callback

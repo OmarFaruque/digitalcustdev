@@ -218,18 +218,30 @@ jQuery(document).ready(function($){
 	/*
 	* Limit course / webinars name
 	*/
-	jQuery(document).on('keyup', '.e-form-field-input input[name="post_title"]', function(){
+	jQuery(document).on('keyup', 'input.question-loop-title, .e-form-field-input input[name="post_title"], div.e-item-heading-input input', function(){
 		if(jQuery(this).val().length <= 3){
 			jQuery(this).addClass('error');
 		}else{
 			jQuery(this).removeClass('error');
-		}
-
-		/* Limit upto 100 carecter */ 
-		if(jQuery(this).val().length > 100){
-			
-		}
+		}	
 	});
+
+	/*
+	* Toggle Comming Soon section
+	*/
+	
+	jQuery(document).on('change', 'input[name="_lp_coming_soon"]', function(){
+		commingsoonToggle();
+	});
+	var commingsoonToggle = function(){
+		if(jQuery('input[name="_lp_coming_soon"]').is(':checked')){
+			jQuery('li#meta-box-tab-course_coming_soon > div > div').show();
+		}else{
+			jQuery('li#meta-box-tab-course_coming_soon > div > div').hide();
+			jQuery('li#meta-box-tab-course_coming_soon > div > div:nth-child(4)').show();
+		}
+	}
+	commingsoonToggle();
 
 });
 

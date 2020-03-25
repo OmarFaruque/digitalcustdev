@@ -134,7 +134,6 @@ function adminka_styles() {
 	wp_enqueue_style( 'admin-styles', get_stylesheet_directory_uri() . '/adminka/custom-adminka-styles.css' );
 }
 
-
 add_action( 'login_head', 'my_custom_login' );
 function my_custom_login() {
 	echo '<link rel="stylesheet" type="text/css" href="' . get_stylesheet_directory_uri() . '/login/custom-login-styles.css" />';
@@ -490,9 +489,6 @@ function grade_enqueue_styles() {
 
 }
 
-;
-
-
 add_action( 'wp_footer', 'add_js' );
 function add_js() {
 	$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
@@ -711,7 +707,7 @@ add_action( 'widgets_init', 'thim_widgets_2_inits' );
 // Call webinar files
 require_once( get_stylesheet_directory() . '/inc/webinars/webinars.php' );
 
-
+/*
 
 function run_activate_plugin( $plugin ) {
 	$current = get_option( 'active_plugins' );
@@ -729,4 +725,16 @@ function run_activate_plugin( $plugin ) {
 
     return null;
 }
+
+*/
 // run_activate_plugin( 'learnpress/learnpress.php' );
+
+
+//add_action( 'wp_head', 'insert_test');
+//    function insert_test() {
+//        $order_id = 11748;
+//        $order = wc_get_order( $order_id );
+//        $link = $order->get_checkout_payment_url();
+//        echo "<script>console.log(".json_encode($link).")</script>";
+//        wp_die('Link ' . var_dump($link));
+//    }

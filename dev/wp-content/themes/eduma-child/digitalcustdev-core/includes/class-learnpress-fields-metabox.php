@@ -16,8 +16,12 @@ class DigitalCustDev_LearpressMetaboxFields {
 
 	function lesson_metabox( $fields ) {
 		global $wp_query;
-		$post_id = $wp_query->get( 'post-id' );
-		$type    = get_post_meta( $post_id, '_course_type', true );
+		$post_id 		= $wp_query->get( 'post-id' );
+		$type    		= get_post_meta( $post_id, '_course_type', true );
+		$timezone 		= 'Europe/Moscow';
+		$when_webinar 	= date( 'd/m/Y H:i' );
+
+
 
 		foreach ( $fields['fields'] as $k => $field ) {
 			if ( $field['id'] === "_lp_duration" ) {
@@ -35,6 +39,23 @@ class DigitalCustDev_LearpressMetaboxFields {
 		);
 
 		if ( $type === "webinar" ) {
+			$ip     = $_SERVER['REMOTE_ADDR']; // means we got user's IP address 
+			$json   = file_get_contents( 'http://ip-api.com/json/' . $ip); // this one service we gonna use to obtain timezone by IP
+			// maybe it's good to add some checks (if/else you've got an answer and if json could be decoded, etc.)
+			$ipData = json_decode( $json, true);
+			if ($ipData['timezone']){
+				$tz = new DateTimeZone( $ipData['timezone']);
+				$now = new DateTime( 'now', $tz);
+				$timezone = $ipData['timezone'];
+				$when_webinar =  $now->format('Y-m-d H:i');
+				$mint = date('i', strtotime($when_webinar));
+				
+				$extra = $mint % 5;
+				$addminit = 5 - $extra;
+				$addminit = ($addminit < 5) ? $addminit : 0;
+				$when_webinar = date('d/m/Y H:i', strtotime( '+'.$addminit.' minutes', strtotime($when_webinar)));
+			}
+
 			foreach ( $fields['fields'] as $k => $field ) {
 				if ( $field['id'] === "_lp_preview" || $field['id'] === "_lp_lesson_video_intro" ) {
 					unset( $fields['fields'][ $k ] );
@@ -45,14 +66,14 @@ class DigitalCustDev_LearpressMetaboxFields {
 				'name' => __( 'Timezone', 'learnpress' ),
 				'id'   => '_lp_timezone',
 				'type' => 'timezone',
-				'std'  => 'Europe/Moscow'
+				'std'  => $timezone
 			);
 
 			array_unshift( $fields['fields'], array(
 				'name' => __( 'When', 'learnpress' ),
 				'id'   => '_lp_webinar_when',
 				'type' => 'when_webinar',
-				'std'  => date( 'd/m/Y H:i' )
+				'std'  => $when_webinar
 			) );
 		}
 

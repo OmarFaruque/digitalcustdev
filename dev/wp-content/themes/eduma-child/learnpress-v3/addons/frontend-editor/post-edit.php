@@ -27,6 +27,11 @@ if(count($course_sections) <= 0){
     set_default_section_to_editor($course_id);
 }
 
+$course_status = get_post_status($course_id);
+
+
+
+
 
 list( $permalink, $post_name ) = get_sample_permalink( $post->ID );
 
@@ -36,7 +41,12 @@ if ( LP_Request::get( 'updated' ) ) {
 
 ?>
 
-<div class="e-edit-slug-box">
+<div class="e-edit-slug-box mb-0">
+    <?php if($course_status == 'pending'): ?>
+        <div id="pendingpopup">
+            <h2><span><?php _e('Congratulation! You\'ve submitted a course!', 'webinar'); ?></span></h2>
+        </div>
+    <?php endif; ?>
     <span id="e-sample-permalink-editable" class="e-hidden"><?php echo trailingslashit( dirname( $permalink ) ); ?>
         <input id="e-edit-slug-input" value="<?php echo basename( $permalink ); ?>">/</span>
     <button class="e-button e-hidden"

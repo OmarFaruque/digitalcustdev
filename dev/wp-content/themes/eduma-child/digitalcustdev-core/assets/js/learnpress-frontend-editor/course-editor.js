@@ -244,9 +244,13 @@
                     function sync() {
                         var jsonData = $($vm.$el).serializeJSON(),
                             _data = JSON.stringify(jsonData);
+
+                            console.log(jsonData);
                         if (_data !== formData) {
 
                             FE_Helpers.Course_Editor_Request('', 'update_course', $.extend({}, jsonData, {__activity: true})).then(function (response) {
+                               
+                            //    console.log(response);
                                 if (undefined !== response.meta['_lp_course_forum']) {
                                     var thePost = response.meta['_lp_course_forum'],
                                         $sel = $('#_lp_course_forum');
@@ -275,7 +279,31 @@
                     var formData = JSON.stringify(this.formData);
 
                     $vm.$('.dcd-course-next-save').on('click', FE_Helpers.debounce(function () {
-                        sync();
+                        if(jQuery(this).hasClass('submit-for-review') && dcd_fe_object.course_type == 'webinar'){
+                            var post_id = jQuery('input[name="post_ID"]').val();
+                            $('div#frontend-course-editor').find('ul#error_msg_ajax').remove();
+                            $.ajax({
+                                method: 'POST',
+                                url: dcd_fe_object.ajax_url,
+                                data: {
+                                    action: 'check_webinar_ocuppied_lesson_time', 
+                                    postid: post_id
+                                },
+                                success: function (result) {
+                                    if(result.msg == 'has_error'){
+                                        var html = '';
+                                        $(result.errors).each(function(k, v){
+                                            html += '<li>'+v+'</li>';
+                                        });
+                                        $( "div#frontend-course-editor" ).prepend( "<ul id='error_msg_ajax'>"+html+"</p>" );
+                                    }else{
+                                        sync();
+                                    }
+                                }
+                            });
+                        }else{
+                            sync();
+                        }
                     }, 1000)).trigger('dispatch');
                 })();
 
