@@ -560,11 +560,31 @@ div#pendingpopup span {
 */
 @media only screen and (max-width: 768px){
   #frontend-editor #e-tab-content-curriculum #e-course-curriculum {
-    position: relative !important;
-    width: 100% !important;
+   z-index: 9;
+   right: unset;
+   left: -100%;
+   background-color: white;
+   overflow: visible !important;
   }
   #frontend-editor #e-tab-content-curriculum #e-item-settings{
     position: relative !important;
     left: unset !important;
   }
+  
+  
+}
+
+span.mobile_section_toggle {
+  background-color: #2575fc;
+  color: white;
+  border-radius: 100px;
+  font-size: 55px;
+  position: absolute;
+  left: -15px;
+  top: 40%;
+  padding: 16px;
+  height: 60px;
+  width: 60px;
+  z-index: 999;
+  cursor: pointer;
 }

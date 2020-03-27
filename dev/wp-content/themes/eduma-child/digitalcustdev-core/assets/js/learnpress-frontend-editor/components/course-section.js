@@ -4,7 +4,7 @@
     /**
      * Vue course section mixin
      *
-     * @type {{props: [*], methods: {sectionClasses: sectionClasses, _onKeyPress: _onKeyPress}}}
+     * @type {{props: [*], methods: {sectionClasses: sectionClasses, _onKeyPress_onKeyPress: _onKeyPress}}}
      */
     var courseSectionMixin = {}
     Vue.component('e-course-section-new', {
@@ -373,7 +373,8 @@
                 }).then($.proxy(function (r) {
                     if (r.new_item) {
                         $item.item.id = r.new_item.id;
-                        LP.setUrl($vm.$dataStore('coursePermalink') + '/' + $item.item.id + '/');
+
+                        if($item.item.id) LP.setUrl($vm.$dataStore('coursePermalink') + '/' + $item.item.id + '/');
                     }
                 }, this));
 
@@ -425,6 +426,8 @@
                 return isNaN(this.section.id);
             },
             openItemSettings: function ($item) {
+                // console.log('open settings sedcion');
+                // console.log($item);
                 this.$emit('openItemSettings', $item, this)
             },
             getPosition: function () {
@@ -669,13 +672,13 @@
                 }
             },
             _deleteSection: function (e) {
-
+                // console.log('delete omar section');
                 if (!confirm(FE_Localize.get('confirm_delete_section'))) {
                     return;
                 }
 
                 this.status = 'removing';
-                var trashItems = false;
+                var trashItems = true;
 
                 // Hold mouse down more than 1 second, then toggle all sections
                 if ($(e.target).data('mouse_hold_time') > 1100) {
@@ -686,6 +689,7 @@
                 }
 
                 this.$emit('delete-section', [e, trashItems, this]);
+                this.$emit('openItemSettings', e, this)
             },
             _deleteItem: function (data) {
                 var item_ID = data[0],

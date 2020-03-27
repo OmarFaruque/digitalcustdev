@@ -243,6 +243,34 @@ jQuery(document).ready(function($){
 	}
 	commingsoonToggle();
 
+
+	/*
+	* Mobile switcher for fron-editor
+	*/
+	jQuery(document).on('click', 'span.mobile_section_toggle', function(){
+		var object_width = jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').width();
+		if(jQuery(this).hasClass('active')){
+			jQuery(this).removeClass('active');
+			jQuery(this).text('>');
+			jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').animate({
+				left: '-100%'
+			});
+			jQuery(this).animate({
+				left: '-15px'
+			});
+			
+		}else{
+			jQuery(this).addClass('active');
+			jQuery(this).text('<');
+			jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').animate({
+				left: '0'
+			});
+			jQuery(this).animate({
+				left: object_width + 'px'
+			});
+		}
+	});
+
 });
 
 function mobile_switch(obj){

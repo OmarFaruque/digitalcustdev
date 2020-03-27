@@ -1,6 +1,6 @@
 <script type="text/x-template" id="tmpl-e-course-curriculum">
     <div id="e-tab-content-curriculum">
-        <div id="e-course-curriculum" class="e-curriculum" @keypress="onPressTitle" @keydown="onPressTitle">
+        <div id="e-course-curriculum" class="e-curriculum om9" @keypress="onPressTitle" @keydown="onPressTitle">
 <!--            <div class="e-curriculum-head">-->
 <!--                <h3 class="e-curriculum-heading">-->
 <!--					--><?php //_e( 'Curriculum', 'learnpress-frontend-editor' ); ?>

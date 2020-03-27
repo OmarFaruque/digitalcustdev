@@ -164,6 +164,7 @@
                 this.addNewSection(position + 1);
             },
             _deleteSection: function (data) {
+                console.log('omar 909');
                 var id = $(data[0].target).closest('.e-section').attr('data-id');
 
                 this.$store().dispatch('removeSection', {
@@ -171,6 +172,9 @@
                     trash_items: data[1]
                 }).then($.proxy(function (r) {
                     this.$store().commit('removeSection', {section_ID: id});
+                    
+                    // jQuery('#frontend-editor #e-tab-content-curriculum #e-item-settings').find('.e-settings-window').html('<!-- -->');
+
                 }, this));
             },
             _toggleSections: function () {

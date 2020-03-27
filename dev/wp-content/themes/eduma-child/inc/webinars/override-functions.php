@@ -1180,7 +1180,14 @@ function testfunction(){
 
 add_filter('e-course-data-store', 'course_data_override');
 function course_data_override($data){
-	
+	$course_type = get_post_meta($data['course_ID'], '_course_type', true);
+	if($course_type != 'webinar'){
+		if(isset($data['post_type_fields']['lp_lesson'])){
+				$durationindex = array_search('_lp_duration', array_column($data['post_type_fields']['lp_lesson'], 'id'));
+				unset($data['post_type_fields']['lp_lesson'][$durationindex]);
+		}
+	}
+
 	$order = array( '_lp_introduction', '_lp_attachments', '_lp_duration' );
 	if(isset($data['post_type_fields']['lp_assignment'])){
 		$newarray = array();

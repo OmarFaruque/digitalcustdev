@@ -188,6 +188,7 @@
                             $('span.step_hide_error').remove();
                             $('.dcd-course-next-curriculum').show();
                         } else {
+                            $('span.step_hide_error').remove();
                            var steperror = '<span class="step_hide_error d-block text-right error">'+lp_webinars.lesson_create_msg+'</span>';
                            $('.dcd-course-next-curriculum').closest('div.e-form-field').append(steperror);
                            $('.dcd-course-next-curriculum').hide();
@@ -304,6 +305,21 @@
                         }else{
                             sync();
                         }
+
+
+                        /*
+                        * Mobile toggle for editor second tab
+                        */
+                        if(jQuery('#e-course-curriculum').length){
+                            if(jQuery('#e-course-curriculum').is(':visible')){
+                                if(jQuery( window ).width() <= 768){
+                                    var html = '<span class="mobile_section_toggle">></span>';
+                                    jQuery('div#frontend-editor').append(html);
+                                }
+                            }
+                        }
+
+                        
                     }, 1000)).trigger('dispatch');
                 })();
 
@@ -485,8 +501,8 @@
 
             this.showSettings = true;
             this.item = $item.item;
-
-            var url = this.$dataStore('coursePermalink') + '/' + this.item.id + '/';
+            console.log(this.item);
+            var url = (typeof this.item != 'undefined') ? this.$dataStore('coursePermalink') + '/' + this.item.id + '/' : '';
             //url = $(document).triggerHandler('LP.open-item-settings', [url, $item.item]);
 
             if (url) {

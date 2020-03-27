@@ -1,6 +1,6 @@
 ;(function ($) {
     "use strict";
-
+//ff
     Vue.component('e-question-loop', {
         template: '#tmpl-e-question-loop',
         props: ['question', 'hidden', 'index', 'itemData', 'key', 'placeholder'],
@@ -259,6 +259,8 @@
             }
         },
         mounted: function () {
+            // this.$parent.$parent.$on('pressTitle', this.onPressTitle);
+            // console.log('test omar');
             var me = this;
             $(document).on('e-item-settings', function (e, settings) {
                 if (settings.__type === 'lp_quiz') {
@@ -270,6 +272,10 @@
             this.makeSortable();
             var keys = [];
             $(document).on('keyup', function (e) {
+                console.log(e.key.toLowerCase());
+                if(e.key.toLowerCase() == 'enter' && e.target.value.length > 3){
+                    $(e.target).closest('li').find('button.e-button.item-question-add-btn').click();
+                }
                 if ($(e.target).is('input, select, textarea')) {
                     keys = [];
                     return;
@@ -293,6 +299,7 @@
                     }
 
                     if (doAction) {
+                        console.log('do action');
                         keys = [];
                     }
                 }
