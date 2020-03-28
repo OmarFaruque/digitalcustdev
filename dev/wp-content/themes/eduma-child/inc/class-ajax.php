@@ -230,6 +230,16 @@ class DigitalCustDev_Ajax {
 		if ( has_post_thumbnail( $post_id ) ) {
 			$attachment_id = get_post_thumbnail_id( $post_id );
 			wp_delete_attachment( $attachment_id, true );
+
+			$upload_dir = wp_get_upload_dir();
+			$param = array();
+			$user = wp_get_current_user();
+			// $post_id = get_transient( get_current_user_id() . 'e_post_id' );
+			if($post_id){
+				$param['path'] = $upload_dir['basedir'] .'/'. $user->data->user_nicename . '/' . $post_id;
+			}
+			removeDirectory($param['path']);
+			delete_transient( get_current_user_id() . 'e_post_id' );
 		}
 
 		/*

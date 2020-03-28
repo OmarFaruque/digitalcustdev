@@ -218,7 +218,7 @@ jQuery(document).ready(function($){
 	/*
 	* Limit course / webinars name
 	*/
-	jQuery(document).on('keyup', 'input.question-loop-title, .e-form-field-input input[name="post_title"], div.e-item-heading-input input', function(){
+	jQuery(document).on('keyup', 'ul.e-section-content input.item-title, input.question-loop-title, .e-form-field-input input[name="post_title"], div.e-item-heading-input input', function(){
 		if(jQuery(this).val().length <= 3){
 			jQuery(this).addClass('error');
 		}else{
@@ -235,7 +235,8 @@ jQuery(document).ready(function($){
 	});
 	var commingsoonToggle = function(){
 		if(jQuery('input[name="_lp_coming_soon"]').is(':checked')){
-			jQuery('li#meta-box-tab-course_coming_soon > div > div').show();
+			jQuery('li#meta-box-tab-course_coming_soon > div > div').hide();
+			jQuery('li#meta-box-tab-course_coming_soon > div > div:nth-child(4)').show();
 		}else{
 			jQuery('li#meta-box-tab-course_coming_soon > div > div').hide();
 			jQuery('li#meta-box-tab-course_coming_soon > div > div:nth-child(4)').show();

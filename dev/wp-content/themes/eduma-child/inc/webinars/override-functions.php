@@ -1151,26 +1151,20 @@ function addaddditionalfieldtosavedArray( $array ) {
 }
 // add_action('wp_head', 'testfunction');
 function testfunction(){
-	$latest_post = wp_get_recent_posts( array(
-        'author'      	=> get_current_user_id(),
-		'orderby'       => 'post_date',
-        'order'         => 'DESC',
-		'post_type' 	=> 'lp_course',
-        'numberposts' 	=> 1
-	));
-	$postdate = $latest_post[0]['post_date'];
-	$posted = get_the_time('U', $latest_post[0]['ID']);
-	$dif = human_time_diff($posted, current_time( 'U' ));
+	$upload_dir = wp_get_upload_dir();
+	$basedir = $upload_dir['basedir'];
+			$param = array();
+			$user = wp_get_current_user();
+			$post_id = get_transient( get_current_user_id() . 'e_post_id' );
+			if($post_id){
+				$param['path'] = $upload_dir['basedir'] .'/'. $user->data->user_nicename . '/' . $post_id;
+			}
 
-	echo 'strto time: ' . strtotime($dif) . '<br/>';
-	echo '24 hours strto time: ' . strtotime('24 hours') . '<br/>';
-
-	if(strtotime($dif) < strtotime('24 hours')){
-		return false;
-	}
-
-	
-
+	echo 'Uplod dirctory <br/><pre>';
+	print_r($param);
+	echo '</pre>'; //াাা
+	$delete_direcoty = removeDirectory($param['path']);
+	echo 'delete directory result: ' . $delete_direcoty . '<br/>';
 
 
 }
@@ -1323,3 +1317,35 @@ function course_making_success($course_id){
 	if(!empty($price)) $marks += 10;
 	return $marks;
 }
+
+function removeDirectory($path) {
+	$files = glob($path . '/*');
+	foreach ($files as $file) {
+		is_dir($file) ? removeDirectory($file) : unlink($file);
+	}
+	rmdir($path);
+	return;
+}
+
+
+function rr_404_my_event() {
+	$page_id = get_option( 'learn_press_frontend_editor_page_id' );
+	if ( $page_id && is_page( $page_id ) ) {
+		global $frontend_editor;
+
+		$post_manage = $frontend_editor->post_manage;
+		$post        = $post_manage->get_post();
+		$course_status = get_post_status($post->ID);
+		if($course_status == 'pending'):
+  			global $wp_query;
+	  		$wp_query->set_404();
+			  status_header(404);
+			  get_header();
+			  get_template_part( 'inc/templates/page-title' );
+			  get_template_part( 404 ); 
+			  get_footer();
+			  exit();
+		endif;
+	}
+  }
+  add_action( 'wp', 'rr_404_my_event' );
