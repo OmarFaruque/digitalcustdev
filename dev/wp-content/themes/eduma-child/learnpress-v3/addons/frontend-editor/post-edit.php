@@ -42,11 +42,9 @@ if ( LP_Request::get( 'updated' ) ) {
 ?>
 
 <div class="e-edit-slug-box mb-0">
-    <?php if($course_status == 'pending'): ?>
-        <div id="pendingpopup">
+        <div id="pendingpopup" style="display:none;">
             <h2><span><?php _e('Congratulation! You\'ve submitted a course!', 'webinar'); ?></span></h2>
         </div>
-    <?php endif; ?>
     <span id="e-sample-permalink-editable" class="e-hidden"><?php echo trailingslashit( dirname( $permalink ) ); ?>
         <input id="e-edit-slug-input" value="<?php echo basename( $permalink ); ?>">/</span>
     <button class="e-button e-hidden"

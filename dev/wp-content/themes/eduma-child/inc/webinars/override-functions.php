@@ -1252,14 +1252,30 @@ function functiontestomar($outer_html, $field, $meta){
 	return 'test omar';	
 }
 
-function visiable_review_submit(){
-	$latest_post = wp_get_recent_posts( array(
+function visiable_review_submit($course_type){
+	$args = array(
         'author'      	=> get_current_user_id(),
 		'orderby'       => 'post_date',
-        'order'         => 'DESC',
+		'order'         => 'DESC',
+		'post_status' 	=> 'pending',
 		'post_type' 	=> 'lp_course',
         'numberposts' 	=> 1
-	));
+	);
+
+	if($course_type == 'webinar'){
+		$args['meta_query'][] =  array(
+            'key'     => '_course_type',
+            'value'   => 'webinar',
+            'compare' => '=',
+        );
+	}else{
+		$args['meta_query'][] =  array(
+            'key'     => '_course_type',
+            'compare' => 'NOT EXISTS',
+        );
+	}
+
+	$latest_post = wp_get_recent_posts( $args );
 	$postdate = $latest_post[0]['post_date'];
 	$posted = get_the_time('U', $latest_post[0]['ID']);
 	$dif = human_time_diff($posted, current_time( 'U' ));
@@ -1336,16 +1352,21 @@ function rr_404_my_event() {
 		$post_manage = $frontend_editor->post_manage;
 		$post        = $post_manage->get_post();
 		$course_status = get_post_status($post->ID);
-		if($course_status == 'pending'):
-  			global $wp_query;
-	  		$wp_query->set_404();
-			  status_header(404);
-			  get_header();
-			  get_template_part( 'inc/templates/page-title' );
-			  get_template_part( 404 ); 
-			  get_footer();
+		$show_error = array('pending', 'publish');
+		if(in_array($course_status, $show_error)):
+  			// global $wp_query;
+	  		// $wp_query->set_404();
+			//   status_header(404);
+			//   get_header();
+			//   echo '<section class="content-area">';
+			//   get_template_part( 'inc/templates/page-title' );
+			//   get_template_part( 404 ); 
+			//   echo '</section>';
+			//   get_footer();
+				wp_safe_redirect(get_home_url( '/' ) . '/404');
 			  exit();
 		endif;
 	}
+	
   }
   add_action( 'wp', 'rr_404_my_event' );
