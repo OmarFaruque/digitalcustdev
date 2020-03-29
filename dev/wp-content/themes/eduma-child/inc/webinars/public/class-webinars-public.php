@@ -96,7 +96,6 @@ class Webinars_Public {
 		if ( ! empty( $items ) ){
 			$interalStart = '';
 			$interalEnd = '';
-			$testm = '';
 			foreach ( $items as $item ) {
 				$post_type = get_post_type( $item );
 				if ( $post_type === "lp_lesson" ) {
@@ -110,7 +109,7 @@ class Webinars_Public {
 
 					$time_starting1 = date( 'Y/m/d H:i', strtotime("-15 minutes", strtotime( $start_time )) );
 					$time_ending1   = date( 'Y/m/d H:i', strtotime("+15 minutes", strtotime( $end_time ) ) );					
-					$testm .= 'inside if <br/>';
+			
 					if(!empty($interalStart)):
 						if( $interalStart >= $time_starting1 && $interalStart <= $time_ending1 ) {
 									$message[] = get_the_title( $item ) . ': ' . __('The webinar time is already occupied by the previous lesson, the webinar should start 15 minutes after the end of the previous - correct it to submit your webinar.', 'webinar');

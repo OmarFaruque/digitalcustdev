@@ -234,9 +234,28 @@ jQuery(document).ready(function($){
 		commingsoonToggle();
 	});
 	var commingsoonToggle = function(){
+		var newdate = new Date(),
+		newdate = newdate.setMonth(newdate.getMonth() + 2),
+		newdate = new Date(newdate),
+		month = ("0" + (newdate.getMonth() + 1)).slice(-2),
+		newgetdate = ("0" + newdate.getDate()).slice(-2),
+		minit = newdate.getMinutes(),
+		shouldadd = 5 - (minit % 5),
+		newmint = (shouldadd < 5) ? minit + shouldadd : minit,
+		newmint = ("0" + newmint).slice(-2),
+		hours = ("0" + newdate.getHours()).slice(-2),
+		date = newdate.getFullYear() + '-' + month + '-' + newgetdate + ' '+ hours + ':' + newmint;
+
+
 		if(jQuery('input[name="_lp_coming_soon"]').is(':checked')){
 			jQuery('li#meta-box-tab-course_coming_soon > div > div').hide();
 			jQuery('li#meta-box-tab-course_coming_soon > div > div:nth-child(4)').show();
+
+			/*
+			* All default value for comming soon section 
+			*/
+			jQuery('input#_lp_coming_soon_end_time').val(date);
+			jQuery("input#_lp_coming_soon_countdown, input#_lp_coming_soon_showtext, input#_lp_coming_soon_metadata, input#_lp_coming_soon_details").prop("checked", true);
 		}else{
 			jQuery('li#meta-box-tab-course_coming_soon > div > div').hide();
 			jQuery('li#meta-box-tab-course_coming_soon > div > div:nth-child(4)').show();

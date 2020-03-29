@@ -265,7 +265,7 @@
                                 if( jsonData.post_on_review ){
                                     $('#pendingpopup').fadeIn(500, function() {
                                         window.setTimeout( function(){
-                                             window.location.href = jsonData.post_on_review;
+                                            //  window.location.href = jsonData.post_on_review;
                                         }, 5000 );
                                     });
                                 }
