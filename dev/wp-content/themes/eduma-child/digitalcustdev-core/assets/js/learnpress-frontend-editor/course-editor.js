@@ -246,7 +246,7 @@
                         var jsonData = $($vm.$el).serializeJSON(),
                             _data = JSON.stringify(jsonData);
 
-                            console.log(jsonData);
+                            // console.log(jsonData);
                         if (_data !== formData) {
 
                             FE_Helpers.Course_Editor_Request('', 'update_course', $.extend({}, jsonData, {__activity: true})).then(function (response) {
@@ -295,6 +295,7 @@
                                     postid: post_id
                                 },
                                 success: function (result) {
+                                    console.log(result);
                                     if(result.msg == 'has_error'){
                                         var html = '';
                                         $(result.errors).each(function(k, v){

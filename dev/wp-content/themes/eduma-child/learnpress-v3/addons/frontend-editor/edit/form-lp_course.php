@@ -51,7 +51,7 @@ set_transient( get_current_user_id() . 'e_post_id', $frontend_editor->post_manag
 
 									<?php
 									if ( $tab['callback'] === "dcd_e_course_editor_tab_settings" ) { ?>
-                                        <?php if(visiable_review_submit($course_type)): ?>
+                                        <?php if(!visiable_review_submit($course_type)): ?>
                                         <a href="javascript:void(0);" data-redirect="<?php echo isset( $course_type ) && $course_type === "webinar" ? $profile->get_tab_link( 'webinars', true ) : $profile->get_tab_link(); ?>" data-id="<?php echo $tab['id']; ?>" class="btn btn-primary dcd-course-next-save submit-for-review"><?php echo $post_status === "draft" ? 'Submit Review' : 'Publish'; ?></a>
                                         <?php else: ?>
                                         <span id="desable_submit_review" class="text-right d-block error"><?php _e('less than 24 hours have passed since the previous course submission for approval - come back later', 'webinar'); ?></span>
