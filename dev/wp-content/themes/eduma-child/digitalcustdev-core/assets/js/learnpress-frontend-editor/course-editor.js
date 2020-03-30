@@ -283,6 +283,36 @@
                     var formData = JSON.stringify(this.formData);
 
                     $vm.$('.dcd-course-next-save').on('click', FE_Helpers.debounce(function () {
+                        jQuery('span.mobile_section_toggle').hide();
+
+                        /*
+                        * Mobile toggle for editor second tab
+                        */
+                        if(jQuery('#e-course-curriculum').length){
+                            if(jQuery('#e-course-curriculum').is(':visible')){
+                                if(jQuery( window ).width() <= 768){
+                                    jQuery('span.mobile_section_toggle').remove();
+                                    var html = '<span class="mobile_section_toggle"><</span>';
+                                    jQuery('div#frontend-editor').append(html);
+                                }
+                            }
+                        }
+
+                        /*
+                        * Close mobile button
+                        */
+                        var object_width = jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').width();
+                        jQuery('.mobile_section_toggle').addClass('active');
+                        jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').css('left', '0')
+                        
+                        jQuery('#frontend-editor #e-tab-content-curriculum').addClass('toggle-active');
+                        if(!jQuery('#e-course-curriculum').is(':visible')){
+                            jQuery('span.mobile_section_toggle').hide();
+                        }else{
+                            jQuery('span.mobile_section_toggle').show();
+                        }
+                        jQuery('.mobile_section_toggle').css('left', object_width+'px');
+
 
                         if(jQuery(this).hasClass('submit-for-review') && dcd_fe_object.course_type == 'webinar'){
                             var post_id = jQuery('input[name="post_ID"]').val();
@@ -295,7 +325,7 @@
                                     postid: post_id
                                 },
                                 success: function (result) {
-                                    console.log(result);
+                                    // console.log(result);
                                     if(result.msg == 'has_error'){
                                         var html = '';
                                         $(result.errors).each(function(k, v){
@@ -310,35 +340,6 @@
                         }else{
                             sync();
                         }
-
-
-                        /*
-                        * Mobile toggle for editor second tab
-                        */
-                        if(jQuery('#e-course-curriculum').length){
-                            if(jQuery('#e-course-curriculum').is(':visible')){
-                                if(jQuery( window ).width() <= 768){
-                                    var html = '<span class="mobile_section_toggle">></span>';
-                                    jQuery('div#frontend-editor').append(html);
-                                }
-                            }
-                        }
-
-                        /*
-                        * Close mobile button
-                        */
-                       var object_width = jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').width();
-                       jQuery('.mobile_section_toggle').removeClass('active');
-                       jQuery('.mobile_section_toggle').text('>');
-                       jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').css('left', '0')
-                       
-                       jQuery('#frontend-editor #e-tab-content-curriculum').removeClass('toggle-active');
-                       if(!jQuery('#e-course-curriculum').is(':visible')){
-                           jQuery('span.mobile_section_toggle').hide();
-                       }else{
-                           jQuery('span.mobile_section_toggle').show();
-                       }
-                       jQuery('.mobile_section_toggle').css('left', object_width+'px');
 
                         
                     }, 1000)).trigger('dispatch');

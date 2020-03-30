@@ -562,7 +562,7 @@ div#pendingpopup span {
   #frontend-editor #e-tab-content-curriculum #e-course-curriculum {
    z-index: 9;
    right: unset;
-   left: -100%;
+   left: 0;
    background-color: white;
    overflow: visible !important;
   }
