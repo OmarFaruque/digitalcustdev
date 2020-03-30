@@ -516,6 +516,7 @@
         });
 
         $('.dcd-course-prev-btn').click(function () {
+            jQuery('span.mobile_section_toggle').hide();
             $('.hidden-review-publish').remove();
             var currentCourseTab = $('.e-course-tabs').find('.e-tab');
             $(currentCourseTab).each(function (i, r) {
@@ -523,6 +524,7 @@
                     if ($(this).prev().data('name') === "curriculum") {
                         $(this).prev().addClass('active');
                         $(this).removeClass('active');
+                        jQuery('span.mobile_section_toggle').show();
                     }
 
                     if ($(this).prev().data('name') === "general") {

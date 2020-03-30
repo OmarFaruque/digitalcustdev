@@ -251,7 +251,6 @@
 
                             FE_Helpers.Course_Editor_Request('', 'update_course', $.extend({}, jsonData, {__activity: true})).then(function (response) {
                                
-                            //    console.log(response);
                                 if (undefined !== response.meta['_lp_course_forum']) {
                                     var thePost = response.meta['_lp_course_forum'],
                                         $sel = $('#_lp_course_forum');
@@ -265,7 +264,7 @@
                                 if( jsonData.post_on_review ){
                                     $('#pendingpopup').fadeIn(500, function() {
                                         window.setTimeout( function(){
-                                            //  window.location.href = jsonData.post_on_review;
+                                             window.location.href = jsonData.post_on_review;
                                         }, 5000 );
                                     });
                                 }
@@ -284,6 +283,7 @@
                     var formData = JSON.stringify(this.formData);
 
                     $vm.$('.dcd-course-next-save').on('click', FE_Helpers.debounce(function () {
+
                         if(jQuery(this).hasClass('submit-for-review') && dcd_fe_object.course_type == 'webinar'){
                             var post_id = jQuery('input[name="post_ID"]').val();
                             $('div#frontend-course-editor').find('ul#error_msg_ajax').remove();
@@ -323,6 +323,22 @@
                                 }
                             }
                         }
+
+                        /*
+                        * Close mobile button
+                        */
+                       var object_width = jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').width();
+                       jQuery('.mobile_section_toggle').removeClass('active');
+                       jQuery('.mobile_section_toggle').text('>');
+                       jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').css('left', '0')
+                       
+                       jQuery('#frontend-editor #e-tab-content-curriculum').removeClass('toggle-active');
+                       if(!jQuery('#e-course-curriculum').is(':visible')){
+                           jQuery('span.mobile_section_toggle').hide();
+                       }else{
+                           jQuery('span.mobile_section_toggle').show();
+                       }
+                       jQuery('.mobile_section_toggle').css('left', object_width+'px');
 
                         
                     }, 1000)).trigger('dispatch');

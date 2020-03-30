@@ -569,6 +569,20 @@ div#pendingpopup span {
   #frontend-editor #e-tab-content-curriculum #e-item-settings{
     position: relative !important;
     left: unset !important;
+    height: 1000px;
+    overflow: hidden !important;
+  }
+  #frontend-editor #e-tab-content-curriculum #e-course-curriculum
+  {
+    max-width: 100%;
+  }
+  #frontend-editor .e-form-field-table.flex .e-form-field
+  {
+    display: block !important;
+  }
+  .single_sub_section > div.rwmb-label, #frontend-editor .e-form-field-table.flex .e-form-field > div.rwmb-label
+  {
+    flex: unset !important;
   }
   
   
@@ -577,14 +591,39 @@ div#pendingpopup span {
 span.mobile_section_toggle {
   background-color: #2575fc;
   color: white;
-  border-radius: 100px;
-  font-size: 55px;
+  border-radius: 0;
+  font-size: 40px;
   position: absolute;
-  left: -15px;
+  left: 0px;
   top: 40%;
-  padding: 16px;
+  padding: 0px;
   height: 60px;
-  width: 60px;
+  width: 24px;
   z-index: 999;
   cursor: pointer;
+  line-height: 60px;
+}
+
+
+
+#frontend-editor .e-course-sections .e-section .e-section-content .e-section-item.error,
+#frontend-editor .e-course-sections .e-section .e-section-head.error{
+  border-color: red;
+}
+#frontend-editor .e-course-sections .e-section .e-section-content .e-section-item.error input[type="text"],
+#frontend-editor .e-course-sections .e-section .e-section-content .e-section-item.error input,
+#frontend-editor .e-course-sections .e-section .e-section-head.error input
+{
+  color: red;
+}
+
+#frontend-editor #e-tab-content-curriculum.toggle-active:before {
+  content: '';
+  background: rgba(0,0,0,0.3);
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 9;
 }

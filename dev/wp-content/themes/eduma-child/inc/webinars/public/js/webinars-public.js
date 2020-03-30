@@ -218,11 +218,22 @@ jQuery(document).ready(function($){
 	/*
 	* Limit course / webinars name
 	*/
-	jQuery(document).on('keyup', 'ul.e-section-content input.item-title, input.question-loop-title, .e-form-field-input input[name="post_title"], div.e-item-heading-input input', function(){
+	jQuery(document).on('keyup', 'h4.e-section-head input.section-title, ul.e-section-content input.item-title, input.question-loop-title, .e-form-field-input input[name="post_title"], div.e-item-heading-input input', function(){
 		if(jQuery(this).val().length <= 3){
-			jQuery(this).addClass('error');
+			if(jQuery(this).hasClass('section-title')){
+				jQuery(this).closest('h4').addClass('error');
+			}else if(jQuery(this).hasClass('item-title')){
+				jQuery(this).closest('li.e-section-item').addClass('error');
+			}else if(jQuery(this).hasClass('question-loop-title')){
+				jQuery(this).closest('li.e-question-loop').addClass('error');
+			}else{
+				jQuery(this).addClass('error');
+			}
 		}else{
 			jQuery(this).removeClass('error');
+			jQuery(this).closest('h4').removeClass('error');
+			jQuery(this).closest('li.e-section-item').removeClass('error');
+			jQuery(this).closest('li.e-question-loop').removeClass('error');
 		}	
 	});
 
@@ -264,6 +275,8 @@ jQuery(document).ready(function($){
 	commingsoonToggle();
 
 
+
+	
 	/*
 	* Mobile switcher for fron-editor
 	*/
@@ -276,9 +289,9 @@ jQuery(document).ready(function($){
 				left: '-100%'
 			});
 			jQuery(this).animate({
-				left: '-15px'
+				left: '-0px'
 			});
-			
+			jQuery('#frontend-editor #e-tab-content-curriculum').removeClass('toggle-active');
 		}else{
 			jQuery(this).addClass('active');
 			jQuery(this).text('<');
@@ -288,6 +301,7 @@ jQuery(document).ready(function($){
 			jQuery(this).animate({
 				left: object_width + 'px'
 			});
+			jQuery('#frontend-editor #e-tab-content-curriculum').addClass('toggle-active');
 		}
 	});
 
