@@ -292,8 +292,10 @@
                             if(jQuery('#e-course-curriculum').is(':visible')){
                                 if(jQuery( window ).width() <= 768){
                                     jQuery('span.mobile_section_toggle').remove();
-                                    var html = '<span class="mobile_section_toggle"><</span>';
-                                    jQuery('div#frontend-editor').append(html);
+                                    var html = '<span class="mobile_section_toggle active"><</span>';
+                                    jQuery('div#e-course-curriculum .e-course-sections').append(html);
+                                    jQuery('#frontend-editor #e-tab-content-curriculum').addClass('toggle-active');
+                                    jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').css('left', '0')
                                 }
                             }
                         }
@@ -301,17 +303,16 @@
                         /*
                         * Close mobile button
                         */
-                        var object_width = jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').width();
-                        jQuery('.mobile_section_toggle').addClass('active');
-                        jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').css('left', '0')
+                        // jQuery('.mobile_section_toggle').addClass('active');
+                        // jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').css('left', '0')
                         
-                        jQuery('#frontend-editor #e-tab-content-curriculum').addClass('toggle-active');
-                        if(!jQuery('#e-course-curriculum').is(':visible')){
-                            jQuery('span.mobile_section_toggle').hide();
-                        }else{
-                            jQuery('span.mobile_section_toggle').show();
-                        }
-                        jQuery('.mobile_section_toggle').css('left', object_width+'px');
+                        
+                        // if(!jQuery('#e-course-curriculum').is(':visible')){
+                        //     jQuery('span.mobile_section_toggle').hide();
+                        // }else{
+                        //     jQuery('span.mobile_section_toggle').show();
+                        // }
+                        // jQuery('.mobile_section_toggle').css('right', '0');
 
 
                         if(jQuery(this).hasClass('submit-for-review') && dcd_fe_object.course_type == 'webinar'){

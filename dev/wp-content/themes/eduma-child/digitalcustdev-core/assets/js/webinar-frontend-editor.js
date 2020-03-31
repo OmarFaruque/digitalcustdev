@@ -526,9 +526,8 @@
                         $(this).removeClass('active');
                         jQuery('span.mobile_section_toggle').show();
                         if(jQuery('span.mobile_section_toggle').hasClass('active')){
-                            var object_width = jQuery('#frontend-editor #e-tab-content-curriculum #e-course-curriculum').width();
                             jQuery('span.mobile_section_toggle').text('<');
-                            jQuery('.mobile_section_toggle').css('left', object_width+'px');
+                            jQuery('.mobile_section_toggle').css('right', '0');
                         }else{
                             jQuery('span.mobile_section_toggle').text('>');
                         }

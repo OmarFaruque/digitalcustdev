@@ -189,7 +189,6 @@ class DigitalCustDev_Webinars {
 		$args             = array(
 			'post_type' => 'lp_lesson',
 			'post_status' => array('publish','pending'),
-			'author'    => $user_id,
 			'meta_query' => array(
 				array(
 					'key' => '_lp_webinar_when',
@@ -220,7 +219,7 @@ class DigitalCustDev_Webinars {
 					
 					$end_time     = date( 'Y/m/d H:i', strtotime( $start_time . '+' . $duration ) );
 					
-					if ( $start_time < $end_time && date( 'Y/m/d', strtotime( $change_sdate ) ) === $selected_compare ) {
+					if ( $start_time <= $end_time && date( 'Y/m/d', strtotime( $change_sdate ) ) === $selected_compare ) {
 						$time_starting = date( 'H:i', strtotime("-15 minutes", strtotime( $start_time )) );
 						$time_ending   = date( 'H:i', strtotime("+15 minutes", strtotime( $end_time ) ) );
 						foreach ( $times as $k => $time ) {

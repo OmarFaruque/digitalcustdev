@@ -289,7 +289,7 @@ jQuery(document).ready(function($){
 				left: '-100%'
 			});
 			jQuery(this).animate({
-				left: '-0px'
+				right: '0px'
 			});
 			jQuery('#frontend-editor #e-tab-content-curriculum').removeClass('toggle-active');
 		}else{
@@ -299,7 +299,7 @@ jQuery(document).ready(function($){
 				left: '0'
 			});
 			jQuery(this).animate({
-				left: object_width + 'px'
+				right: '0px'
 			});
 			jQuery('#frontend-editor #e-tab-content-curriculum').addClass('toggle-active');
 		}

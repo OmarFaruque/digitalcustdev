@@ -84,6 +84,7 @@ class Webinars_Public {
 	* check ocupaid date for webinar when
 	*/
 	public function check_webinar_ocuppied_lesson_time(){
+		$curd = new LP_Course_CURD();
 		$course_id 	= $_REQUEST['postid'];
 		$course    	= learn_press_get_course( $course_id );
 		$items     	= $course->get_items();
@@ -115,7 +116,7 @@ class Webinars_Public {
 									$message[] = get_the_title( $item ) . ': ' . __('The webinar time is already occupied by the previous lesson, the webinar should start 15 minutes after the end of the previous - correct it to submit your webinar.', 'webinar');
 						}
 						if(empty($message)){
-							if($interalStart > $time_starting1){
+							if($interalStart >= $time_starting1){
 								$message[] = get_the_title( $item ) . ': '. __('It can\'t be earlier than the previous lesson - correct it to submit your webinar.', 'webinar');
 							}
 						}
@@ -149,7 +150,6 @@ class Webinars_Public {
 						'post_type' => 'lp_lesson',
 						'post_status' => array('publish','pending'),
 						'post__not_in' => array($item),
-						'author'    => $user_id,
 						'meta_query' => array(
 							array(
 								'key' => '_lp_webinar_when',
@@ -161,6 +161,9 @@ class Webinars_Public {
 					// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
 					$lessons          	= get_posts( $args );
 					foreach ( $lessons as $lesson ){
+						$course_ids = $curd->get_course_by_item( $lesson->ID );
+						$course_status = get_post($course_ids[0]);
+						if($course_status->post_status != 'draft'):
 							$start_time = get_post_meta( $lesson->ID, '_lp_webinar_when', true );
 							$duration   = get_post_meta( $lesson->ID, '_lp_duration', true );
 							
@@ -168,10 +171,11 @@ class Webinars_Public {
 							$start_time   = date( 'Y/m/d H:i', strtotime( $change_sdate ) );
 							// $start_time   = date( 'Y/m/d H:i', strtotime("-15 minutes", strtotime( $start_time )) );
 							if(empty($message)){
-								if( $start_time > $time_starting1 && $start_time < $time_ending1 ) {
+								if( $start_time >= $time_starting1 && $start_time <= $time_ending1 ) {
 									$message[] = get_the_title( $item ) . ': '. __('Webinar time is already occupied, please update the date on the calendar.', 'webinar');
 								}
 							}
+						endif;
 					} // End foreach ($lessons)
 				}
 			}
