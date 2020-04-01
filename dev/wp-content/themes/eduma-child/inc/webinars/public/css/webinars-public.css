@@ -595,7 +595,11 @@ div#pendingpopup span {
   body.page-frontend-editor div#frontend-editor{
     top: 0 !important;
   }
-  
+  div#pendingpopup span {
+    display: block;
+    max-width: 90%;
+    margin: 0 auto;
+  }
 }
 
 span.mobile_section_toggle {
