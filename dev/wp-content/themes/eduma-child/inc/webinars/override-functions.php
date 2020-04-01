@@ -1307,7 +1307,12 @@ function course_making_success($course_id){
 	}
 	$terms = get_the_terms($post->ID, 'course_category');
 	if(!empty($terms)){
-		$marks += 10; 
+		$marks += 05; 
+	}
+
+	$tagTerms = get_the_terms($post->ID, 'course_tag');
+	if(!empty($tagTerms)){
+		$marks += 05; 
 	}
 	
 	$course    = learn_press_get_course( $course_id );
@@ -1370,3 +1375,19 @@ function rr_404_my_event() {
 	
   }
   add_action( 'wp', 'rr_404_my_event' );
+
+
+  /*
+  * Add Terms and condition page in backend settings page
+  */
+  add_filter( 'learn-press/admin/settings-pages/become-a-teacher', 'addTermsAndConditionCallback' );
+  function addTermsAndConditionCallback($array){
+	  $array[] = array(
+		  'title' => __('Terms & Condition page', 'webinar'),
+		  'id' => 'terms_and_condition_page_id',
+		  'default' => '',
+		  'type' => 'pages-dropdown'
+	  );
+
+	  return $array;
+  }

@@ -39,6 +39,9 @@ if ( is_page( 'profile' ) && $profile->get_user_data( 'id' ) == get_current_user
 		if(is_page('assignment-evaluate')){
 			$show_banner = false;
 		}
+		$page_id = get_option( 'learn_press_frontend_editor_page_id' );
+		if ( $page_id && is_page( $page_id ) ) 	$show_banner = false;
+
 		if($show_banner){
 			get_template_part( 'inc/templates/page-title' );
 		} 

@@ -162,7 +162,22 @@ function dcd_e_course_editor_tab_settings() {
 			}
 			echo '</li>';
 		}
-
+		if(get_option( 'learn_press_terms_and_condition_page_id')){
+		echo sprintf('<li>
+			<div class="rwmb-meta-box">
+			<div class="rwmb-field">
+			<div class="rwmb-label"></div>
+			<div class="Om rwmb-input">
+				<label for="terms_n_condition">
+					<input type="checkbox" name="terms_n_condition" id="terms_n_condition" value="1" />
+					%s
+					<a target="_blank" href="%s">%s</a>
+				</label>
+			</div>
+			</div>
+			</div>
+		</li>', __('By submitting this course I agree and accept', 'webinar'), get_the_permalink( get_option( 'learn_press_terms_and_condition_page_id')), get_the_title( get_option( 'learn_press_terms_and_condition_page_id') ) );
+		}
 		if ( ! empty( $remove_meta_boxes ) ) {
 			$contexts = array( 'normal', 'side', 'advanced' );
 			foreach ( $remove_meta_boxes as $meta_box ) {

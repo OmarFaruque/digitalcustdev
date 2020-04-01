@@ -148,6 +148,13 @@ jQuery(document).ready(function($){
 		});
 	}
 
+	if(jQuery('input#terms_n_condition').length){
+		jQuery(document).on('change', 'input#terms_n_condition', function(){
+			makebuttonnonclickable();
+		});
+	}
+	
+
 	function descountaccess(d){
 		if(d.is(':checked')){
 			d.closest('label').next('input').show();
@@ -177,6 +184,15 @@ jQuery(document).ready(function($){
 			}
 		}
 
+		if(jQuery('input#terms_n_condition').length){
+			if(jQuery('input#terms_n_condition').is(':checked')){
+				desable = false;
+			}else{
+				desable = true;	
+			}
+		}
+
+
 		if(desable){
 			jQuery('a.dcd-course-next-save.submit-for-review').addClass('disabled');
 			jQuery('input[name="_lp_sale_price"]').addClass('error');
@@ -201,7 +217,7 @@ jQuery(document).ready(function($){
 	if(jQuery('#learn-press-admin-editor-metabox-settings').length){
 		jQuery('.rwmb-label').each(function( index ){
 			var label = jQuery(this).find('label').attr('for');
-			jQuery(this).append('<span class="tooltip">?<span class="tooltiptext">Tooltip text</span></span>');
+			if(jQuery(this).text() != '') jQuery(this).append('<span class="tooltip">?<span class="tooltiptext">Tooltip text</span></span>');
 		});
 	}
 

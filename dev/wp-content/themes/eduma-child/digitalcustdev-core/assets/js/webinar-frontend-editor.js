@@ -291,6 +291,8 @@
                     },
 
                     onClose: function(time, input){
+                        $('div#frontend-course-editor').find('ul#error_msg_ajax').remove();
+                        jQuery('input.webinar_start_time').removeClass('error');
                         var thisvalue = time, 
                         thisdate = new Date(thisvalue),
                         month = ("0" + (thisdate.getMonth() + 1)).slice(-2),

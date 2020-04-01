@@ -333,6 +333,9 @@
                                             html += '<li>'+v+'</li>';
                                         });
                                         $( "div#frontend-course-editor" ).prepend( "<ul id='error_msg_ajax'>"+html+"</p>" );
+                                        if(jQuery('input.webinar_start_time').length){
+                                            jQuery('input.webinar_start_time').addClass('error');
+                                        }
                                     }else{
                                         sync();
                                     }
