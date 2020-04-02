@@ -1177,8 +1177,13 @@ function course_data_override($data){
 	$course_type = get_post_meta($data['course_ID'], '_course_type', true);
 	if($course_type != 'webinar'){
 		if(isset($data['post_type_fields']['lp_lesson'])){
+			// echo 'Lession Duration <br/>';
+			// echo '<pre>';
+			// print_r($data['post_type_fields']['lp_lesson']);
+			// echo '</pre>';
 				$durationindex = array_search('_lp_duration', array_column($data['post_type_fields']['lp_lesson'], 'id'));
-				unset($data['post_type_fields']['lp_lesson'][$durationindex]);
+				$data['post_type_fields']['lp_lesson'][$durationindex]['name'] = __('Lession Duration', 'webinar');
+				// unset($data['post_type_fields']['lp_lesson'][$durationindex]);
 		}
 	}
 

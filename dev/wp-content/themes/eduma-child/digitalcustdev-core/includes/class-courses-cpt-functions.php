@@ -22,8 +22,8 @@ class DigitalCustDev_CPT_Functions {
 		add_action( 'save_post_lp_course', array( $this, 'save_webinar' ), 99 );
 
 		//Save MetaData
-		add_action( 'e-update-course-meta-data-props', array( $this, 'save_meta_keys' ), 10, 2 );
-		add_action( 'e-update-course-meta-value', array( $this, 'save_meta_values' ), 10, 2 );
+		add_filter( 'e-update-course-meta-data-props', array( $this, 'save_meta_keys' ), 10, 2 );
+		add_filter( 'e-update-course-meta-value', array( $this, 'save_meta_values' ), 10, 2 );
 	}
 
 	public function query_own_courses_webinars( $user_id, $args = '' ) {

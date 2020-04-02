@@ -246,7 +246,7 @@
                         var jsonData = $($vm.$el).serializeJSON(),
                             _data = JSON.stringify(jsonData);
 
-                            // console.log(jsonData);
+                            console.log(jsonData);
                         if (_data !== formData) {
 
                             FE_Helpers.Course_Editor_Request('', 'update_course', $.extend({}, jsonData, {__activity: true})).then(function (response) {
@@ -527,7 +527,7 @@
 
             this.showSettings = true;
             this.item = $item.item;
-            console.log(this.item);
+            // console.log(this.item);
             var url = (typeof this.item != 'undefined') ? this.$dataStore('coursePermalink') + '/' + this.item.id + '/' : '';
             //url = $(document).triggerHandler('LP.open-item-settings', [url, $item.item]);
 

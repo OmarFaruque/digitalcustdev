@@ -42,7 +42,15 @@ defined( 'ABSPATH' ) or die;
             <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         </div>
         
+
+        <?php 
+        global $frontend_editor;
+        $post_manage = $frontend_editor->post_manage;
+        $post        = $post_manage->get_post();
+        $course_type = get_post_meta( $post->ID, '_course_type', true );
+        ?>
         <div class="o9 e-form-field-input">
+            <?php if($course_type): ?>
             <select class="form-control select2-select" v-model="settingValue">
                 <option value="30 minute"><?php esc_html_e( '30 Minute', 'learnpress-frontend-editor' ); ?></option>
                 <option value="45 minute"><?php esc_html_e( '45 Minute', 'learnpress-frontend-editor' ); ?></option>
@@ -51,6 +59,25 @@ defined( 'ABSPATH' ) or die;
                 <option value="90 minute"><?php esc_html_e( '1 Hour 30 minute', 'learnpress-frontend-editor' ); ?></option>
                 <option value="2 hour"><?php esc_html_e( '2 Hour', 'learnpress-frontend-editor' ); ?></option>
             </select>
+            <?php else: ?>
+                <div class="onlycourse_duration">
+                    <div class="row">
+                        <div class="col-sm-5 col-md-5">
+                            <div class="form-group">
+                                <input type="number" name="course_length_input" id="course_length_input" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-7 col-md-7">
+                            <div class="form-group">
+                                <select name="course_length_type" id="course_length_type" class="form-control select2-select">
+                                    <option value="hour"><?php _e('Hour(s)', 'webinar'); ?></option>
+                                    <option value="minute"><?php _e('Minute(s)', 'webinar'); ?></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
             <p class="e-form-field-desc" v-html="field.desc"></p>
         </div>
     </li>
