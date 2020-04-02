@@ -1383,7 +1383,7 @@ function rr_404_my_event() {
 
 
   /*
-  * Add Terms and condition page in backend settings page
+  * Add Terms and condition page in backend settings page fsfsf
   */
   add_filter( 'learn-press/admin/settings-pages/become-a-teacher', 'addTermsAndConditionCallback' );
   function addTermsAndConditionCallback($array){
