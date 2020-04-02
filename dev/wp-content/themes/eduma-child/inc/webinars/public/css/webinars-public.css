@@ -559,7 +559,12 @@ div#pendingpopup span {
 * Mobile css for second tab
 */
 @media only screen and (max-width: 768px){
-  #frontend-editor .rwmb-meta-box .rwmb-field{
+  #e-item-settings[data-context='lp_lesson'] ul.e-form-field-table li:nth-child(2):not(.webinar) {
+    top: 610px;
+  }
+
+  #frontend-editor li.course_coming_soon .rwmb-meta-box .rwmb-field:nth-child(4),
+  #frontend-editor li:not(.course_coming_soon) .rwmb-meta-box .rwmb-field{
     display: block !important;
   }
   #frontend-editor .rwmb-meta-box .rwmb-field .rwmb-input{
@@ -660,4 +665,10 @@ span.mobile_section_toggle {
 .xdsoft_time_variant,
 html {
   scroll-behavior: smooth;
+}
+
+.onlycourse_duration input,
+.onlycourse_duration select
+{
+max-width: 100%;
 }

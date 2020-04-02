@@ -62,12 +62,12 @@ defined( 'ABSPATH' ) or die;
             <?php else: ?>
                 <div class="onlycourse_duration">
                     <div class="row">
-                        <div class="col-sm-5 col-md-5">
+                        <div class="col-sm-5 col-md-5 col-xs-5">
                             <div class="form-group">
                                 <input type="number" name="course_length_input" id="course_length_input" class="form-control">
                             </div>
                         </div>
-                        <div class="col-sm-7 col-md-7">
+                        <div class="col-sm-7 col-md-7 col-xs-7">
                             <div class="form-group">
                                 <select name="course_length_type" id="course_length_type" class="form-control select2-select">
                                     <option value="hour"><?php _e('Hour(s)', 'webinar'); ?></option>
