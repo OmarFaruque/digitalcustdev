@@ -63,7 +63,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
         <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
 			<?php $languages = json_decode( file_get_contents( DIGITALCUSTDEV_PLUGIN_PATH . 'assets/languages.json' ) ); ?>
-            <select class="form-control select2-select" name="post_language">
+            <select class="form-control select2-select" name="thim_course_language">
 				<?php
 				foreach ( $languages as $language ) {
 					$selected = ! empty( $course_lang ) && $course_lang === $language->name ? 'selected' : false;
@@ -78,7 +78,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
         <label><?php esc_html_e( 'Select Skill Level', 'learnpress-frontend-editor' ); ?></label>
         <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
         <div class="e-form-field-input">
-            <select class="form-control select2-select" name="post_skill_level">
+            <select class="form-control select2-select" name="thim_course_skill_level">
                 <option value="Beginner" <?php selected( $skill_level, 'Beginner' ); ?>><?php _e( 'Master', 'digitalcustdev-core' ); ?></option>
                 <option value="Medium" <?php selected( $skill_level, 'Medium' ); ?>><?php _e( 'Intermediate', 'digitalcustdev-core' ); ?></option>
                 <option value="Expert" <?php selected( $skill_level, 'Expert' ); ?>><?php _e( 'Advanced', 'digitalcustdev-core' ); ?></option>

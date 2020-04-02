@@ -564,7 +564,7 @@ div#pendingpopup span {
   }
 
   #frontend-editor li.course_coming_soon .rwmb-meta-box .rwmb-field:nth-child(4),
-  #frontend-editor li:not(.course_coming_soon) .rwmb-meta-box .rwmb-field{
+  #frontend-editor li:not(.course_coming_soon) .rwmb-meta-box .rwmb-field:not(.hide-if-js){
     display: block !important;
   }
   #frontend-editor .rwmb-meta-box .rwmb-field .rwmb-input{
