@@ -59,7 +59,8 @@ class DigitalCustDev_FrontendEditor {
 		echo json_encode(
 			array(
 				'msg' => 'success', 
-				'file_upload' => $msg
+				'file_upload' => $msg,
+				'display_msg' => __('You can\'t upload any new content as you exceeded 2GB. Please, remove old content to upload new one.', 'webinar')
 			)
 		);
 

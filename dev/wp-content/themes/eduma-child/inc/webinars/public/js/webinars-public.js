@@ -321,7 +321,8 @@ jQuery(document).ready(function($){
 		}
 	});
 
-});
+
+});  // Document ready end
 
 function mobile_switch(obj){
 	if(jQuery( window ).width() <= 768){

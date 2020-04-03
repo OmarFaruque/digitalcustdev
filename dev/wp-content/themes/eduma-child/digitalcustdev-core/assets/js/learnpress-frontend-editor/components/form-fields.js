@@ -15,34 +15,52 @@
             jQuery(document).on('click', 'button#insert-media-button.insert-media_cus', function(e){
                 // console.log('tst omar');
                 e.preventDefault();
-                var $button = $(this);
+                $.post(
+                    _wpUtilSettings.ajax,
+                    {
+                        action: 'check_foldersize',
+                        dataType: 'json',
+                        post_id: $('input[name="post_ID"]').val(),
+                        user_id: userSettings.uid,
+                    },
+                    function (data) {
+                        
+                        var $button = $(this);
+                        // Create the media frame.
+                        var file_frame = wp.media.frames.file_frame = wp.media({
+                            title: 'Select or upload file',
+                            library: { // remove these to show all
+                                type: ['image', 'video'] // specific mime
+                            },
+                            button: {
+                                text: 'Select'
+                            },
+                            multiple: false  // Set to true to allow multiple files to be selected
+                        });
+
+                        // file_frame.close();
+                        // file_frame.on('select', function () {
+                        //     // We set multiple to false so only get one image from the uploader
                 
-
-                // Create the media frame.
-                var file_frame = wp.media.frames.file_frame = wp.media({
-                    title: 'Select or upload file',
-                    library: { // remove these to show all
-                        type: ['image', 'video'] // specific mime
-                    },
-                    button: {
-                        text: 'Select'
-                    },
-                    multiple: false  // Set to true to allow multiple files to be selected
-                });
-
-                // file_frame.close();
-                // file_frame.on('select', function () {
-                //     // We set multiple to false so only get one image from the uploader
-           
-                //     var attachment = file_frame.state().get('selection').first().toJSON();
-           
-                //     $button.siblings('input').val(attachment.url).change();
-           
-                //  });
-           
-                 // Finally, open the modal
-                 file_frame.open();
+                        //     var attachment = file_frame.state().get('selection').first().toJSON();
+                
+                        //     $button.siblings('input').val(attachment.url).change();
+                
+                        //  });
+                
+                        // Finally, open the modal
+                        file_frame.open();
+                        console.log('test omar');
+                        console.log(data);
+                        if(data.file_upload){
+                            console.log('Inside upload');
+                            $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+                            $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+                        }
+                    }
+                 );
             });
+            
         },
         methods: {
             redraw: function () {

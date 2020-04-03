@@ -507,9 +507,9 @@ div#learn-press-user-profile.profile-container {
 span.crose_limit {
   position: absolute;
   top: 0;
-  width: 100%;
+  width: 80%;
   height: 100%;
-  background: rgba(0,0,0,0.1);
+  background: transparent;
   color: red;
   display: block;
   text-align: center;

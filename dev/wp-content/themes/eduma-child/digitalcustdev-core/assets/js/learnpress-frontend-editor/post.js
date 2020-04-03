@@ -168,8 +168,7 @@
             user_id: userSettings.uid,
         },
         function (data) {
-            data = JSON.parse(data);
-            if(data.file_upload){
+                data = JSON.parse(data);            
                 var imgContainer = $('.post-attachment');
                 var hidden_id = $('#_thumbnail_id');
                 var post_attachment_wrapper = $('.e-post-attachment');
@@ -190,12 +189,11 @@
                 });
         
                 wp.media.featuredImage.frame().open();
-            }else{
-                $( '<span class="crose_limit">Your Limit is over.</span>').insertBefore( ".set-attachment" );
-                setTimeout(function (){
-                    jQuery('span.crose_limit').remove();
-                }, 3000);
-            }
+                if(!data.file_upload){
+                    $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+                    $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+                }
+                // jQuery('div.media-frame-content')
         }
         ); // End ajax
 
