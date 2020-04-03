@@ -24,7 +24,7 @@
                         user_id: userSettings.uid,
                     },
                     function (data) {
-                        
+                        data = JSON.parse(data);
                         var $button = $(this);
                         // Create the media frame.
                         var file_frame = wp.media.frames.file_frame = wp.media({
@@ -38,6 +38,16 @@
                             multiple: false  // Set to true to allow multiple files to be selected
                         });
 
+                          // When an image is selected in the media frame...
+                        file_frame.on('library:selection:add', function (e) {
+                            var attachment1 = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
+                            var totalsize_with_folder = data.titalsize + attachment1.size;
+                            var mb = Math.round(totalsize_with_folder / 1048576);
+                            if(mb >= 2000){
+                                $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+                                $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+                            }
+                        });
                         // file_frame.close();
                         // file_frame.on('select', function () {
                         //     // We set multiple to false so only get one image from the uploader
@@ -50,12 +60,11 @@
                 
                         // Finally, open the modal
                         file_frame.open();
-                        console.log('test omar');
-                        console.log(data);
-                        if(data.file_upload){
-                            console.log('Inside upload');
-                            $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
-                            $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+                        var totalsize_with_folder = data.titalsize;
+                        var mb = Math.round(totalsize_with_folder / 1048576);
+                        if(mb >= 2000){
+                                $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+                                $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
                         }
                     }
                  );

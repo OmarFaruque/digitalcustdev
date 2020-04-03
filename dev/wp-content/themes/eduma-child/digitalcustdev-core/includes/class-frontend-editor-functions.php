@@ -41,7 +41,6 @@ class DigitalCustDev_FrontendEditor {
 		$user_id = $_REQUEST['user_id'];
 		$post_id = $_REQUEST['post_id'];
 		$user = get_user_by('id', $user_id);
-		$msg = false;
 		if($post_id){
 			$path = $param['basedir'] .'/'. $user->data->user_nicename . '/' . $post_id;
 		}
@@ -53,13 +52,12 @@ class DigitalCustDev_FrontendEditor {
 			}
 		}
 		// $totalSizeMb = number_format($totalSize / 1073741824, 2); // GB
-		$totalSizeMb = number_format($totalSize / 1048576, 2); // MB
-		if($totalSizeMb < 2000) $msg = true;
+		// $totalSizeMb = number_format($totalSize / 1048576, 2); // MB
 
 		echo json_encode(
 			array(
 				'msg' => 'success', 
-				'file_upload' => $msg,
+				'titalsize' => $totalSize,
 				'display_msg' => __('You can\'t upload any new content as you exceeded 2GB. Please, remove old content to upload new one.', 'webinar')
 			)
 		);

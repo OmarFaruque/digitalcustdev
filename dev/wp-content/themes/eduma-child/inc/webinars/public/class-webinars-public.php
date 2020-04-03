@@ -342,7 +342,10 @@ class Webinars_Public {
 		// echo '<pre>';
 		// print_r(get_user_meta( get_current_user_id() ));
 		// echo '</pre>';
-		
+		$version = acf_get_setting('version');
+		wp_deregister_script( 'acf-input' );
+		wp_register_script('acf-input-cusotm', get_stylesheet_directory_uri() . '/inc/webinars/public/js/acf-input.js', array('jquery', 'jquery-ui-sortable', 'jquery-ui-resizable'), $version );
+		wp_enqueue_script('acf-input-cusotm');
 		wp_enqueue_script( 'webinarsPublicJS', get_stylesheet_directory_uri() . '/inc/webinars/public/js/webinars-public.js', array( 'jquery' ), time(), false );
 		// 
 		wp_localize_script( 'webinarsPublicJS', 'lp_webinars', array(
