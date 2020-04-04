@@ -10113,7 +10113,7 @@
 		if( args.autoOpen ) {
 			setTimeout(function(){
 				popup.open();
-				console.log('set time out omar');
+				// console.log('set time out omar');
 			}, 1);
 		}
 		
@@ -10242,14 +10242,26 @@
 					frame.open();
 					// When an image is selected in the media frame...
 					frame.on('library:selection:add', function (e) {
-						console.log('oma selected from acf');
-						var attachment1 = frame.state().get('selection').first().toJSON();
-						var totalsize_with_folder = data.titalsize + attachment1.size;
-						var mb = Math.round(totalsize_with_folder / 1048576);
-						if(mb >= 2000){
-							$( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
-							$( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
-						}
+						$.post(
+							_wpUtilSettings.ajax,
+							{
+								action: 'check_foldersize',
+								dataType: 'json',
+								post_id: $('input[name="post_ID"]').val(),
+								user_id: userSettings.uid,
+							},
+							function(response){
+								data = JSON.parse(response);
+								
+								var attachment1 = frame.state().get('selection').first().toJSON();
+								var totalsize_with_folder = data.titalsize + attachment1.size;
+								var mb = Math.round(totalsize_with_folder / 1048576);
+								if(mb >= 2000){
+									$( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+									$( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+								}
+							}
+						);
 					});
 
 					// Default Check

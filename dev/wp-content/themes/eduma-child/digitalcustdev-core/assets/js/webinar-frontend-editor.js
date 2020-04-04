@@ -232,6 +232,7 @@
             },
 
             _changeDatePicker: function (e) {
+                console.log('test update 5');
                 var $vm = this,
                 lession_id = $('ul.e-course-sections ul.e-section-content li.e-selected').data('id');
                 

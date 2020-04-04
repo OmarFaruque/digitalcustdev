@@ -134,6 +134,7 @@ jQuery( function ( $ ) {
 	 * @param $container A div container which has all fields
 	 */
 	function clone( $container ) {
+		console.log('close');
 		var $last = $container.children( '.rwmb-clone' ).last(),
 			$clone = $last.clone(),
 			inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"]',

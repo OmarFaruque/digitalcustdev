@@ -25,6 +25,7 @@
                     },
                     function (data) {
                         data = JSON.parse(data);
+                        // console.log(data);
                         var $button = $(this);
                         // Create the media frame.
                         var file_frame = wp.media.frames.file_frame = wp.media({
@@ -40,23 +41,40 @@
 
                           // When an image is selected in the media frame...
                         file_frame.on('library:selection:add', function (e) {
-                            var attachment1 = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
-                            var totalsize_with_folder = data.titalsize + attachment1.size;
-                            var mb = Math.round(totalsize_with_folder / 1048576);
-                            if(mb >= 2000){
-                                $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
-                                $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
-                            }
+                            $.post(
+                                _wpUtilSettings.ajax,
+                                {
+                                    action: 'check_foldersize',
+                                    dataType: 'json',
+                                    post_id: $('input[name="post_ID"]').val(),
+                                    user_id: userSettings.uid,
+                                },
+                                function(response){
+                                    data = JSON.parse(response);
+                                    
+                                    var attachment1 = file_frame.state().get('selection').first().toJSON();
+                                    var totalsize_with_folder = data.titalsize + attachment1.size;
+                                    var mb = Math.round(totalsize_with_folder / 1048576);
+                                    if(mb >= 2000){
+                                        $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+                                        $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+                                    }
+                                }
+                            );
                         });
                         // file_frame.close();
-                        // file_frame.on('select', function () {
-                        //     // We set multiple to false so only get one image from the uploader
+                        file_frame.on('select', function () {
+                            // We set multiple to false so only get one image from the uploader
                 
-                        //     var attachment = file_frame.state().get('selection').first().toJSON();
+                            var attachment = file_frame.state().get('selection').first().toJSON();
+                            jQuery('textarea#lesson_media_url').val(attachment.url);
+                            // $button.siblings('input').val(attachment.url).change();
+                            jQuery('textarea#lesson_media_url').keypress();
+                            jQuery('textarea#lesson_media_url').keydown();
+                            jQuery('textarea#lesson_media_url').keyup();
+
                 
-                        //     $button.siblings('input').val(attachment.url).change();
-                
-                        //  });
+                         });
                 
                         // Finally, open the modal
                         file_frame.open();

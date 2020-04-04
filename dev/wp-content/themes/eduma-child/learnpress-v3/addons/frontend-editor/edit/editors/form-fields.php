@@ -82,7 +82,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                     <div class="tooltip">?<span class="tooltiptext">Tooltip text 1</span></div>
                 </div>
                 <div class="e-form-field-input">
-                    <textarea v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
+                    <textarea id="lesson_media_url" v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
                     <p class="e-form-field-desc" v-html="field.desc"></p>
                 </div>
             </div>

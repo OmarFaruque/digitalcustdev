@@ -746,6 +746,7 @@
             },
             _cloneSection: function (e, section) {
                 e.preventDefault();
+                console.log('update test');
 
                 if (typeof section.course_id === "undefined") {
                     section.course_id = localStorage.getItem('digitalcustdev_addedSectionID')
