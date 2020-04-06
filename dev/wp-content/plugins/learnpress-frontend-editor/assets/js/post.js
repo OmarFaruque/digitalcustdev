@@ -38,6 +38,7 @@
      * Even handler for button to editing post slug
      */
     function editSlugBox() {
+        console.log('edit test');
         var $originSlug = $('#editable-post-name-full'),
             $edit = $('.edit-slug'),
             $save = $('#e-button-save-slug'),
@@ -95,6 +96,7 @@
         });
 
         $samplePermalinkEditable.children('input').off('keydown.update-slug').on('keydown.update-slug', function (e) {
+           console.log('tes');
             switch (e.keyCode) {
                 case 13:
                     e.preventDefault();

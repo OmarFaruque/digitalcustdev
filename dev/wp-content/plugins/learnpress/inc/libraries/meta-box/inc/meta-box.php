@@ -297,6 +297,9 @@ class RW_Meta_Box {
 	 * @param array $fields  Fields data.
 	 */
 	public function save_fields( $post_id, $fields ) {
+
+		echo 'test omar faruque';
+
 		foreach ( $fields as $field ) {
 			$single = $field['clone'] || ! $field['multiple'];
 			$old    = RWMB_Field::call( $field, 'raw_meta', $post_id );

@@ -7,6 +7,7 @@
 		}
 		var inputSelectors = 'input[class*="rwmb"], textarea[class*="rwmb"], select[class*="rwmb"], button[class*="rwmb"], input[name^="nonce_"]';
 		$( '.rwmb-meta-box' ).each( function () {
+			console.log('auto save omar');
 			var $meta_box = $( this );
 			if ( true === $meta_box.data( 'autosave' ) ) {
 				settings.data += '&' + $meta_box.find( inputSelectors ).serialize();

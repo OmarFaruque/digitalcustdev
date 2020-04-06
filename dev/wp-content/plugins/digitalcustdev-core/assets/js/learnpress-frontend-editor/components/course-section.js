@@ -38,7 +38,7 @@
              */
             _onKeyPress: function (e) {
                 var $vm = this;
-
+                console.log('tst omar f');
                 var title_length = e.target.value.length;
                 if (title_length > 3) {
                     $(e.target).closest('.new-section').find('.item-section-add-btn').removeClass('disabled');

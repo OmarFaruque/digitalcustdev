@@ -69,9 +69,10 @@
                             var attachment = file_frame.state().get('selection').first().toJSON();
                             jQuery('textarea#lesson_media_url').val(attachment.url);
                             // $button.siblings('input').val(attachment.url).change();
-                            jQuery('textarea#lesson_media_url').keypress();
-                            jQuery('textarea#lesson_media_url').keydown();
-                            jQuery('textarea#lesson_media_url').keyup();
+                            jQuery('textarea#lesson_media_url').trigger('keypress');
+                            jQuery('textarea#lesson_media_url').trigger('keydown');
+                            jQuery('textarea#lesson_media_url').trigger('keyup');
+                            jQuery('textarea#lesson_media_url').trigger("change");
 
                 
                          });
@@ -94,6 +95,7 @@
                 var vm = this;
                 vm.drawComponent = false;
                 Vue.nextTick(function () {
+                    console.log('test omar');
                     vm.drawComponent = true;
                 });
             }

@@ -281,7 +281,7 @@
 
                     this.formData = $vm.$().serializeJSON();
                     var formData = JSON.stringify(this.formData);
-
+                    
                     $vm.$('.dcd-course-next-save').on('click', FE_Helpers.debounce(function () {
                         jQuery('span.mobile_section_toggle').hide();
 
@@ -347,8 +347,24 @@
 
                         
                     }, 1000)).trigger('dispatch');
+
+                    // $vm.$('#lesson_media_url').on('change', FE_Helpers.debounce(function () {
+                    //     console.log('aother on change');
+                    // }, 1000)).trigger('dispatch');
+
+                //      jQuery(document).on('change', '#lesson_media_url', function(){
+                //          console.log('test console');
+                //     sync();
+                // });
+
                 })();
 
+
+                // $('#lesson_media_url').on('change', FE_Helpers.debounce(function () {
+                //     console.log('changed');
+                // }, 1000)).trigger('dispatch');
+
+               
 
                 if (typeof tinymce !== 'undefined') {
                     setTimeout(function () {
