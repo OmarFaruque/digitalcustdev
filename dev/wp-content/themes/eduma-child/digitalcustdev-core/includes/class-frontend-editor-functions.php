@@ -14,7 +14,28 @@ class DigitalCustDev_FrontendEditor {
 		add_action( 'wp_ajax_check_foldersize', array( $this, 'check_foldersize' ) );
 		add_action( 'wp_ajax_nopriv_check_foldersize', array( $this, 'check_foldersize' ) );
 
+		/* Custom Auto Save */ 
+		add_action( 'wp_ajax_step_two_custom_autosave', array( $this, 'step_two_custom_autosave' ) );
+		add_action( 'wp_ajax_nopriv_step_two_custom_autosave', array( $this, 'step_two_custom_autosave' ) );
+
 		// add_action('wp_head', array($this, 'testf'));
+	}
+
+
+
+	/*
+	* Custom AutoSave
+	*/
+	public function step_two_custom_autosave(){
+		$posts = $_REQUEST;
+		$post_type = get_post_type( $posts['item_id'] );
+		$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value'] );
+		$msg = ($update) ? 'success' : 'fail';
+		wp_send_json( 
+			array(
+				'msg' => $msg
+			)
+		 );
 	}
 
 

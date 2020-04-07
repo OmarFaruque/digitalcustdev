@@ -69,10 +69,26 @@
                             var attachment = file_frame.state().get('selection').first().toJSON();
                             jQuery('textarea#lesson_media_url').val(attachment.url);
                             // $button.siblings('input').val(attachment.url).change();
-                            jQuery('textarea#lesson_media_url').trigger('keypress');
-                            jQuery('textarea#lesson_media_url').trigger('keydown');
-                            jQuery('textarea#lesson_media_url').trigger('keyup');
-                            jQuery('textarea#lesson_media_url').trigger("change");
+                            
+                            /*
+                            * Save via auto-save
+                            */
+
+                           $.post(
+                            _wpUtilSettings.ajax,
+                            {
+                                action: 'step_two_custom_autosave',
+                                dataType: 'json',
+                                post_id: $('input[name="post_ID"]').val(),
+                                field_value: attachment.url,
+                                field_name: '_lp_lesson_video_intro',
+                                item_id:  $('ul.e-section-content > li.e-section-item.e-selected').data('id'),
+                                user_id: userSettings.uid,
+                            },
+                            function(data_return){
+                                /* Nothing */
+                            }
+                        );
 
                 
                          });

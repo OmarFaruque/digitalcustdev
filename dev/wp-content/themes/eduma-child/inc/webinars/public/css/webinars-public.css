@@ -672,3 +672,8 @@ html {
 {
 max-width: 100%;
 }
+
+
+body.hide-image-type-from-media div.attachments-browser li.acf-disabled{
+  display: none;
+}

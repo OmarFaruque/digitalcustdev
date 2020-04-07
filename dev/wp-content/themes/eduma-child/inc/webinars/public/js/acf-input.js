@@ -10229,6 +10229,12 @@
 		open: function(){
 			var frame = this.frame;
 
+			if(jQuery('body').hasClass('page-frontend-editor')){
+				jQuery('body').toggleClass('hide-image-type-from-media');
+			}
+
+
+
 			$.post(
 				_wpUtilSettings.ajax,
 				{
@@ -10277,6 +10283,9 @@
 		
 		close: function(){
 			this.frame.close();
+			if(jQuery('body').hasClass('page-frontend-editor')){
+				jQuery('body').removeClass('hide-image-type-from-media');
+			}
 		},
 		
 		remove: function(){
