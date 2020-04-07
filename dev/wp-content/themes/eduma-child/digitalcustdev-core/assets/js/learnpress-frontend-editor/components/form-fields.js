@@ -31,7 +31,7 @@
                         var file_frame = wp.media.frames.file_frame = wp.media({
                             title: 'Select or upload file',
                             library: { // remove these to show all
-                                type: ['image', 'video'] // specific mime
+                                type: ['video'] // specific mime
                             },
                             button: {
                                 text: 'Select'
