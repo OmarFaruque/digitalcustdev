@@ -212,6 +212,8 @@
         
                     // Send the attachment id to our hidden input
                     hidden_id.val(attachment.id);
+                    hidden_id.trigger("change");
+
                     // console.log(attachment);
                 });
         

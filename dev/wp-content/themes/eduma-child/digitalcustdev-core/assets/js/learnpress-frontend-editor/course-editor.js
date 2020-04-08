@@ -209,7 +209,9 @@
 
                 this.$on('select-item', function (args) {
 
-                })
+                });
+               
+                
             },
             mounted: function () {
                 var $vm = this;
@@ -348,14 +350,24 @@
                         
                     }, 1000)).trigger('dispatch');
 
-                    // $vm.$('#lesson_media_url').on('change', FE_Helpers.debounce(function () {
-                    //     console.log('aother on change');
-                    // }, 1000)).trigger('dispatch');
+                    jQuery(document).on('keypress change', '.e-tab.active[data-name="general"] input, .e-tab.active[data-name="general"] select, .e-tab.active[data-name="general"] textarea', function(){
+                       console.log('update');
+                        sync();
+                    });
 
-                //      jQuery(document).on('change', '#lesson_media_url', function(){
-                //          console.log('test console');
-                //     sync();
-                // });
+                    if (typeof tinymce !== 'undefined') {
+                        setTimeout(function () {
+                            var $editor = tinymce.get('post_content');
+                            if ($editor) {
+                                $editor.on('Change KeyUp', function (e, b) {
+                                    sync();
+                                });
+                            }
+                        }, 1000);
+                    }
+
+                    
+
 
                 })();
 
