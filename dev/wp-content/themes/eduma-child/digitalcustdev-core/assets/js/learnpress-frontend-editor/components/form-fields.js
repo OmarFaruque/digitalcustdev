@@ -12,8 +12,14 @@
         created: function () {
         },
         mounted: function () {
+            
             jQuery(document).on('click', 'button#insert-media-button.insert-media_cus', function(e){
                 // console.log('tst omar');
+               
+            
+            
+                           
+                           
                 e.preventDefault();
                 $.post(
                     _wpUtilSettings.ajax,
@@ -73,7 +79,8 @@
                             /*
                             * Save via auto-save
                             */
-
+                           
+                        
                            $.post(
                             _wpUtilSettings.ajax,
                             {
@@ -87,6 +94,15 @@
                             },
                             function(data_return){
                                 /* Nothing */
+                                console.log('addtachment url: ' + attachment.url);
+                                var activeEditor = tinyMCE.get('e-item-content'),
+                                ex_content = activeEditor.getContent(),
+                                new_content = '<iframe style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
+                                
+                                activeEditor.setContent(new_content);
+                                
+
+
                             }
                         );
 

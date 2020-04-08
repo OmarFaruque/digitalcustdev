@@ -31,9 +31,19 @@ class DigitalCustDev_FrontendEditor {
 		$post_type = get_post_type( $posts['item_id'] );
 		$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value'] );
 		$msg = ($update) ? 'success' : 'fail';
+
+		switch($posts['field_name']){
+			case '_lp_lesson_video_intro':
+				$item_details = get_post($posts['item_id']);
+
+			break;
+		}
+
+
 		wp_send_json( 
 			array(
-				'msg' => $msg
+				'msg' => $msg,
+				'item_details' => $item_details
 			)
 		 );
 	}

@@ -1396,3 +1396,21 @@ function rr_404_my_event() {
 
 	  return $array;
   }
+
+
+
+
+  /*
+  * WP_Editor additional css
+  */
+add_filter('tiny_mce_before_init','wpdocs_theme_editor_dynamic_styles');
+function wpdocs_theme_editor_dynamic_styles( $mceInit ) {
+	$styles = 'body.mce-content-body span.mce-preview-object.mce-object-iframe { min-width:100%; min-height:450px; }';
+	$styles .= 'body.mce-content-body span.mce-preview-object.mce-object-iframe iframe { min-width:100%; min-height:450px; }';
+    if ( isset( $mceInit['content_style'] ) ) {
+        $mceInit['content_style'] .= ' ' . $styles . ' ';
+    } else {
+        $mceInit['content_style'] = $styles . ' ';
+    }
+    return $mceInit;
+}
