@@ -105,8 +105,8 @@
                                     div.getElementsByClassName('vide_iframe')[0].setAttribute('src', attachment.url + '?rel=0');
                                     new_content = div.innerHTML;    
                                 }else{
-                                    // new_content = '<video width="320" height="240" controls><source src="'+attachment.url+'" type="video/mp4"><source src="movie.ogg" type="video/ogg"></video>';
-                                    new_content = '<iframe class="vide_iframe" style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'?autostart=false" frameborder="0" allow="accelerometer; autoplay=false; scrolling="no" encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
+                                    new_content = '<video width="320" height="240" controls><source src="'+attachment.url+'" type="video/mp4"><source src="movie.ogg" type="video/ogg"></video>';
+                                    // new_content = '<iframe class="vide_iframe" style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'?autostart=false" frameborder="0" allow="accelerometer; autoplay=false; scrolling="no" encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
                                 }
                                 
                                 activeEditor.setContent(new_content);
@@ -336,6 +336,7 @@
         },
         methods: {
             init: function () {
+                console.log('omar this id: ' + '#' + this.id);
                 var self = this;
                 var tinyMCEInit = $.extend({}, tinyMCEPreInit.mceInit.post_content, {
                     selector: '#' + this.id,
@@ -347,7 +348,13 @@
                         }, self));
 
                     },
-                    height: 300
+                    height: 300,
+                    plugins: "media",
+                    menubar: "insert",
+                    toolbar: "media",
+                    video_template_callback: function(data) {
+                    return '<video width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' + '<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' + (data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') + '</video>';
+                    }
                 });
                 tinymce.init(tinyMCEInit);
 
