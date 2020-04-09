@@ -94,15 +94,23 @@
                             },
                             function(data_return){
                                 /* Nothing */
-                                console.log('addtachment url: ' + attachment.url);
                                 var activeEditor = tinyMCE.get('e-item-content'),
+                                new_content = '',
                                 ex_content = activeEditor.getContent(),
-                                new_content = '<iframe style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
+                                div = document.createElement('div');
+                                div.setAttribute("src", attachment.url);
+                                div.innerHTML = ex_content;
+                                div.getElementsByClassName('vide_iframe');
+                                if(div.getElementsByClassName('vide_iframe').length){
+                                    div.getElementsByClassName('vide_iframe')[0].setAttribute('src', attachment.url + '?rel=0');
+                                    new_content = div.innerHTML;    
+                                }else{
+                                    // new_content = '<video width="320" height="240" controls><source src="'+attachment.url+'" type="video/mp4"><source src="movie.ogg" type="video/ogg"></video>';
+                                    new_content = '<iframe class="vide_iframe" style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'?autostart=false" frameborder="0" allow="accelerometer; autoplay=false; scrolling="no" encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
+                                }
                                 
                                 activeEditor.setContent(new_content);
-                                
-
-
+                                // jQuery("body").trigger("click");
                             }
                         );
 
@@ -120,7 +128,7 @@
                     }
                  );
             });
-            
+
         },
         methods: {
             redraw: function () {

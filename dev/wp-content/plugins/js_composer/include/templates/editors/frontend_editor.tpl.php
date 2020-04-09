@@ -103,7 +103,7 @@ if ( vc_user_access()->part( 'presets' )->can()->get() ) {
 
 <?php vc_include_template( 'editors/partials/vc_settings-image-block.tpl.php' ); ?>
 <!-- BC for older plugins 5.5 !-->
-<input type="hidden" id="post_ID" name="post_ID" value="<?php echo esc_attr( $post_ID ); ?>"/>
+<input type="hidden" id="post_ID" name="post_ID" class="Omar Faruque id" value="<?php echo esc_attr( $post_ID ); ?>"/>
 	<div style="height: 1px; visibility: hidden; overflow: hidden;">
 		<?php
 		// Disable notice in edit-form-advanced.php

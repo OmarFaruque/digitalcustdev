@@ -1407,10 +1407,23 @@ add_filter('tiny_mce_before_init','wpdocs_theme_editor_dynamic_styles');
 function wpdocs_theme_editor_dynamic_styles( $mceInit ) {
 	$styles = 'body.mce-content-body span.mce-preview-object.mce-object-iframe { min-width:100%; min-height:450px; }';
 	$styles .= 'body.mce-content-body span.mce-preview-object.mce-object-iframe iframe { min-width:100%; min-height:450px; }';
-    if ( isset( $mceInit['content_style'] ) ) {
+	
+	$ext = 'video|iframe[align|longdesc|name|width|height|frameborder|scrolling|marginheight|marginwidth|src|id|class|title|style]';
+
+
+	$mceInit['forced_root_block'] = false;
+	if ( isset( $mceInit['extended_valid_elements'] ) ){
+		$mceInit['extended_valid_elements'] .= ',' . $ext;
+	}
+	else{
+		$mceInit['extended_valid_elements'] = $ext;
+	}
+
+	if ( isset( $mceInit['content_style'] ) ) {
         $mceInit['content_style'] .= ' ' . $styles . ' ';
     } else {
         $mceInit['content_style'] = $styles . ' ';
     }
     return $mceInit;
 }
+

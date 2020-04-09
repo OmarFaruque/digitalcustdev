@@ -9,7 +9,7 @@
         <label><?php _e( 'Create lesson name, content and schedule webinar session', 'digitalcustdev-core' ); ?></label>
         <input type="text" class="form-control" value="" name="lesson_name" placeholder="<?php _e( 'Type lesson name', 'digitalcustdev-core' ); ?>">
     </div>
-    <div class="form-group">
+    <div class="form-group omareditor">
 		<?php wp_editor( '', 'lesson_description', array( 'media_buttons' => false, 'textarea_rows' => 5, 'teeny' => true, 'tinymce' => false ) ); ?>
     </div>
     <div class="form-group">

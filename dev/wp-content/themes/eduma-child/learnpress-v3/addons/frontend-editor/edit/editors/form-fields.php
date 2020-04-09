@@ -29,8 +29,8 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                         </li> -->
     <script type="text/x-template" id="tmpl-e-tinymce">
 
-        <div :id="getEditorId()" class="e-tinymce-wrap wp-content-wrap"
-             class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
+        <div :id="getEditorId()" class="omarf e-tinymce-wrap wp-content-wrap"
+             class="wp-core-ui wp-editor-wrap tmce-active has-dfw OmarFaruque">
             <div id="wp-content-editor-tools" class="omar-tinymce wp-editor-tools hide-if-no-js">
                 <!-- <div id="wp-content-media-buttons" class="wp-media-buttons"> -->
                     <!-- <button class="e-button" type="button" id="insert-media-button" class="button insert-media add_media"
