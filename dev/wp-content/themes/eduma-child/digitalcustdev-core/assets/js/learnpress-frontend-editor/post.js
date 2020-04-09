@@ -199,6 +199,12 @@
                             }
                         }
                     );
+
+                    /*
+                    HIde other type
+                    */
+                   
+
                 });
                 wp.media.featuredImage.frame().on('select', function () {
         
