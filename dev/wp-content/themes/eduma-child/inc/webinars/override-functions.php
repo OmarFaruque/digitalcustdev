@@ -1201,6 +1201,9 @@ function course_data_override($data){
 
 // add_filter('e-post-type-fields', 'testfunctiono');
 function testfunctiono($data){
+	echo 'Omar Te Data <br/><pre>';
+	print_r($data);
+	echo '</pre>';
 	$newarray = array();
 
 	// array_push($data, array('id' => 'e-item-content'));
@@ -1425,5 +1428,25 @@ function wpdocs_theme_editor_dynamic_styles( $mceInit ) {
         $mceInit['content_style'] = $styles . ' ';
     }
     return $mceInit;
+}
+
+
+
+add_filter( 'learn_press_lesson_meta_box_args', 'thim_custom_add_course_meta', 10, 2 );
+
+
+if ( !function_exists( 'thim_custom_add_course_meta' ) ) {
+	function thim_custom_add_course_meta( $meta_box ) {
+		$fields             = $meta_box['fields'];
+		$fields[]           = array(
+			'name' => esc_html__( 'Media test', 'eduma' ),
+			'id'   => '_lp_lesson_video_intro_internal',
+			'type' => 'hidden',
+			'desc' => esc_html__( 'Add an f embed link like video, PDF, slider...', 'eduma' ),
+		);
+		$meta_box['fields'] = $fields;
+
+		return $meta_box;
+	}
 }
 

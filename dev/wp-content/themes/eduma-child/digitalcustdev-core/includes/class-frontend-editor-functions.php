@@ -18,9 +18,33 @@ class DigitalCustDev_FrontendEditor {
 		add_action( 'wp_ajax_step_two_custom_autosave', array( $this, 'step_two_custom_autosave' ) );
 		add_action( 'wp_ajax_nopriv_step_two_custom_autosave', array( $this, 'step_two_custom_autosave' ) );
 
+
+		/* Delete Lesson file */ 
+		add_action( 'wp_ajax_delete_lession_attachment_video', array( $this, 'delete_lession_attachment_video' ) );
+		add_action( 'wp_ajax_nopriv_delete_lession_attachment_video', array( $this, 'delete_lession_attachment_video' ) );
+
 		// add_action('wp_head', array($this, 'testf'));
 	}
 
+
+
+	/*
+	* Delete Lesson video
+	*/
+	public function delete_lession_attachment_video(){
+		$posts = $_REQUEST;
+
+		$delete = delete_post_meta( $posts['lession_id'], '_lp_lesson_video_intro_internal' );
+		wp_delete_attachment($posts['lession_id']);
+		$msg = ($delete) ? 'success' : 'fail';
+		wp_send_json( 
+			array(
+				'msg' => $msg,
+				'posts' => $posts
+			)
+		 );
+		 wp_die();
+	}
 
 
 	/*
@@ -32,11 +56,11 @@ class DigitalCustDev_FrontendEditor {
 		
 		
 		$attachmentDetails = '';
+		$update = '';
 		switch($posts['field_name']){
 			case '_lp_lesson_video_intro_internal':
 				$item_details = get_post($posts['item_id']);
-				$attachmentDetails = wp_get_attachment_metadata($posts['field_value']);
-				// $update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value'] );
+				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value'] );
 			break;
 		}
 
@@ -45,6 +69,7 @@ class DigitalCustDev_FrontendEditor {
 			array(
 				'msg' => $msg,
 				'item_details' => $item_details,
+				'post' => $posts,
 				'attachmentDetails' => $attachmentDetails
 			)
 		 );

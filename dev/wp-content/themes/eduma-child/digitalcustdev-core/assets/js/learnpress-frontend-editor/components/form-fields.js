@@ -14,6 +14,24 @@
             console.log(this);
         },
         mounted: function () {
+
+            jQuery(document).on('click', 'a.remove_lesson_media_attachment', function(e){
+                e.preventDefault();
+                var attachment_id = jQuery(this).data('id');
+                $.post(
+                    _wpUtilSettings.ajax,
+                    {
+                        action: 'delete_lession_attachment_video',
+                        dataType: 'json',
+                        lession_id: attachment_id,
+                    },
+                    function (data) {
+                        console.log(data);
+                        created();
+                    }
+                );
+            });
+
             jQuery(document).on('click', 'button#insert-media-button.insert-media_cus', function(e){
                 // console.log('tst omar');               
                            
@@ -76,15 +94,13 @@
                             /*
                             * Save via auto-save
                             */
-                           
-                        
                            $.post(
                             _wpUtilSettings.ajax,
                             {
                                 action: 'step_two_custom_autosave',
                                 dataType: 'json',
                                 post_id: $('input[name="post_ID"]').val(),
-                                field_value: attachment.url,
+                                field_value: attachment,
                                 field_name: '_lp_lesson_video_intro_internal',
                                 item_id:  $('ul.e-section-content > li.e-section-item.e-selected').data('id'),
                                 user_id: userSettings.uid,

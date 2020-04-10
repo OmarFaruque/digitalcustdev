@@ -186,6 +186,7 @@ if ( !function_exists( 'thim_learnpress_breadcrumb' ) ) {
 		echo '<li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_html( get_home_url() ) . '" title="' . esc_attr__( 'Home', 'eduma' ) . '"><span property="name">' . esc_html__( 'Home', 'eduma' ) . '</span></a><meta property="position" content="1"></li>';
 
 		if ( is_single() ) {
+
 			$categories = get_the_terms( $post, 'course_category' );
             if ( isset( $categories[0] ) ) {
                 $cate_obj = $categories[0];
@@ -198,12 +199,12 @@ if ( !function_exists( 'thim_learnpress_breadcrumb' ) ) {
 
 			if ( get_post_type() == 'lp_course' ) {
 				// All courses
-				echo '<li class="testom5" property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span property="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="2"></li>';
+				echo '<li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span property="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="2"></li>';
 			} elseif ( learn_press_is_course_tag() ) {
 				remove_query_arg( 'none' );
 				$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
 				// All courses
-				echo '<li class="tag6" property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span property="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="2"></li>';
+				echo '<li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span property="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="2"></li>';
 				echo '<li><span title="' . esc_attr( $term->name ) . '">' . esc_html( $term->name ) . '</span></li>';
 			} else {
 				echo '<li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_permalink( get_post_meta( $post->ID, '_lp_course', true ) ) ) . '" title="' . esc_attr( get_the_title( get_post_meta( $post->ID, '_lp_course', true ) ) ) . '"><span property="name">' . esc_html( get_the_title( get_post_meta( $post->ID, '_lp_course', true ) ) ) . '</span></a><meta property="position" content="2"></li>';
@@ -211,24 +212,24 @@ if ( !function_exists( 'thim_learnpress_breadcrumb' ) ) {
 
 			// Single post (Only display the first category)
 			if ( isset( $cate_obj ) ) {
-				echo '<li class="om11" property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_term_link( $cate_obj ) ) . '" title="' . esc_attr( $cate_obj->name ) . '"><span property="name">' . esc_html( $cate_obj->name ) . '</span></a><meta property="position" content="3"></li>';
+				echo '<li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_term_link( $cate_obj ) ) . '" title="' . esc_attr( $cate_obj->name ) . '"><span property="name">' . esc_html( $cate_obj->name ) . '</span></a><meta property="position" content="3"></li>';
 			}
-			echo '<li class="om9"><span title="' . esc_attr( get_the_title() ) . '">' . esc_html( get_the_title() ) . '</span></li>';
+			echo '<li><span title="' . esc_attr( get_the_title() ) . '">' . esc_html( get_the_title() ) . '</span></li>';
 
 		} else if ( learn_press_is_course_taxonomy() || learn_press_is_course_tag() ) {
 			// All courses
-			echo '<li class="om 2" property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span itemprop="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="3"></li>';
+			echo '<li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span itemprop="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="3"></li>';
 
 			// Category page
 			echo '<li><span title="' . esc_attr( learn_press_single_term_title( '', false ) ) . '">' . esc_html( learn_press_single_term_title( '', false ) ) . '</span></li>';
 		} else if ( !empty( $_REQUEST['s'] ) && !empty( $_REQUEST['ref'] ) && ( $_REQUEST['ref'] == 'course' ) ) {
 			// All courses
-			echo '<li class="om3" property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span property="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="3"></li>';
+			echo '<li property="itemListElement" typeof="ListItem"><a property="item" typeof="WebPage" href="' . esc_url( get_post_type_archive_link( 'lp_course' ) ) . '" title="' . esc_attr__( 'All courses', 'eduma' ) . '"><span property="name">' . esc_html__( 'All courses', 'eduma' ) . '</span></a><meta property="position" content="3"></li>';
 
 			// Search result
 			echo '<li><span title="' . esc_attr__( 'Search results for:', 'eduma' ) . ' ' . esc_attr( get_search_query() ) . '">' . esc_html__( 'Search results for:', 'eduma' ) . ' ' . esc_html( get_search_query() ) . '</span></li>';
 		} else {
-			echo '<li class="om5"><span title="' . esc_attr__( 'All courses', 'eduma' ) . '">' . esc_html__( 'All courses', 'eduma' ) . '</span></li>';
+			echo '<li><span title="' . esc_attr__( 'All courses', 'eduma' ) . '">' . esc_html__( 'All courses', 'eduma' ) . '</span></li>';
 		}
 
 		echo '</ul>';
@@ -470,7 +471,7 @@ if ( !function_exists( 'thim_course_loop_price_html' ) ) {
 if ( !function_exists( 'thim_courses_loop_item_thumbnail' ) ) {
 	function thim_courses_loop_item_thumbnail( $course = null ) {
 		$course = LP_Global::course();
-		echo '<div class="course-thumbnail o4">';
+		echo '<div class="course-thumbnail">';
 		echo '<a class="thumb" href="' . esc_url( get_the_permalink( $course->get_id() ) ) . '" >';
 		echo thim_get_feature_image( get_post_thumbnail_id( $course->get_id() ), 'full', apply_filters( 'thim_course_thumbnail_width', 450 ), apply_filters( 'thim_course_thumbnail_height', 450 ), $course->get_title() );
 		echo '</a>';
@@ -560,6 +561,7 @@ if ( !function_exists( 'thim_add_lesson_meta' ) ) {
 			'type' => 'textarea',
 			'desc' => esc_html__( 'Add an embed link like video, PDF, slider...', 'eduma' ),
 		);
+
 		$meta_box['fields'] = $fields;
 
 		return $meta_box;
@@ -918,7 +920,7 @@ if ( !function_exists( 'thim_related_courses' ) ) {
 							?>
 							<article class="lpr_course">
 								<div class="course-item">
-									<div class="course-thumbnail o78">
+									<div class="course-thumbnail">
 										<a class="thumb" href="<?php echo get_the_permalink( $course_item->ID ); ?>">
 											<?php
 											if ( $layout_grid != '' && $layout_grid != 'layout_courses_1' ) {
@@ -1078,7 +1080,7 @@ if ( !function_exists( 'thim_add_format_icon' ) ) {
 		} elseif ( get_post_type( $item->get_id() ) == 'lp_assignment' ) {
 			echo '<span class="course-format-icon"><i class="fa fa-book"></i></span>';
 		} elseif ( $format == 'video' ) {
-			echo '<span class="course-format-icon"><i class="fa fa-play-circle omar3"></i></span>';
+			echo '<span class="course-format-icon"><i class="fa fa-play-circle"></i></span>';
 		} else {
 			echo '<span class="course-format-icon"><i class="fa fa-file-o"></i></span>';
 		}
@@ -1445,11 +1447,10 @@ add_action( 'learn-press/section-summary', 'thim_curriculum_section_content', 10
 if ( !function_exists( 'thim_course_tabs_content' ) ) {
 	function thim_course_tabs_content( $defaults ) {
 		$arr = array();
-		//xxx($defaults);
 		$course             = learn_press_get_course();
 		$user               = learn_press_get_current_user();
 		$theme_options_data = get_theme_mods();
-		$group_tab          = isset( $theme_options_data['group_tabs_course'] ) ? $theme_options_data['group_tabs_course'] : array(
+		$group_tab          = isset( $theme_options_data['group_tabs_course'] ) && is_array($theme_options_data['group_tabs_course']) ? $theme_options_data['group_tabs_course'] : array(
 			'description',
 			'curriculum',
 			'instructor',
@@ -2144,7 +2145,7 @@ if ( !function_exists( 'thim_display_course_filter' ) ) {
 			return;
 		}
 		?>
-		<aside class="thim-course-filter-wrapper ooo">
+		<aside class="thim-course-filter-wrapper">
 			<form action="" name="thim-course-filter" method="POST" class="thim-course-filter">
 				<?php
 				// Filter courses by categories
