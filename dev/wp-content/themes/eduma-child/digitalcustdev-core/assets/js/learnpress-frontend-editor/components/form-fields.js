@@ -5,20 +5,17 @@
         template: '#tmpl-e-form-field-textarea',
         props: ['item', 'itemData', 'request', 'field', 'settings'],
         data: function () {
+            console.log(props);
             return {
                 drawComponent: true,
             }
         },
         created: function () {
+            console.log(this);
         },
         mounted: function () {
-            
             jQuery(document).on('click', 'button#insert-media-button.insert-media_cus', function(e){
-                // console.log('tst omar');
-               
-            
-            
-                           
+                // console.log('tst omar');               
                            
                 e.preventDefault();
                 $.post(
@@ -88,12 +85,13 @@
                                 dataType: 'json',
                                 post_id: $('input[name="post_ID"]').val(),
                                 field_value: attachment.url,
-                                field_name: '_lp_lesson_video_intro',
+                                field_name: '_lp_lesson_video_intro_internal',
                                 item_id:  $('ul.e-section-content > li.e-section-item.e-selected').data('id'),
                                 user_id: userSettings.uid,
                             },
                             function(data_return){
                                 /* Nothing */
+                                console.log(data_return);
                                 var activeEditor = tinyMCE.get('e-item-content'),
                                 new_content = '',
                                 ex_content = activeEditor.getContent(),
@@ -106,10 +104,10 @@
                                     new_content = div.innerHTML;    
                                 }else{
                                     // new_content = '<video class="vide_iframe" width="320" height="240" controls><source src="'+attachment.url+'" type="video/mp4"><source src="movie.ogg" type="video/ogg"></video>';
-                                    new_content = '<iframe class="vide_iframe" style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'?autostart=false" frameborder="0" allow="accelerometer; autoplay=false; scrolling="no" encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
+                                    // new_content = '<iframe class="vide_iframe" style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'?autostart=false" frameborder="0" allow="accelerometer; autoplay=false; scrolling="no" encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
                                 }
                                 
-                                activeEditor.setContent(new_content);
+                                // activeEditor.setContent(new_content);
                                 // jQuery("body").trigger("click");
                             }
                         );

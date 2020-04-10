@@ -67,10 +67,49 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                     <div class="tooltip">?<span class="tooltiptext"><?php _e('Add Media', 'webinars'); ?></span></div>
                 </div>
                 <div class="e-form-field-input-media">
+                    <h1 v-if="itemData.id == 14186">Vue is awesome!</h1>
+
+
+
+                    <!-- File Display -->
+                    <div data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field acf-field-file acf-field-5d52623d7778a">
+                        <div class="acf-input">
+                            <div data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp" class="acf-file-uploader has-value">
+                                <input type="hidden" name="acf[field_5d52623d7778a]" value="14314" data-name="id"> 
+                                <div class="show-if-value file-wrap">
+                                    <div class="file-icon">
+                                        <img data-name="icon" src="https://digitalcustdev.ru/dev/wp-includes/images/media/video.png" alt="" title="file_5e8ee3f3b4571">
+                                    </div> 
+                                    <div class="file-info">
+                                        <p><strong data-name="title">file_5e8ee3f3b4571</strong></p> 
+                                        <p><strong>File name:</strong> 
+                                        <a data-name="filename" href="https://digitalcustdev.ru/dev/wp-content/uploads/user0050103/14051/file_5e8ee3f3b4571.mp4" target="_blank">file_5e8ee3f3b4571.mp4</a></p> 
+                                        <p><strong>File size:</strong> <span data-name="filesize">2 MB</span></p>
+                                    </div> 
+                                    <div class="acf-actions -hover">
+                                        <a data-name="remove" href="#" title="Remove" class="acf-icon -cancel dark"></a>
+                                    </div>
+                                </div> 
+                                    <div class="hide-if-value">
+                                            <p>No file selected <a data-name="add" href="#" class="acf-button button">Add File</a></p>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
                         <div id="wp-content-media-buttons" class="wp-media-buttons">                  
                             <button class="e-button" type="button" id="insert-media-button" class="button insert-media_cus add_media">
                                 <span class="wp-media-buttons-icon"></span>
-                                <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
+                                <?php _e( 'Add p Media', 'learnpress-frontend-editor' ); ?>
                             </button>
                         </div>
                 </div>

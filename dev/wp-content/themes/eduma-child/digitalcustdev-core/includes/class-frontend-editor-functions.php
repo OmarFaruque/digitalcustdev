@@ -29,21 +29,23 @@ class DigitalCustDev_FrontendEditor {
 	public function step_two_custom_autosave(){
 		$posts = $_REQUEST;
 		$post_type = get_post_type( $posts['item_id'] );
-		$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value'] );
-		$msg = ($update) ? 'success' : 'fail';
-
+		
+		
+		$attachmentDetails = '';
 		switch($posts['field_name']){
-			case '_lp_lesson_video_intro':
+			case '_lp_lesson_video_intro_internal':
 				$item_details = get_post($posts['item_id']);
-
+				$attachmentDetails = wp_get_attachment_metadata($posts['field_value']);
+				// $update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value'] );
 			break;
 		}
 
-
+		$msg = ($update) ? 'success' : 'fail';
 		wp_send_json( 
 			array(
 				'msg' => $msg,
-				'item_details' => $item_details
+				'item_details' => $item_details,
+				'attachmentDetails' => $attachmentDetails
 			)
 		 );
 	}

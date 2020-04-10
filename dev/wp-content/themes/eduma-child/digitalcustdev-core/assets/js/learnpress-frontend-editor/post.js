@@ -146,6 +146,8 @@
     }
 
     $(document).on('ready', function () {
+
+
         initColumnCB();
         watchChangePostData();
         removeMessageFromUrl();
@@ -210,20 +212,45 @@
         
                     // Get media attachment details from the frame state
                     var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
+                    
         
                     // Send the attachment URL to our custom image input field.
+                    
                     imgContainer.html('<img src="' + attachment.url + '" alt="" style="max-width:100%;"/>');
-        
+            
                     post_attachment_wrapper.addClass('has-attachment');
-        
-                    // Send the attachment id to our hidden input
+            
+                        // Send the attachment id to our hidden input
                     hidden_id.val(attachment.id);
                     hidden_id.trigger("change");
+                    
 
                     // console.log(attachment);
                 });
         
                 wp.media.featuredImage.frame().open();
+                wp.media.featuredImage.frame().on('library:selection:add', function (e) {
+                    wp.Uploader.queue.on('reset', function(e) { 
+                        var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
+                        if(attachment.mime){
+                            var allowList = ['image/jpeg', 'image/png'];
+                            if(jQuery.inArray(attachment.mime, allowList) === -1){
+                                jQuery('body').find('.media-frame-content').find('.media-toolbar-primary.search-form > button.media-button-select').addClass('disabled');
+                                jQuery('body').find('.media-frame-content').find('button.button-link.delete-attachment').trigger('click');
+                            }
+                        }
+                    });
+                    window.confirm = function (e){
+                        return true;
+                    };
+                });
+                // wp.media.featuredImage.frame().on('uploader:ready', function (e) {
+                //     // console.log('upload ready');
+                //     jQuery('body').addClass('only-show-img-in-media');
+                    
+                    
+                // });
+                
                 var totalsize_with_folder = data.titalsize;
                 var mb = Math.round(totalsize_with_folder / 1048576);
                 if(mb >= 2000){

@@ -677,3 +677,7 @@ max-width: 100%;
 body.hide-image-type-from-media div.attachments-browser li.acf-disabled{
   display: none;
 }
+
+ul.attachments li div:not(.type-image):parent{
+  display: none;
+}
