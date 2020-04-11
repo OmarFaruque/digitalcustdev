@@ -69,7 +69,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                 <div id="lession_Int_media" class="e-form-field-input-media">
 
                     <!-- File Display -->
-                    <div v-if="itemData.settings._lp_lesson_video_intro_internal" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field mt-0 acf-field-file acf-field-5d52623d7778a">
+                    <div v-bind:class="[itemData.settings._lp_lesson_video_intro_internal ? 'acf-field mt-0 acf-field-file acf-field-5d52623d7778a':'acf-field mt-0 acf-field-file acf-field-5d52623d7778a hidden']" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a">
                         <div class="acf-input">
                             <div data-library="uploadedTo" data-uploader="wp" class="acf-file-uploader has-value">
                                 
@@ -91,7 +91,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                         </div>
                     </div>
 
-                    <div v-else id="wp-content-media-buttons" class="wp-media-buttons">                  
+                    <div v-bind:class="[itemData.settings._lp_lesson_video_intro_internal ? 'wp-media-buttons hidden':'wp-media-buttons']" id="wp-content-media-buttons">                  
                             <button class="e-button" type="button" id="insert-media-button" class="button insert-media_cus add_media">
                                 <span class="wp-media-buttons-icon"></span>
                                 <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
@@ -100,7 +100,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                 </div>
             </div>
             <?php endif; ?>
-            <div class="single_sub_section">
+            <div v-bind:class="[itemData.settings._lp_lesson_video_intro_internal === '' ? 'single_sub_section external_lession_media' : 'external_lession_media single_sub_section hidden' ]" >
                 <div class="rwmb-label">
                     <label v-html="field.name"></label> 
                     <div class="tooltip">?<span class="tooltiptext">Tooltip text 1</span></div>

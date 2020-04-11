@@ -10248,6 +10248,7 @@
 					frame.open();
 					// When an image is selected in the media frame...
 					frame.on('library:selection:add', function (e) {
+						if(jQuery('body').hasClass('hide-image-type-from-media')){
 						$.post(
 							_wpUtilSettings.ajax,
 							{
@@ -10268,6 +10269,7 @@
 								}
 							}
 						);
+						}
 					});
 
 					// Default Check
@@ -10282,6 +10284,7 @@
 		},
 		
 		close: function(){
+			this.frame.find('.media-frame-content .media-sidebar').html('');
 			this.frame.close();
 			if(jQuery('body').hasClass('page-frontend-editor')){
 				jQuery('body').removeClass('hide-image-type-from-media');
@@ -10899,7 +10902,6 @@
 				*/
 				
 				toggleSelection: function( options ) {
-					
 					// vars
 					// source: wp-includes/js/media-views.js:2880
 					var collection = this.collection,

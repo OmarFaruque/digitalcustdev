@@ -691,3 +691,6 @@ div#lession_Int_media button{
 {
   padding-top: 0 !important;
 }
+.hidden{
+  display: none;
+}

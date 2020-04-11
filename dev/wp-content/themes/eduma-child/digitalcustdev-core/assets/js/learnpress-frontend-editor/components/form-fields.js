@@ -13,7 +13,6 @@
             console.log(this);
         },
         mounted: function () {
-
             jQuery(document).on('click', 'a.remove_lesson_media_attachment', function(e){
                 e.preventDefault();
                 var attachment_id = jQuery(this).data('id');
@@ -26,13 +25,15 @@
                         lession_id: attachment_id,
                     },
                     function (data) {
-                        console.log(data);
-                        var outputhtml = '<div id="wp-content-media-buttons" class="wp-media-buttons">'
-                        +'<button type="button" id="insert-media-button" class="button e-button insert-media_cus add_media">'
-                            +'<span class="wp-media-buttons-icon"></span>Add Media</button>'
-                        +'</div>';
+                        // var outputhtml = '<div id="wp-content-media-buttons" class="wp-media-buttons">'
+                        // +'<button type="button" id="insert-media-button" class="button e-button insert-media_cus add_media">'
+                        //     +'<span class="wp-media-buttons-icon"></span>Add Media</button>'
+                        // +'</div>';
                         if(data.msg == 'success'){
-                            jQuery('body').find('#lession_Int_media').html(outputhtml); 
+                            jQuery('body').find('#lession_Int_media').find('.wp-media-buttons').removeClass('hidden');
+                            jQuery('body').find('#lession_Int_media').find('.acf-field').addClass('hidden');
+                            jQuery('body').find('.single_sub_section.add_video').next('.external_lession_media').removeClass('hidden'); 
+                            
                         }
                         
                     }
@@ -95,8 +96,8 @@
                             // We set multiple to false so only get one image from the uploader
                 
                             var attachment = file_frame.state().get('selection').first().toJSON();
-                            console.log(attachment);
-                            jQuery('textarea#lesson_media_url').val(attachment.url);
+                            // console.log(attachment);
+                            // jQuery('textarea#lesson_media_url').val(attachment.url);
                             // $button.siblings('input').val(attachment.url).change();
                             
                             /*
@@ -116,29 +117,36 @@
                             function(data_return){
                                 /* Nothing */
                                 var lession_id = jQuery('ul.e-course-sections ul.e-section-content li.e-selected').data('id');
-                                var outputhtml = '<div data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field acf-field-file acf-field-5d52623d7778a">'
-                                +'<div class="acf-input">'
-                                    +'<div data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp" class="acf-file-uploader has-value">'                                  
-                                        +'<div class="show-if-value file-wrap">'
-                                            +'<div class="file-icon">'
-                                                +'<img data-name="icon" src="'+attachment.icon+'" alt="" title="'+attachment.title+'">'
-                                            +'</div> '
-                                            +'<div class="file-info">'
-                                                +'<p><strong data-name="title">'+attachment.title+'</strong></p> '
-                                                +'<p><strong>File name:</strong> '
-                                                +'<a data-name="filename" href="'+attachment.url+'" target="_blank">'+attachment.filename+'</a></p> '
-                                                +'<p><strong>File size:</strong> <span data-name="filesize">'+attachment.filesizeHumanReadable+'</span></p>'
-                                            +'</div> '
-                                            +'<div class="acf-actions -hover">'
-                                                +'<a href="#" data-id="'+lession_id+'" title="Remove" class="acf-icon -cancel remove_lesson_media_attachment dark"></a>'
-                                            +'</div>'
-                                        +'</div>'
-                                        +'</div>'
-                                    +'</div>'
-                                +'</div>';
+                                // var outputhtml = '<div data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field acf-field-file acf-field-5d52623d7778a">'
+                                // +'<div class="acf-input">'
+                                //     +'<div data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp" class="acf-file-uploader has-value">'                                  
+                                //         +'<div class="show-if-value file-wrap">'
+                                //             +'<div class="file-icon">'
+                                //                 +'<img data-name="icon" src="'+attachment.icon+'" alt="" title="'+attachment.title+'">'
+                                //             +'</div> '
+                                //             +'<div class="file-info">'
+                                //                 +'<p><strong data-name="title">'+attachment.title+'</strong></p> '
+                                //                 +'<p><strong>File name:</strong> '
+                                //                 +'<a data-name="filename" href="'+attachment.url+'" target="_blank">'+attachment.filename+'</a></p> '
+                                //                 +'<p><strong>File size:</strong> <span data-name="filesize">'+attachment.filesizeHumanReadable+'</span></p>'
+                                //             +'</div> '
+                                //             +'<div class="acf-actions -hover">'
+                                //                 +'<a href="#" data-id="'+lession_id+'" title="Remove" class="acf-icon -cancel remove_lesson_media_attachment dark"></a>'
+                                //             +'</div>'
+                                //         +'</div>'
+                                //         +'</div>'
+                                //     +'</div>'
+                                // +'</div>';
 
                                 if(data.msg == 'success'){
-                                    jQuery('body').find('#lession_Int_media').html(outputhtml);
+                                    jQuery('body').find('.single_sub_section.add_video').next('.external_lession_media').addClass('hidden');
+                                    jQuery('body').find('#lession_Int_media').find('.acf-field').removeClass('hidden');
+                                    jQuery('body').find('#lession_Int_media').find('.wp-media-buttons').addClass('hidden');
+                                    jQuery('body').find('#lession_Int_media').find('.acf-field').find('img[data-name="icon"]').attr('src', attachment.icon);
+                                    jQuery('body').find('#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(1)').text(attachment.title);
+                                    jQuery('body').find('#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(2)').find('a').text(attachment.filename).attr('href', attachment.url);
+                                    jQuery('body').find('#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(3)').find('span').text(attachment.filesizeHumanReadable);
+                                    jQuery('body').find('#lession_Int_media').find('.acf-field').find('div.acf-actions').find('a').data('id', lession_id);
                                 }
                                 
                             }
