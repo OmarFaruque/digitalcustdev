@@ -35,12 +35,10 @@ class DigitalCustDev_FrontendEditor {
 		$posts = $_REQUEST;
 
 		$delete = delete_post_meta( $posts['lession_id'], '_lp_lesson_video_intro_internal' );
-		wp_delete_attachment($posts['lession_id']);
 		$msg = ($delete) ? 'success' : 'fail';
 		wp_send_json( 
 			array(
-				'msg' => $msg,
-				'posts' => $posts
+				'msg' => $msg
 			)
 		 );
 		 wp_die();
@@ -67,10 +65,7 @@ class DigitalCustDev_FrontendEditor {
 		$msg = ($update) ? 'success' : 'fail';
 		wp_send_json( 
 			array(
-				'msg' => $msg,
-				'item_details' => $item_details,
-				'post' => $posts,
-				'attachmentDetails' => $attachmentDetails
+				'msg' => $msg
 			)
 		 );
 	}

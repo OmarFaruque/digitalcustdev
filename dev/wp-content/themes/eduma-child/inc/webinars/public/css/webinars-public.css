@@ -681,3 +681,13 @@ body.hide-image-type-from-media div.attachments-browser li.acf-disabled{
 ul.attachments li div:not(.type-image):parent{
   display: none;
 }
+
+div#lession_Int_media button{
+  background-color: #2575fc !important;
+  color: #fff !important;
+}
+
+#frontend-editor #e-item-settings .e-settings-window .e-item-settings-content
+{
+  padding-top: 0 !important;
+}

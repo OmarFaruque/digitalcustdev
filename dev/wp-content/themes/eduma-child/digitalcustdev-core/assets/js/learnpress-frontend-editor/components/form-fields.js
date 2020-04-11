@@ -5,7 +5,6 @@
         template: '#tmpl-e-form-field-textarea',
         props: ['item', 'itemData', 'request', 'field', 'settings'],
         data: function () {
-            console.log(props);
             return {
                 drawComponent: true,
             }
@@ -18,6 +17,7 @@
             jQuery(document).on('click', 'a.remove_lesson_media_attachment', function(e){
                 e.preventDefault();
                 var attachment_id = jQuery(this).data('id');
+                console.log('attachment id: ' + attachment_id);
                 $.post(
                     _wpUtilSettings.ajax,
                     {
@@ -27,7 +27,14 @@
                     },
                     function (data) {
                         console.log(data);
-                        created();
+                        var outputhtml = '<div id="wp-content-media-buttons" class="wp-media-buttons">'
+                        +'<button type="button" id="insert-media-button" class="button e-button insert-media_cus add_media">'
+                            +'<span class="wp-media-buttons-icon"></span>Add Media</button>'
+                        +'</div>';
+                        if(data.msg == 'success'){
+                            jQuery('body').find('#lession_Int_media').html(outputhtml); 
+                        }
+                        
                     }
                 );
             });
@@ -88,6 +95,7 @@
                             // We set multiple to false so only get one image from the uploader
                 
                             var attachment = file_frame.state().get('selection').first().toJSON();
+                            console.log(attachment);
                             jQuery('textarea#lesson_media_url').val(attachment.url);
                             // $button.siblings('input').val(attachment.url).change();
                             
@@ -107,24 +115,32 @@
                             },
                             function(data_return){
                                 /* Nothing */
-                                console.log(data_return);
-                                var activeEditor = tinyMCE.get('e-item-content'),
-                                new_content = '',
-                                ex_content = activeEditor.getContent(),
-                                div = document.createElement('div');
-                                div.setAttribute("src", attachment.url);
-                                div.innerHTML = ex_content;
-                                div.getElementsByClassName('vide_iframe');
-                                if(div.getElementsByClassName('vide_iframe').length){
-                                    div.getElementsByClassName('vide_iframe')[0].setAttribute('src', attachment.url + '?rel=0');
-                                    new_content = div.innerHTML;    
-                                }else{
-                                    // new_content = '<video class="vide_iframe" width="320" height="240" controls><source src="'+attachment.url+'" type="video/mp4"><source src="movie.ogg" type="video/ogg"></video>';
-                                    // new_content = '<iframe class="vide_iframe" style="width:500px; height: 500px;" title="" width="580px" height="435px" src="'+attachment.url+'?autostart=false" frameborder="0" allow="accelerometer; autoplay=false; scrolling="no" encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-origwidth="580" data-origheight="435" style="width: 6px; height: 4.5px;"></iframe>' + ex_content;
+                                var lession_id = jQuery('ul.e-course-sections ul.e-section-content li.e-selected').data('id');
+                                var outputhtml = '<div data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field acf-field-file acf-field-5d52623d7778a">'
+                                +'<div class="acf-input">'
+                                    +'<div data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp" class="acf-file-uploader has-value">'                                  
+                                        +'<div class="show-if-value file-wrap">'
+                                            +'<div class="file-icon">'
+                                                +'<img data-name="icon" src="'+attachment.icon+'" alt="" title="'+attachment.title+'">'
+                                            +'</div> '
+                                            +'<div class="file-info">'
+                                                +'<p><strong data-name="title">'+attachment.title+'</strong></p> '
+                                                +'<p><strong>File name:</strong> '
+                                                +'<a data-name="filename" href="'+attachment.url+'" target="_blank">'+attachment.filename+'</a></p> '
+                                                +'<p><strong>File size:</strong> <span data-name="filesize">'+attachment.filesizeHumanReadable+'</span></p>'
+                                            +'</div> '
+                                            +'<div class="acf-actions -hover">'
+                                                +'<a href="#" data-id="'+lession_id+'" title="Remove" class="acf-icon -cancel remove_lesson_media_attachment dark"></a>'
+                                            +'</div>'
+                                        +'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                                +'</div>';
+
+                                if(data.msg == 'success'){
+                                    jQuery('body').find('#lession_Int_media').html(outputhtml);
                                 }
                                 
-                                // activeEditor.setContent(new_content);
-                                // jQuery("body").trigger("click");
                             }
                         );
 
@@ -350,7 +366,6 @@
         },
         methods: {
             init: function () {
-                console.log('omar this id: ' + '#' + this.id);
                 var self = this;
                 var tinyMCEInit = $.extend({}, tinyMCEPreInit.mceInit.post_content, {
                     selector: '#' + this.id,

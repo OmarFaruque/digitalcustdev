@@ -69,9 +69,9 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                 <div id="lession_Int_media" class="e-form-field-input-media">
 
                     <!-- File Display -->
-                    <div v-if="itemData.settings._lp_lesson_video_intro_internal" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field acf-field-file acf-field-5d52623d7778a">
+                    <div v-if="itemData.settings._lp_lesson_video_intro_internal" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field mt-0 acf-field-file acf-field-5d52623d7778a">
                         <div class="acf-input">
-                            <div data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp" class="acf-file-uploader has-value">
+                            <div data-library="uploadedTo" data-uploader="wp" class="acf-file-uploader has-value">
                                 
                                 <div class="show-if-value file-wrap">
                                     <div class="file-icon">
@@ -106,7 +106,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                     <div class="tooltip">?<span class="tooltiptext">Tooltip text 1</span></div>
                 </div>
                 <div class="e-form-field-input">
-                    <textarea id="lesson_media_url" v-model="itemData.settings[field.id]" style="height: 100px;"></textarea>
+                    <textarea id="lesson_media_url" v-model="itemData.settings[field.id]" style="height: 70px;"></textarea>
                     <p class="e-form-field-desc" v-html="field.desc"></p>
                 </div>
             </div>

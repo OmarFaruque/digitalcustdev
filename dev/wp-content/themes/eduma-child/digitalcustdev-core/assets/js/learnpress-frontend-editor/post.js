@@ -229,14 +229,41 @@
                 });
         
                 wp.media.featuredImage.frame().open();
+                // wp.media.featuredImage.frame().on('all', function (e) {
+                //     console.log(e);
+                // });
+                
+                wp.media.featuredImage.frame().on('selection:toggle', function (e) {
+
+                    // var attachmenttest = wp.media.featuredImage.frame().state().get('selection').first();
+                    // console.log(attachmenttest);
+                    var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
+                      
+                        if(attachment.mime){
+                            var allowList = ['image/jpeg', 'image/png'];
+                            
+                            if(jQuery.inArray(attachment.mime, allowList) === -1){
+                                console.log(attachment);      
+                                var error = '<div class="acf-selection-error"><span class="selection-error-label">Restricted</span><span class="selection-error-filename">'+attachment.filename+'</span><span class="selection-error-message">File type must be jpeg or png.</span></div>';
+                                jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form').find('button.media-button-select').addClass('disabled');
+                                jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').prop('disabled', true);
+                                jQuery('body').find('.media-frame-content').find('.media-sidebar').html(error);
+                                // jQuery('body').find('.media-frame-content').find('button.button-link.delete-attachment').trigger('click');
+                            }
+                        }
+                    
+                });
                 wp.media.featuredImage.frame().on('library:selection:add', function (e) {
                     wp.Uploader.queue.on('reset', function(e) { 
                         var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
                         if(attachment.mime){
                             var allowList = ['image/jpeg', 'image/png'];
                             if(jQuery.inArray(attachment.mime, allowList) === -1){
-                                jQuery('body').find('.media-frame-content').find('.media-toolbar-primary.search-form > button.media-button-select').addClass('disabled');
-                                jQuery('body').find('.media-frame-content').find('button.button-link.delete-attachment').trigger('click');
+                                var error = '<div class="acf-selection-error"><span class="selection-error-label">Restricted</span><span class="selection-error-filename">'+attachment.filename+'</span><span class="selection-error-message">File type must be jpeg or png.</span></div>';
+                                jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').addClass('disabled');
+                                jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').prop('disabled', true);
+                                jQuery('body').find('.media-frame-content').find('.media-sidebar').html(error);
+                                // jQuery('body').find('.media-frame-content').find('button.button-link.delete-attachment').trigger('click');
                             }
                         }
                     });

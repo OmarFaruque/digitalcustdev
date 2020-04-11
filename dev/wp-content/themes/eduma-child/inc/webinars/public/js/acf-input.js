@@ -10230,7 +10230,7 @@
 			var frame = this.frame;
 
 			if(jQuery('body').hasClass('page-frontend-editor')){
-				jQuery('body').toggleClass('hide-image-type-from-media');
+				jQuery('body').addClass('hide-image-type-from-media');
 			}
 
 
@@ -10286,6 +10286,7 @@
 			if(jQuery('body').hasClass('page-frontend-editor')){
 				jQuery('body').removeClass('hide-image-type-from-media');
 			}
+			jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').prop('disabled', false);
 		},
 		
 		remove: function(){
