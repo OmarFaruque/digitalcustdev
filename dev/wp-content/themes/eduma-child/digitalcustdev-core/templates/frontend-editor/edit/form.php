@@ -125,7 +125,7 @@ if ( ! empty( $duration_term ) ) {
 		<?php } ?>
     </div>
     <div class="e-form-field col-md-4 mt-2">
-        <div class="e-form-field-input">
+        <div class="e-form-field-input step-1">
 			<?php
 			$new_post = array(
 				'post_id'            => $post->ID,
