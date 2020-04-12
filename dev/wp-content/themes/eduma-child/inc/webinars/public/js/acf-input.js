@@ -3672,6 +3672,7 @@
 		},
 		
 		reset: function(){
+			console.log('this is reset 3');
 			this.stopListening();
 		},
 		
@@ -8189,7 +8190,7 @@
 		},
 		
 		reset: function(){
-			
+			console.log('this is reset 4');
 			// close existing tab
 			this.closeActive();
 			
@@ -10954,6 +10955,13 @@
 					// return					
 					return AttachmentLibrary.prototype.toggleSelection.apply( this, arguments );
 				}
+
+
+				
+
+
+
+
 			});
 		}
 	});
@@ -13060,7 +13068,7 @@
 				event: false,
 				
 				// reset the form after submit
-				reset: false,
+				reset: true,
 				
 				// loading callback
 				loading: function(){},
@@ -13236,7 +13244,7 @@
 		*  @return	void
 		*/
 		reset: function(){
-			
+			console.log('this is reset 1');
 			// reset data
 			this.set('errors', []);
 			this.set('notice', null);
@@ -13545,6 +13553,7 @@
 		*  @return	void
 		*/
 		reset: function( $form ){
+			console.log('this is reset 2');
 			getValidator( $form ).reset();
 		},
 		

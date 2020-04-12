@@ -1450,3 +1450,67 @@ if ( !function_exists( 'thim_custom_add_course_meta' ) ) {
 	}
 }
 
+
+
+/*
+* The Content hook 
+*/
+add_filter( 'the_editor_content', 'filtercontentforadd_lession_video' );
+function filtercontentforadd_lession_video($content){
+	global $post;
+	$post_type = get_post_type( $post->ID );
+	
+	if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'edit' && $post_type == 'lp_lesson'){
+		$internal_video = get_post_meta( $post->ID, '_lp_lesson_video_intro_internal', true );
+		$internal_video_url = wp_get_attachment_url( $internal_video );
+
+		$iframe = '<iframe id="lession_intro_iframe" src="'.$internal_video_url.'" frameborder="0" allowtransparency="true" scrolling="no" class="wpview-sandbox" style="width: 100%; display: block; height: 359px;"></iframe><br/>';
+		if($internal_video) $content = $iframe . $content;
+	}
+	return $content;
+	// return $content;
+}
+
+
+/*
+* Save lession intro vide while save post from backend. 
+*/
+add_action( 'save_post', 'set_private_categories' );
+function set_private_categories($post_id) {
+    // If this is a revision, get real post ID
+	$post_type = get_post_type( $post_id );
+	if($post_type == 'lp_lesson'){
+		$introVideo = isset($_POST["_lp_lesson_video_intro_internal"] ) ? $_POST["_lp_lesson_video_intro_internal"]  : '';
+		if(!empty($introVideo)) update_post_meta( $post_id, '_lp_lesson_video_intro_internal', $introVideo );
+	}
+ 
+}
+
+add_filter( 'content_save_pre' , 'filter_post_data' , '99', 2 );
+function filter_post_data( $content ) {
+	// Change post title
+	global $post;
+	$post_type = get_post_type( $post->ID );
+	$test = '';
+	if($post_type == 'lp_lesson'){		
+		$content = preg_replace("#<iframe[^>]+>.*?</iframe>#is", '', $content);
+		// $string = preg_replace('/<iframe class="lession_intro_iframe"[^>]+\>/i', "", $string);
+		
+
+	}
+
+    return $content;
+}
+
+
+function wpdocs_register_meta_boxes() {
+    add_meta_box( 'lession-video-data', __( 'Lession Video', 'textdomain' ), 'lp_lession_metabox', 'lp_lesson' );
+}
+add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
+
+function lp_lession_metabox($post){
+	
+	$internal_video = get_post_meta( $post->ID, '_lp_lesson_video_intro_internal', true );
+	
+	echo '<input type="hidden" name="_lp_lesson_video_intro_internal" value="'.$internal_video.'" />';
+}

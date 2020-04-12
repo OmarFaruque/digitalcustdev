@@ -23,10 +23,31 @@ class DigitalCustDev_FrontendEditor {
 		add_action( 'wp_ajax_delete_lession_attachment_video', array( $this, 'delete_lession_attachment_video' ) );
 		add_action( 'wp_ajax_nopriv_delete_lession_attachment_video', array( $this, 'delete_lession_attachment_video' ) );
 
+		/* Delete Recent Attachment */ 
+		add_action( 'wp_ajax_delete_recent_media_attachment', array( $this, 'delete_recent_media_attachment' ) );
+		add_action( 'wp_ajax_nopriv_delete_recent_media_attachment', array( $this, 'delete_recent_media_attachment' ) );
+
 		// add_action('wp_head', array($this, 'testf'));
 	}
 
 
+
+	/*
+	* Delete Recent Attachment
+	*/
+	public function delete_recent_media_attachment(){
+
+		$delete = wp_delete_attachment($_REQUEST['attachment_id']);
+		$msg = ($delete) ? 'success' : 'fail';
+		wp_send_json( 
+			array(
+				'msg' => $msg,
+				'delete' => $delete,
+				'posts' => $_REQUEST
+			)
+		 );
+		wp_die();
+	}
 
 	/*
 	* Delete Lesson video
@@ -51,14 +72,12 @@ class DigitalCustDev_FrontendEditor {
 	public function step_two_custom_autosave(){
 		$posts = $_REQUEST;
 		$post_type = get_post_type( $posts['item_id'] );
-		
-		
 		$attachmentDetails = '';
 		$update = '';
 		switch($posts['field_name']){
 			case '_lp_lesson_video_intro_internal':
 				$item_details = get_post($posts['item_id']);
-				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value'] );
+				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value']['id'] );
 			break;
 		}
 
