@@ -322,6 +322,13 @@ jQuery(document).ready(function($){
 	});
 
 
+
+
+	jQuery(document).on('click', 'a.remove_lesson_media_attachment', function(e){
+		console.log('created click inside public js');
+	});
+
+
 });  // Document ready end
 
 function mobile_switch(obj){

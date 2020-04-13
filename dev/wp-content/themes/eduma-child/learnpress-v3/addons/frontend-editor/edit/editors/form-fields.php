@@ -197,7 +197,10 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
     </script>
 
     <script type="text/x-template" id="tmpl-e-form-field-hidden">
-                <input :type="field.xType ? field.xType : field.type" v-model="itemData.settings[field.id]">
+    <li class="hidden e-form-field text textdown">
+    <p>Test Omar</p>
+                <input class="inner_vide_field" :type="field.xType ? field.xType : field.type" v-model="itemData.settings[field.id]">
+    </li>
     </script>
 
 
