@@ -44,6 +44,8 @@ $course_type = get_post_meta($post->ID, '_course_type', true);
                             <label class="omr d-inline"><?php _e( 'Description', 'learnpress-frontend-editor' ); ?></label>
                             <span class="tooltip">?<span class="tooltiptext"><?php _e('Tooltip text', 'webinars'); ?></span></span>
                             <div class="h-300 e-form-field-input">
+                            
+                                <!-- <e-tinymce :id="[itemData.id]" v-model="itemData.content"></e-tinymce> -->
                                 <e-tinymce :id="'e-item-content'" v-model="itemData.content"></e-tinymce>
                             </div>
                         </li>

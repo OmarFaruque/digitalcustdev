@@ -458,7 +458,7 @@
 
         //Change Youtube Field
         $('.acf-fields').on('change', function () {
-            if ($('.acf-file-uploader').hasClass('has-value')) {
+            if ($('div[data-name="general"].e-tab.active .acf-file-uploader').hasClass('has-value')) {
                 $('.hide-youtube-link-field').show();
             } else {
                 $('.hide-youtube-link-field').hide();

@@ -1538,7 +1538,11 @@ function print_footer_scripts_custom() {
 	
 	foreach($data['Course_Store_Data']['sections'] as $k => $section){
 		foreach($data['Course_Store_Data']['sections'][$k]['items'] as $s => $sitem){
-			if(isset($data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'])){
+			echo 'omar tst data: ' . $data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'] . '<br/>';
+			if(
+				isset($data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal']) 
+				&& $data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'] != 'undefined' 
+			){
 				$vid = $data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'];
 				$data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['lp_lesson_video_intro_internal'] = array(
 					'id' => $vid,
@@ -1548,6 +1552,9 @@ function print_footer_scripts_custom() {
 					'filesizeHumanReadable' => filesize( get_attached_file( $vid ) ) / 1000000 . ' MB',
 					'filename' => basename( get_attached_file( $vid ) )	
 				);
+			}else{
+				$data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['lp_lesson_video_intro_internal'] = '';
+				$data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'] = '';
 			}
 		}
 	}

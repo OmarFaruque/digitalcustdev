@@ -66,17 +66,17 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                     <label><?php _e('Add Video', 'webinars'); ?></label>
                     <div class="tooltip">?<span class="tooltiptext"><?php _e('Add Media', 'webinars'); ?></span></div>
                 </div>
-                <div id="lession_Int_media" class="e-form-field-input-media">
+                <div id="lession_Int_media" v-bind:data-id="[itemData.id]" class="e-form-field-input-media">
 
                     <!-- File Display -->
-                    <div v-bind:class="[itemData.settings._lp_lesson_video_intro_internal ? 'acf-field mt-0 acf-field-file acf-field-5d52623d7778a':'acf-field mt-0 acf-field-file acf-field-5d52623d7778a hidden']" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a">
+                    <div v-if="itemData.settings._lp_lesson_video_intro_internal" v-bind:class="[itemData.settings._lp_lesson_video_intro_internal ? 'acf-field mt-0 acf-field-file acf-field-5d52623d7778a':'acf-field mt-0 acf-field-file acf-field-5d52623d7778a hidden']" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a">
                         <div class="acf-input">
                             <div data-library="uploadedTo" data-uploader="wp" class="acf-file-uploader has-value">
                                 
                                 <div class="show-if-value file-wrap">
                                     <div class="file-icon">
                                         <img data-name="icon" v-bind:src="itemData.settings.lp_lesson_video_intro_internal.icon" alt="" v-bind:title="itemData.settings.lp_lesson_video_intro_internal.title">
-                                    </div> 
+                                    </div>
                                     <div class="file-info">
                                         <p><strong v-html="itemData.settings.lp_lesson_video_intro_internal.title" data-name="title"></strong></p> 
                                         <p><strong>File name:</strong> 
@@ -91,8 +91,8 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                         </div>
                     </div>
 
-                    <div v-bind:class="[itemData.settings._lp_lesson_video_intro_internal ? 'wp-media-buttons hidden':'wp-media-buttons']" id="wp-content-media-buttons">                  
-                            <button class="e-button" type="button" id="insert-media-button" class="button insert-media_cus add_media">
+                    <div v-else v-bind:class="[itemData.settings._lp_lesson_video_intro_internal ? 'wp-media-buttons hidden':'wp-media-buttons']" id="wp-content-media-buttons">                  
+                            <button v-bind:data-id="[itemData.id]" class="e-button" type="button" id="insert-media-button" class="button insert-media_cus add_media">
                                 <span class="wp-media-buttons-icon"></span>
                                 <?php _e( 'Add Media', 'learnpress-frontend-editor' ); ?>
                             </button>
@@ -100,7 +100,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                 </div>
             </div>
             <?php endif; ?>
-            <div v-bind:class="[itemData.settings._lp_lesson_video_intro_internal === '' ? 'single_sub_section external_lession_media' : 'external_lession_media single_sub_section hidden' ]" >
+            <div v-bind:class="[itemData.settings._lp_lesson_video_intro_internal ? 'external_lession_media single_sub_section hidden' : 'single_sub_section external_lession_media' ]" >
                 <div class="rwmb-label">
                     <label v-html="field.name"></label> 
                     <div class="tooltip">?<span class="tooltiptext">Tooltip text 1</span></div>
@@ -194,6 +194,10 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                 <p class="e-form-field-desc" v-html="field.desc"></p>
             </div>
         </li>
+    </script>
+
+    <script type="text/x-template" id="tmpl-e-form-field-hidden">
+                <input :type="field.xType ? field.xType : field.type" v-model="itemData.settings[field.id]">
     </script>
 
 
