@@ -1441,8 +1441,8 @@ if ( !function_exists( 'thim_custom_add_course_meta' ) ) {
 		$fields[]           = array(
 			'name' => esc_html__( 'Media id', 'eduma' ),
 			'id'   => '_lp_lesson_video_intro_internal',
-			'type' => 'text',
-			'desc' => esc_html__( 'Add an f embed link like video, PDF, slider...', 'eduma' ),
+			'type' => 'hidden',
+			'desc' => esc_html__( '', 'eduma' ),
 		);
 		$meta_box['fields'] = $fields;
 
@@ -1455,7 +1455,7 @@ if ( !function_exists( 'thim_custom_add_course_meta' ) ) {
 /*
 * The Content hook 
 */
-add_filter( 'the_editor_content', 'filtercontentforadd_lession_video' );
+// add_filter( 'the_editor_content', 'filtercontentforadd_lession_video' );
 function filtercontentforadd_lession_video($content){
 	global $post;
 	$post_type = get_post_type( $post->ID );
@@ -1486,7 +1486,7 @@ function set_private_categories($post_id) {
  
 }
 
-add_filter( 'content_save_pre' , 'filter_post_data' , '99', 2 );
+// add_filter( 'content_save_pre' , 'filter_post_data' , '99', 2 );
 function filter_post_data( $content ) {
 	// Change post title
 	global $post;

@@ -325,8 +325,155 @@ jQuery(document).ready(function($){
 
 
 	jQuery(document).on('click', 'a.remove_lesson_media_attachment', function(e){
-		console.log('created click inside public js');
+		// console.log('this itemata id: ' + $this.itemData.id);
+		e.preventDefault();
+		var attachment_id = jQuery(this).data('id');
+		$.post(
+			_wpUtilSettings.ajax,
+			{
+				action: 'delete_lession_attachment_video',
+				dataType: 'json',
+				lession_id: attachment_id,
+			},
+			function (data){
+				var outputhtml = '<div id="wp-content-media-buttons" class="wp-media-buttons">'
+				+'<button type="button" id="insert-media-button" class="button e-button insert-media_cus add_media">'
+					+'<span class="wp-media-buttons-icon"></span>Add Media</button>'
+				+'</div>';
+				if(data.msg == 'success'){
+					jQuery('body').find('div#lession_Int_media').prepend(outputhtml);
+					jQuery('body').find('div#lession_Int_media').find('.acf-field').addClass('hidden');
+					jQuery('body').find('.single_sub_section.add_video').next('.external_lession_media').removeClass('hidden'); 
+				}
+			}
+		);
 	});
+
+
+	/* Lession Media start */
+jQuery(document).on('click', '.e-tab.active button#insert-media-button.insert-media_cus', function(e){
+    // jQuery(this).unbind();
+    var thisid = jQuery(this).data('id');
+    
+    e.preventDefault();
+    $.post(
+        _wpUtilSettings.ajax,
+        {
+            action: 'check_foldersize',
+            dataType: 'json',
+            post_id: $('input[name="post_ID"]').val(),
+            user_id: userSettings.uid,
+        },
+        function (data) {
+            console.log('ajsx success');
+            data = JSON.parse(data);
+            // console.log(data);
+            var $button = $(this);
+            // Create the media frame.
+            var file_frame = wp.media.frames.file_frame = wp.media({
+                title: 'Select or upload file',
+                library: { // remove these to show all
+                    type: ['video'] // specific mime
+                },
+                button: {
+                    text: 'Select'
+                },
+                multiple: false  // Set to true to allow multiple files to be selected
+            });
+
+              // When an image is selected in the media frame...
+            file_frame.on('library:selection:add', function (e) {
+                $.post(
+                    _wpUtilSettings.ajax,
+                    {
+                        action: 'check_foldersize',
+                        dataType: 'json',
+                        post_id: $('input[name="post_ID"]').val(),
+                        user_id: userSettings.uid,
+                    },
+                    function(response){
+                        data = JSON.parse(response);
+                        
+                        var attachment1 = file_frame.state().get('selection').first().toJSON();
+                        var totalsize_with_folder = data.titalsize + attachment1.size;
+                        var mb = Math.round(totalsize_with_folder / 1048576);
+                        if(mb >= 2000){
+                            $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+                            $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+                        }
+                    }
+                );
+            });
+            // file_frame.close();
+            file_frame.on('select', function () {
+                // We set multiple to false so only get one image from the uploader
+                var attachment = file_frame.state().get('selection').first().toJSON();
+                /*
+                * Save via auto-save
+                */
+               $.post(
+                _wpUtilSettings.ajax,
+                {
+                    action: 'step_two_custom_autosave',
+                    dataType: 'json',
+                    post_id: $('input[name="post_ID"]').val(),
+                    field_value: attachment,
+					field_name: '_lp_lesson_video_intro_internal',
+					post_content: '[video width="1920" height="1080" mp4="'+attachment.url+'"][/video]' + tinymce.get('e-item-content').getContent(),
+                    item_id:  $('ul.e-section-content > li.e-section-item.e-selected').data('id')
+                },
+                function(response){
+                
+                    /* Nothing */
+                    var lession_id = jQuery('ul.e-course-sections ul.e-section-content li.e-selected').data('id');
+                    var outputhtml = '<div data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field acf-field-file acf-field-5d52623d7778a">'
+                    +'<div class="acf-input">'
+                        +'<div data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp" class="acf-file-uploader has-value">'                                  
+                            +'<div class="show-if-value file-wrap">'
+                                +'<div class="file-icon">'
+                                    +'<img data-name="icon" src="'+attachment.icon+'" alt="" title="'+attachment.title+'">'
+                                +'</div> '
+                                +'<div class="file-info">'
+                                    +'<p><strong data-name="title">'+attachment.title+'</strong></p> '
+                                    +'<p><strong>File name:</strong> '
+                                    +'<a data-name="filename" href="'+attachment.url+'" target="_blank">'+attachment.filename+'</a></p> '
+                                    +'<p><strong>File size:</strong> <span data-name="filesize">'+attachment.filesizeHumanReadable+'</span></p>'
+                                +'</div> '
+                                +'<div class="acf-actions -hover">'
+                                    +'<a href="#" data-id="'+lession_id+'" title="Remove" class="acf-icon -cancel remove_lesson_media_attachment dark"></a>'
+                                +'</div>'
+                            +'</div>'
+                            +'</div>'
+                        +'</div>'
+                    +'</div>';
+                        jQuery('body').find('.single_sub_section.add_video').next('.external_lession_media').addClass('hidden');
+                        jQuery('body').find('div[data-id="'+thisid+'"]#lession_Int_media').append(outputhtml);
+                        // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').removeClass('hidden');
+						jQuery('body').find('div[data-id="'+thisid+'"]#lession_Int_media').find('.wp-media-buttons').addClass('hidden');
+						jQuery('body').find('li#_lp_lesson_video_intro_internal').find('input').val(attachment);
+                        // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('img[data-name="icon"]').attr('src', attachment.icon);
+                        // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(1)').text(attachment.title);
+                        // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(2)').find('a').text(attachment.filename).attr('href', attachment.url);
+                        // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(3)').find('span').text(attachment.filesizeHumanReadable);
+                        // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.acf-actions').find('a').data('id', lession_id);
+						var editor = tinymce.get('e-item-content');
+						// var editor = tinymce.get(thisid);
+                        editor.setContent('[video width="1920" height="1080" mp4="'+attachment.url+'"][/video]' + editor.getContent());
+                });
+             });
+    
+            // Finally, open the modal
+            file_frame.open();
+            var totalsize_with_folder = data.titalsize;
+            var mb = Math.round(totalsize_with_folder / 1048576);
+            if(mb >= 2000){
+                    $( "div.media-frame-content" ).prepend('<div class="upload_limit_error"><h6><span class="crose_limit">'+data.display_msg+'</span></h6></div>');
+                    $( 'div.media-router > button:first-child, .media-toolbar-primary.search-form button' ).hide();
+            }
+        }
+     );
+});
+/* Lession Media End  */
 
 
 });  // Document ready end

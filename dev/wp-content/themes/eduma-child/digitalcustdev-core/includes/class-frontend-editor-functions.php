@@ -30,9 +30,10 @@ class DigitalCustDev_FrontendEditor {
 		/* Fource Data from DB for lession media */
 		add_action( 'wp_ajax_fource_get_lesson_attachment_for_vue', array( $this, 'fource_get_lesson_attachment_for_vue' ) );
 		add_action( 'wp_ajax_nopriv_fource_get_lesson_attachment_for_vue', array( $this, 'fource_get_lesson_attachment_for_vue' ) );
-		
+
 		// add_action('wp_head', array($this, 'testf'));
 	}
+
 
 
 	/*
@@ -41,11 +42,17 @@ class DigitalCustDev_FrontendEditor {
 	public function fource_get_lesson_attachment_for_vue(){
 		$posts = $_REQUEST;
 		$datas = get_post_meta( $posts['lession_id'], '_lp_lesson_video_intro_internal', true );
+		
+		// Content
+		$post_content = get_post($posts['lession_id']);
+		$content = $post_content->post_content;
+		$content = apply_filters('the_content', $content);
 		$msg = ($datas) ? 'success' : 'fail';
 		wp_send_json( 
 			array(
 				'msg' => $msg,
-				'meta' => $datas
+				'meta' => $datas,
+				'post_content' => $content
 			)
 		 );
 		wp_die();
@@ -97,6 +104,12 @@ class DigitalCustDev_FrontendEditor {
 			case '_lp_lesson_video_intro_internal':
 				$item_details = get_post($posts['item_id']);
 				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value']);
+				wp_update_post(
+					array(
+						'ID' => $posts['item_id'],
+						'post_content' => $posts['post_content']
+					)
+				);
 			break;
 		}
 

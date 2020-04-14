@@ -20,35 +20,6 @@
         },
         mounted: function () {
             var $this = this;
-            
-            jQuery(document).on('click', 'a[data-id="'+$this.itemData.id+'"].remove_lesson_media_attachment', function(e){
-                console.log('this itemata id: ' + $this.itemData.id);
-                e.preventDefault();
-                var attachment_id = jQuery(this).data('id');
-                $.post(
-                    _wpUtilSettings.ajax,
-                    {
-                        action: 'delete_lession_attachment_video',
-                        dataType: 'json',
-                        lession_id: attachment_id,
-                    },
-                    function (data){
-                        var outputhtml = '<div id="wp-content-media-buttons" class="wp-media-buttons">'
-                        +'<button type="button" id="insert-media-button" class="button e-button insert-media_cus add_media">'
-                            +'<span class="wp-media-buttons-icon"></span>Add Media</button>'
-                        +'</div>';
-                        if(data.msg == 'success'){
-                            jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').prepend(outputhtml);
-                            jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').addClass('hidden');
-                            jQuery('body').find('.single_sub_section.add_video').next('.external_lession_media').removeClass('hidden'); 
-                        }
-                        
-                    }
-                );
-            });
-
-
-
         },
         methods: {
             redraw: function () {
@@ -72,6 +43,25 @@
             }
         },
         created: function () {
+        },
+        beforeCreate: function (){
+            var self = this;
+            var lession_id = jQuery('ul.e-course-sections li.e-section-item.e-sort-item.lp_lesson.e-selected').data('id');
+            // console.log(self);
+            $.post(
+                _wpUtilSettings.ajax,
+                {
+                    action: 'fource_get_lesson_attachment_for_vue',
+                    dataType: 'json',
+                    lession_id: lession_id,
+                },
+                function (data){
+                    if(data.msg == 'success'){
+                        self.itemData.settings['_lp_lesson_video_intro_internal'] = (data.meta != 'undefined') ? data.meta : '';   
+                        self.itemData.content = data.post_content;
+                    }
+                }
+            );
         },
         mounted: function () {
         },
@@ -102,36 +92,8 @@
             // this.itemData.settings['_lp_lesson_video_intro_internal'] = JSON.parse(this.itemData.settings['_lp_lesson_video_intro_internal']);
         },
         mounted: function () {
-            console.log(this);
         },
-        watch: {
-            field: function() {
-              this.onChange();
-            }
-          },
         methods: {
-            foursedata(){
-                $.post(
-                    _wpUtilSettings.ajax,
-                    {
-                        action: 'fource_get_lesson_attachment_for_vue',
-                        dataType: 'json',
-                        lession_id: this.itemData.id,
-                    },
-                    function (data){
-                        console.log('inside ajax');
-                        console.log(data);
-                        if(data.msg == 'success'){
-                            return data.meta;   
-                        }else{
-                            return 'empty';
-                        }
-                    }
-                );
-
-
-
-            },
             redraw: function () {
                 var vm = this;
                 vm.drawComponent = false;
@@ -272,7 +234,7 @@
                 type: 'String',
                 required: true
             },
-            value: {default: ''},
+            value: {default: 'llll'},
             redraw: {
                 type: 'Boolean'
             }
@@ -287,6 +249,25 @@
         beforeDestroy: function () {
             this.$editor.destroy();
         },
+        // beforeCreate: function (){
+        //     var self = this;
+        //     var lession_id = jQuery('ul.e-course-sections li.e-section-item.e-sort-item.lp_lesson.e-selected').data('id');
+        //     console.log(self);
+        //     $.post(
+        //         _wpUtilSettings.ajax,
+        //         {
+        //             action: 'fource_get_lesson_content_value',
+        //             dataType: 'json',
+        //             lession_id: lession_id,
+        //         },
+        //         function (data){
+        //             if(data){
+        //                 console.log('ajax content sucess');
+        //                 self.content = data.post_content;   
+        //             }
+        //         }
+        //     );
+        // },
         watch: {
             value: function (newValue) {
                 if (!this.isTyping && this.$editor !== null) {
@@ -300,6 +281,7 @@
             content: function (v) {
                 //this.$editor.setContent(v);
                 return v;
+                
             }
         },
         mounted: function () {
@@ -337,6 +319,7 @@
                 // console.log('this id: ' . this.id);
             },
             onChange: function () {
+                console.log('on change');
                 this.isTyping = true;
                 FE_Helpers.debounce(function ($vm) {
                     $vm.isTyping = false;
