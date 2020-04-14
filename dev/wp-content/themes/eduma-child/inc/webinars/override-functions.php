@@ -1439,9 +1439,9 @@ if ( !function_exists( 'thim_custom_add_course_meta' ) ) {
 	function thim_custom_add_course_meta( $meta_box ) {
 		$fields             = $meta_box['fields'];
 		$fields[]           = array(
-			'name' => esc_html__( 'Media test', 'eduma' ),
+			'name' => esc_html__( 'Media id', 'eduma' ),
 			'id'   => '_lp_lesson_video_intro_internal',
-			'type' => 'hidden',
+			'type' => 'text',
 			'desc' => esc_html__( 'Add an f embed link like video, PDF, slider...', 'eduma' ),
 		);
 		$meta_box['fields'] = $fields;
@@ -1513,58 +1513,4 @@ function lp_lession_metabox($post){
 	$internal_video = get_post_meta( $post->ID, '_lp_lesson_video_intro_internal', true );
 	
 	echo '<input type="hidden" name="_lp_lesson_video_intro_internal" value="'.$internal_video.'" />';
-}
-
-
-
-add_action('init','wpse163434_init');
-function wpse163434_init(){
-include_once LP_ADDON_FRONTEND_EDITOR_PATH . '/inc/class-page-controller.php';
-remove_filter( 'wp_print_footer_scripts', 'LP_Addon_Frontend_Editor_Page_Controller::print_footer_scripts');
-add_filter( 'wp_print_footer_scripts', 'print_footer_scripts_custom' );
-function print_footer_scripts_custom() {
-	// if ( $root = $wp_query->get( 'frontend-editor' ) ) {
-	if ( ! e_is_frontend_editor_page() ) {
-		return;
-	}
-
-	$data = array(
-		'Course_Store_Data' => e_get_course_store_data(),
-		'i18n'              => e_get_localize(),
-		'rootURL'           => get_home_url()
-	);
-
-
-	
-	foreach($data['Course_Store_Data']['sections'] as $k => $section){
-		foreach($data['Course_Store_Data']['sections'][$k]['items'] as $s => $sitem){
-			echo 'omar tst data: ' . $data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'] . '<br/>';
-			if(
-				isset($data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal']) 
-				&& $data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'] != 'undefined' 
-			){
-				$vid = $data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'];
-				$data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['lp_lesson_video_intro_internal'] = array(
-					'id' => $vid,
-					'url' => wp_get_attachment_url( $vid ),
-					'title' => get_the_title($vid),
-					'icon' => wp_mime_type_icon( 'video/mp4' ),
-					'filesizeHumanReadable' => filesize( get_attached_file( $vid ) ) / 1000000 . ' MB',
-					'filename' => basename( get_attached_file( $vid ) )	
-				);
-			}else{
-				$data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['lp_lesson_video_intro_internal'] = '';
-				$data['Course_Store_Data']['sections'][$k]['items'][$s]['settings']['_lp_lesson_video_intro_internal'] = '';
-			}
-		}
-	}
-	?>
-	<script type='text/javascript'>
-		/* <![CDATA[ */
-		var lpFrontendCourseEditorSettings = <?php echo wp_json_encode($data);?>
-		/* ]]> */
-	</script>
-	<?php
-	// }
-}
 }

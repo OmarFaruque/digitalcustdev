@@ -238,6 +238,7 @@
             });
         },
         addItem: function (context, data) {
+            console.log('ad time');
             return new Promise(function (resolve, reject) {
                 FE_Helpers.Course_Editor_Request('', 'add-course-items', $.extend({
                     __activity: true
@@ -356,6 +357,8 @@
             });
         },
         updatePost: function (context, args) {
+            console.log('args');
+            console.log(args);
             return new Promise(function (resolve, reject) {
                 FE_Helpers.Course_Editor_Request('', 'update-post', {
                     post_ID: args.post_ID,

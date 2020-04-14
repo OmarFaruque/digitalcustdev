@@ -27,10 +27,29 @@ class DigitalCustDev_FrontendEditor {
 		add_action( 'wp_ajax_delete_recent_media_attachment', array( $this, 'delete_recent_media_attachment' ) );
 		add_action( 'wp_ajax_nopriv_delete_recent_media_attachment', array( $this, 'delete_recent_media_attachment' ) );
 
+		/* Fource Data from DB for lession media */
+		add_action( 'wp_ajax_fource_get_lesson_attachment_for_vue', array( $this, 'fource_get_lesson_attachment_for_vue' ) );
+		add_action( 'wp_ajax_nopriv_fource_get_lesson_attachment_for_vue', array( $this, 'fource_get_lesson_attachment_for_vue' ) );
+		
 		// add_action('wp_head', array($this, 'testf'));
 	}
 
 
+	/*
+	* Fource face data from lesson media inside vuejs
+	*/
+	public function fource_get_lesson_attachment_for_vue(){
+		$posts = $_REQUEST;
+		$datas = get_post_meta( $posts['lession_id'], '_lp_lesson_video_intro_internal', true );
+		$msg = ($datas) ? 'success' : 'fail';
+		wp_send_json( 
+			array(
+				'msg' => $msg,
+				'meta' => $datas
+			)
+		 );
+		wp_die();
+	}
 
 	/*
 	* Delete Recent Attachment
@@ -77,7 +96,7 @@ class DigitalCustDev_FrontendEditor {
 		switch($posts['field_name']){
 			case '_lp_lesson_video_intro_internal':
 				$item_details = get_post($posts['item_id']);
-				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value']['id'] );
+				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value']);
 			break;
 		}
 

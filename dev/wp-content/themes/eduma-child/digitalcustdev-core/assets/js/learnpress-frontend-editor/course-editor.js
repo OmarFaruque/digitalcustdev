@@ -247,8 +247,7 @@
                     function sync() {
                         var jsonData = $($vm.$el).serializeJSON(),
                             _data = JSON.stringify(jsonData);
-
-                            console.log(jsonData);
+                            // console.log(jsonData);
                         if (_data !== formData) {
 
                             FE_Helpers.Course_Editor_Request('', 'update_course', $.extend({}, jsonData, {__activity: true})).then(function (response) {
@@ -350,6 +349,22 @@
                         
                     }, 1000)).trigger('dispatch');
 
+
+                  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     jQuery(document).on('keypress change', '.e-tab.active[data-name="general"] input, .e-tab.active[data-name="general"] select, .e-tab.active[data-name="general"] textarea', function(){
                        console.log('update');
                         sync();
@@ -365,10 +380,6 @@
                             }
                         }, 1000);
                     }
-
-                    
-
-
                 })();
 
 

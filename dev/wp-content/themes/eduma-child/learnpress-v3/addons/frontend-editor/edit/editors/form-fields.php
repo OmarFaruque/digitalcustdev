@@ -75,13 +75,13 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
                                 
                                 <div class="show-if-value file-wrap">
                                     <div class="file-icon">
-                                        <img data-name="icon" v-bind:src="itemData.settings.lp_lesson_video_intro_internal.icon" alt="" v-bind:title="itemData.settings.lp_lesson_video_intro_internal.title">
+                                        <img data-name="icon" v-bind:src="itemData.settings._lp_lesson_video_intro_internal.icon" alt="" v-bind:title="itemData.settings._lp_lesson_video_intro_internal.title">
                                     </div>
                                     <div class="file-info">
-                                        <p><strong v-html="itemData.settings.lp_lesson_video_intro_internal.title" data-name="title"></strong></p> 
+                                        <p><strong v-html="itemData.settings._lp_lesson_video_intro_internal.title" data-name="title"></strong></p> 
                                         <p><strong>File name:</strong> 
-                                        <a v-html="itemData.settings.lp_lesson_video_intro_internal.filename" data-name="filename" v-bind:href="itemData.settings.lp_lesson_video_intro_internal.url" target="_blank"></a></p> 
-                                        <p><strong>File size:</strong> <span v-html="itemData.settings.lp_lesson_video_intro_internal.filesizeHumanReadable" data-name="filesize">2 MB</span></p>
+                                        <a v-html="itemData.settings._lp_lesson_video_intro_internal.filename" data-name="filename" v-bind:href="itemData.settings._lp_lesson_video_intro_internal.url" target="_blank"></a></p> 
+                                        <p><strong>File size:</strong> <span v-html="itemData.settings._lp_lesson_video_intro_internal.filesizeHumanReadable" data-name="filesize">2 MB</span></p>
                                     </div> 
                                     <div class="acf-actions -hover">
                                         <a href="#" v-bind:data-id="itemData.id" title="Remove" class="acf-icon -cancel remove_lesson_media_attachment dark"></a>
@@ -190,6 +190,7 @@ $post_type  = get_post_meta($post->ID, '_course_type', 'true');
             </label>
             
             <div class="e-form-field-input">
+                <!-- <input :type="field.xType ? field.xType : field.type" v-bind:value="itemData.settings[field.id]" v-on:input="itemData.settings[field.id]"> -->
                 <input :type="field.xType ? field.xType : field.type" v-model="itemData.settings[field.id]">
                 <p class="e-form-field-desc" v-html="field.desc"></p>
             </div>
