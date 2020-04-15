@@ -228,16 +228,17 @@
                 });
         
                 wp.media.featuredImage.frame().open();
-                // wp.media.featuredImage.frame().on('all', function (e) {
-                //     console.log(e);
-                // });
+                wp.media.featuredImage.frame().on('all', function (e) {
+                    console.log(e);
+                });
                 wp.media.featuredImage.frame().on('uploader:ready', function (e) {
                     wp.media.featuredImage.frame().state().get('selection').reset();
                 });
                 
-                wp.media.featuredImage.frame().on('close', function(){
-                    var attachment = wp.media.featuredImage.frame().state().get('selection').first();
-                    console.log(attachment);
+                wp.media.featuredImage.frame().on('escape', function(){
+                    // var attachment = wp.media.featuredImage.frame().state().get('selection').first();
+                    wp.media.featuredImage.frame().state().get('selection').reset();
+                    jQuery('body').find('.media-frame-content').find('.media-sidebar').find('.acf-selection-error').remove();
                 });
                 
                 wp.media.featuredImage.frame().on('selection:toggle', function (e) {
@@ -271,41 +272,46 @@
                         }
                 });
 
+                
                 wp.media.featuredImage.frame().on('library:selection:add', function (e) {
-                    if(thisevent && thisevent.hasClass('set-attachment')){
                         // console.log('this is inside image media');
-                        wp.Uploader.queue.on('reset', function(e) { 
-                            var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
-                            if(attachment.mime){
-                                var allowList = ['image/jpeg', 'image/png'];
-                                if(jQuery.inArray(attachment.mime, allowList) === -1){
-                                    var error = '<div class="acf-selection-error"><span class="selection-error-label">Restricted</span><span class="selection-error-filename">'+attachment.filename+'</span><span class="selection-error-message">File type must be jpeg or png.</span></div>';
-                                    jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').addClass('disabled');
-                                    jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').prop('disabled', true);
-                                    jQuery('body').find('.media-frame-content').find('.media-sidebar').html(error);
+                        wp.Uploader.queue.on('reset', function(e) {
+                            if(thisevent && thisevent.hasClass('set-attachment')){ 
+                                thisevent = false;
+                                var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
+                                if(attachment.mime){
+                                    var allowList = ['image/jpeg', 'image/png'];
+                                    if(jQuery.inArray(attachment.mime, allowList) === -1){
+                                        var error = '<div class="acf-selection-error"><span class="selection-error-label">Restricted</span><span class="selection-error-filename">'+attachment.filename+'</span><span class="selection-error-message">File type must be jpeg or png.</span></div>';
+                                        jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').addClass('disabled');
+                                        jQuery('body').find('.media-frame-content, .media-frame-toolbar').find('.media-toolbar-primary.search-form > button.media-button-select').prop('disabled', true);
+                                        jQuery('body').find('.media-frame-content').find('.media-sidebar').html(error);
 
-                                    $.post(
-                                        _wpUtilSettings.ajax,
-                                        {
-                                            action: 'delete_recent_media_attachment',
-                                            dataType: 'json',
-                                            attachment_id: attachment.id
-                                        },
-                                        function(response){
-                                            /* Nothing */ 
-                                        }
-                                    );
+                                        $.post(
+                                            _wpUtilSettings.ajax,
+                                            {
+                                                action: 'delete_recent_media_attachment',
+                                                dataType: 'json',
+                                                attachment_id: attachment.id
+                                            },
+                                            function(response){
+                                                /* Nothing */ 
+                                                wp.media.featuredImage.frame().state().get('selection').reset();
+                                            }
+                                        );
 
-                                    // jQuery('body').find('.media-frame-content').find('button.button-link.delete-attachment').trigger('click');
+                                        // jQuery('body').find('.media-frame-content').find('button.button-link.delete-attachment').trigger('click');
+                                    }
                                 }
                             }
                         });
-                        wp.media.featuredImage.frame().state().get('selection').reset();
+                        // wp.media.featuredImage.frame().state().get('selection').reset();
                         // window.confirm = function (e){
                         //     return true;
                         // };
-                    }
                 });
+                
+                
                 // wp.media.featuredImage.frame().on('uploader:ready', function (e) {
                 //     // console.log('upload ready');
                 //     jQuery('body').addClass('only-show-img-in-media');

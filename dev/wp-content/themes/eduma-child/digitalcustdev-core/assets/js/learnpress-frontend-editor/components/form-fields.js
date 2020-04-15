@@ -234,7 +234,7 @@
                 type: 'String',
                 required: true
             },
-            value: {default: 'llll'},
+            value: {default: ''},
             redraw: {
                 type: 'Boolean'
             }
@@ -287,7 +287,7 @@
         mounted: function () {
             this.content = this.value;
             this.init();
-            console.log(this.id);
+            // console.log(this.id);
         },
         methods: {
             init: function () {
@@ -303,7 +303,7 @@
 
                     },
                     height: 300,
-                    plugins: "media",
+                    // plugins: "media",
                     menubar: "insert",
                     toolbar: "media",
                     video_template_callback: function(data) {
@@ -319,7 +319,7 @@
                 // console.log('this id: ' . this.id);
             },
             onChange: function () {
-                console.log('on change');
+                // console.log('on change');
                 this.isTyping = true;
                 FE_Helpers.debounce(function ($vm) {
                     $vm.isTyping = false;

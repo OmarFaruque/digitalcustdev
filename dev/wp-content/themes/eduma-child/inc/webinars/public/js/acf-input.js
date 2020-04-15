@@ -6907,12 +6907,13 @@
 		},
 		
 		selectAttachment: function(){
-			
+			console.log('select attachment');
 			// vars
 			var parent = this.parent();
 			var multiple = (parent && parent.get('type') === 'repeater');
 			
 			// new frame
+			
 			var frame = acf.newMediaPopup({
 				mode:			'select',
 				title:			acf.__('Select File'),
@@ -10089,7 +10090,7 @@
 		// args
 		var popup = null;
 		var args = acf.parseArgs(args, {
-			mode:			'select',			// 'select', 'edit'
+			mode:			'select',			// 'select', 'edit'()
 			title:			'',					// 'Upload Image'
 			button:			'',					// 'Select Image'
 			type:			'',					// 'image', ''
@@ -10115,10 +10116,6 @@
 		if( args.autoOpen ) {
 			setTimeout(function(){
 				popup.open();
-				popup.frame.options.selection.reset();
-				console.log(popup);
-				
-				// selection.reset();
 			}, 1);
 		}
 		
@@ -10233,6 +10230,9 @@
 		
 		open: function(){
 			var frame = this.frame;
+			console.log('its open');
+			jQuery('body').find('.acf-selection-error').remove();
+			frame.reset();
 
 			if(jQuery('body').hasClass('page-frontend-editor')){
 				jQuery('body').addClass('hide-image-type-from-media');
@@ -10277,6 +10277,10 @@
 						}
 					});
 
+					frame.on('uploader:ready', function (e) {
+						frame.state().get('selection').reset();
+					});
+
 					// Default Check
 					var totalsize_with_folder = data.titalsize;
 					var mb = Math.round(totalsize_with_folder / 1048576);
@@ -10290,6 +10294,7 @@
 		
 		close: function(){
 			this.frame.find('.media-frame-content .media-sidebar').html('');
+			this.frame.reset();
 			this.frame.close();
 			if(jQuery('body').hasClass('page-frontend-editor')){
 				jQuery('body').removeClass('hide-image-type-from-media');
