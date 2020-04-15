@@ -7033,6 +7033,7 @@
 		},
 		
 		onClickEdit: function( e, $el ){
+			console.log('open 2');
 			acf.wpLink.open( this.$node() );
 		},
 		
@@ -7089,7 +7090,7 @@
 		},
 		
 		open: function( $node ){
-
+			console.log('open this is');
 			// add events
 			this.on('wplink-open', 'onOpen');
 			this.on('wplink-close', 'onClose');
@@ -8131,7 +8132,7 @@
 			
 			// open
 			tab.open();
-			// console.log('this is tab omar');
+			console.log('this is tab omar');
 			
 			// set active
 			this.setActive( tab );
@@ -10114,7 +10115,10 @@
 		if( args.autoOpen ) {
 			setTimeout(function(){
 				popup.open();
-				// console.log('set time out omar');
+				popup.frame.options.selection.reset();
+				console.log(popup);
+				
+				// selection.reset();
 			}, 1);
 		}
 		
@@ -10858,6 +10862,12 @@
 			// vars
 			var AttachmentLibrary = wp.media.view.Attachment.Library;
 			
+
+
+
+
+
+
 			// extend
 			wp.media.view.Attachment.Library = AttachmentLibrary.extend({
 				
@@ -10903,6 +10913,7 @@
 				*/
 				
 				toggleSelection: function( options ) {
+					console.log('this is toggle');
 					// vars
 					// source: wp-includes/js/media-views.js:2880
 					var collection = this.collection,
@@ -13554,7 +13565,8 @@
 		*/
 		reset: function( $form ){
 			console.log('this is reset 2');
-			getValidator( $form ).reset();
+			// getValidator( $form ).reset();
+			// selection.reset();
 		},
 		
 		/**

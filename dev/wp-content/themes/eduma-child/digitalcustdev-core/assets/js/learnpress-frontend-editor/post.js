@@ -152,6 +152,7 @@
         watchChangePostData();
         removeMessageFromUrl();
     }).on('click', '.e-post-attachment .set-attachment', function (event) {
+        console.log('button click');
         var thisevent = jQuery(this);
         event.preventDefault();
         event.stopPropagation();
@@ -230,6 +231,14 @@
                 // wp.media.featuredImage.frame().on('all', function (e) {
                 //     console.log(e);
                 // });
+                wp.media.featuredImage.frame().on('uploader:ready', function (e) {
+                    wp.media.featuredImage.frame().state().get('selection').reset();
+                });
+                
+                wp.media.featuredImage.frame().on('close', function(){
+                    var attachment = wp.media.featuredImage.frame().state().get('selection').first();
+                    console.log(attachment);
+                });
                 
                 wp.media.featuredImage.frame().on('selection:toggle', function (e) {
 
@@ -264,7 +273,7 @@
 
                 wp.media.featuredImage.frame().on('library:selection:add', function (e) {
                     if(thisevent && thisevent.hasClass('set-attachment')){
-                        console.log('this is inside image media');
+                        // console.log('this is inside image media');
                         wp.Uploader.queue.on('reset', function(e) { 
                             var attachment = wp.media.featuredImage.frame().state().get('selection').first().toJSON();
                             if(attachment.mime){
@@ -291,6 +300,7 @@
                                 }
                             }
                         });
+                        wp.media.featuredImage.frame().state().get('selection').reset();
                         // window.confirm = function (e){
                         //     return true;
                         // };
