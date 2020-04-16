@@ -691,6 +691,7 @@ div#lession_Int_media button{
 {
   padding-top: 0 !important;
 }
+div#frontend-editor a.acf-icon.-pencil.dark,
 .hidden{
   display: none;
 }

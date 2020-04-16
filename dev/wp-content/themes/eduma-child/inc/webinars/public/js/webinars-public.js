@@ -326,8 +326,10 @@ jQuery(document).ready(function($){
 
 	jQuery(document).on('click', 'a.remove_lesson_media_attachment', function(e){
 		// console.log('this itemata id: ' + $this.itemData.id);
+		
 		e.preventDefault();
 		var attachment_id = jQuery(this).data('id');
+		var thisevent = jQuery(this);
 		$.post(
 			_wpUtilSettings.ajax,
 			{
@@ -336,14 +338,17 @@ jQuery(document).ready(function($){
 				lession_id: attachment_id,
 			},
 			function (data){
+				// console.log(data);
 				var outputhtml = '<div id="wp-content-media-buttons" class="wp-media-buttons">'
 				+'<button type="button" id="insert-media-button" class="button e-button insert-media_cus add_media">'
 					+'<span class="wp-media-buttons-icon"></span>Add Media</button>'
 				+'</div>';
 				if(data.msg == 'success'){
-					jQuery('body').find('div#lession_Int_media').prepend(outputhtml);
-					jQuery('body').find('div#lession_Int_media').find('.acf-field').addClass('hidden');
+					jQuery('body').find('li#_lp_lesson_video_intro_internal').find('input').val('');
+					jQuery('body').find('div#lession_Int_media').html(outputhtml);
+					// jQuery('body').find('div#lession_Int_media').find('.acf-field').addClass('hidden');
 					jQuery('body').find('.single_sub_section.add_video').next('.external_lession_media').removeClass('hidden'); 
+					jQuery('body').find('.single_sub_section.add_video').addClass('etstingclass');
 				}
 			}
 		);
@@ -484,15 +489,14 @@ jQuery(document).on('click', '.e-tab.active button#insert-media-button.insert-me
                     post_id: $('input[name="post_ID"]').val(),
                     field_value: attachment,
 					field_name: '_lp_lesson_video_intro_internal',
-					post_content: '[video width="1920" height="1080" mp4="'+attachment.url+'"][/video]' + tinymce.get('e-item-content').getContent(),
+					// post_content: '[video width="1920" height="1080" mp4="'+attachment.url+'"][/video]' + tinymce.get('e-item-content').getContent(),
                     item_id:  $('ul.e-section-content > li.e-section-item.e-selected').data('id')
                 },
                 function(response){
-                
                     /* Nothing */
                     var lession_id = jQuery('ul.e-course-sections ul.e-section-content li.e-selected').data('id');
                     var outputhtml = '<div data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a" class="acf-field acf-field-file acf-field-5d52623d7778a">'
-                    +'<div class="acf-input">'
+                    +'<div class="acf-input omar">'
                         +'<div data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp" class="acf-file-uploader has-value">'                                  
                             +'<div class="show-if-value file-wrap">'
                                 +'<div class="file-icon">'
@@ -512,18 +516,18 @@ jQuery(document).on('click', '.e-tab.active button#insert-media-button.insert-me
                         +'</div>'
                     +'</div>';
                         jQuery('body').find('.single_sub_section.add_video').next('.external_lession_media').addClass('hidden');
-                        jQuery('body').find('div[data-id="'+thisid+'"]#lession_Int_media').append(outputhtml);
+                        jQuery('body').find('div[data-id="'+lession_id+'"]#lession_Int_media').append(outputhtml);
                         // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').removeClass('hidden');
-						jQuery('body').find('div[data-id="'+thisid+'"]#lession_Int_media').find('.wp-media-buttons').addClass('hidden');
+						jQuery('body').find('div[data-id="'+lession_id+'"]#lession_Int_media').find('.wp-media-buttons').addClass('hidden');
 						jQuery('body').find('li#_lp_lesson_video_intro_internal').find('input').val(attachment);
                         // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('img[data-name="icon"]').attr('src', attachment.icon);
                         // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(1)').text(attachment.title);
                         // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(2)').find('a').text(attachment.filename).attr('href', attachment.url);
                         // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.file-info p:nth-child(3)').find('span').text(attachment.filesizeHumanReadable);
                         // jQuery('body').find('div[data-id="'+$this.itemData.id+'"]#lession_Int_media').find('.acf-field').find('div.acf-actions').find('a').data('id', lession_id);
-						var editor = tinymce.get('e-item-content');
+						// var editor = tinymce.get('e-item-content');
 						// var editor = tinymce.get(thisid);
-                        editor.setContent('[video width="1920" height="1080" mp4="'+attachment.url+'"][/video]' + editor.getContent());
+                        // editor.setContent('[video width="1920" height="1080" mp4="'+attachment.url+'"][/video]' + editor.getContent());
                 });
              });
     

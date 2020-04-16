@@ -10,7 +10,7 @@
             }
         },
         created: function () {
-            console.log(this);
+            // console.log(this);
             var $this = this;
             
         },
@@ -56,9 +56,12 @@
                     lession_id: lession_id,
                 },
                 function (data){
+                    // console.log(data);
                     if(data.msg == 'success'){
                         self.itemData.settings['_lp_lesson_video_intro_internal'] = (data.meta != 'undefined') ? data.meta : '';   
-                        self.itemData.content = data.post_content;
+                        // self.itemData.content = data.post_content;
+                    }else{
+                        self.itemData.settings['_lp_lesson_video_intro_internal'] = '';   
                     }
                 }
             );
@@ -304,8 +307,8 @@
                     },
                     height: 300,
                     // plugins: "media",
-                    menubar: "insert",
-                    toolbar: "media",
+                    // menubar: "insert",
+                    // toolbar: "media",
                     video_template_callback: function(data) {
                     return '<video width="' + data.width + '" height="' + data.height + '"' + (data.poster ? ' poster="' + data.poster + '"' : '') + ' controls="controls">\n' + '<source src="' + data.source1 + '"' + (data.source1mime ? ' type="' + data.source1mime + '"' : '') + ' />\n' + (data.source2 ? '<source src="' + data.source2 + '"' + (data.source2mime ? ' type="' + data.source2mime + '"' : '') + ' />\n' : '') + '</video>';
                     }

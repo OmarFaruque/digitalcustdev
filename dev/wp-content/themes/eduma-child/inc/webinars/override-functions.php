@@ -1151,26 +1151,18 @@ function addaddditionalfieldtosavedArray( $array ) {
 }
 // add_action('wp_head', 'testfunction');
 function testfunction(){
-	// $upload_dir = wp_get_upload_dir();
-	// $basedir = $upload_dir['basedir'];
-	// 		$param = array();
-	// 		$user = wp_get_current_user();
-	// 		$post_id = get_transient( get_current_user_id() . 'e_post_id' );
-	// 		if($post_id){
-	// 			$param['path'] = $upload_dir['basedir'] .'/'. $user->data->user_nicename . '/' . $post_id;
-	// 		}
-
-	// echo 'Uplod dirctory <br/><pre>';
-	// print_r($param);
-	// echo '</pre>'; //াাা
-	$directory = '/var/www/u0501458/data/www/digitalcustdev.ru/dev/wp-content/uploads/user0050103/15107';
-	$delete_direcoty = removeDirectory($directory);
-	echo 'delete directory result: ' . $delete_direcoty . '<br/>';
-
-
+	$user = wp_get_current_user();
+	echo 'roles <br/><pre>';
+	print_r($user->roles);
+	echo '</pre>';
 }
 
-
+add_action( 'admin_init', function() {
+    $author = get_role( 'lp_teacher' );
+    if ( ! $author->has_cap( 'manage_own_attachments' ) ) {
+        $author->add_cap( 'manage_own_attachments' );
+    }
+});
 
 
 add_filter('e-course-data-store', 'course_data_override');

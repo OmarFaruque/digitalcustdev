@@ -95,7 +95,7 @@
             //     deep: true
             // },
             'itemData.id': function () {
-                console.log('watch');
+                // console.log('watch');
                 this.redraw();
             }
         },

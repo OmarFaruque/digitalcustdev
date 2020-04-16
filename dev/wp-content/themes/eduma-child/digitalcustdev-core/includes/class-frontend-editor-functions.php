@@ -104,12 +104,12 @@ class DigitalCustDev_FrontendEditor {
 			case '_lp_lesson_video_intro_internal':
 				$item_details = get_post($posts['item_id']);
 				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value']);
-				wp_update_post(
-					array(
-						'ID' => $posts['item_id'],
-						'post_content' => $posts['post_content']
-					)
-				);
+				// wp_update_post(
+				// 	array(
+				// 		'ID' => $posts['item_id'],
+				// 		'post_content' => $posts['post_content']
+				// 	)
+				// );
 			break;
 		}
 
