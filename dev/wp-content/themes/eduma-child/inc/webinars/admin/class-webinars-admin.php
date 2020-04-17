@@ -59,24 +59,72 @@ class Webinars_Admin {
 		add_filter( 'learn-press/course-settings-fields/archive', array($this, 'settingsFilters') );
 
 		/* Change course title */
-		// add_action( 'manage_lp_course_posts_custom_column', array( $this, 'manage_course_posts_columns' ) );
-		add_action( 'manage_lp_course_posts_custom_column', array( $this, 'manage_course_post_column' ), 10, 3 );
+		add_filter( 'display_post_states', array($this, 'ecs_add_post_state'), 10, 2 );
+		add_filter( 'manage_lp_course_posts_columns', array( $this, 'manage_course_posts_columns' ) );
+		add_filter( 'wp_insert_post_empty_content', array($this, 'allow_empty_post'), 10, 2 );
+		add_action( 'admin_menu', array( $this, 'notify_new_course' ) );
+	}
+
+
+	/*
+	 * Notify an administrator with pending courses
+	 */
+	public function notify_new_course() {
+		global $menu;
+		global $submenu;
+
+
+		$current_user = wp_get_current_user();
+		if ( ! in_array( 'administrator', $current_user->roles ) ) {
+			return;
+		}
+		$count_courses   = wp_count_posts( LP_COURSE_CPT );
+		$awaiting_mod    = $count_courses->pending;
+		$submenu['learn_press'][0][0] .= " <span class='custom awaiting-mod count-$awaiting_mod'><span class='pending-count'>" . number_format_i18n( $awaiting_mod ) . "</span></span>";
+	}
+
+
+	/*
+	* Allow empty post to delete
+	*/
+	public function allow_empty_post( $maybe_empty, $postarr ) {
+        if ( ! $maybe_empty ) {
+                return $maybe_empty;
+        }
+
+        if ( 'lp_course' === $postarr['post_type']
+             && in_array( $postarr['post_status'], array( 'inherit', 'draft', 'trash', 'auto-draft' ) )
+        ) {
+                $maybe_empty = false;
+        }
+
+        return $maybe_empty;
+	}
+
+	/**
+	 * Add grade book column to course page in admin.
+	 *
+	 * @param  array $column
+	 *
+	 * @return array
+	 */
+	function manage_course_posts_columns( $column ) {
+		unset($column['taxonomy-course_category']);
+		unset($column['taxonomy-webinar_categories']);
+			
+		return $column;
 	}
 
 
 	/*
 	* Course column customization 
-	*/
-	public function manage_course_post_column($column, $post_id){
-		'title: ' . $column . '<br/>';
-		switch ( $column ) {
-			case 'Title':
-				printf( '<a href="%s" target="">%s</a>',
-					'fsfsdf',
-					__( 'View', 'learnpress-gradebook' )
-				);
-			break;
-		}
+	*/	
+	public function ecs_add_post_state( $post_states, $post ) {
+		$post_status = get_post_status($post);
+			if($post_status == 'publish'){
+				$post_states[] = ucfirst($post_status);
+			}
+		return $post_states;
 	}
 
 	/*

@@ -160,6 +160,9 @@ class LP_Admin_Menu {
 	 */
 	public function notify_new_course() {
 		global $menu;
+		// global $submenu;
+
+
 		$current_user = wp_get_current_user();
 		if ( ! in_array( 'administrator', $current_user->roles ) ) {
 			return;
@@ -167,6 +170,7 @@ class LP_Admin_Menu {
 		$count_courses   = wp_count_posts( LP_COURSE_CPT );
 		$awaiting_mod    = $count_courses->pending;
 		$menu['3.14'][0] .= " <span class='awaiting-mod count-$awaiting_mod'><span class='pending-count'>" . number_format_i18n( $awaiting_mod ) . "</span></span>";
+		// $submenu['learn_press'][0][0] .= " <span class='awaiting-mod count-$awaiting_mod'><span class='pending-count'>" . number_format_i18n( $awaiting_mod ) . "</span></span>";
 	}
 
 	public static function instance() {

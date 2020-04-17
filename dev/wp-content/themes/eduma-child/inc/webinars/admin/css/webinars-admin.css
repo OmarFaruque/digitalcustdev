@@ -2,3 +2,11 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ form#posts-filter tr.status-pending {
+    background: #2196f34a;
+    color: white;
+}
+#adminmenu li a.wp-has-current-submenu .update-plugins, #adminmenu li.wp-first-item.current a .awaiting-mod.custom {
+    background-color: #ca4a1f;
+    color: #fff;
+}

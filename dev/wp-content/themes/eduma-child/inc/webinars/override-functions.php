@@ -1509,11 +1509,4 @@ function lp_lession_metabox($post){
 }
 
 
-add_filter( 'display_post_states', 'ecs_add_post_state', 10, 2 );
-function ecs_add_post_state( $post_states, $post ) {
-	$post_status = get_post_status($post);
-		if($post_status == 'publish'){
-			$post_states[] = ucfirst($post_status);
-		}
-	return $post_states;
-}
+
