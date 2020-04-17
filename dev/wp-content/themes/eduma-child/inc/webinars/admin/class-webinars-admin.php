@@ -57,8 +57,27 @@ class Webinars_Admin {
 
 	protected function init(){
 		add_filter( 'learn-press/course-settings-fields/archive', array($this, 'settingsFilters') );
+
+		/* Change course title */
+		// add_action( 'manage_lp_course_posts_custom_column', array( $this, 'manage_course_posts_columns' ) );
+		add_action( 'manage_lp_course_posts_custom_column', array( $this, 'manage_course_post_column' ), 10, 3 );
 	}
 
+
+	/*
+	* Course column customization 
+	*/
+	public function manage_course_post_column($column, $post_id){
+		'title: ' . $column . '<br/>';
+		switch ( $column ) {
+			case 'Title':
+				printf( '<a href="%s" target="">%s</a>',
+					'fsfsdf',
+					__( 'View', 'learnpress-gradebook' )
+				);
+			break;
+		}
+	}
 
 	/*
 	* Set webner page to learnpress settings
