@@ -63,8 +63,47 @@ class Webinars_Admin {
 		add_filter( 'manage_lp_course_posts_columns', array( $this, 'manage_course_posts_columns' ) );
 		add_filter( 'wp_insert_post_empty_content', array($this, 'allow_empty_post'), 10, 2 );
 		add_action( 'admin_menu', array( $this, 'notify_new_course' ) );
+		add_action( 'pre_get_posts', array($this, 'course_duration_by_lesson_total_duration') );
 	}
 
+
+	/*
+	* Change course duration by total lession duration
+	*/
+	public function course_duration_by_lesson_total_duration($query){
+		global $post;
+		if(is_admin() && $_REQUEST['action'] == 'edit' && get_post_type( $post ) == 'lp_course' ) {
+			$lessons = get_course_lessons($post->ID);
+			$_lp_duration = 0;
+			foreach($lessons as $sl){
+				if(get_post_meta( $sl, '_lp_duration', true )){
+					$duration_array = get_post_meta( $sl, '_lp_duration', true );
+					$duration_array = preg_split('/(?<=[0-9]) (?=[a-z]+)/i',$duration_array);                                                               
+					switch($duration_array[1]){
+						case 'minute':
+							$_lp_duration += $duration_array[0];
+						break;
+						case 'hour':
+							$mint = $duration_array[0] * 60;
+							$_lp_duration += $mint;
+						break;
+						case 'week':
+							$mint = $duration_array[0] * 7;
+							$mint = $mint * 24;
+							$mint = $mint * 60;
+							$_lp_duration += $mint;
+						break;
+						case 'day':
+							$mint = $duration_array[0] * 24;
+							$mint = $mint * 60;
+							$_lp_duration += $mint;
+						break;
+					}
+				}
+			}
+			update_post_meta( $post->ID, '_lp_duration', $_lp_duration . ' minute' );
+		}
+	}
 
 	/*
 	 * Notify an administrator with pending courses
