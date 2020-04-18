@@ -1496,17 +1496,6 @@ function filter_post_data( $content ) {
 }
 
 
-function wpdocs_register_meta_boxes() {
-    add_meta_box( 'lession-video-data', __( 'Lession Video', 'textdomain' ), 'lp_lession_metabox', 'lp_lesson' );
-}
-add_action( 'add_meta_boxes', 'wpdocs_register_meta_boxes' );
-
-function lp_lession_metabox($post){
-	
-	$internal_video = get_post_meta( $post->ID, '_lp_lesson_video_intro_internal', true );
-	
-	echo '<input type="hidden" name="_lp_lesson_video_intro_internal" value="'.$internal_video.'" />';
-}
 
 
 

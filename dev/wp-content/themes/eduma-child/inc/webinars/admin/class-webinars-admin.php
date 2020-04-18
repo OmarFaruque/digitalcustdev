@@ -64,9 +64,88 @@ class Webinars_Admin {
 		add_filter( 'wp_insert_post_empty_content', array($this, 'allow_empty_post'), 10, 2 );
 		add_action( 'admin_menu', array( $this, 'notify_new_course' ) );
 		add_action( 'pre_get_posts', array($this, 'course_duration_by_lesson_total_duration') );
+		add_action( 'add_meta_boxes', array($this, 'wpdocs_register_meta_boxes') );
+		add_filter( 'custom_menu_order', array($this, 'changeAdminSubMenuOrderForLearnPress') );
 	}
 
 
+	/*
+	* Change sub-menu order
+	*/
+	public function changeAdminSubMenuOrderForLearnPress($menu_ord){
+		global $submenu;
+		$newarray = array();
+		$newarray[] = $submenu['learn_press'][0];
+		$newarray[] = $submenu['learn_press'][10];
+		$newarray[] = $submenu['learn_press'][1];
+		$newarray[] = $submenu['learn_press'][2];
+		$newarray[] = $submenu['learn_press'][3];
+		$newarray[] = $submenu['learn_press'][4];
+		$newarray[] = $submenu['learn_press'][5];
+		$newarray[] = $submenu['learn_press'][6];
+		$newarray[] = $submenu['learn_press'][7];
+		$newarray[] = $submenu['learn_press'][8];
+		$newarray[] = $submenu['learn_press'][9];
+		$submenu['learn_press'] = $newarray;
+	}
+
+
+	/*
+	* Lession metabox for lession video intro
+	*/
+	public function wpdocs_register_meta_boxes() {
+		add_meta_box( 'lession-video-data', __( 'Lession Intro Video', 'textdomain' ), array($this, 'lp_lession_metabox'), 'lp_lesson', 'side', 'core' );
+	}
+	
+	public function lp_lession_metabox($post){
+		
+		$internal_video = get_post_meta( $post->ID, '_lp_lesson_video_intro_internal', true );
+		// echo 'Intermal video array: <br/><pre>';
+		// print_r($internal_video);
+		// echo '</pre>';
+		echo '<input type="hidden" name="_lp_lesson_video_intro_internal" value="'.$internal_video.'" />';
+		?>
+		<div class="acf-field acf-field-file acf-field-5d52623d7778a" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a">
+		<div class="acf-label">
+		<label for="acf-field_5d52623d7778a"><?php _e('Upload Intro Video', 'webinar'); ?></label></div>
+		<div class="acf-input">
+				<div class="acf-file-uploader has-value" data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp">
+				<div class="show-if-value file-wrap">
+				<div class="file-icon">
+					<img data-name="icon" src="<?php echo $internal_video['icon']; ?>" alt="">
+				</div>
+				<div class="file-info">
+					<p>
+						<strong data-name="title"><?php echo $internal_video['title']; ?></strong>
+					</p>
+					<p>
+						<strong><?php _e('File name', 'webinar') ?>:</strong>
+						<a data-name="filename" href="<?php echo $internal_video['url']; ?>" target="_blank"><?php echo $internal_video['filename']; ?></a>
+					</p>
+					<p>
+						<strong><?php _e('File size', 'webinar'); ?>:</strong>
+						<span data-name="filesize"><?php echo $internal_video['filesizeHumanReadable']; ?></span>
+					</p>
+				</div>
+				<div class="acf-actions -hover">
+					<!-- <a class="acf-icon -pencil dark" data-name="edit" href="#" title="Edit"></a><a class="acf-icon -cancel dark" data-name="remove" href="#" title="Remove"></a> -->
+				</div>
+			</div>
+			<div class="hide-if-value">
+							
+					<p>No file selected <a data-name="add" class="acf-button button" href="#">Add File</a></p>
+					
+						
+			</div>
+		</div>
+		</div>
+		</div>
+
+		<?php
+	}
+
+
+	
 	/*
 	* Change course duration by total lession duration
 	*/

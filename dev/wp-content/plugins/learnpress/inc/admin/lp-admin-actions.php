@@ -236,6 +236,7 @@ function learn_press_admin_course_tabs() {
 
 
 	$current_page_id = get_current_screen()->id;
+	echo 'current page id: ' . $current_page_id . '<br/>';
 	$current_user    = wp_get_current_user();
 	if ( ! in_array( 'administrator', $current_user->roles ) ) {
 		return;

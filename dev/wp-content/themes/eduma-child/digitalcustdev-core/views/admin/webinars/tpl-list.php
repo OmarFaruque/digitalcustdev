@@ -59,12 +59,18 @@ body {font-family: Arial;}
   border-top: none;
 }
 </style>
-<div class="tab">
-<button class="tablinks active" onclick="openCity(event, 'First')">Webinars</button>
-<button class="tablinks" onclick="openCity(event, 'Second')"><a href="/dev/wp-admin/edit-tags.php?taxonomy=webinar_categories&post_type=lp_course">Webinar Categories</a></button>
-<button class="tablinks" onclick="openCity(event, 'Third')"><a href="/dev/wp-admin/edit-tags.php?taxonomy=webinar_tag&post_type=lp_course">Webinar Tags</a></button>
-</div>
-<div id="First" class="tabcontent" style="display: block;">
+
+<?php 
+$active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 'nav-tab-active':'';
+$active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 'nav-tab-active':'';
+?>
+
+<h2 class="nav-tab-wrapper lp-nav-tab-wrapper">
+  <a href="<?php echo admin_url( 'admin.php?page=zoom-webinars' ); ?>" class="nav-tab nav-tab-edit-lp_course"><?php _e('Webinars', 'webinar') ?></a>
+  <a href="<?php echo admin_url( 'edit-tags.php?taxonomy=webinar_categories&amp;post_type=lp_course' ); ?>" class="nav-tab nav-tab-edit-course_category"><?php _e('Webinar Categories', 'webinar'); ?></a>
+  <a href="<?php echo admin_url( 'edit-tags.php?taxonomy=webinar_tag&amp;post_type=lp_course' ); ?>" class="nav-tab nav-tab-edit-course_tag"><?php _e('Webinar Tags', 'webinar'); ?></a>
+</h2>
+<div id="First" class="tabcontent-custom" style="display: block;">
 <div class="wrap">
     <h2><?php _e( 'Webinar Courses', 'webinars' ); ?></h2>
     <div id="webinar-wp-list-table">
