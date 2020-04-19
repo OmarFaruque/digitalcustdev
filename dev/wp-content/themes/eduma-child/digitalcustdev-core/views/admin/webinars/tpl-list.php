@@ -63,6 +63,9 @@ body {font-family: Arial;}
 <?php 
 $active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 'nav-tab-active':'';
 $active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 'nav-tab-active':'';
+
+$args = array( 'post_type' => 'lp_course', 'posts_per_page' => -1, 'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'), 'meta_key' => '_course_type', 'meta_value' => 'webinar' );
+$listArgs = $args;
 ?>
 
 
@@ -73,14 +76,50 @@ $active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 
     <div id="webinar-wp-list-table">
         <div id="webinar-post-body">
 
-        <ul class="subsubsub">
-	<li class="all"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_type=lp_course&all_posts=1' ); ?>"><?php _e('All', 'webinar'); ?> <span class="count">(94)</span></a> |</li>
-	<li class="mine"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_type=lp_course&author=103' ); ?>"><?php _e('Mine', 'webinar'); ?> <span class="count">(36)</span></a> |</li>
-	<li class="publish"><a href="edit.php?post_status=publish&amp;post_type=lp_course">Published <span class="count">(16)</span></a> |</li>
-	<li class="draft"><a href="edit.php?post_status=draft&amp;post_type=lp_course">Drafts <span class="count">(36)</span></a> |</li>
-	<li class="pending"><a href="edit.php?post_status=pending&amp;post_type=lp_course">Pending <span class="count">(42)</span></a> |</li>
-	<li class="trash"><a href="edit.php?post_status=trash&amp;post_type=lp_course">Trash <span class="count">(32)</span></a></li>
-</ul>
+  <ul class="subsubsub">
+    <li class="all"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&all_posts=1' ); ?>"><?php _e('All', 'webinar'); ?> 
+      <?php 
+        $query = new WP_Query( $args );
+        $all = $query->post_count;
+      ?>
+      <span class="count">(<?php echo $all; ?>)</span></a> |</li>
+    <li class="mine"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&author=103' ); ?>"><?php _e('Mine', 'webinar'); ?> 
+      <?php 
+      $args['author'] = get_current_user_id();
+      $query = new WP_Query( $args );
+      $all = $query->post_count;
+      ?>
+      <span class="count">(<?php echo $all; ?>)</span></a> |</li>
+    <li class="publish"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=publish' ); ?>"><?php _e('Published', 'webinar'); ?> 
+    <?php 
+      unset($args['author']);
+      $args['post_status'] = 'publish';
+      $query = new WP_Query( $args );
+      $all = $query->post_count;
+    ?>
+    <span class="count">(<?php echo $all; ?>)</span></a> |</li>
+    <li class="draft"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=draft' ); ?>"><?php _e('Drafts', 'webinar'); ?> 
+    <?php 
+      $args['post_status'] = 'draft';
+      $query = new WP_Query( $args );
+      $all = $query->post_count;
+    ?>
+    <span class="count">(<?php echo $all; ?>)</span></a> |</li>
+    <li class="pending"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=pending' ); ?>"><?php _e('Pending', 'webinar'); ?> 
+    <?php 
+      $args['post_status'] = 'pending';
+      $query = new WP_Query( $args );
+      $all = $query->post_count;
+    ?>
+    <span class="count">(<?php echo $all; ?>)</span></a> |</li>
+    <li class="trash"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=trash' ); ?>"><?php _e('Trash', 'webinar'); ?> 
+    <?php 
+      $args['post_status'] = 'trash';
+      $query = new WP_Query( $args );
+      $all = $query->post_count;
+    ?>
+    <span class="count">(<?php echo $all; ?>)</span></a></li>
+  </ul>
 
 
 
@@ -88,7 +127,14 @@ $active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
         <?php
         // echo 'test Omar';
-        $this->webinar_list_table->search_box( __( 'Search 5 Webinars', 'webinars' ), 'nds-user-find' );
+        $this->webinar_list_table->search_box( __( 'Searc Webinars', 'webinars' ), 'nds-user-find' );
+        
+        ?>
+        
+
+        <?php
+        
+        
         $this->webinar_list_table->display();
         
         if ( get_current_screen()->id === 'learnpress_page_zoom-webinars' ) {
@@ -97,6 +143,31 @@ $active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 
           if ( $user = get_user_by( 'id', LP_Request::get_int( 'author' ) ) ) {
             $option = sprintf( '<option value="%d" selected="selected">%s</option>', $user->ID, $user->user_login );
           }
+        }
+
+        $listArgs['posts_per_page'] = 1;
+        $listArgs['order_by'] = 'post_date';
+        $listArgs['order'] = 'ASC';
+        $list_first = get_posts($listArgs);
+        $firstDate = $list_first[0]->post_date;
+
+        $listArgs['order'] = 'DESC';
+        $list_last = get_posts($listArgs);
+        
+        $last_date = $list_last[0]->post_date;
+        $interval = DateInterval::createFromDateString('1 month');
+        $period = new DatePeriod(
+          new DateTime($firstDate),
+          $interval,
+          new DateTime($last_date)
+      );
+
+        echo 'list first: <pre>';
+        print_r($period);
+        echo '</pre>';
+        foreach ($period as $key => $value) {
+         $date = $value->format('Y-m-d');  
+         echo 'date t: ' . $date . '<br/>';    
         }
 				?>
         </form>
@@ -126,7 +197,13 @@ $active = (isset($_REQUEST['page']) && $_REQUEST['page'] == 'zooom-webinars') ? 
 
                     $form.on('submit', function (e) {
                         var url = window.location.href.removeQueryVar('author').addQueryVar('author', $select.val());
-                    })
+                    });
+
+
+                    /* Webinar Date Filter */
+                    
+
+
                 })</script>
 
 

@@ -135,20 +135,25 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	public function fetch_table_data() {
 		global $wpdb;
 
-		$orderby = ( isset( $_GET['orderby'] ) ) ? esc_sql( $_GET['orderby'] ) : 'post_date';
-		$order   = ( isset( $_GET['order'] ) ) ? esc_sql( $_GET['order'] ) : 'ASC';
-		$author   = ( isset( $_GET['author'] ) ) ? esc_sql( $_GET['author'] ) : '';
+		$orderby 		= ( isset( $_GET['orderby'] ) ) ? esc_sql( $_GET['orderby'] ) : 'post_date';
+		$order   		= ( isset( $_GET['order'] ) ) ? esc_sql( $_GET['order'] ) : 'ASC';
+		$author   		= ( isset( $_GET['author'] ) ) ? esc_sql( $_GET['author'] ) : '';
+		$post_status   	= ( isset( $_GET['post_status'] ) ) ? esc_sql( $_GET['post_status'] ) : '';
 
 		$query = "
 		    SELECT p.ID, p.post_title, p.post_date, p.post_status, p.post_type, p.post_author, pm.meta_key, pm.meta_value
 		    FROM $wpdb->posts p, $wpdb->postmeta pm
 		    WHERE p.ID = pm.post_id 
-		    AND pm.meta_key = '_course_type' 
+			AND pm.meta_key = '_course_type' 
+			AND pm.meta_value = 'webinar' 
 		    AND p.post_type = 'lp_course' 
     	";
 
 		if(!empty($author)){
 			$query .= $wpdb->prepare( " AND p.post_author = %d", $author );
+		}
+		if(!empty($post_status)){
+			$query .= $wpdb->prepare( " AND p.post_status = %s", $post_status );
 		}
 
 		$query .= " ORDER BY $orderby $order";

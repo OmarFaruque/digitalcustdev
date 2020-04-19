@@ -229,7 +229,7 @@ class LP_Plugin_Install_List_Table extends WP_List_Table {
         if ( 'top' ==  $which ) {
             wp_referer_field();
             ?>
-            <div class="tablenav top">
+            <div class="tablenav top omar3">
                 <div class="alignleft actions">
                     <?php
                     /**

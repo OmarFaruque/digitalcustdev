@@ -68,10 +68,15 @@ class Webinars_Admin {
 		add_filter( 'custom_menu_order', array($this, 'changeAdminSubMenuOrderForLearnPress') );
 		add_filter( 'learn_press_admin_tabs_on_pages', array( $this, 'admin_tabs_pages' ), 10, 2 );
 		add_filter( 'learn_press_admin_tabs_info', array( $this, 'admin_tab' ), 10, 2 );
+		// add_action('restrict_manage_posts', array($this, 'add_post_formats_filter_to_post_administration'));
 	}
 
 
-	/**
+
+
+
+
+		/**
 		 * @param $pages
 		 *
 		 * @return array

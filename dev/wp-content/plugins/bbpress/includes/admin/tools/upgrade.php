@@ -53,7 +53,7 @@ function bbp_admin_upgrade_page() {
 			<input type="hidden" name="page" value="bbp-upgrade" />
 			<?php wp_nonce_field( 'bbpress-do-counts' ); ?>
 
-			<div class="tablenav top">
+			<div class="tablenav top omar1">
 				<div class="alignleft actions bulkactions">
 					<label for="bulk-action-selector-top" class="screen-reader-text"><?php esc_html_e( 'Select bulk action', 'bbpress' ); ?></label>
 					<select name="action" id="bulk-action-selector-top">
