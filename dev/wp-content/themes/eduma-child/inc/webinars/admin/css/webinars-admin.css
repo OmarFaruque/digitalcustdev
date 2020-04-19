@@ -6,7 +6,10 @@
     background: #2196f34a;
     color: white;
 }
-#adminmenu li a.wp-has-current-submenu .update-plugins, #adminmenu li.wp-first-item.current a .awaiting-mod.custom {
+#adminmenu li a.wp-has-current-submenu .update-plugins, 
+#adminmenu li.wp-first-item.current a .awaiting-mod.custom,
+#adminmenu li.wp-first-item a .awaiting-mod.custom
+{
     background-color: #ca4a1f;
     color: #fff;
 }

@@ -299,7 +299,7 @@ abstract class LP_Abstract_Submenu {
 		?>
         <div class="<?php echo join( ' ', $classes ); ?>">
             <div id="icon-themes" class="icon32"><br></div>
-            <h1 class="wp-heading-inline"><?php echo $this->get_menu_title(); ?></h1>
+            <h1 class="wp-heading-inline omar"><?php echo $this->get_menu_title(); ?></h1>
 			<?php if ( $tabs ) { ?>
                 <h2 class="nav-tab-wrapper">
 					<?php foreach ( $tabs as $tab => $name ) { ?>

@@ -69,7 +69,7 @@ class Admin_DigitalCustDev_Webinar {
 		// echo 'omar test<pre>';
 		// print_r($this->webinar_list_table->prepare_items());
 		// echo '</pre>';
-
+		// echo 'render from : ' . DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list.php<br/>'; 
 		// render the List Table
 		include_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list.php';
 	}

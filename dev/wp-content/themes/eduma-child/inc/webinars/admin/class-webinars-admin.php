@@ -66,7 +66,57 @@ class Webinars_Admin {
 		add_action( 'pre_get_posts', array($this, 'course_duration_by_lesson_total_duration') );
 		add_action( 'add_meta_boxes', array($this, 'wpdocs_register_meta_boxes') );
 		add_filter( 'custom_menu_order', array($this, 'changeAdminSubMenuOrderForLearnPress') );
+		add_filter( 'learn_press_admin_tabs_on_pages', array( $this, 'admin_tabs_pages' ), 10, 2 );
+		add_filter( 'learn_press_admin_tabs_info', array( $this, 'admin_tab' ), 10, 2 );
 	}
+
+
+	/**
+		 * @param $pages
+		 *
+		 * @return array
+		 */
+		public function admin_tabs_pages( $pages ) {
+			$allowArray = array('learnpress_page_zoom-webinars', 'edit-webinar_tag', 'edit-webinar_categories');
+			if ( in_array(get_current_screen()->id, $allowArray) )
+			{
+				$pages = $allowArray;
+			}	
+			return $pages;
+		}
+
+
+		/**
+		 * @param $tabs
+		 *
+		 * @return array
+		 */
+		public function admin_tab( $tabs ) {
+			$allowArray = array('learnpress_page_zoom-webinars', 'edit-webinar_categories', 'edit-webinar_tag');
+			$links = array(
+				'admin.php?page=zoom-webinars',
+				'edit-tags.php?taxonomy=webinar_categories&post_type=lp_course',
+				'edit-tags.php?taxonomy=webinar_tag&post_type=lp_course'
+			);
+			$names = array(
+				__( "Webinars", "learnpress" ),
+				__( "Webinar Category", "learnpress" ),
+				__( "Webinar Tags", "learnpress" )
+			);
+
+			if ( in_array(get_current_screen()->id, $allowArray) ){
+				$tabs = array();
+				foreach($allowArray as $k => $sa){
+					$tabs[] = array(
+						"link" => $links[$k],
+						"name" => $names[$k],
+						"id"   => $sa
+					);
+				}	
+			}
+
+			return $tabs;
+		}
 
 
 	/*

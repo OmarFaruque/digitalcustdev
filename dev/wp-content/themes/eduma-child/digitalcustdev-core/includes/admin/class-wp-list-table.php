@@ -137,6 +137,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 		$orderby = ( isset( $_GET['orderby'] ) ) ? esc_sql( $_GET['orderby'] ) : 'post_date';
 		$order   = ( isset( $_GET['order'] ) ) ? esc_sql( $_GET['order'] ) : 'ASC';
+		$author   = ( isset( $_GET['author'] ) ) ? esc_sql( $_GET['author'] ) : '';
 
 		$query = "
 		    SELECT p.ID, p.post_title, p.post_date, p.post_status, p.post_type, p.post_author, pm.meta_key, pm.meta_value
@@ -144,11 +145,16 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		    WHERE p.ID = pm.post_id 
 		    AND pm.meta_key = '_course_type' 
 		    AND p.post_type = 'lp_course' 
-		    ORDER BY $orderby $order
     	";
 
+		if(!empty($author)){
+			$query .= $wpdb->prepare( " AND p.post_author = %d", $author );
+		}
+
+		$query .= " ORDER BY $orderby $order";
 		// query output_type will be an associative array with ARRAY_A.
 		$query_results = $wpdb->get_results( $query, ARRAY_A );
+
 
 		// return result array to prepare_items.
 		return $query_results;

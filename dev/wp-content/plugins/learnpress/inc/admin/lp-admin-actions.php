@@ -221,14 +221,20 @@ function learn_press_admin_course_tabs() {
 		)
 	);
 	ksort( $admin_tabs );
+
 	$tabs = array();
 	foreach ( $admin_tabs as $key => $value ) {
 		array_push( $tabs, $key );
 	}
+
+	
+
+
 	$pages              = apply_filters(
 		'learn_press_admin_tabs_on_pages',
 		array( 'edit-lp_course', 'edit-course_category', 'edit-course_tag', 'lp_course' )
 	);
+	
 	$admin_tabs_on_page = array();
 	foreach ( $pages as $page ) {
 		$admin_tabs_on_page[ $page ] = $tabs;
@@ -236,11 +242,11 @@ function learn_press_admin_course_tabs() {
 
 
 	$current_page_id = get_current_screen()->id;
-	echo 'current page id: ' . $current_page_id . '<br/>';
 	$current_user    = wp_get_current_user();
 	if ( ! in_array( 'administrator', $current_user->roles ) ) {
 		return;
 	}
+	
 	if ( ! empty( $admin_tabs_on_page[ $current_page_id ] ) && count( $admin_tabs_on_page[ $current_page_id ] ) ) {
 		echo '<h2 class="nav-tab-wrapper lp-nav-tab-wrapper">';
 		foreach ( $admin_tabs_on_page[ $current_page_id ] as $admin_tab_id ) {
