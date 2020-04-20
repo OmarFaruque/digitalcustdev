@@ -333,6 +333,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	 * @return string Row actions output for posts, or an empty string
 	 *                if the current column is not the primary column.
 	 */
+	// Reference : https://core.svn.wordpress.org/trunk/wp-admin/includes/class-wp-posts-list-table.php
 	protected function handle_row_actions( $post, $column_name, $primary ) {
 		
 		if ( $primary !== $column_name ) {
