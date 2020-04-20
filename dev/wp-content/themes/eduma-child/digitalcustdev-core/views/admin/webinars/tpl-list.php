@@ -162,13 +162,15 @@ $listArgs = $args;
           new DateTime($last_date)
       );
 
-        echo 'list first: <pre>';
-        print_r($period);
-        echo '</pre>';
+        $dateFilter = '<div class="alignleft actions"><label for="filter-by-date" class="screen-reader-text">Filter by date</label><select name="m" id="filter-by-date"><option selected="selected" value="0">All dates</option>';
+                
         foreach ($period as $key => $value) {
-         $date = $value->format('Y-m-d');  
-         echo 'date t: ' . $date . '<br/>';    
+        //  $date = $value->format('Ym');  
+         $datev = $date = $value->format('F Y'); 
+         $selected = ($value->format('Ym') == $_REQUEST['m'])?'selected':'';
+         $dateFilter .= '<option '.$selected.' value="'.$value->format('Ym').'">'.$datev.'</option>';
         }
+        $dateFilter .= '</select><input type="submit" name="filter_action" id="post-query-submit" class="button" value="Filter"></div>';
 				?>
         </form>
 
@@ -198,6 +200,8 @@ $listArgs = $args;
                     $form.on('submit', function (e) {
                         var url = window.location.href.removeQueryVar('author').addQueryVar('author', $select.val());
                     });
+
+                    $('<?php echo $dateFilter; ?>').insertAfter($('.tablenav.top').find('.alignleft.actions.bulkactions'));
 
 
                     /* Webinar Date Filter */
