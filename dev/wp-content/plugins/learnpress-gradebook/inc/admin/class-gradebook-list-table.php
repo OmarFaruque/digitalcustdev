@@ -152,6 +152,7 @@ class LP_Gradebook_List_Table extends WP_List_Table {
 	}
 	
 	protected function display_tablenav( $which ) {
+		// echo 'screen: ' . $this->screen->post_type . '<br/>';
 		?>
         <div class="tablenav  <?php echo esc_attr( $which ); ?>">
 

@@ -24,8 +24,17 @@ class Admin_DigitalCustDev_Webinar {
 		add_action( 'pre_get_posts', array( $this, 'filter_admin_results_courses' ) );
 
 		add_action( 'save_post_lp_lesson', array( $this, 'save' ), 99 );
+
+		add_action( 'admin_enqueue_scripts', array($this, 'add_admin_scripts'), 10, 1 );
 	}
 
+
+	public function add_admin_scripts($hook){
+		// echo 'hook: ' . $hook . '<br/>';
+		if($hook == 'learnpress_page_zoom-webinars'){
+			wp_enqueue_script( 'inline-edit-post-custom', get_stylesheet_directory_uri() . '/inc/webinars/admin/js/inline-edit-post.js', array( 'jquery' ), time(), false );
+		}
+	}
 	public function menu() {
 		$page_hook = add_submenu_page( 'learn_press', __( 'Webinars', 'digitalcustdev-core' ), __( 'Webinars', 'digitalcustdev-core' ), 'manage_options', 'zoom-webinars', array( $this, 'load_webinar_list_table' ) );
 

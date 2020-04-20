@@ -201,7 +201,7 @@ $listArgs = $args;
                         var url = window.location.href.removeQueryVar('author').addQueryVar('author', $select.val());
                     });
 
-                    $('<?php echo $dateFilter; ?>').insertAfter($('.tablenav.top').find('.alignleft.actions.bulkactions'));
+                    
 
 
                     /* Webinar Date Filter */

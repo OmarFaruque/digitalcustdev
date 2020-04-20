@@ -138,6 +138,7 @@ class LP_Plugin_Install_List_Table extends WP_List_Table {
      * @param array
      */
     public function prepare_items( $args = array() ) {
+        echo 'screen: ' . $this->screen->post_type . '<br/>';
         global $learn_press_add_ons;
         $this->upgrader = new LP_Upgrader();
 

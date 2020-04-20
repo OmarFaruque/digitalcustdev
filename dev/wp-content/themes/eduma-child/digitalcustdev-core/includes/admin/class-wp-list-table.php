@@ -8,7 +8,7 @@ if(!class_exists('WP_List_Table')){
 	return;
 }
 class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
-
+	// $this->post_type
 	/**
 	 * The text domain of this plugin.
 	 *
@@ -17,16 +17,139 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	 * @var      string $plugin_text_domain The text domain of this plugin.
 	 */
 	protected $plugin_text_domain;
+	public $post_type;
+	protected $current_level = 0;
+
+	/**
+	 * Whether the items should be displayed hierarchically or linearly.
+	 *
+	 * @since 3.1.0
+	 * @var bool
+	 */
+	protected $hierarchical_display;
 
 	public function __construct( $plugin_text_domain ) {
 
 		$this->plugin_text_domain = $plugin_text_domain;
+		$this->post_type = 'lp_course';
 
 		parent::__construct( array(
 			'plural'   => 'webinars',
 			'singular' => 'webinar',
 			'ajax'     => true,
 		) );
+	}
+
+	/**
+	 * Sets whether the table layout should be hierarchical or not.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param bool $display Whether the table layout should be hierarchical.
+	 */
+	public function set_hierarchical_display( $display ) {
+		$this->hierarchical_display = $display;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ajax_user_can() {
+		return current_user_can( 'edit_posts' );
+	}
+
+
+	/**
+	 * Helper to create links to edit.php with params.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param string[] $args  Associative array of URL parameters for the link.
+	 * @param string   $label Link text.
+	 * @param string   $class Optional. Class attribute. Default empty string.
+	 * @return string The formatted link string.
+	 */
+	protected function get_edit_link( $args, $label, $class = '' ) {
+		$url = add_query_arg( $args, 'edit.php' );
+
+		$class_html   = '';
+		$aria_current = '';
+		if ( ! empty( $class ) ) {
+			$class_html = sprintf(
+				' class="%s"',
+				esc_attr( $class )
+			);
+
+			if ( 'current' === $class ) {
+				$aria_current = ' aria-current="page"';
+			}
+		}
+
+		return sprintf(
+			'<a href="%s"%s%s>%s</a>',
+			esc_url( $url ),
+			$class_html,
+			$aria_current,
+			$label
+		);
+	}
+
+
+	/**
+	 * @param string $which
+	 */
+	protected function extra_tablenav( $which ) {
+		// echo 'this post tpe: ' . current_user_can( get_post_type_object( $this->post_type )->cap->edit_posts ) . '<br/>';
+		?>
+		<div class="alignleft omarAcion actions">
+		<?php
+		if ( 'top' === $which && ! is_singular() ) {
+			ob_start();
+
+			$this->months_dropdown( $this->post_type );
+			$this->categories_dropdown( $this->post_type );
+			$this->formats_dropdown( $this->post_type );
+
+			/**
+			 * Fires before the Filter button on the Posts and Pages list tables.
+			 *
+			 * The Filter button allows sorting by date and/or category on the
+			 * Posts list table, and sorting by date on the Pages list table.
+			 *
+			 * @since 2.1.0
+			 * @since 4.4.0 The `$post_type` parameter was added.
+			 * @since 4.6.0 The `$which` parameter was added.
+			 *
+			 * @param string $post_type The post type slug.
+			 * @param string $which     The location of the extra table nav markup:
+			 *                          'top' or 'bottom' for WP_Posts_List_Table,
+			 *                          'bar' for WP_Media_List_Table.
+			 */
+			do_action( 'restrict_manage_posts', $this->post_type, $which );
+
+			$output = ob_get_clean();
+
+			if ( ! empty( $output ) ) {
+				echo $output;
+				submit_button( __( 'Filter' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
+			}
+		}
+
+		if ( $this->is_trash && current_user_can( get_post_type_object( $this->post_type )->cap->edit_others_posts ) && $this->has_items() ) {
+			submit_button( __( 'Empty Trash' ), 'apply', 'delete_all', false );
+		}
+		?>
+		</div>
+		<?php
+		/**
+		 * Fires immediately following the closing "actions" div in the tablenav for the posts
+		 * list table.
+		 *
+		 * @since 4.4.0
+		 *
+		 * @param string $which The location of the extra table nav markup: 'top' or 'bottom'.
+		 */
+		do_action( 'manage_posts_extra_tablenav', $which );
 	}
 
 	public function prepare_items() {
@@ -61,6 +184,113 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 			'total_pages' => ceil( $total_webinars / $webinars_per_page )
 		) );
 	}
+
+	/**
+	 * Gets the name of the default primary column.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @return string Name of the default primary column, in this case, 'title'.
+	 */
+	protected function get_default_primary_column_name() {
+		return 'title';
+	}
+
+
+	/**
+	 * Handles the title column output.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @global string $mode List table view mode.
+	 *
+	 * @param WP_Post $post The current WP_Post object.
+	 */
+	public function column_title( $post ) {
+		global $mode;
+		// echo 'post id: ' . $post['ID'] . '<br/>';
+		$post = get_post($post['ID']);
+		if ( $this->hierarchical_display ) {
+			if ( 0 === $this->current_level && (int) $post->post_parent > 0 ) {
+				// Sent level 0 by accident, by default, or because we don't know the actual level.
+				$find_main_page = (int) $post->post_parent;
+				while ( $find_main_page > 0 ) {
+					$parent = get_post( $find_main_page );
+
+					if ( is_null( $parent ) ) {
+						break;
+					}
+
+					$this->current_level++;
+					$find_main_page = (int) $parent->post_parent;
+
+					if ( ! isset( $parent_name ) ) {
+						/** This filter is documented in wp-includes/post-template.php */
+						$parent_name = apply_filters( 'the_title', $parent->post_title, $parent->ID );
+					}
+				}
+			}
+		}
+
+		$can_edit_post = current_user_can( 'edit_post', $post->ID );
+
+		if ( $can_edit_post && 'trash' !== $post->post_status ) {
+			$lock_holder = wp_check_post_lock( $post->ID );
+
+			if ( $lock_holder ) {
+				$lock_holder   = get_userdata( $lock_holder );
+				$locked_avatar = get_avatar( $lock_holder->ID, 18 );
+				/* translators: %s: User's display name. */
+				$locked_text = esc_html( sprintf( __( '%s is currently editing' ), $lock_holder->display_name ) );
+			} else {
+				$locked_avatar = '';
+				$locked_text   = '';
+			}
+
+			echo '<div class="locked-info"><span class="locked-avatar">' . $locked_avatar . '</span> <span class="locked-text">' . $locked_text . "</span></div>\n";
+		}
+
+		$pad = str_repeat( '&#8212; ', $this->current_level );
+		echo '<strong>';
+
+		$title = _draft_or_post_title();
+
+		if ( $can_edit_post && 'trash' !== $post->post_status ) {
+			printf(
+				'<a class="row-title" href="%s" aria-label="%s">%s%s</a>',
+				get_edit_post_link( $post->ID ),
+				/* translators: %s: Post title. */
+				esc_attr( sprintf( __( '&#8220;%s&#8221; (Edit)' ), $title ) ),
+				$pad,
+				$title
+			);
+		} else {
+			printf(
+				'<span>%s%s</span>',
+				$pad,
+				$title
+			);
+		}
+		_post_states( $post );
+
+		if ( isset( $parent_name ) ) {
+			$post_type_object = get_post_type_object( $post->post_type );
+			echo ' | ' . $post_type_object->labels->parent_item_colon . ' ' . esc_html( $parent_name );
+		}
+		echo "</strong>\n";
+
+		if ( ! is_post_type_hierarchical( $this->post_type ) && 'excerpt' === $mode && current_user_can( 'read_post', $post->ID ) ) {
+			if ( post_password_required( $post ) ) {
+				echo '<span class="protected-post-excerpt">' . esc_html( get_the_excerpt() ) . '</span>';
+			} else {
+				echo esc_html( get_the_excerpt() );
+			}
+		}
+
+		get_inline_data( $post );
+	}
+
+
 
 	/**
 	 * Get a list of columns. The format is:
@@ -229,9 +459,9 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 			case 'post_date':
 			case 'post_webinars':
 			case 'post_author':
-				return $item[ $column_name ];
+				return $item->$column_name;
 			default:
-				return $item[ $column_name ];
+				return $item->$column_name;
 		}
 	}
 
@@ -245,12 +475,11 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	 * @return string Text to be placed inside the column <td>.
 	 */
 	protected function column_cb( $item ) {
-		
-		return sprintf( '<label class="screen-reader-text" for="webinar_' . $item['ID'] . '">' . sprintf( __( 'Select %s' ), $item['ID'] ) . '</label>' . "<input type='checkbox' name='webinars[]' id='webinar_{$item['ID']}' value='{$item['ID']}' />" );
+		return sprintf( '<label class="screen-reader-text" for="webinar_' . $item->ID . '">' . sprintf( __( 'Select %s' ), $item->ID ) . '</label>' . "<input type='checkbox' name='webinars[]' id='webinar_{$item->ID}' value='{$item->ID}' />" );
 	}
 
 	protected function column_post_author( $item ) {
-		$user      = get_userdata( $item['post_author'] );
+		$user      = get_userdata( $item->post_author );
 		
 		$user_info = ($user) ? $user->data->display_name : '';
 
@@ -258,19 +487,19 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	}
 
 	protected function column_post_title( $item ) {
-		$status = $item['post_status'] === "draft" ? ' - draft' : false;
+		$status = $item->post_status === "draft" ? ' - draft' : false;
 
 		// row actions to view usermeta.
-		$view_usermeta_link       = esc_url( get_edit_post_link( $item['ID'] ) );
+		$view_usermeta_link       = esc_url( get_edit_post_link( $item->ID ) );
 		$actions['view_usermeta'] = '<a href="' . $view_usermeta_link . '">' . __( 'Edit', $this->plugin_text_domain ) . '</a>';
 
-		$add_usermeta_link       = esc_url( get_permalink( $item['ID'] ) );
+		$add_usermeta_link       = esc_url( get_permalink( $item->ID ) );
 		$actions['add_usermeta'] = '<a href="' . $add_usermeta_link . '">' . __( 'View', $this->plugin_text_domain ) . '</a>';
 
-		$row_value = sprintf( '<a href="%s">' . $item['post_title'] . '</a> %s', get_edit_post_link( $item['ID'] ), $status );
+		$row_value = sprintf( '<a href="%s">' . $item->post_title . '</a> %s', get_edit_post_link( $item->ID ), $status );
 
 
-		$post = get_post( $item['ID'] );
+		$post = get_post( $item->ID );
 		if ( LP_COURSE_CPT == $post->post_type ) {
 			$duplicate_link = '#';
 			$duplicate_link = array(
@@ -315,7 +544,9 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		// $tt = apply_filters( 'learn-press/row-action-links', $actions );
 		// return apply_filters( 'post_row_actions', $tt );
 		// return $row_value . $this->row_actions( $actions );
-		return $row_value;
+		echo $row_value;
+		get_inline_data( $post );
+
 		// return 'oamr t';
 	}
 
@@ -341,7 +572,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		}
 
 		
-
+		$post = get_post($post->ID);
 		$post_type_object = get_post_type_object( $post->post_type );
 		$can_edit_post    = current_user_can( 'edit_post', $post->ID );
 		$actions          = array();
@@ -350,10 +581,9 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		// echo 'Post array <pre>';
 		// print_r($post);
 		// echo '</pre>';
-		$post = get_post($post['ID']);
+		
 
 		if ( $can_edit_post && 'trash' != $post->post_status ) {
-			
 			$actions['edit'] = sprintf(
 				'<a href="%s" aria-label="%s">%s</a>',
 				get_edit_post_link( $post->ID ),
@@ -475,13 +705,13 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	}
 	protected function column_gradebook( $item ) {
 		printf( '<a href="%s" target="">%s</a>',
-					learn_press_gradebook_nonce_url( array( 'course_id' => $item['ID'] ) ),
+					learn_press_gradebook_nonce_url( array( 'course_id' => $item->ID ) ),
 					__( 'View', 'learnpress-gradebook' )
 				);
 	}
 
 	protected function column_post_comments( $item ) {
-		if(get_comments_number($item['ID']) > 0){
+		if(get_comments_number($item->ID) > 0){
 			printf( '<div class="post-com-count-wrapper"><a href="%s" class="post-com-count post-com-count-approved"><span class="comment-count-approved" aria-hidden="true">1</span><span class="screen-reader-text">1 comment</span></a><span class="post-com-count post-com-count-pending post-com-count-no-pending"><span class="comment-count comment-count-no-pending" aria-hidden="true">0</span><span class="screen-reader-text">No pending comments</span></span>		</div>', admin_url( 'edit-comments.php?p='.$item['ID'].'&comment_status=approved' ) );
 		}else{
 			echo '—';
@@ -489,7 +719,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	}
 
 	protected function column_meta_price( $item ) {
-		$course = learn_press_get_course( $item['ID'] );
+		$course = learn_press_get_course( $item->ID );
 		$price   = $course->get_price();
 					$is_paid = ! $course->is_free();
 
@@ -511,14 +741,14 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 
 	protected function column_linked_students( $item ) {
-		$course = learn_press_get_course( $item['ID'] );
+		$course = learn_press_get_course( $item->ID );
 		$count = $course->count_completed_orders();
 		echo '<span class="lp-label-counter' . ( ! $count ? ' disabled' : '' ) . '">' . $count . '</span>';
 	}
 
 	protected function column_sections( $item ) {
 		$curd            = new LP_Course_CURD();
-		$post_id = $item['ID'];
+		$post_id = $item->ID;
 		$number_sections = $curd->count_sections( $post_id );
 		if ( $number_sections ) {
 			$output     = sprintf( _n( '<strong>%d</strong> section', '<strong>%d</strong> sections', $number_sections, 'learnpress' ), $number_sections );
@@ -678,6 +908,41 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * @global WP_Post $post Global post object.
+	 *
+	 * @param int|WP_Post $post
+	 * @param int         $level
+	 */
+	public function single_row( $post, $level = 0 ) {
+		$global_post = get_post($post['ID']);
+
+		$post                = get_post( $post['ID'] );
+		$this->current_level = $level;
+
+		$GLOBALS['post'] = $post;
+		setup_postdata( $post );
+
+		$classes = 'iedit author-' . ( get_current_user_id() == $post->post_author ? 'self' : 'other' );
+
+		$lock_holder = wp_check_post_lock( $post->ID );
+		if ( $lock_holder ) {
+			$classes .= ' wp-locked';
+		}
+
+		if ( $post->post_parent ) {
+			$count    = count( get_post_ancestors( $post->ID ) );
+			$classes .= ' level-' . $count;
+		} else {
+			$classes .= ' level-0';
+		}
+		?>
+		<tr id="post-<?php echo $post->ID; ?>" class="<?php echo implode( ' ', get_post_class( $classes, $post->ID ) ); ?>">
+			<?php $this->single_row_columns( $post ); ?>
+		</tr>
+		<?php
+		$GLOBALS['post'] = $global_post;
+	}
+	/**
 	 * Bulk process users.
 	 *
 	 * @since   1.0.0
@@ -724,10 +989,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 
 
-
-
-	/* Inline Edit */
-	/**
+/**
 	 * Outputs the hidden row displayed when inline editing
 	 *
 	 * @since 3.1.0
@@ -735,9 +997,8 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	 * @global string $mode List table view mode.
 	 */
 	public function inline_edit() {
-		echo 'tst omar f';
 		global $mode;
-
+		echo 'this is omar';
 		$screen = $this->screen;
 
 		$post             = get_default_post_to_edit( $screen->post_type );

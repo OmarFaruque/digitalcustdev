@@ -83,6 +83,7 @@ if ( ! class_exists( 'LP_Student_Assignment_List_Table' ) ) {
 		 * Prepare items.
 		 */
 		public function prepare_items() {
+			// echo 'screen: ' . $this->screen->post_type . '<br/>';
 			$columns               = $this->get_columns();
 			$hidden                = array();
 			$sortable              = array();

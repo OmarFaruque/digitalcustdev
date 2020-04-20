@@ -1158,6 +1158,7 @@ function testfunction(){
 }
 
 add_action( 'admin_init', function() {
+	// echo 'current post type: ' . get_current_screen() . '<br/>';
     $author = get_role( 'lp_teacher' );
     if ( ! $author->has_cap( 'manage_own_attachments' ) ) {
         $author->add_cap( 'manage_own_attachments' );
