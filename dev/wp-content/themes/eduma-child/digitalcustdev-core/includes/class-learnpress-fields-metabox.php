@@ -21,7 +21,7 @@ class DigitalCustDev_LearpressMetaboxFields {
 		$timezone 		= 'Europe/Moscow';
 		$when_webinar 	= date( 'd/m/Y H:i' );
 
-
+		$input_type = 'lesson_duration';
 
 		foreach ( $fields['fields'] as $k => $field ) {
 			if ( $field['id'] === "_lp_duration" ) {
@@ -32,7 +32,7 @@ class DigitalCustDev_LearpressMetaboxFields {
 		$fields['fields'][] = array(
 			'name'         => __( 'Duration', 'learnpress' ),
 			'id'           => '_lp_duration',
-			'type'         => 'lesson_duration',
+			'type'         => $input_type,
 			'default_time' => 'minute',
 			'desc'         => '',
 			'std'          => '45 minute'

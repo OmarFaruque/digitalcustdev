@@ -213,6 +213,9 @@ class Webinars_Admin {
 		global $post;
 		if(is_admin() && $_REQUEST['action'] == 'edit' && get_post_type( $post ) == 'lp_course' ) {
 			$lessons = get_course_lessons($post->ID);
+			$course_type = get_post_meta( $post->ID, '_course_type', true );
+			
+			if($course_type != 'webinar'){
 			$_lp_duration = 0;
 			foreach($lessons as $sl){
 				if(get_post_meta( $sl, '_lp_duration', true )){
@@ -241,6 +244,7 @@ class Webinars_Admin {
 				}
 			}
 			update_post_meta( $post->ID, '_lp_duration', $_lp_duration . ' minute' );
+			}
 		}
 	}
 

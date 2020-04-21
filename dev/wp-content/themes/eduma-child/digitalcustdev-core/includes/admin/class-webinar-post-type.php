@@ -36,10 +36,12 @@ class Admin_DigitalCustDev_Webinar {
 		}
 	}
 	public function menu() {
-		$count_courses   = wp_count_posts( LP_COURSE_CPT );
-		$awaiting_mod    = $count_courses->pending;
+		$args = array( 'post_type' => LP_COURSE_CPT, 'posts_per_page' => -1, 'post_status' => 'pending', 'meta_key' => '_course_type', 'meta_value' => 'webinar' );
+		$query = new WP_Query( $args );
+		$awaiting_mod = $query->post_count;
+		
 		$countrer = "<span class='custom awaiting-mod count-$awaiting_mod'><span class='pending-count'>" . number_format_i18n( $awaiting_mod ) . "</span></span>";
-		$page_hook = add_submenu_page( 'learn_press', __( 'Webinars', 'digitalcustdev-core' ), __( 'Webinars' . $countrer , 'digitalcustdev-core' ), 'manage_options', 'zoom-webinars', array( $this, 'load_webinar_list_table' ) );
+		$page_hook = add_submenu_page( 'learn_press', __( 'Webinars', 'digitalcustdev-core' ), __( 'Webinars' , 'digitalcustdev-core' ) . $countrer, 'manage_options', 'zoom-webinars', array( $this, 'load_webinar_list_table' ) );
 
 		/*
 		 * The $page_hook_suffix can be combined with the load-($page_hook) action hook

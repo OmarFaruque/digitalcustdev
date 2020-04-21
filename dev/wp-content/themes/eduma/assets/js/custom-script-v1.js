@@ -913,6 +913,7 @@ var woof_js_after_ajax_done;
 			}
 
 			function _user_complete_lesson(response, that) {
+				console.log('udpate lession');
 				if (response && response.result == 'success') {
 					var $button = that.$('.complete-lesson-button'),
 						$complete_text = $button.data('completed-text');

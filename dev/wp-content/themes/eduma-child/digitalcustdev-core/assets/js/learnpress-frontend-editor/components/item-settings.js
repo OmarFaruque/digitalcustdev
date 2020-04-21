@@ -75,7 +75,7 @@
              * Update item settings to DB
              */
             updateItemSettings: FE_Helpers.debounce(function () {
-                // console.log('tis update');
+                console.log('tis update');
                 // console.log(this.itemData.settings);
                 // console.log('this id: ' + this.itemData.id);
                 FE_Helpers.startActivity();

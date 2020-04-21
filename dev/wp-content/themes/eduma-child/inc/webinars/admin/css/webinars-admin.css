@@ -9,7 +9,8 @@
 }
 #adminmenu li a.wp-has-current-submenu .update-plugins, 
 #adminmenu li.wp-first-item.current a .awaiting-mod.custom,
-#adminmenu li.wp-first-item a .awaiting-mod.custom
+#adminmenu li.wp-first-item a .awaiting-mod.custom,
+#adminmenu ul.wp-submenu.wp-submenu-wrap li:nth-child(3) a .awaiting-mod.custom
 {
     background-color: #ca4a1f;
     color: #fff;
