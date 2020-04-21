@@ -183,6 +183,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 			'per_page'    => $webinars_per_page,
 			'total_pages' => ceil( $total_webinars / $webinars_per_page )
 		) );
+		$this->inline_edit();
 	}
 
 	/**
@@ -487,7 +488,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	}
 
 	protected function column_post_title( $item ) {
-		$status = $item->post_status === "draft" ? ' - draft' : false;
+		$status = ' — <span class="post-state">'.ucfirst($item->post_status).'</span>';
 
 		// row actions to view usermeta.
 		$view_usermeta_link       = esc_url( get_edit_post_link( $item->ID ) );
@@ -496,7 +497,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		$add_usermeta_link       = esc_url( get_permalink( $item->ID ) );
 		$actions['add_usermeta'] = '<a href="' . $add_usermeta_link . '">' . __( 'View', $this->plugin_text_domain ) . '</a>';
 
-		$row_value = sprintf( '<a href="%s">' . $item->post_title . '</a> %s', get_edit_post_link( $item->ID ), $status );
+		$row_value = sprintf( '<strong><a href="%s">' . $item->post_title . '</a></strong> %s', get_edit_post_link( $item->ID ), $status );
 
 
 		$post = get_post( $item->ID );
@@ -998,13 +999,12 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	 */
 	public function inline_edit() {
 		global $mode;
-		echo 'this is omar';
-		$screen = $this->screen;
+		// echo 'this is omar';
+		// $screen = $this->screen;
+		$post             = get_default_post_to_edit( $this->post_type );
+		$post_type_object = get_post_type_object( $this->post_type );
 
-		$post             = get_default_post_to_edit( $screen->post_type );
-		$post_type_object = get_post_type_object( $screen->post_type );
-
-		$taxonomy_names          = get_object_taxonomies( $screen->post_type );
+		$taxonomy_names          = get_object_taxonomies( $this->post_type );
 		$hierarchical_taxonomies = array();
 		$flat_taxonomies         = array();
 
@@ -1049,12 +1049,13 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		?>
 
 		<form method="get">
-		<table style="display: none"><tbody id="inlineedit">
+		<tr id="inline-edit">
+		<table style="display: none"><tbody>
 		<?php
 		$hclass              = count( $hierarchical_taxonomies ) ? 'post' : 'page';
 		$inline_edit_classes = "inline-edit-row inline-edit-row-$hclass";
-		$bulk_edit_classes   = "bulk-edit-row bulk-edit-row-$hclass bulk-edit-{$screen->post_type}";
-		$quick_edit_classes  = "quick-edit-row quick-edit-row-$hclass inline-edit-{$screen->post_type}";
+		$bulk_edit_classes   = "bulk-edit-row bulk-edit-row-$hclass bulk-edit-{$this->post_type}";
+		$quick_edit_classes  = "quick-edit-row quick-edit-row-$hclass inline-edit-{$this->post_type}";
 
 		$bulk = 0;
 		while ( $bulk < 2 ) :
@@ -1068,7 +1069,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 				<legend class="inline-edit-legend"><?php echo $bulk ? __( 'Bulk Edit' ) : __( 'Quick Edit' ); ?></legend>
 				<div class="inline-edit-col">
 
-				<?php if ( post_type_supports( $screen->post_type, 'title' ) ) : ?>
+				<?php if ( post_type_supports( $this->post_type, 'title' ) ) : ?>
 
 					<?php if ( $bulk ) : ?>
 
@@ -1083,7 +1084,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 							<span class="input-text-wrap"><input type="text" name="post_title" class="ptitle" value="" /></span>
 						</label>
 
-						<?php if ( is_post_type_viewable( $screen->post_type ) ) : ?>
+						<?php if ( is_post_type_viewable( $this->post_type ) ) : ?>
 
 							<label>
 								<span class="title"><?php _e( 'Slug' ); ?></span>
@@ -1105,7 +1106,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 				<?php endif; // $bulk ?>
 
 				<?php
-				if ( post_type_supports( $screen->post_type, 'author' ) ) :
+				if ( post_type_supports( $this->post_type, 'author' ) ) :
 					$authors_dropdown = '';
 
 					if ( current_user_can( $post_type_object->cap->edit_others_posts ) ) :
@@ -1189,12 +1190,12 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 				<div class="inline-edit-col">
 
 				<?php
-				if ( post_type_supports( $screen->post_type, 'author' ) && $bulk ) {
+				if ( post_type_supports( $this->post_type, 'author' ) && $bulk ) {
 					echo $authors_dropdown;
 				}
 				?>
 
-				<?php if ( post_type_supports( $screen->post_type, 'page-attributes' ) ) : ?>
+				<?php if ( post_type_supports( $this->post_type, 'page-attributes' ) ) : ?>
 
 					<?php if ( $post_type_object->hierarchical ) : ?>
 
@@ -1242,7 +1243,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 				<?php endif; // post_type_supports( ... 'page-attributes' ) ?>
 
-				<?php if ( 0 < count( get_page_templates( null, $screen->post_type ) ) ) : ?>
+				<?php if ( 0 < count( get_page_templates( null, $this->post_type ) ) ) : ?>
 
 					<label>
 						<span class="title"><?php _e( 'Template' ); ?></span>
@@ -1255,7 +1256,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 							$default_title = apply_filters( 'default_page_template_title', __( 'Default Template' ), 'quick-edit' );
 							?>
 							<option value="default"><?php echo esc_html( $default_title ); ?></option>
-							<?php page_template_dropdown( '', $screen->post_type ); ?>
+							<?php page_template_dropdown( '', $this->post_type ); ?>
 						</select>
 					</label>
 
@@ -1279,13 +1280,13 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 				<?php endif; // count( $flat_taxonomies ) && ! $bulk ?>
 
-				<?php if ( post_type_supports( $screen->post_type, 'comments' ) || post_type_supports( $screen->post_type, 'trackbacks' ) ) : ?>
+				<?php if ( post_type_supports( $this->post_type, 'comments' ) || post_type_supports( $this->post_type, 'trackbacks' ) ) : ?>
 
 					<?php if ( $bulk ) : ?>
 
 						<div class="inline-edit-group wp-clearfix">
 
-						<?php if ( post_type_supports( $screen->post_type, 'comments' ) ) : ?>
+						<?php if ( post_type_supports( $this->post_type, 'comments' ) ) : ?>
 
 							<label class="alignleft">
 								<span class="title"><?php _e( 'Comments' ); ?></span>
@@ -1298,7 +1299,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 						<?php endif; ?>
 
-						<?php if ( post_type_supports( $screen->post_type, 'trackbacks' ) ) : ?>
+						<?php if ( post_type_supports( $this->post_type, 'trackbacks' ) ) : ?>
 
 							<label class="alignright">
 								<span class="title"><?php _e( 'Pings' ); ?></span>
@@ -1317,7 +1318,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 						<div class="inline-edit-group wp-clearfix">
 
-						<?php if ( post_type_supports( $screen->post_type, 'comments' ) ) : ?>
+						<?php if ( post_type_supports( $this->post_type, 'comments' ) ) : ?>
 
 							<label class="alignleft">
 								<input type="checkbox" name="comment_status" value="open" />
@@ -1326,7 +1327,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 						<?php endif; ?>
 
-						<?php if ( post_type_supports( $screen->post_type, 'trackbacks' ) ) : ?>
+						<?php if ( post_type_supports( $this->post_type, 'trackbacks' ) ) : ?>
 
 							<label class="alignleft">
 								<input type="checkbox" name="ping_status" value="open" />
@@ -1363,7 +1364,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 							</select>
 						</label>
 
-						<?php if ( 'post' === $screen->post_type && $can_publish && current_user_can( $post_type_object->cap->edit_others_posts ) ) : ?>
+						<?php if ( 'post' === $this->post_type && $can_publish && current_user_can( $post_type_object->cap->edit_others_posts ) ) : ?>
 
 							<?php if ( $bulk ) : ?>
 
@@ -1389,7 +1390,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 					</div>
 
-				<?php if ( $bulk && current_theme_supports( 'post-formats' ) && post_type_supports( $screen->post_type, 'post-formats' ) ) : ?>
+				<?php if ( $bulk && current_theme_supports( 'post-formats' ) && post_type_supports( $this->post_type, 'post-formats' ) ) : ?>
 					<?php $post_formats = get_theme_support( 'post-formats' ); ?>
 
 					<label class="alignleft">
@@ -1428,7 +1429,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 					 * @param string $column_name Name of the column to edit.
 					 * @param string $post_type   The post type slug.
 					 */
-					do_action( 'bulk_edit_custom_box', $column_name, $screen->post_type );
+					do_action( 'bulk_edit_custom_box', $column_name, $this->post_type );
 				} else {
 
 					/**
@@ -1440,7 +1441,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 					 * @param string $post_type   The post type slug, or current screen name if this is a taxonomy list table.
 					 * @param string $taxonomy    The taxonomy name, if any.
 					 */
-					do_action( 'quick_edit_custom_box', $column_name, $screen->post_type, '' );
+					do_action( 'quick_edit_custom_box', $column_name, $this->post_type, '' );
 				}
 			}
 			?>
@@ -1458,7 +1459,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 				<input type="hidden" name="post_view" value="<?php echo esc_attr( $m ); ?>" />
 				<input type="hidden" name="screen" value="<?php echo esc_attr( $screen->id ); ?>" />
-				<?php if ( ! $bulk && ! post_type_supports( $screen->post_type, 'author' ) ) : ?>
+				<?php if ( ! $bulk && ! post_type_supports( $this->post_type, 'author' ) ) : ?>
 					<input type="hidden" name="post_author" value="<?php echo esc_attr( $post->post_author ); ?>" />
 				<?php endif; ?>
 				<br class="clear" />
@@ -1475,6 +1476,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		endwhile;
 		?>
 		</tbody></table>
+		</tr>
 		</form>
 		<?php
 	}

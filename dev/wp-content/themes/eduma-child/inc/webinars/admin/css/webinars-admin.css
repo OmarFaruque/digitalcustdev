@@ -2,6 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+ form#webinar-list-form tr.status-pending,
  form#posts-filter tr.status-pending {
     background: #2196f34a;
     color: white;

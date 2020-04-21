@@ -29,14 +29,17 @@ class Admin_DigitalCustDev_Webinar {
 	}
 
 
+
 	public function add_admin_scripts($hook){
-		// echo 'hook: ' . $hook . '<br/>';
 		if($hook == 'learnpress_page_zoom-webinars'){
-			wp_enqueue_script( 'inline-edit-post-custom', get_stylesheet_directory_uri() . '/inc/webinars/admin/js/inline-edit-post.js', array( 'jquery' ), time(), false );
+			wp_enqueue_script( 'inline-edit-post');
 		}
 	}
 	public function menu() {
-		$page_hook = add_submenu_page( 'learn_press', __( 'Webinars', 'digitalcustdev-core' ), __( 'Webinars', 'digitalcustdev-core' ), 'manage_options', 'zoom-webinars', array( $this, 'load_webinar_list_table' ) );
+		$count_courses   = wp_count_posts( LP_COURSE_CPT );
+		$awaiting_mod    = $count_courses->pending;
+		$countrer = "<span class='custom awaiting-mod count-$awaiting_mod'><span class='pending-count'>" . number_format_i18n( $awaiting_mod ) . "</span></span>";
+		$page_hook = add_submenu_page( 'learn_press', __( 'Webinars', 'digitalcustdev-core' ), __( 'Webinars' . $countrer , 'digitalcustdev-core' ), 'manage_options', 'zoom-webinars', array( $this, 'load_webinar_list_table' ) );
 
 		/*
 		 * The $page_hook_suffix can be combined with the load-($page_hook) action hook

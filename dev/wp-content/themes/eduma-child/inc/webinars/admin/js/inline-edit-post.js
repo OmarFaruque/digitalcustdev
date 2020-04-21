@@ -184,7 +184,7 @@ window.wp = window.wp || {};
 		$( '#bulk-edit td' ).attr( 'colspan', $( 'th:visible, td:visible', '.widefat:first thead' ).length );
 
 		// Insert the editor at the top of the table with an empty row above to maintain zebra striping.
-		$('table.widefat tbody').prepend( $('#bulk-edit') ).prepend('<tr class="hidden"></tr>');
+		$('table.widefat tbody').prepend( $('#bulk-edit') ).prepend('<tr class="hidden o2"></tr>');
 		$('#bulk-edit').addClass('inline-editor').show();
 
 		/**
@@ -271,16 +271,20 @@ window.wp = window.wp || {};
 		editRow = $('#inline-edit').clone(true);
 		$( 'td', editRow ).attr( 'colspan', $( 'th:visible, td:visible', '.widefat:first thead' ).length );
 
-		$(t.what+id).removeClass('is-expanded').hide().after(editRow).after('<tr class="hidden"></tr>');
+		$(t.what+id).removeClass('is-expanded').hide().after(editRow).after('<tr class="hidden om1"></tr>');
 
 		// Populate fields in the quick edit window.
+		
 		rowData = $('#inline_'+id);
 		if ( !$(':input[name="post_author"] option[value="' + $('.post_author', rowData).text() + '"]', editRow).val() ) {
-
+			
 			// The post author no longer has edit capabilities, so we need to add them to the list of authors.
 			$(':input[name="post_author"]', editRow).prepend('<option value="' + $('.post_author', rowData).text() + '">' + $('#' + t.type + '-' + id + ' .author').text() + '</option>');
+			console.log(editRow);	
 		}
 		if ( $( ':input[name="post_author"] option', editRow ).length === 1 ) {
+			console.log('inside post option hide');	
+			$( ':input[name="post_author"] option', editRow ).addClass('testOmar');
 			$('label.inline-edit-author', editRow).hide();
 		}
 
@@ -377,7 +381,8 @@ window.wp = window.wp || {};
 			}
 			pageOpt.remove();
 		}
-
+		console.log('working');
+		$(editRow).addClass('Test OmarF');
 		$(editRow).attr('id', 'edit-'+id).addClass('inline-editor').show();
 		$('.ptitle', editRow).focus();
 
