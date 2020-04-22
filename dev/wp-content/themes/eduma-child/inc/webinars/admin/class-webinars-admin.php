@@ -70,9 +70,24 @@ class Webinars_Admin {
 		add_filter( 'learn_press_admin_tabs_info', array( $this, 'admin_tab' ), 10, 2 );
 		// add_action('restrict_manage_posts', array($this, 'add_post_formats_filter_to_post_administration'));
 		// add_action('quick_edit_custom_box',  array($this, 'misha_quick_edit_fields'), 10, 2);
+		add_filter('learn-press/payment-settings/general', array($this, 'addFreeEnrollCheckboxToSettingsGeneral'));
 	}
 
 
+
+	public function addFreeEnrollCheckboxToSettingsGeneral($settings){
+		// echo 'general Settings<br/><pre>';
+		// print_r($settings);
+		// echo '</pre>';
+		$settings[] = array(
+				'title'   => __( 'Enable Enroll button for free Courses/Webinars', 'learnpress' ),
+				'id'      => 'free_enroll_allow',
+				'default' => 'no',
+				'type'    => 'yes-no',
+				'desc'    => __( 'Enable user enroll course / webinar as free.', 'learnpress' )
+		);
+		return $settings;
+	}
 	public function misha_quick_edit_fields(){
 		echo '<div>sfsfsf</div>';
 	}
