@@ -42,17 +42,17 @@ class DigitalCustDev_FrontendEditor {
 	public function fource_get_lesson_attachment_for_vue(){
 		$posts = $_REQUEST;
 		$datas = get_post_meta( $posts['lession_id'], '_lp_lesson_video_intro_internal', true );
-		
+		// $datas = json_decode($datas);
 		// Content
-		$post_content = get_post($posts['lession_id']);
-		$content = $post_content->post_content;
-		$content = apply_filters('the_content', $content);
+		// $post_content = get_post($posts['lession_id']);
+		// $content = $post_content->post_content;
+		// $content = apply_filters('the_content', $content);
 		$msg = ($datas) ? 'success' : 'fail';
 		wp_send_json( 
 			array(
 				'msg' => $msg,
 				'meta' => $datas,
-				'post_content' => $content
+				'posts' => $posts
 			)
 		 );
 		wp_die();
@@ -102,7 +102,9 @@ class DigitalCustDev_FrontendEditor {
 		$update = '';
 		switch($posts['field_name']){
 			case '_lp_lesson_video_intro_internal':
-				$item_details = get_post($posts['item_id']);
+				$item_details = get_post($posts['item_id'], true);
+				unset($posts['field_value']['compat']);
+				$posts['field_value'] = json_encode($posts['field_value']);
 				$update = update_post_meta( $posts['item_id'], $posts['field_name'], $posts['field_value']);
 				// wp_update_post(
 				// 	array(

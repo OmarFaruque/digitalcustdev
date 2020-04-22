@@ -175,16 +175,24 @@ class Webinars_Admin {
 	public function lp_lession_metabox($post){
 		
 		$internal_video = get_post_meta( $post->ID, '_lp_lesson_video_intro_internal', true );
-		// echo 'Intermal video array: <br/><pre>';
+		$internal_video = json_decode($internal_video, true);
+		
+		// echo '<pre>';
 		// print_r($internal_video);
 		// echo '</pre>';
+
 		echo '<input type="hidden" name="_lp_lesson_video_intro_internal" value="'.$internal_video.'" />';
+		
 		?>
 		<div class="acf-field acf-field-file acf-field-5d52623d7778a" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a">
 		<div class="acf-label">
 		<label for="acf-field_5d52623d7778a"><?php _e('Upload Intro Video', 'webinar'); ?></label></div>
+		
+		
 		<div class="acf-input">
-				<div class="acf-file-uploader has-value" data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp">
+				<div class="acf-file-uploader <?= ($internal_video) ? 'has-value':''; ?>" data-library="uploadedTo" data-mime_types="mp4" data-uploader="wp">
+			
+			<?php if($internal_video): ?>
 				<div class="show-if-value file-wrap">
 				<div class="file-icon">
 					<img data-name="icon" src="<?php echo $internal_video['icon']; ?>" alt="">
@@ -203,20 +211,23 @@ class Webinars_Admin {
 					</p>
 				</div>
 				<div class="acf-actions -hover">
-					<!-- <a class="acf-icon -pencil dark" data-name="edit" href="#" title="Edit"></a><a class="acf-icon -cancel dark" data-name="remove" href="#" title="Remove"></a> -->
+					<!-- <a class="acf-icon -pencil dark" data-name="edit" href="#" title="Edit"></a> -->
+					<a href="#" data-action="delete_admin_intro" title="Remove" class="acf-icon -cancel remove_lesson_media_attachment dark"></a>
 				</div>
 			</div>
+			<?php endif; ?>
 			<div class="hide-if-value">
 							
-					<p>No file selected <a data-name="add" class="acf-button button" href="#">Add File</a></p>
-					
-						
+					<p>No file selected 
+					<a data-id="intro_video_lesson" class="acf-button button" href="#">Add File</a>
+					</p>
 			</div>
 		</div>
 		</div>
 		</div>
 
 		<?php
+		
 	}
 
 
