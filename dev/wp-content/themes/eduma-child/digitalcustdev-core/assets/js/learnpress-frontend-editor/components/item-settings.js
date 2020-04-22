@@ -169,6 +169,7 @@
                 return 'e-item-settings-' + this.itemData.type;
             },
             update: function (callback) {
+                console.log('this update');
                 var section = this.item.getSection();
                 this.request('', 'update-item-settings', {
                     section_ID: section.id,

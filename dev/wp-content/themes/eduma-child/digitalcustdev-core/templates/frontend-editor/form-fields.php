@@ -51,7 +51,7 @@ defined( 'ABSPATH' ) or die;
         ?>
         <div class="o9 e-form-field-input">
             <?php if($course_type): ?>
-            <select class="form-control select2-select" v-model="settingValue">
+            <select class="form-control select2-select omarselect" v-model="settingValue">
                 <option value="30 minute"><?php esc_html_e( '30 Minute', 'learnpress-frontend-editor' ); ?></option>
                 <option value="45 minute"><?php esc_html_e( '45 Minute', 'learnpress-frontend-editor' ); ?></option>
                 <option value="1 hour"><?php esc_html_e( '1 Hour', 'learnpress-frontend-editor' ); ?></option>

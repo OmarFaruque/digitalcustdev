@@ -21,7 +21,7 @@ class DigitalCustDev_LearpressMetaboxFields {
 		$timezone 		= 'Europe/Moscow';
 		$when_webinar 	= date( 'd/m/Y H:i' );
 
-		$input_type = 'lesson_duration';
+		$input_type = (is_admin()) ? 'select' : 'lesson_duration';
 
 		foreach ( $fields['fields'] as $k => $field ) {
 			if ( $field['id'] === "_lp_duration" ) {
@@ -29,13 +29,23 @@ class DigitalCustDev_LearpressMetaboxFields {
 			}
 		}
 
+		$durationArray = array(
+			'30 minute' 	=> __('30 Minute', 'learnpress-frontend-editor' ),
+			'45 minute' 	=> __( '45 Minute', 'learnpress-frontend-editor' ),
+			'1 hour' 		=> __( '1 Hour', 'learnpress-frontend-editor' ),
+			'75 minute' 	=> __( '1 Hour 15 minute', 'learnpress-frontend-editor' ),
+			'90 minute' 	=> __( '1 Hour 30 minute', 'learnpress-frontend-editor' ),
+			'2 hour' 		=> __( '2 Hour', 'learnpress-frontend-editor' )
+		);
+
 		$fields['fields'][] = array(
 			'name'         => __( 'Duration', 'learnpress' ),
 			'id'           => '_lp_duration',
 			'type'         => $input_type,
 			'default_time' => 'minute',
 			'desc'         => '',
-			'std'          => '45 minute'
+			'std'          => '45 minute',
+			'options' 		=> $durationArray
 		);
 
 		if ( $type === "webinar" ) {

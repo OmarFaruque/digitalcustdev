@@ -72,7 +72,7 @@ $uploaded_files = learn_press_assignment_get_uploaded_files( $user_item_id );
 							<div class="rwmb-label">
 								<label for="user-answer"><?php _e( 'Answer', 'learnpress-assignments' ); ?></label>
 							</div>
-							<div class="rwmb-input">
+							<div class="rwmb-input 8">
 								<?php wp_editor( $last_answer, 'assignment-editor-student-answer', array(
 									'media_buttons' => false,
 									'textarea_rows' => 10
@@ -84,7 +84,7 @@ $uploaded_files = learn_press_assignment_get_uploaded_files( $user_item_id );
 							<div class="rwmb-label">
 								<label for="user-uploads"><?php _e( 'Attach File', 'learnpress-assignments' ); ?></label>
 							</div>
-							<div class="rwmb-input">
+							<div class="rwmb-input o">
 								<?php if ( $uploaded_files ) { ?>
 									<ul class="assignment-files assignment-uploaded list-group list-group-flush">
 										<?php foreach ( $uploaded_files as $file ) { ?>

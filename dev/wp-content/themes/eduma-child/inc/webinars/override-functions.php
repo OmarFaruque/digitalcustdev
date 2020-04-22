@@ -1095,7 +1095,7 @@ function begin_html( $html, $field, $meta ) {
 		$post        = $post_manage->get_post();
 		$checked = get_post_meta($post->ID, 'descount_access', true) == '1' ? 'checked' : '';
 
-		// echo 'field id: ' . $field['id'] . '<br/>';
+		
 		// ec
 		switch($field['id']){
 			case '_lp_sale_price':

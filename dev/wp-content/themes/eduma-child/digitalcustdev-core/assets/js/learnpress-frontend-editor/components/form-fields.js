@@ -148,6 +148,8 @@
         }
     });
 
+
+    // Need update
     Vue.component('e-form-field-lesson-duration', {
         template: '#tmpl-e-form-field-lesson-duration',
         props: ['item', 'itemData', 'request', 'field', 'settings'],
@@ -161,16 +163,23 @@
             settingValue: function (value) {
                 this.itemData.settings[this.field.id] = value;
                 return value;
-            }
+            },
         },
         created: function () {
         },
         mounted: function () {
-            $(this.$el).find('select').select2({
+            var selectDropDown = $(this.$el).find('select').select2({
                 width: '100%'
+            });
+            selectDropDown.on('select2:select', function (e) {
+                var event = new Event('change');
+                e.target.dispatchEvent(event);
             });
         },
         methods: {
+            /**
+             * Update item settings to DB
+             */
             redraw: function () {
                 var vm = this;
                 vm.drawComponent = false;
@@ -186,6 +195,7 @@
             }
         }
     });
+
 
     Vue.component('e-form-field-yes-no', {
         template: '#tmpl-e-form-field-yes-no',
