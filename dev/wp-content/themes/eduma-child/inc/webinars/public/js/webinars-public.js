@@ -116,7 +116,9 @@ jQuery(document).ready(function($){
 	/*
 	* Bootstrap tooltip
 	*/
-	$('[data-toggle="tooltip"]').tooltip();
+	if(typeof tooltip == 'function'){
+		$('[data-toggle="tooltip"]').tooltip();
+	}
 
 	/*
 	* Mobile menu initial set
