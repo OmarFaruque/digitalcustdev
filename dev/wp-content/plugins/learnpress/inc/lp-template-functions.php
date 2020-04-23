@@ -76,6 +76,7 @@ if ( ! function_exists( 'learn_press_course_enroll_button' ) ) {
 		$user   = LP_Global::user();
 		$course = LP_Global::course();
 
+
 		if ( $course->get_external_link() ) {
 			learn_press_show_log( 'Course has external link' );
 
@@ -112,7 +113,7 @@ if ( ! function_exists( 'learn_press_course_enroll_button' ) ) {
 		}
 
 		$purchased = $user->has_purchased_course( $course->get_id() );
-
+		echo 'is free 2: ' . $course->is_free() . '<br/>';
 		// For free course and user does not purchased
 		if ( $course->is_free() && ! $purchased ) {
 			learn_press_get_template( 'single-course/buttons/enroll.php' );

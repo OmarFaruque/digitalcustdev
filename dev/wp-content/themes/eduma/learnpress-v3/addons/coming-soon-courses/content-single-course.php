@@ -75,7 +75,7 @@ $course_id = $course->get_id();
 
                     <?php learn_press_course_progress(); ?>
 
-                    <div class="course-payment">
+                    <div class="course-payment om2">
 
                         <?php do_action( 'thim_single_course_payment' );?>
 
@@ -125,7 +125,7 @@ $course_id = $course->get_id();
         <div class="course-meta">
             <?php do_action( 'thim_single_course_meta' );?>
         </div>
-        <div class="course-payment">
+        <div class="course-payment om1">
             <?php do_action( 'thim_single_course_payment' );?>
         </div>
 

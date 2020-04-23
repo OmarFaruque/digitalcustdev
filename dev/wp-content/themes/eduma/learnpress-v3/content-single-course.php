@@ -86,7 +86,7 @@ do_action( 'learn-press/before-single-course' );
 
                     <?php learn_press_course_progress(); ?>
 
-                    <div class="course-payment">
+                    <div class="course-payment om9">
 
                         <?php do_action( 'thim_single_course_payment' );?>
 
@@ -130,7 +130,7 @@ do_action( 'learn-press/before-single-course' );
         <div class="course-meta">
             <?php do_action( 'thim_single_course_meta' );?>
         </div>
-        <div class="course-payment">
+        <div class="course-payment om10">
             <?php do_action( 'thim_single_course_payment' );?>
         </div>
         <div class="course-summary">

@@ -1497,6 +1497,53 @@ function filter_post_data( $content ) {
 }
 
 
+/*
+ * Add media for lesson
+ */
+if ( !function_exists( 'thim_content_item_lesson_media' ) ) {
+	function thim_content_item_lesson_media() {
+		
+		$item          	= LP_Global::course_item();
+		$user         	= LP_Global::user();
+		$course_item   	= LP_Global::course_item();
+		$course        	= LP_Global::course();
+		$can_view_item 	= $user->can_view_item( $course_item->get_id(), $course->get_id() );
+		$media_intro   	= get_post_meta( $item->get_id(), '_lp_lesson_video_intro', true );
+		$media_intro 	= ($media_intro != 'undefined') ? $media_intro : false;
+		
+		$media_introint = get_post_meta( $item->get_id(), '_lp_lesson_video_intro_internal', true );
+		
+		$media_introint	= ($media_introint) ? json_decode($media_introint) : '';
+		$introVideo = '';
+		if(!empty($media_introint)){
+			$introVideo = '<video width="100%" height="400" controls>
+			<source src="'.$media_introint->url.'" type="video/mp4">
+			Your browser does not support the video tag.
+			</video>';
+		}
+		if(!empty($media_intro)){
+			$introVideo = '<video width="100%" height="400" controls>
+			<source src="'.$media_intro.'" type="video/mp4">
+			Your browser does not support the video tag.
+			</video>';
+		}
 
 
+		if ( !empty( $introVideo ) && !$course_item->is_blocked() && $can_view_item ) {
+			?>
+			<div class="learn-press-video-intro">
+				<div class="video-content">
+					<?php echo $introVideo; ?>
+				</div>
+			</div>
+			<?php
+		}
+	}
+}
 
+
+add_filter('learn-press/course-require-enrollment', 'customRequiredEnroll');
+function customRequiredEnroll($return, $id){
+	echo 'return : ' . $return . '<br/>';
+	echo 'return id : ' . $id . '<br/>';
+}

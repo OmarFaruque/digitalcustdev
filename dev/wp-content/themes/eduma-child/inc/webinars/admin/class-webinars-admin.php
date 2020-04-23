@@ -71,9 +71,12 @@ class Webinars_Admin {
 		// add_action('restrict_manage_posts', array($this, 'add_post_formats_filter_to_post_administration'));
 		// add_action('quick_edit_custom_box',  array($this, 'misha_quick_edit_fields'), 10, 2);
 		add_filter('learn-press/payment-settings/general', array($this, 'addFreeEnrollCheckboxToSettingsGeneral'));
+		// add_filter('the_content', array($this, 'testcontent'));
 	}
 
-
+	public function testcontent($content){
+		// return 'test o';
+	}
 
 	public function addFreeEnrollCheckboxToSettingsGeneral($settings){
 		// echo 'general Settings<br/><pre>';
@@ -460,6 +463,7 @@ class Webinars_Admin {
 		$post_type = $screen->post_type;
 		$post_id = (isset($_GET['post'])) ? $_GET['post'] : '';
 		$courseType = get_post_meta( $post_id, '_course_type', true );
+		if(isset($_REQUEST['_course_type']) && $_REQUEST['_course_type'] == 'webinar') $courseType = $_REQUEST['_course_type'];
 		if($courseType == 'webinar' && $post_type == 'lp_course'){
 			echo '<script>
 				jQuery(window).load(function(){

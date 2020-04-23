@@ -24,4 +24,4 @@ if ( ! $content = $lesson->get_content() ) {
 }
 ?>
 
-<div class="content-item-description lesson-description"><?php echo $content; ?></div>
+<div class="inside-plugin content-item-description lesson-description"><?php echo $content; ?></div>

@@ -72,7 +72,7 @@ $listArgs = $args;
 <div id="First" class="tabcontent-custom" style="display: block;">
 <div class="wrap">
     <h1 class="wp-heading-inline custom_larft"><?php _e( 'Webinar Courses', 'webinars' ); ?></h1>
-    <a href="<?php echo admin_url( 'post-new.php?post_type=lp_course' ); ?>" class="page-title-action"><?php _e('Add New', 'webinar'); ?></a>
+    <a href="<?php echo admin_url( 'post-new.php?post_type=lp_course&_course_type=webinar' ); ?>" class="page-title-action"><?php _e('Add New', 'webinar'); ?></a>
     <div id="webinar-wp-list-table">
         <div id="webinar-post-body">
 

@@ -339,6 +339,12 @@ class DigitalCustDev_CPT_Functions {
 	}
 
 	function save_webinar( $post_id ) {
+		// Save course type without post if webinar type
+		if(isset($_REQUEST['_course_type']) && $_REQUEST['_course_type'] == 'webinar'){
+			update_post_meta( $post_id, '_course_type', $_REQUEST['_course_type']);
+		}
+
+
 		if ( empty( $_POST['_e_post_nonce'] ) ) {
 			return;
 		}
@@ -370,6 +376,8 @@ class DigitalCustDev_CPT_Functions {
 
 		wp_set_post_terms( $post_id, $course_tags, 'course_tag' );
 		wp_set_post_terms( $post_id, $course_category, 'course_category' );
+
+
 
 		if ( isset( $_POST['post_on_review'] ) ) {
 			remove_action( 'save_post_lp_course', array( $this, 'save_webinar' ), 99 );
