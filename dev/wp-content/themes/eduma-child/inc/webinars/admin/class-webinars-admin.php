@@ -72,6 +72,14 @@ class Webinars_Admin {
 		// add_action('quick_edit_custom_box',  array($this, 'misha_quick_edit_fields'), 10, 2);
 		add_filter('learn-press/payment-settings/general', array($this, 'addFreeEnrollCheckboxToSettingsGeneral'));
 		// add_filter('the_content', array($this, 'testcontent'));
+		add_filter('learn-press/course-require-enrollment', array($this, 'customRequiredEnroll'));
+	}
+
+
+	public function customRequiredEnroll($return){
+		$allowfreeEnroll = LP()->settings()->get( 'free_enroll_allow' );
+		if($allowfreeEnroll == 'yes') $return = true;
+		return $return;
 	}
 
 	public function testcontent($content){

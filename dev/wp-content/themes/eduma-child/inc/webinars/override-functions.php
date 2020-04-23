@@ -1541,9 +1541,3 @@ if ( !function_exists( 'thim_content_item_lesson_media' ) ) {
 	}
 }
 
-
-add_filter('learn-press/course-require-enrollment', 'customRequiredEnroll');
-function customRequiredEnroll($return, $id){
-	echo 'return : ' . $return . '<br/>';
-	echo 'return id : ' . $id . '<br/>';
-}
