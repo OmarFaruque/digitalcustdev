@@ -26,6 +26,8 @@ class Admin_DigitalCustDev_Webinar {
 		add_action( 'save_post_lp_lesson', array( $this, 'save' ), 99 );
 
 		add_action( 'admin_enqueue_scripts', array($this, 'add_admin_scripts'), 10, 1 );
+
+		add_filter( 'views_edit-lp_course', array( $this, 'filterCourseCount' ), 20 );
 	}
 
 
@@ -128,6 +130,43 @@ class Admin_DigitalCustDev_Webinar {
 				]
 			] );
 		}
+		return $wp_query;
+	}
+
+
+	public function filterCourseCount($views){
+		global $current_user, $wp_query; 
+
+
+
+		foreach($views as $k => $sv){
+			$st = ($k == 'all') ? '': $k;
+			$query = array(   
+				'post_type'   => LP_COURSE_CPT,  
+				'post_status' => $st,
+				'meta_query' => array(
+					array(
+						'key'     => '_course_type',
+						'compare' => 'NOT EXISTS'
+					)
+				)
+			);  
+
+			switch($k){
+				case 'mine':
+					$query['author'] = $current_user->ID;
+					$class = ($_REQUEST['post_status'] == '') ? ' class="current"' : '';
+					unset($query['post_status']);
+					$result = new WP_Query($query);
+					$views[$k] = sprintf('<a %s href="%s">%s <span class="count">(%d)</span></a>', $class, admin_url( 'edit.php?post_type=lp_course&author='.$current_user->ID ), ucfirst($k), $result->found_posts );
+				break;
+				default:  
+					$class = ($_REQUEST['post_status'] == $k) ? ' class="current"' : '';
+					$result = new WP_Query($query);
+					$views[$k] = sprintf('<a %s href="%s">%s <span class="count">(%d)</span></a>', $class, admin_url( 'edit.php?post_type=lp_course&post_status='.$k ), ucfirst($k), $result->found_posts );
+			}
+		}
+		return $views;
 	}
 }
 

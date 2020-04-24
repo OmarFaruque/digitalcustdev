@@ -297,8 +297,21 @@ class Webinars_Admin {
 		if ( ! in_array( 'administrator', $current_user->roles ) ) {
 			return;
 		}
-		$count_courses   = wp_count_posts( LP_COURSE_CPT );
-		$awaiting_mod    = $count_courses->pending;
+
+		$args = array(   
+			'post_type'   => LP_COURSE_CPT,  
+			'posts_per_page' => -1,
+			'post_status' => 'pending',
+			'meta_query' => array(
+				array(
+					'key'     => '_course_type',
+					'compare' => 'NOT EXISTS'
+				)
+			)
+		);  
+		$query = new WP_Query( $args );
+
+		$awaiting_mod    = $query->post_count;
 
 		$submenu['learn_press'][0][0] .= " <span class='custom awaiting-mod count-$awaiting_mod'><span class='pending-count'>" . number_format_i18n( $awaiting_mod ) . "</span></span>";
 	}

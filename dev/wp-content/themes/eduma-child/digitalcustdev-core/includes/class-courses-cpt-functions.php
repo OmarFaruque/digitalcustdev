@@ -358,8 +358,25 @@ class DigitalCustDev_CPT_Functions {
 			return;
 		}
 
-		$course_tags     = filter_input( INPUT_POST, 'course_tags', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
-		$course_category = filter_input( INPUT_POST, 'course_category', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$tag_input_name = 'course_tag';
+		$cat_input_name = 'course_category';
+		if(isset($_REQUEST['_course_type']) && $_REQUEST['_course_type'] == 'webinar'){
+			$tag_input_name = 'webinar_tag';
+			$cat_input_name = 'webinar_categories';
+		}
+
+		if(isset($_REQUEST['post_ID'])){
+			$course_type = get_post_meta( $_REQUEST['post_ID'], '_course_type', true );
+			if($course_type && $course_type == 'webinar'){
+				$tag_input_name = 'webinar_tag';
+				$cat_input_name = 'webinar_categories';	
+			}
+		}
+
+		$course_tags     = filter_input( INPUT_POST, $tag_input_name, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		$course_category = filter_input( INPUT_POST, $cat_input_name, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+
+
 		$duration_number = sanitize_text_field( filter_input( INPUT_POST, 'webinar_duration_number' ) );
 		$duration_text   = sanitize_text_field( filter_input( INPUT_POST, 'webinar_duration_term' ) );
 
@@ -374,8 +391,9 @@ class DigitalCustDev_CPT_Functions {
 			update_post_meta( $post_id, $k, $data );
 		}
 
-		wp_set_post_terms( $post_id, $course_tags, 'course_tag' );
-		wp_set_post_terms( $post_id, $course_category, 'course_category' );
+
+		wp_set_post_terms( $post_id, $course_tags, $tag_input_name );
+		wp_set_post_terms( $post_id, $course_category, $cat_input_name );
 
 
 

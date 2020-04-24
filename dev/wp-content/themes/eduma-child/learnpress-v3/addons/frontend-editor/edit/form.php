@@ -105,7 +105,7 @@ $youtube_link = get_post_meta( $post->ID, 'thim_course_media_intro', true );
 					}
 				}
 				?>
-                <select class="learnpress-tags" name="course_tags[]" multiple="multiple">
+                <select class="learnpress-tags" name="course_tag[]" multiple="multiple">
 					<?php foreach ( $tags as $tag ) { ?>
                         <option value="<?php echo $tag->name; ?>" <?php echo ! empty( $selected_tags ) && in_array( $tag->term_id, $selected_tags ) ? 'selected' : false; ?>><?php echo $tag->name; ?></option>
 					<?php } ?>

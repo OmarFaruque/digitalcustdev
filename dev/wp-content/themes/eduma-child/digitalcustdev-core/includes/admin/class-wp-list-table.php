@@ -154,6 +154,15 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 
 	public function prepare_items() {
 
+
+		// $columns = $this->get_columns();
+		// $hidden = array();
+		// $sortable = array();
+		// // $this->_column_headers = array($columns, $hidden, $sortable);
+		// // $this->items = $this->example_data;;
+
+
+
 		// check if a search was performed.
 		$user_search_key = isset( $_REQUEST['s'] ) ? wp_unslash( trim( $_REQUEST['s'] ) ) : '';
 
@@ -304,16 +313,16 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 	public function get_columns() {
 
 		$table_columns = array(
-			'cb'            => '<input type="checkbox" />', // to display the checkbox.\
-			'post_title'    => __( 'Title', $this->plugin_text_domain ),
-			'post_author'   => __( 'Author', $this->plugin_text_domain ),
-			'sections'   => __( 'Content', $this->plugin_text_domain ),
+			'cb'            	=> '<input type="checkbox" />', // to display the checkbox.\
+			'post_title'    	=> __( 'Title', $this->plugin_text_domain ),
+			'post_author'   	=> __( 'Author', $this->plugin_text_domain ),
+			'sections'   		=> __( 'Content', $this->plugin_text_domain ),
 			'linked_students'   => __( 'Students', $this->plugin_text_domain ),
-			'meta_price'   => __( 'Price', $this->plugin_text_domain ),
-			'post_comments'   => '<span><span class="vers comment-grey-bubble" title="Comments"><span class="screen-reader-text">'.__('Comments', $this->plugin_text_domain).'</span></span></span>',
-			'gradebook' => __( 'Gradebook', $this->plugin_text_domain ),
+			'meta_price'   		=> __( 'Price', $this->plugin_text_domain ),
+			'post_comments'   	=> '<span><span class="vers comment-grey-bubble" title="Comments"><span class="screen-reader-text">'.__('Comments', $this->plugin_text_domain).'</span></span></span>',
+			'gradebook' 		=> __( 'Gradebook', $this->plugin_text_domain ),
 			// 'post_webinars' => __( 'Linked Webinars', $this->plugin_text_domain ),
-			'post_date'     => _x( 'Date', 'column name', $this->plugin_text_domain ),
+			'post_date'     	=> _x( 'Date', 'column name', $this->plugin_text_domain ),
 		);
 
 		return $table_columns;
@@ -342,8 +351,11 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		 * column name_in_list_table => columnname in the db
 		 */
 		$sortable_columns = array(
-			'post_title' => 'post_title',
-			'post_date'  => 'post_date'
+			'post_title' 	=> 'post_title',
+			'post_date'  	=> 'post_date',
+			'post_author'  	=> 'post_author',
+			'meta_price' 	=> 'price',
+			'post_comments' => 'comment_count',
 		);
 
 		return $sortable_columns;
@@ -410,9 +422,13 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 			$query .= $wpdb->prepare( " AND YEAR(p.post_date) = %d", $year );
 			$query .= $wpdb->prepare( " AND MONTH(p.post_date) = %d", $month );
 		}
-
-
-		$query .= " ORDER BY $orderby $order";
+		// 
+		if($orderby == 'price' ){
+			$query .= " ORDER BY (CONVERT(pm.meta_value, SIGNED) AND pm.meta_key='_lp_price') $order";
+		}else{
+			$query .= " ORDER BY $orderby $order";
+		}
+		
 		// query output_type will be an associative array with ARRAY_A.
 		$query_results = $wpdb->get_results( $query, ARRAY_A );
 

@@ -77,20 +77,20 @@ $listArgs = $args;
         <div id="webinar-post-body">
 
   <ul class="subsubsub">
-    <li class="all"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&all_posts=1' ); ?>"><?php _e('All', 'webinar'); ?> 
+    <li class="all"><a class="<?php echo (isset($_REQUEST['all_posts'])) ? 'current':''; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&all_posts=1' ); ?>"><?php _e('All', 'webinar'); ?> 
       <?php 
         $query = new WP_Query( $args );
         $all = $query->post_count;
       ?>
       <span class="count">(<?php echo $all; ?>)</span></a> |</li>
-    <li class="mine"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&author=103' ); ?>"><?php _e('Mine', 'webinar'); ?> 
+    <li class="mine"><a class="<?php echo (isset($_REQUEST['author'])) ? 'current':''; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&author=103' ); ?>"><?php _e('Mine', 'webinar'); ?> 
       <?php 
       $args['author'] = get_current_user_id();
       $query = new WP_Query( $args );
       $all = $query->post_count;
       ?>
       <span class="count">(<?php echo $all; ?>)</span></a> |</li>
-    <li class="publish"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=publish' ); ?>"><?php _e('Published', 'webinar'); ?> 
+    <li class="publish"><a class="<?php echo (isset($_REQUEST['post_status']) && $_REQUEST['post_status'] == 'publish') ? 'current':''; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=publish' ); ?>"><?php _e('Published', 'webinar'); ?> 
     <?php 
       unset($args['author']);
       $args['post_status'] = 'publish';
@@ -98,21 +98,21 @@ $listArgs = $args;
       $all = $query->post_count;
     ?>
     <span class="count">(<?php echo $all; ?>)</span></a> |</li>
-    <li class="draft"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=draft' ); ?>"><?php _e('Drafts', 'webinar'); ?> 
+    <li class="draft"><a class="<?php echo (isset($_REQUEST['post_status']) && $_REQUEST['post_status'] == 'draft') ? 'current':''; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=draft' ); ?>"><?php _e('Drafts', 'webinar'); ?> 
     <?php 
       $args['post_status'] = 'draft';
       $query = new WP_Query( $args );
       $all = $query->post_count;
     ?>
     <span class="count">(<?php echo $all; ?>)</span></a> |</li>
-    <li class="pending"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=pending' ); ?>"><?php _e('Pending', 'webinar'); ?> 
+    <li class="pending"><a class="<?php echo (isset($_REQUEST['post_status']) && $_REQUEST['post_status'] == 'pending') ? 'current':''; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=pending' ); ?>"><?php _e('Pending', 'webinar'); ?> 
     <?php 
       $args['post_status'] = 'pending';
       $query = new WP_Query( $args );
       $all = $query->post_count;
     ?>
     <span class="count">(<?php echo $all; ?>)</span></a> |</li>
-    <li class="trash"><a href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=trash' ); ?>"><?php _e('Trash', 'webinar'); ?> 
+    <li class="trash"><a class="<?php echo (isset($_REQUEST['post_status']) && $_REQUEST['post_status'] == 'trash') ? 'current':''; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&post_status=trash' ); ?>"><?php _e('Trash', 'webinar'); ?> 
     <?php 
       $args['post_status'] = 'trash';
       $query = new WP_Query( $args );
@@ -127,7 +127,7 @@ $listArgs = $args;
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>"/>
         <?php
         // echo 'test Omar';
-        $this->webinar_list_table->search_box( __( 'Searc Webinars', 'webinars' ), 'nds-user-find' );
+        $this->webinar_list_table->search_box( __( 'Search Webinars', 'webinars' ), 'nds-user-find' );
         
         ?>
         

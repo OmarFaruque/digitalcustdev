@@ -247,11 +247,11 @@
                     function sync() {
                         var jsonData = $($vm.$el).serializeJSON(),
                             _data = JSON.stringify(jsonData);
-                            console.log(jsonData);
+                            console.log(jsonData);   
                         if (_data !== formData) {
 
                             FE_Helpers.Course_Editor_Request('', 'update_course', $.extend({}, jsonData, {__activity: true})).then(function (response) {
-                               
+                                
                                 if (undefined !== response.meta['_lp_course_forum']) {
                                     var thePost = response.meta['_lp_course_forum'],
                                         $sel = $('#_lp_course_forum');
@@ -654,6 +654,7 @@
             FE_Helpers.Course_Editor_Request('', 'add-new-category', {
                 category: this.newCategory
             }).then(function (r) {
+                console.log('this omae');
                 if (r && r.cats) {
                     Vue.set($vm, 'categories', r.cats);
                 }

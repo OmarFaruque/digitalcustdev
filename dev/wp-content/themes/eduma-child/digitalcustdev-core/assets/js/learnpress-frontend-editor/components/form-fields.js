@@ -56,7 +56,7 @@
                     lession_id: lession_id,
                 },
                 function (data){
-                    console.log(data);
+                    // console.log(data);
                     if(data.msg == 'success'){
                         self.itemData.settings['_lp_lesson_video_intro_internal'] = (data.meta != 'undefined') ? JSON.parse(data.meta) : '';   
                         // self.itemData.content = data.post_content;

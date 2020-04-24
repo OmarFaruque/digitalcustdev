@@ -542,6 +542,7 @@
             FE_Helpers.Course_Editor_Request('', 'add-new-category', {
                 category: this.newCategory
             }).then(function (r) {
+                console.log('this omae');
                 if (r && r.cats) {
                     Vue.set($vm, 'categories', r.cats);
                 }

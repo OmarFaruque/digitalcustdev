@@ -37,12 +37,12 @@ if ( ! empty( $duration_term ) ) {
 			<?php #$frontend_editor->get_template( 'edit/form-category' ); ?>
 			<?php
 			$categories = get_terms( array(
-				'taxonomy'   => 'course_category',
+				'taxonomy'   => 'webinar_categories',
 				'hide_empty' => false,
 			) );
 
 			if ( ! empty( $categories ) ) {
-				$course_selected_cats = get_the_terms( $post->ID, 'course_category' );
+				$course_selected_cats = get_the_terms( $post->ID, 'webinar_categories' );
 				if ( ! empty( $course_selected_cats ) ) {
 					$selected_tags = array();
 					foreach ( $course_selected_cats as $course_selected_cat ) {
@@ -50,7 +50,7 @@ if ( ! empty( $duration_term ) ) {
 					}
 				}
 				?>
-                <select class="select2-select" name="course_category[]" multiple="multiple">
+                <select class="select2-select omar-category" name="webinar_categories[]" multiple="multiple">
 					<?php foreach ( $categories as $cat ) { ?>
                         <option value="<?php echo $cat->term_id; ?>" <?php echo ! empty( $selected_cats ) && in_array( $cat->term_id, $selected_cats ) ? 'selected' : false; ?>><?php echo $cat->name; ?></option>
 					<?php } ?>
@@ -93,12 +93,12 @@ if ( ! empty( $duration_term ) ) {
         <div class="e-form-field-dropdown">
 			<?php
 			$tags = get_terms( array(
-				'taxonomy'   => 'course_tag',
+				'taxonomy'   => 'webinar_tag',
 				'hide_empty' => false,
 			) );
 
 			if ( ! empty( $tags ) ) {
-				$course_selected_tags = get_the_terms( $post->ID, 'course_tag' );
+				$course_selected_tags = get_the_terms( $post->ID, 'webinar_tag' );
 				if ( ! empty( $course_selected_tags ) ) {
 					$selected_tags = array();
 					foreach ( $course_selected_tags as $course_selected_tag ) {
@@ -106,7 +106,7 @@ if ( ! empty( $duration_term ) ) {
 					}
 				}
 				?>
-                <select class="learnpress-tags" name="course_tags[]" multiple="multiple">
+                <select class="learnpress-tags" name="webinar_tag[]" multiple="multiple">
 					<?php foreach ( $tags as $tag ) { ?>
                         <option value="<?php echo $tag->name; ?>" <?php echo ! empty( $selected_tags ) && in_array( $tag->term_id, $selected_tags ) ? 'selected' : false; ?>><?php echo $tag->name; ?></option>
 					<?php } ?>
