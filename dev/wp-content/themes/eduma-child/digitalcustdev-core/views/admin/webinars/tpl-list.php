@@ -77,7 +77,13 @@ $listArgs = $args;
         <div id="webinar-post-body">
 
   <ul class="subsubsub">
-    <li class="all"><a class="<?php echo (isset($_REQUEST['all_posts'])) ? 'current':''; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&all_posts=1' ); ?>"><?php _e('All', 'webinar'); ?> 
+    <?php 
+      $defaultClass = (isset($_REQUEST['all_posts'])) ? 'current':'';
+      // $defaultClass = (!isset($_REQUEST['post_status']) && isset($_REQUEST['author'])) ? '9 current':'';
+      $defaultClass = (!isset($_REQUEST['author']) && !isset($_REQUEST['post_status'])) ? '8 current':'';
+    ?>
+
+    <li class="all"><a class="<?php echo $defaultClass; ?>" href="<?php echo admin_url( 'admin.php?page=zoom-webinars&all_posts=1' ); ?>"><?php _e('All', 'webinar'); ?> 
       <?php 
         $query = new WP_Query( $args );
         $all = $query->post_count;

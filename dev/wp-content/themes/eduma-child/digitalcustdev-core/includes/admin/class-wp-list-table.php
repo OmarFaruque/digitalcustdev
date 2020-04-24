@@ -384,7 +384,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		global $wpdb;
 
 		$orderby 		= ( isset( $_GET['orderby'] ) ) ? esc_sql( $_GET['orderby'] ) : 'post_date';
-		$order   		= ( isset( $_GET['order'] ) ) ? esc_sql( $_GET['order'] ) : 'ASC';
+		$order   		= ( isset( $_GET['order'] ) ) ? esc_sql( $_GET['order'] ) : 'DESC';
 		$author   		= ( isset( $_GET['author'] ) ) ? esc_sql( $_GET['author'] ) : '';
 		$post_status   	= ( isset( $_GET['post_status'] ) ) ? esc_sql( $_GET['post_status'] ) : '';
 		$m 				= ( isset( $_GET['m'] ) ) ? esc_sql( $_GET['m'] ) : ''; 
@@ -717,6 +717,7 @@ class DigitalCustDev_Webinar_List_Table extends WP_List_Table {
 		// echo 'all actions <br/><pre>';
 		// print_r($actions);
 		// echo '</pre>';
+		unset($actions['editor']);
 
 		return $this->row_actions( $actions );
 	}

@@ -56,6 +56,9 @@ class Admin_DigitalCustDev_Webinar {
 
 
 		add_submenu_page( 'zoom-video-conferencing', __( 'Webinars', 'video-conferencing-with-zoom-plank' ), __( 'Webinars', 'video-conferencing-with-zoom-plank' ), 'manage_options', 'zoom-video-conferencing-webinars', array( $this, 'webinars_list' ) );
+		
+		
+	
 	}
 
 	function load_webinar_list_table_screen_options() {
@@ -155,13 +158,15 @@ class Admin_DigitalCustDev_Webinar {
 			switch($k){
 				case 'mine':
 					$query['author'] = $current_user->ID;
-					$class = ($_REQUEST['post_status'] == '') ? ' class="current"' : '';
+					$class = (isset($_REQUEST['author']) && $_REQUEST['author'] == $query['author']) ? ' class="current"' : '';
 					unset($query['post_status']);
 					$result = new WP_Query($query);
 					$views[$k] = sprintf('<a %s href="%s">%s <span class="count">(%d)</span></a>', $class, admin_url( 'edit.php?post_type=lp_course&author='.$current_user->ID ), ucfirst($k), $result->found_posts );
 				break;
 				default:  
 					$class = ($_REQUEST['post_status'] == $k) ? ' class="current"' : '';
+					if(!isset($_REQUEST['post_status']) && !isset($_REQUEST['author']) && $k === 'all') $class = ' class="current"';
+					
 					$result = new WP_Query($query);
 					$views[$k] = sprintf('<a %s href="%s">%s <span class="count">(%d)</span></a>', $class, admin_url( 'edit.php?post_type=lp_course&post_status='.$k ), ucfirst($k), $result->found_posts );
 			}

@@ -1541,3 +1541,5 @@ if ( !function_exists( 'thim_content_item_lesson_media' ) ) {
 	}
 }
 
+// add_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
+remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );

@@ -313,6 +313,10 @@ class Webinars_Admin {
 
 		$awaiting_mod    = $query->post_count;
 
+		// echo 'print sub menu <br/><pre>';
+		// print_r($submenu);
+		// echo '</pre>';
+		// $submenu['learn_press'][0][2] .= '&post_status=all'; 
 		$submenu['learn_press'][0][0] .= " <span class='custom awaiting-mod count-$awaiting_mod'><span class='pending-count'>" . number_format_i18n( $awaiting_mod ) . "</span></span>";
 	}
 
