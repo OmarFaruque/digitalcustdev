@@ -23,13 +23,24 @@ class Admin_DigitalCustDev_Webinar {
 
 		add_action( 'pre_get_posts', array( $this, 'filter_admin_results_courses' ) );
 
-		add_action( 'save_post_lp_lesson', array( $this, 'save' ), 99 );
+		add_action( 'save_post_lp_lesson', array( $this, 'save_lession_save' ), 99 );
 
 		add_action( 'admin_enqueue_scripts', array($this, 'add_admin_scripts'), 10, 1 );
 
 		add_filter( 'views_edit-lp_course', array( $this, 'filterCourseCount' ), 20 );
 	}
 
+
+	public function save_lession_save($post_id){
+		global $post;
+		if ($post->post_type != 'lp_lesson'){
+			return;
+		}
+
+		if(isset($_REQUEST['zoom_date'])) update_post_meta( $post_id, 'zoom_date', $_REQUEST['zoom_date'] );
+		if(isset($_REQUEST['time_zone'])) update_post_meta( $post_id, 'time_zone', $_REQUEST['time_zone'] );
+
+	}
 
 
 	public function add_admin_scripts($hook){
@@ -119,7 +130,23 @@ class Admin_DigitalCustDev_Webinar {
                 <p><a href="<?php echo $zoom_api_meeting_link->join_url; ?>">Join Meeting</a></p>
 				<?php
 			} else {
+
+				$zoom_date = get_post_meta( $post->ID, 'zoom_date', true );
+				$time_zone = get_post_meta($post->ID, 'time_zone', true);
+
+				$tzlists = zvc_get_timezone_options();
 				echo __( 'Create an event to create zoom meeting for this event.', 'digitalcustdev-core' );
+				$output = '<div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
+				$output .= '<input name="zoom_date" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
+				$output .= '<div class="d-block"><label for="time_zone">'.__('TimeZone', 'webinar').'</label>';
+				$output .= '<select name="time_zone" id="time_zone" class="form-control w-100">';
+				foreach($tzlists as $k => $st){
+					$selected = ($k == $time_zone) ? 'selected':'';
+					$output .= '<option '.$selected.' value="'.$k.'">'.$st.'</option>';
+				}
+				$output .= '</select></div>';
+
+				echo $output;
 			}
 		}
 	}

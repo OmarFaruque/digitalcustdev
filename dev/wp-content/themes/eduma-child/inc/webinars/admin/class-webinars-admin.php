@@ -433,7 +433,7 @@ class Webinars_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, get_stylesheet_directory_uri() . '/inc/webinars/admin/js/webinars-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, get_stylesheet_directory_uri() . '/inc/webinars/admin/js/webinars-admin.js', array( 'jquery' ), $this->version, true );
 
 	}
 	function add_custom_taxonomies() {

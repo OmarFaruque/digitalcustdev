@@ -102,4 +102,7 @@
 		thisitem.closest('.acf-file-uploader').removeClass('has-value');
 	});
 
+	jQuery('.xdsoft_datepicker').datetimepicker();
+
+
 })( jQuery );
