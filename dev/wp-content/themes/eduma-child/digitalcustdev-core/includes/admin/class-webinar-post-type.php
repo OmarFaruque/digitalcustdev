@@ -137,7 +137,7 @@ class Admin_DigitalCustDev_Webinar {
 				$tzlists = zvc_get_timezone_options();
 				echo __( 'Create an event to create zoom meeting for this event.', 'digitalcustdev-core' );
 				$output = '<div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
-				$output .= '<input name="zoom_date" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
+				$output .= '<input autocomplete="off" name="zoom_date" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
 				$output .= '<div class="d-block"><label for="time_zone">'.__('TimeZone', 'webinar').'</label>';
 				$output .= '<select name="time_zone" id="time_zone" class="form-control w-100">';
 				foreach($tzlists as $k => $st){
