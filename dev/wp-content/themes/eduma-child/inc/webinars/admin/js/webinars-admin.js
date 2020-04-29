@@ -144,6 +144,62 @@
 					// console.log('test omar');
 				});
 
+			},
+			onGenerate:function(ct,$i){
+				$('.xdsoft_time_variant .xdsoft_time').each(function(index){
+					var thistime = $(this).text();
+					if(disabledDates.indexOf(thistime) !== -1){
+						$(this).addClass('xdsoft_disabled');
+					}
+				});
+			}, 
+			onChangeDateTime: function (dp, $input) {
+				var selectedDate = new Date($input.val()),
+				time = $input.val().split(' ');
+				time = time[1];
+				console.log(time);
+				$.ajax({
+					method: 'POST',
+					url: ajaxurl,
+					data: {
+						action: 'check_webinar_existing_date_for_zoom', 
+						selected: $input.val()
+					},
+					success: function (result) {
+						console.log(result);
+						var desabletime = result.hide_time;
+						$('.xdsoft_time_variant .xdsoft_time').each(function(index){
+							var thistime = $(this).text();
+							
+							if(desabletime.indexOf(thistime) !== -1){
+								$(this).addClass('xdsoft_disabled');
+							}
+						});
+
+						/*
+						* Show error msg
+						*/
+						if(desabletime.indexOf(time) !== -1){
+							console.log('show error omar');
+						}
+
+
+					}
+				});
+
+
+
+				// console.log(selectedDate);
+				if (selectedDate !== "Invalid Date") {
+					var roundMinute = (Math.ceil(selectedDate.getMinutes() / 15) * 15) % 60;
+					selectedDate.setMinutes(roundMinute);
+
+					var finalDate = fmt.formatDate(selectedDate, 'd/m/Y H:i');
+					// console.log(finalDate);
+					if ($changeDate) {
+						// $vm.changeDate(finalDate);
+					}
+				}
 			}
 		});
 		$($event.target).datetimepicker('show');
@@ -156,13 +212,13 @@
 			method: 'POST',
 			url: ajaxurl,
 			data: {
-				action: 'check_webinar_existing_date', 
+				action: 'check_webinar_existing_date_for_zoom', 
 				selected: e.target.value,
 				lession_id: lession_id
 			},
 			success: function (result) {
 				var allowed_times = getTimesbyDate(result, e.target.value);
-				console.log(allowed_times);
+				// console.log(allowed_times);
 					if (result.disabled_date) {
 						showDatePicker(e, allowed_times, true, result.disabled_date, );
 					} else {

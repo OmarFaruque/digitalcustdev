@@ -1,0 +1,88 @@
+.zoom-iframe-container {
+    overflow: hidden;
+    padding-top: 56.25%;
+    position: relative;
+}
+
+.zoom-iframe-container iframe {
+    border: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.zoom-window-wrap .button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  margin-bottom: 2em;
+  display: inline-block;
+}
+
+.zoom-meeting-step1 .join-meeting-field {
+ margin-bottom: 1em;
+ display: inline-block;
+}
+
+/* 4x3 Aspect Ratio */
+.iframe-container-4x3 {
+padding-top: 75%;
+}
+
+ul.countdown {
+    list-style: none;
+    margin: 75px 0;
+    padding: 0;
+    display: block;
+    text-align: center;
+}
+ul.countdown li {
+    display: inline-block;
+}
+ul.countdown li span {
+    font-size: 80px;
+    font-weight: 300;
+    line-height: 80px;
+}
+ul.countdown li.seperator {
+    font-size: 80px;
+    line-height: 70px;
+    vertical-align: top;
+}
+ul.countdown li p {
+    color: #a7abb1;
+    font-size: 14px;
+}
+.source {
+    width: 405px;
+    margin: 0 auto;
+    background: #4f5861;
+    color: #a7abb1;
+    font-weight: bold;
+    display: block;
+    white-space: pre;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+}
+
+/*
+  ##Device = Smartphone and tablet style
+  ##Screen = B/w 300px to 1024px
+*/
+
+@media (min-width: 300px) and (max-width: 414px) {
+  .zoom-iframe-container {
+    padding-top: 160%;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 819px) {
+  .zoom-iframe-container {
+    padding-top: 90%;
+    overflow: visible;
+  }
+}

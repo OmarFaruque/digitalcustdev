@@ -1,0 +1,647 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-10-31 06:13+0500\n"
+"PO-Revision-Date: 2019-11-03 15:35+0200\n"
+"Last-Translator: Ingo Ahnfeldt https://facebook.com/ingo.ahnfeldt\n"
+"Language-Team: Hebrew (Israel)\n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.3\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3);\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_attr_e;esc_attr__;"
+"esc_attr_x;esc_html_x\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: includes\n"
+"X-Poedit-SearchPath-2: includes/video-conferencing-with-zoom-shortcodes.php\n"
+
+#: Zoom_SL_Plugin_Updater.php:184
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr ""
+"יש גרסה חדשה של %1$s שזמינה להורדה. ניתן %2$sלצפות בפרטי%4$s הגרסה %3$s."
+
+#: Zoom_SL_Plugin_Updater.php:192
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
+msgstr ""
+"יש גרסה חדשה של %1$s שזמינה להורדה. ניתן %2$sלצפות בפרטי%4$s הגרסה %3$s או "
+"%5$sלעדכן עכשיו%6$s."
+
+#: Zoom_SL_Plugin_Updater.php:334
+msgid "You do not have permission to install plugin updates"
+msgstr "אין לך הרשאה להתקין עדכוני תוסף"
+
+#: Zoom_SL_Plugin_Updater.php:334
+msgid "Error"
+msgstr "שגיאה"
+
+#: classes/class-zvc-zoom-admin-meetings.php:99
+msgid "Updated meeting."
+msgstr "המפגש עודכן."
+
+#: classes/class-zvc-zoom-admin-meetings.php:140
+#, php-format
+msgid "Created meeting %s at %s. Join %s"
+msgstr "המפגש נוצר %s ב%s. התחבר %s"
+
+#: classes/class-zvc-zoom-admin-reports.php:69
+msgid "Date field cannot be Empty !!"
+msgstr "שדה התאריך לא יכול להיות ריק!"
+
+#: classes/class-zvc-zoom-admin-reports.php:98
+msgid "The fields cannot be Empty !!"
+msgstr "השדות לא יכולים להיות ריקים!"
+
+#: classes/class-zvc-zoom-admin-settings.php:28
+msgid "Add Meeting"
+msgstr "הוסף מפגש"
+
+#: classes/class-zvc-zoom-admin-settings.php:29
+#: views/admin/tpl-list-users.php:8
+msgid "Users"
+msgstr "משתמשים"
+
+#: classes/class-zvc-zoom-admin-settings.php:30
+msgid "Add Users"
+msgstr "הוסף משתמשים"
+
+#: classes/class-zvc-zoom-admin-settings.php:31 views/admin/tpl-reports.php:3
+msgid "Reports"
+msgstr "דוחות"
+
+#: classes/class-zvc-zoom-admin-settings.php:32
+#: classes/class-zvc-zoom-admin-settings.php:33
+#: views/admin/tpl-assign-host-id.php:2
+msgid "Assign Host ID"
+msgstr "הקצאת מארח"
+
+#: classes/class-zvc-zoom-admin-settings.php:35 views/admin/tpl-settings.php:9
+#: wp-zoom-addon.php:70
+msgid "Settings"
+msgstr "הגדרות"
+
+#: classes/class-zvc-zoom-admin-settings.php:76
+msgid "Successfully Updated. Please refresh this page."
+msgstr "עודכן בהצלחה. יש לרענן את העמוד."
+
+#: classes/class-zvc-zoom-admin-settings.php:77
+msgid "Dismiss this notice."
+msgstr "שחרר הערה."
+
+#: classes/class-zvc-zoom-admin-users.php:34
+msgid "Flushed User Cache!"
+msgstr "מטמון משתמשים נוקה!"
+
+#: classes/class-zvc-zoom-admin-users.php:77
+msgid ""
+"Created a User. Please check email for confirmation. Added user will only "
+"appear in the list after approval."
+msgstr "משתמש נוצר. אנא בדוק את המייל לאישור. המשתמש יופיע ברשימה אחרי אישור."
+
+#: classes/class-zvc-zoom-admin-users.php:112
+msgid "Saved !"
+msgstr "נשמר!"
+
+#: classes/class-zvc-zoom-ajax-calls.php:124
+msgid "Deleted meeting."
+msgstr "המפגש נמחק."
+
+#: classes/class-zvc-zoom-ajax-calls.php:126
+msgid "An error occured. Host ID and Meeting ID not defined properly."
+msgstr "קרתה שגיאה. מזהה מארח ומזהה מפגש לא הוגדרו כראוי."
+
+#: classes/class-zvc-zoom-ajax-calls.php:153
+#, php-format
+msgid "Deleted %d Meeting(s)."
+msgstr "נמחק(ו) %d מפגש(ים)"
+
+#: classes/class-zvc-zoom-ajax-calls.php:156
+msgid "You need to select a data in order to initiate this action."
+msgstr "עליך לבחור נתונים כדי לבצע פעולה זו."
+
+#: includes/video-conferencing-with-zoom-helpers.php:49
+msgid "Would you like to help others?"
+msgstr "האם ברצונך לעזור לאחרים?"
+
+#: includes/video-conferencing-with-zoom-helpers.php:52
+#, php-format
+msgid ""
+"Please consider sharing the %s or your review on %s to benefit others as "
+"well."
+msgstr "נשמח עם תשקול לשתף את ה%s או הביקורת של על %s כדי לעזור לאחרים גם כן."
+
+#: includes/video-conferencing-with-zoom-helpers.php:57
+#, php-format
+msgid "Check %s for shortcode references."
+msgstr "בדוק %s לתיעוד על השורטקוד."
+
+#: includes/video-conferencing-with-zoom-init.php:157
+#, php-format
+msgid "%s requires %s or newer."
+msgstr "%s דורש %s או חדש יותר."
+
+#: includes/video-conferencing-with-zoom-init.php:164
+msgid ""
+"Warning! It is not possible to activate this plugin as it requires above PHP "
+"5.4 and on this server the PHP version installed is: "
+msgstr ""
+"אזהרה! לא ניתן להפעיל את התוסף כיוון שנדרשת גירסה PHP 5.4  ומעלה ובשרת "
+"מותקנת גירסת PHP: "
+
+#: includes/video-conferencing-with-zoom-init.php:164
+msgid ""
+"For security reasons we <b>suggest</b> that you contact your hosting "
+"provider and ask to update your PHP to latest stable version."
+msgstr ""
+"מטעמי אבטחה, אנו <b מציעים </b> שתיצור קשר עם ספק האיחסון שלך ותבקש לעדכן את "
+"גירסת ה-PHP לגירסה האחרונה."
+
+#: includes/video-conferencing-with-zoom-init.php:164
+msgid ""
+"If they refuse for whatever reason we suggest you to <b>change provider as "
+"soon as possible</b>."
+msgstr ""
+"אם הם מסרבים מכל סיבה שהיא, אנו ממליצים לך <b> להחליף ספק איחסון במהירות "
+"האפשרית</b>."
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:47
+msgid "Restricted access, please login to continue"
+msgstr "גישה מוגבלת, אנא התחבר כדי להמשיך"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:49
+msgid "This meeting has been ended"
+msgstr "המפגש הסתיים"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:55
+msgid "days"
+msgstr "ימים"
+
+msgid "day"
+msgstr "יום"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:60
+msgid "hours"
+msgstr "שעות"
+
+msgid "hour"
+msgstr "שעה"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:65
+msgid "minutes"
+msgstr "דקות"
+
+msgid "minute"
+msgstr "דקה"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:70
+msgid "seconds"
+msgstr "שניות"
+
+msgid "second"
+msgstr "שניה"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:88
+msgid ""
+"Note: If you are having trouble joining the meeting below, enter Meeting ID: "
+msgstr "שים לב: אם יש לך בעיה להצטרף למפגש להלן, יש להזין מזהה מפגש: "
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:88
+msgid "and join via Zoom App."
+msgstr "ולהצטרף דרך אפליקציית Zoom."
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:95
+msgid "Join via Zoom App"
+msgstr "הצטרפות דרך אפליקציית Zoom"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:96
+msgid "Download App from Store"
+msgstr "הורדת האפליקציה מהחנות"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:97
+msgid "Download from Zoom"
+msgstr "הורדה מאתר Zoom"
+
+#: views/admin/tpl-add-meetings.php:7
+msgid "Add a Meeting"
+msgstr "הוסף מפגש"
+
+#: views/admin/tpl-add-meetings.php:22 views/admin/tpl-edit-meeting.php:43
+msgid "Meeting Topic *"
+msgstr "נושא המפגש *"
+
+#: views/admin/tpl-add-meetings.php:25 views/admin/tpl-edit-meeting.php:46
+msgid "Meeting topic. (Required)."
+msgstr "נושא המפגש (חובה)."
+
+#: views/admin/tpl-add-meetings.php:29 views/admin/tpl-edit-meeting.php:50
+msgid "Meeting Agenda"
+msgstr "סדר יום למפגש"
+
+#: views/admin/tpl-add-meetings.php:32 views/admin/tpl-edit-meeting.php:53
+msgid "Meeting Description."
+msgstr "תיאור המפגש."
+
+#: views/admin/tpl-add-meetings.php:36 views/admin/tpl-edit-meeting.php:57
+msgid "Meeting Host *"
+msgstr "מארח מפגש *"
+
+#: views/admin/tpl-add-meetings.php:39 views/admin/tpl-add-meetings.php:126
+#: views/admin/tpl-edit-meeting.php:60 views/admin/tpl-edit-meeting.php:152
+msgid "Select a Host"
+msgstr "בחר מארח"
+
+#: views/admin/tpl-add-meetings.php:44 views/admin/tpl-edit-meeting.php:65
+msgid "This is host ID for the meeting (Required)."
+msgstr "זהו מזהה המארח למפגש (חובה)."
+
+#: views/admin/tpl-add-meetings.php:48 views/admin/tpl-edit-meeting.php:69
+msgid "Start Date/Time *"
+msgstr "תאריך ושעת התחלה *"
+
+#: views/admin/tpl-add-meetings.php:51 views/admin/tpl-edit-meeting.php:78
+msgid "Starting Date and Time of the Meeting (Required)."
+msgstr "תאריך ושעת התחלה למפגש (חובה)."
+
+#: views/admin/tpl-add-meetings.php:55 views/admin/tpl-edit-meeting.php:82
+msgid "Timezone"
+msgstr "אזור זמן"
+
+#: views/admin/tpl-add-meetings.php:64 views/admin/tpl-edit-meeting.php:90
+msgid "Meeting Timezone"
+msgstr "אזור זמן למפגש"
+
+#: views/admin/tpl-add-meetings.php:68 views/admin/tpl-edit-meeting.php:94
+msgid "Duration"
+msgstr "משך המפגש"
+
+#: views/admin/tpl-add-meetings.php:71 views/admin/tpl-edit-meeting.php:97
+msgid "Meeting duration (minutes). (optional)"
+msgstr "משך המפגש (בדקות). (לא חובה)"
+
+#: views/admin/tpl-add-meetings.php:75 views/admin/tpl-edit-meeting.php:101
+msgid "Meeting Password"
+msgstr "סיסמת המפגש"
+
+#: views/admin/tpl-add-meetings.php:78 views/admin/tpl-edit-meeting.php:104
+msgid ""
+"Password to join the meeting. Password may only contain the following "
+"characters: [a-z A-Z 0-9]. Max of 10 characters.( Leave blank for no "
+"Password )"
+msgstr ""
+"סיסמת התחברות למפגש. הסיסמה יכולה להכיל רק תווים אלפא-נומריים (a-z A-Z "
+"0-9)/  מקסימום 10 תווים. (השאר ריק כדי לא להשתמש בסיסמה)"
+
+#: views/admin/tpl-add-meetings.php:82 views/admin/tpl-edit-meeting.php:108
+msgid "Join Before Host"
+msgstr "הצטרפות למני המארח"
+
+#: views/admin/tpl-add-meetings.php:84 views/admin/tpl-edit-meeting.php:110
+msgid ""
+"Join meeting before host start the meeting. Only for scheduled or recurring "
+"meetings."
+msgstr "הצטרפות לפני שהמארח מתחיל את המפגש. רק עבור מפגשים מתוזמנים או חוזרים."
+
+#: views/admin/tpl-add-meetings.php:88 views/admin/tpl-edit-meeting.php:114
+msgid "Host join start"
+msgstr "הפעלת וידאו בהצטרפות מארח"
+
+#: views/admin/tpl-add-meetings.php:90 views/admin/tpl-edit-meeting.php:116
+msgid "Start video when host join meeting."
+msgstr "להפעיל את הוידאו כאשר המארח מצטרף למפגש."
+
+#: views/admin/tpl-add-meetings.php:94 views/admin/tpl-edit-meeting.php:120
+msgid "Start After Participants"
+msgstr "הפעלת וידאו אחרי משתתפים"
+
+#: views/admin/tpl-add-meetings.php:96 views/admin/tpl-edit-meeting.php:122
+msgid "Start video when participants join meeting."
+msgstr "להפעיל את הוידאו כאשר משתתפים מצטרפים למפגש."
+
+#: views/admin/tpl-add-meetings.php:100 views/admin/tpl-edit-meeting.php:126
+msgid "Mute Participants upon entry"
+msgstr "השתק משתתפים בכניסה"
+
+#: views/admin/tpl-add-meetings.php:102 views/admin/tpl-edit-meeting.php:128
+msgid "Mutes Participants when entering the meeting."
+msgstr "להשתיק את המשתתפים כאשר הם נכנסים למפגש."
+
+#: views/admin/tpl-add-meetings.php:106 views/admin/tpl-edit-meeting.php:132
+msgid "Enforce Login"
+msgstr "אכוף התחברות"
+
+#: views/admin/tpl-add-meetings.php:108 views/admin/tpl-edit-meeting.php:134
+msgid "Only signed-in users can join this meeting."
+msgstr "רק משתמשים מחוברים יכולים להצטרף למפגש הזה."
+
+#: views/admin/tpl-add-meetings.php:112 views/admin/tpl-edit-meeting.php:138
+msgid "Auto Recording"
+msgstr "הקלטה אוטומטית"
+
+#: views/admin/tpl-add-meetings.php:119 views/admin/tpl-edit-meeting.php:145
+msgid ""
+"Set what type of auto recording feature you want to add. Default is none."
+msgstr "הגדר את סוג ההקלטה האוטומטית שאתה רוצה. ברירת מחדל היא ללא הקלטה"
+
+#: views/admin/tpl-add-meetings.php:123 views/admin/tpl-edit-meeting.php:149
+msgid "Alternative Hosts"
+msgstr "מארחים נוספים"
+
+#: views/admin/tpl-add-meetings.php:131 views/admin/tpl-edit-meeting.php:162
+msgid "Alternative hosts IDs. Multiple value separated by comma."
+msgstr "מזהים של מארחים נוספים. ערכים מרובים מופרדים בפסיק."
+
+#: views/admin/tpl-add-user.php:2
+msgid "Add a User"
+msgstr "הוסף משתמש"
+
+#: views/admin/tpl-add-user.php:16
+msgid "Action (Required)."
+msgstr "פעולה (חובה)."
+
+#: views/admin/tpl-add-user.php:19
+msgid "Create"
+msgstr "Create"
+
+#: views/admin/tpl-add-user.php:20
+msgid "Auto Create"
+msgstr "Auto Create"
+
+#: views/admin/tpl-add-user.php:21
+msgid "Cust Create"
+msgstr "Cust Create"
+
+#: views/admin/tpl-add-user.php:22
+msgid "SSO Create"
+msgstr "SSO Create"
+
+#: views/admin/tpl-add-user.php:25 views/admin/tpl-add-user.php:60
+msgid "Type of User (Required)"
+msgstr "סוג המשתמש (חובה)"
+
+#: views/admin/tpl-add-user.php:36
+msgid "Email Address"
+msgstr "כתובת מייל"
+
+#: views/admin/tpl-add-user.php:38
+msgid "This address is used for zoom (Required)."
+msgstr "כתובת זו היא בשימוש עבור Zoom (חובה)."
+
+#: views/admin/tpl-add-user.php:42
+msgid "First Name"
+msgstr "שם פרטי"
+
+#: views/admin/tpl-add-user.php:45
+msgid "First Name of the User (Required)."
+msgstr "שם פרטי של המשתמש (חובה)."
+
+#: views/admin/tpl-add-user.php:49
+msgid "Last Name"
+msgstr "שם משפחה"
+
+#: views/admin/tpl-add-user.php:51
+msgid "Last Name of the User (Required)."
+msgstr "שם משפחה של המשתמש (חובה)."
+
+#: views/admin/tpl-add-user.php:54
+msgid "User Type (Required)."
+msgstr "סוג המשתמש (חובה)."
+
+#: views/admin/tpl-add-user.php:57
+msgid "Basic User"
+msgstr "Basic User"
+
+#: views/admin/tpl-add-user.php:58
+msgid "Pro User"
+msgstr "Pro User"
+
+#: views/admin/tpl-assign-host-id.php:25 views/admin/tpl-list-users.php:23
+msgid "SN"
+msgstr "SN"
+
+#: views/admin/tpl-assign-host-id.php:26 views/admin/tpl-list-users.php:25
+msgid "Email"
+msgstr "אימייל"
+
+#: views/admin/tpl-assign-host-id.php:27 views/admin/tpl-list-users.php:26
+msgid "Name"
+msgstr "שם"
+
+#: views/admin/tpl-assign-host-id.php:28
+msgid "Host ID"
+msgstr "מזהה מארח"
+
+#: views/admin/tpl-edit-meeting.php:18
+msgid "Edit a Meeting"
+msgstr "ערוך מפגש"
+
+#: views/admin/tpl-edit-meeting.php:18
+msgid "Back to List"
+msgstr "חזרה לרשימה"
+
+#: views/admin/tpl-edit-meeting.php:30
+msgid "Meeting Added To Zoom Successfully!"
+msgstr "המפגש התווסף ל-Zoom בהצלחה!"
+
+#: views/admin/tpl-list-meetings.php:29 views/admin/tpl-reports.php:32
+msgid "Meetings"
+msgstr "מפגשים"
+
+#: views/admin/tpl-list-meetings.php:38
+msgid "Select bulk action"
+msgstr "בחר פעולה קבוצתית"
+
+#: views/admin/tpl-list-meetings.php:40
+msgid "Move to Trash"
+msgstr "העבר לפח"
+
+#: views/admin/tpl-list-meetings.php:49
+msgid "Select a User"
+msgstr "בחר משתמש"
+
+#: views/admin/tpl-list-meetings.php:63
+msgid "Meeting ID"
+msgstr "מזהה מפגש"
+
+#: views/admin/tpl-list-meetings.php:64
+msgid "Topic"
+msgstr "נושא"
+
+#: views/admin/tpl-list-meetings.php:65
+msgid "Status"
+msgstr "סטטוס"
+
+#: views/admin/tpl-list-meetings.php:66
+msgid "Start Time"
+msgstr "זמן התחלה"
+
+#: views/admin/tpl-list-meetings.php:67
+msgid "End/Resume Meeting"
+msgstr "סיים/חדש מפגש"
+
+#: views/admin/tpl-list-meetings.php:68 views/admin/tpl-list-users.php:27
+msgid "Created On"
+msgstr "נוצר"
+
+#: views/admin/tpl-list-meetings.php:83
+msgid "Trash"
+msgstr "פח"
+
+#: views/admin/tpl-list-meetings.php:117
+msgid "End Meeting"
+msgstr "סיים מפגש"
+
+#: views/admin/tpl-list-meetings.php:122
+msgid "Resume Meeting"
+msgstr "חדש מפגש"
+
+#: views/admin/tpl-list-users.php:8
+msgid "Flush User Cache"
+msgstr "נקה מטמון משתמשים"
+
+#: views/admin/tpl-list-users.php:24
+msgid "User ID"
+msgstr "מזהה משתמש"
+
+#: views/admin/tpl-list-users.php:28
+msgid "Last Login"
+msgstr "התחברות אחרונה"
+
+#: views/admin/tpl-list-users.php:29
+msgid "Last Client"
+msgstr "דפדפן אחרון"
+
+#: views/admin/tpl-reports.php:6
+msgid "1. Daily Report"
+msgstr "1. דוח יומי"
+
+#: views/admin/tpl-reports.php:7
+msgid "2. Account Report"
+msgstr "2. דוח חשבון"
+
+#: views/admin/tpl-reports.php:23
+msgid "Enter the date to check:"
+msgstr "הזן תאריך לבדיקה: "
+
+#: views/admin/tpl-reports.php:31
+msgid "Date"
+msgstr "תאריך"
+
+#: views/admin/tpl-reports.php:33
+msgid "New Users"
+msgstr "משתמשים חדשים"
+
+#: views/admin/tpl-reports.php:34
+msgid "Participants"
+msgstr "משתתפים"
+
+#: views/admin/tpl-reports.php:35
+msgid "Meeting Minutes"
+msgstr "דקות מפגש"
+
+#: views/admin/tpl-reports.php:54
+msgid "Select a Date to Check..."
+msgstr "בחר תאריך לבדיקה..."
+
+#: views/admin/tpl-reports.php:75
+msgid "Searching From: "
+msgstr "חיפוש מ: "
+
+#: views/admin/tpl-reports.php:76
+msgid "Total Records Found: "
+msgstr "סך הכל רשומות שנמצאו: "
+
+#: views/admin/tpl-reports.php:77
+msgid "Total Meetings Held: "
+msgstr "סך הכל מפגשים שנערכו: "
+
+#: views/admin/tpl-reports.php:78
+msgid "Total Participants Involved: "
+msgstr "סך הכל משתתפים שלקחו חלק: "
+
+#: views/admin/tpl-reports.php:79
+msgid "Total Meeting Minutes Combined: "
+msgstr "סך הכל משך כל המפגשים בדקות: "
+
+#: views/admin/tpl-reports.php:87
+msgid "Get account report for a specified period."
+msgstr "קבל דוח חשבון לתקופה ספציפית."
+
+#: views/admin/tpl-reports.php:87
+msgid "Print"
+msgstr "הדפס"
+
+#: views/admin/tpl-reports.php:89
+msgid "From"
+msgstr "מ"
+
+#: views/admin/tpl-reports.php:91
+msgid "To"
+msgstr "עד"
+
+#: views/admin/tpl-reports.php:99
+msgid "By"
+msgstr "על ידי"
+
+#: views/admin/tpl-reports.php:100
+msgid "Meetings Held"
+msgstr "מפגשים שנערכו"
+
+#: views/admin/tpl-reports.php:101
+msgid "Total Participants"
+msgstr "סך הכל משתתפים"
+
+#: views/admin/tpl-reports.php:102
+msgid "Total Meeting Minutes"
+msgstr "סך הכל דקות מפגש"
+
+#: views/admin/tpl-reports.php:103
+msgid "Last Login Time"
+msgstr "זמן התחברות אחרונה"
+
+#: views/admin/tpl-reports.php:111
+msgid "No Records Found.."
+msgstr "לא נמצאו רשומות..."
+
+#: views/admin/tpl-reports.php:126
+msgid "Enter a value to Check..."
+msgstr "הזן ערך לבדיקה..."
+
+#: views/admin/tpl-settings.php:20
+msgid "API Key"
+msgstr "מפתח API"
+
+#: views/admin/tpl-settings.php:24
+msgid "API Secret Key"
+msgstr "מפתח API סודי"
+
+#: views/admin/tpl-settings.php:28
+msgid "Vanity URL"
+msgstr "Vanity URL"
+
+#: views/admin/tpl-settings.php:37
+msgid "Save Changes"
+msgstr "שמור שינויים"
+
+#: views/admin/tpl-settings.php:63
+msgid "Plugin guide"
+msgstr "מדריך התוסף (אנגלית)"
+
+#: views/admin/tpl-settings.php:64
+msgid "Contact for additional Support"
+msgstr "צור קשר לתמיכה נוספת"
+
+#: wp-zoom-addon.php:55
+msgid ""
+"Zoom Video Conferencing on WordPress is an extended version of Video "
+"Conferencing with Zoom API plugin and cannot work along with this plugin"
+msgstr ""
+"התוסף הוא גרסה מורחבת של ועידת וידאו עם תוסף API של זום ואין אפשרות לעבוד "
+"יחד עם תוסף זה"

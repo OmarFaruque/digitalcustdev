@@ -129,13 +129,25 @@ class Admin_DigitalCustDev_Webinar {
 				?>
                 <p><a href="<?php echo $zoom_api_meeting_link->join_url; ?>">Join Meeting</a></p>
 				<?php
-			} else {
+			}
+				$course = learn_press_get_item_courses( $post->ID );
+				// echo 'course id: <br/>';
+				// echo '<pre>';
+				// print_r($course);
+				// echo '</pre>';
+				$course_type = get_post_meta( $course[0]->ID, '_course_type', true );
+				// echo 'course type: ' . $course_type . '<br/>';
 
 				$zoom_date = get_post_meta( $post->ID, 'zoom_date', true );
 				$time_zone = get_post_meta($post->ID, 'time_zone', true);
+				$infoTExt = __( 'Create an event to create zoom meeting for this event.', 'digitalcustdev-core' );
 
+				if(get_post_meta( $post->ID, '_webinar_ID', true )) $infoTExt = sprintf('Synchronization with ZOOM is done: %s', $zoom_date);
+				if($course_type != 'webinar') $infoTExt = __('Synchronization of date-time with ZOOM is not performed', 'webinar');
+				if($course[0]->post_status != 'publish') $infoTExt = __('Synchronization of date-time with ZOOM is not performed', 'webinar');
+				
 				$tzlists = zvc_get_timezone_options();
-				echo __( 'Create an event to create zoom meeting for this event.', 'digitalcustdev-core' );
+				echo $infoTExt;
 				$output = '<div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
 				$output .= '<input autocomplete="off" name="zoom_date" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
 				$output .= '<div class="d-block"><label for="time_zone">'.__('TimeZone', 'webinar').'</label>';
@@ -147,7 +159,7 @@ class Admin_DigitalCustDev_Webinar {
 				$output .= '</select></div>';
 
 				echo $output;
-			}
+			
 		}
 	}
 

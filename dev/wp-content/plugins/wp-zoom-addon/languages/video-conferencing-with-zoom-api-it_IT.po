@@ -1,0 +1,662 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-10-31 06:13+0500\n"
+"PO-Revision-Date: 2020-03-31 02:42+0200\n"
+"Last-Translator: Ingo Ahnfeldt https://facebook.com/ingo.ahnfeldt\n"
+"Language-Team: Dutch (Germany)\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_attr_e;esc_attr__;"
+"esc_attr_x;esc_html_x\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: includes\n"
+"X-Poedit-SearchPath-2: includes/video-conferencing-with-zoom-shortcodes.php\n"
+
+#: Zoom_SL_Plugin_Updater.php:184
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr ""
+"È disponibile una nuova versione di %1$s. %2$sVisualizza i dettagli%4$s "
+"della versione%3$s."
+
+#: Zoom_SL_Plugin_Updater.php:192
+#, php-format
+msgid ""
+"There is a new version of %1$s available. %2$sView version %3$s details%4$s "
+"or %5$supdate now%6$s."
+msgstr ""
+"È disponibile una nuova versione di %1$s. %2$sVisualizza i dettagli%4$s "
+"della versione%3$s o %5$saggiorna adesso%6$s."
+
+#: Zoom_SL_Plugin_Updater.php:334
+msgid "You do not have permission to install plugin updates"
+msgstr "Non hai i permessi per installare gli aggiornamenti del plugin"
+
+#: Zoom_SL_Plugin_Updater.php:334
+msgid "Error"
+msgstr "Errore"
+
+#: classes/class-zvc-zoom-admin-meetings.php:99
+msgid "Updated meeting."
+msgstr "Meeting aggiornato."
+
+#: classes/class-zvc-zoom-admin-meetings.php:140
+#, php-format
+msgid "Created meeting %s at %s. Join %s"
+msgstr "Creato il meeting %s a %s. Unisciti a %s"
+
+#: classes/class-zvc-zoom-admin-reports.php:69
+msgid "Date field cannot be Empty !!"
+msgstr "Il campo Data non può essere vuoto !!"
+
+#: classes/class-zvc-zoom-admin-reports.php:98
+msgid "The fields cannot be Empty !!"
+msgstr "Questi campi non possono essere vuoti !!"
+
+#: classes/class-zvc-zoom-admin-settings.php:28
+msgid "Add Meeting"
+msgstr "Aggiungi Meeting"
+
+#: classes/class-zvc-zoom-admin-settings.php:29
+#: views/admin/tpl-list-users.php:8
+msgid "Users"
+msgstr "Utenti"
+
+#: classes/class-zvc-zoom-admin-settings.php:30
+msgid "Add Users"
+msgstr "Aggiungi Utenti"
+
+#: classes/class-zvc-zoom-admin-settings.php:31 views/admin/tpl-reports.php:3
+msgid "Reports"
+msgstr "Reports"
+
+#: classes/class-zvc-zoom-admin-settings.php:32
+#: classes/class-zvc-zoom-admin-settings.php:33
+#: views/admin/tpl-assign-host-id.php:2
+msgid "Assign Host ID"
+msgstr "Assegna ID Host"
+
+#: classes/class-zvc-zoom-admin-settings.php:35 views/admin/tpl-settings.php:9
+#: wp-zoom-addon.php:70
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: classes/class-zvc-zoom-admin-settings.php:76
+msgid "Successfully Updated. Please refresh this page."
+msgstr "Aggiornato con successo. Si prega di aggiornare questa pagina."
+
+#: classes/class-zvc-zoom-admin-settings.php:77
+msgid "Dismiss this notice."
+msgstr "Rimuovi questa notifica."
+
+#: classes/class-zvc-zoom-admin-users.php:34
+msgid "Flushed User Cache!"
+msgstr "Cache Utente Svuotata!"
+
+#: classes/class-zvc-zoom-admin-users.php:77
+msgid ""
+"Created a User. Please check email for confirmation. Added user will only "
+"appear in the list after approval."
+msgstr ""
+"Creato un Utente. Si prega di controllare l'e-mail per la conferma. L'utente "
+"aggiunto verrà visualizzato nell'elenco solo dopo l'approvazione."
+
+#: classes/class-zvc-zoom-admin-users.php:112
+msgid "Saved !"
+msgstr "Salvato !"
+
+#: classes/class-zvc-zoom-ajax-calls.php:124
+msgid "Deleted meeting."
+msgstr "Meeting cancellato."
+
+#: classes/class-zvc-zoom-ajax-calls.php:126
+msgid "An error occured. Host ID and Meeting ID not defined properly."
+msgstr ""
+"Si è verificato un errore. ID Host e ID Meeting non sono definiti "
+"correttamente."
+
+#: classes/class-zvc-zoom-ajax-calls.php:153
+#, php-format
+msgid "Deleted %d Meeting(s)."
+msgstr "%d Meeting(s) Cancellato(i)"
+
+#: classes/class-zvc-zoom-ajax-calls.php:156
+msgid "You need to select a data in order to initiate this action."
+msgstr "Devi selezionare una data per effettuare questa azione."
+
+#: includes/video-conferencing-with-zoom-helpers.php:49
+msgid "Would you like to help others?"
+msgstr "Ti piacerebbe aiutare gli altri?"
+
+#: includes/video-conferencing-with-zoom-helpers.php:52
+#, php-format
+msgid ""
+"Please consider sharing the %s or your review on %s to benefit others as "
+"well."
+msgstr ""
+"Ti preghiamo di condividere il %s o la tua recensione su %s a beneficio "
+"anche degli altri."
+
+#: includes/video-conferencing-with-zoom-helpers.php:57
+#, php-format
+msgid "Check %s for shortcode references."
+msgstr "Controlla %s per i riferimenti allo shortcode."
+
+#: includes/video-conferencing-with-zoom-init.php:157
+#, php-format
+msgid "%s requires %s or newer."
+msgstr "%s richiede %s o successivo."
+
+#: includes/video-conferencing-with-zoom-init.php:164
+msgid ""
+"Warning! It is not possible to activate this plugin as it requires above PHP "
+"5.4 and on this server the PHP version installed is: "
+msgstr ""
+"Attenzione! Non è possibile attivare questo plugin in quanto richiede una "
+"versione di PHP superiore a 5.4 e su questo server la versione di PHP "
+"installata è: "
+
+#: includes/video-conferencing-with-zoom-init.php:164
+msgid ""
+"For security reasons we <b>suggest</b> that you contact your hosting "
+"provider and ask to update your PHP to latest stable version."
+msgstr ""
+"Per motivi di sicurezza ti <b>consigliamo</b> di contattare il tuo hosting "
+"provider e chiedergli l'aggiornamento all'ultima versione PHP stabile."
+
+#: includes/video-conferencing-with-zoom-init.php:164
+msgid ""
+"If they refuse for whatever reason we suggest you to <b>change provider as "
+"soon as possible</b>."
+msgstr ""
+"Se il tuo provider si dovesse rifiutare per qualsiasi ragione, ti "
+"consigliamo di <b>cambiare provider quanto prima</b>."
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:47
+msgid "Restricted access, please login to continue"
+msgstr "Accesso limitato, effettua il login per continuare"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:49
+msgid "This meeting has been ended"
+msgstr "Questo meeting è terminato"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:55
+msgid "days"
+msgstr "Giorni"
+
+msgid "day"
+msgstr "Giorno"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:60
+msgid "hours"
+msgstr "Ore"
+
+msgid "hour"
+msgstr "Ora"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:65
+msgid "minutes"
+msgstr "Minuti"
+
+msgid "minute"
+msgstr "Minuto"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:70
+msgid "seconds"
+msgstr "Secondi"
+
+msgid "second"
+msgstr "Secondo"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:88
+msgid ""
+"Note: If you are having trouble joining the meeting below, enter Meeting ID: "
+msgstr ""
+"Nota: Se hai problemi ad entrare nel meeting in basso, copia il Meeting ID: "
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:88
+msgid "and join via Zoom App."
+msgstr "e partecipa usando l'App Zoom."
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:95
+msgid "Join via Zoom App"
+msgstr "Partecipa usando l'App Zoom"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:96
+msgid "Download App from Store"
+msgstr "Scarica l'App dallo Store (se stai usando uno smartphone)"
+
+#: includes/video-conferencing-with-zoom-shortcodes.php:97
+msgid "Download from Zoom"
+msgstr "Scarica direttamente da Zoom"
+
+#: views/admin/tpl-add-meetings.php:7
+msgid "Add a Meeting"
+msgstr "Aggiungi un Meeting"
+
+#: views/admin/tpl-add-meetings.php:22 views/admin/tpl-edit-meeting.php:43
+msgid "Meeting Topic *"
+msgstr "Argomento del Meeting  *"
+
+#: views/admin/tpl-add-meetings.php:25 views/admin/tpl-edit-meeting.php:46
+msgid "Meeting topic. (Required)."
+msgstr "Argomento del Meeting. (Obbligatorio)."
+
+#: views/admin/tpl-add-meetings.php:29 views/admin/tpl-edit-meeting.php:50
+msgid "Meeting Agenda"
+msgstr "Programma del Meeting"
+
+#: views/admin/tpl-add-meetings.php:32 views/admin/tpl-edit-meeting.php:53
+msgid "Meeting Description."
+msgstr "Descrizione del Meeting."
+
+#: views/admin/tpl-add-meetings.php:36 views/admin/tpl-edit-meeting.php:57
+msgid "Meeting Host *"
+msgstr "Host del Meeting *"
+
+#: views/admin/tpl-add-meetings.php:39 views/admin/tpl-add-meetings.php:126
+#: views/admin/tpl-edit-meeting.php:60 views/admin/tpl-edit-meeting.php:152
+msgid "Select a Host"
+msgstr "Seleziona un Host"
+
+#: views/admin/tpl-add-meetings.php:44 views/admin/tpl-edit-meeting.php:65
+msgid "This is host ID for the meeting (Required)."
+msgstr "Questo è l'ID host per il meeting (Obbligatorio)."
+
+#: views/admin/tpl-add-meetings.php:48 views/admin/tpl-edit-meeting.php:69
+msgid "Start Date/Time *"
+msgstr "Data/Ora di inizio *"
+
+#: views/admin/tpl-add-meetings.php:51 views/admin/tpl-edit-meeting.php:78
+msgid "Starting Date and Time of the Meeting (Required)."
+msgstr "Data e ora di inizio del Meeting (Obbligatorio)."
+
+#: views/admin/tpl-add-meetings.php:55 views/admin/tpl-edit-meeting.php:82
+msgid "Timezone"
+msgstr "Fuso Orario"
+
+#: views/admin/tpl-add-meetings.php:64 views/admin/tpl-edit-meeting.php:90
+msgid "Meeting Timezone"
+msgstr "Fuso Orario del Meeting"
+
+#: views/admin/tpl-add-meetings.php:68 views/admin/tpl-edit-meeting.php:94
+msgid "Duration"
+msgstr "Durata"
+
+#: views/admin/tpl-add-meetings.php:71 views/admin/tpl-edit-meeting.php:97
+msgid "Meeting duration (minutes). (optional)"
+msgstr "Durata del Meeting (in minuti). (facoltativo)"
+
+#: views/admin/tpl-add-meetings.php:75 views/admin/tpl-edit-meeting.php:101
+msgid "Meeting Password"
+msgstr "Password del Meeting"
+
+#: views/admin/tpl-add-meetings.php:78 views/admin/tpl-edit-meeting.php:104
+msgid ""
+"Password to join the meeting. Password may only contain the following "
+"characters: [a-z A-Z 0-9]. Max of 10 characters.( Leave blank for no "
+"Password )"
+msgstr ""
+"Password per partecipare alla riunione. La password può contenere solo i "
+"seguenti caratteri: [a-z A-Z 0-9]. Massimo 10 caratteri (Lascia vuoto se non "
+"vuoi inserire una password)"
+
+#: views/admin/tpl-add-meetings.php:82 views/admin/tpl-edit-meeting.php:108
+msgid "Join Before Host"
+msgstr "Partecipa Prima dell'Host"
+
+#: views/admin/tpl-add-meetings.php:84 views/admin/tpl-edit-meeting.php:110
+msgid ""
+"Join meeting before host start the meeting. Only for scheduled or recurring "
+"meetings."
+msgstr ""
+"Partecipa alla riunione prima che l'Host inizi il meeting. Solo per riunioni "
+"programmate o ricorrenti."
+
+#: views/admin/tpl-add-meetings.php:88 views/admin/tpl-edit-meeting.php:114
+msgid "Host join start"
+msgstr "Inizio all'ingresso dell'Host"
+
+#: views/admin/tpl-add-meetings.php:90 views/admin/tpl-edit-meeting.php:116
+msgid "Start video when host join meeting."
+msgstr "Avvia il video quando l'host partecipa alla riunione."
+
+#: views/admin/tpl-add-meetings.php:94 views/admin/tpl-edit-meeting.php:120
+msgid "Start After Participants"
+msgstr "Inizia Dopo i Partecipanti"
+
+#: views/admin/tpl-add-meetings.php:96 views/admin/tpl-edit-meeting.php:122
+msgid "Start video when participants join meeting."
+msgstr "Inizia il video quando i partecipanti si uniscono alla riunione."
+
+#: views/admin/tpl-add-meetings.php:100 views/admin/tpl-edit-meeting.php:126
+msgid "Mute Participants upon entry"
+msgstr "Disattiva l'audio dei partecipanti all'entrata"
+
+#: views/admin/tpl-add-meetings.php:102 views/admin/tpl-edit-meeting.php:128
+msgid "Mutes Participants when entering the meeting."
+msgstr "Disattiva l'audio dei partecipanti quando partecipano alla riunione."
+
+#: views/admin/tpl-add-meetings.php:106 views/admin/tpl-edit-meeting.php:132
+msgid "Enforce Login"
+msgstr "Forza il Login"
+
+#: views/admin/tpl-add-meetings.php:108 views/admin/tpl-edit-meeting.php:134
+msgid "Only signed-in users can join this meeting."
+msgstr ""
+"Solo gli utenti che hanno effettuato l'accesso possono partecipare a questa "
+"riunione."
+
+#: views/admin/tpl-add-meetings.php:112 views/admin/tpl-edit-meeting.php:138
+msgid "Auto Recording"
+msgstr "Registrazione Automatica"
+
+#: views/admin/tpl-add-meetings.php:119 views/admin/tpl-edit-meeting.php:145
+msgid ""
+"Set what type of auto recording feature you want to add. Default is none."
+msgstr ""
+"Imposta il tipo di funzione di registrazione automatica che desideri "
+"aggiungere. L'impostazione predefinita è nessuna."
+
+#: views/admin/tpl-add-meetings.php:123 views/admin/tpl-edit-meeting.php:149
+msgid "Alternative Hosts"
+msgstr "Host Alternativi"
+
+#: views/admin/tpl-add-meetings.php:131 views/admin/tpl-edit-meeting.php:162
+msgid "Alternative hosts IDs. Multiple value separated by comma."
+msgstr "ID Host alternativi. Valori multipli separati da virgole."
+
+#: views/admin/tpl-add-user.php:2
+msgid "Add a User"
+msgstr "Aggiungi un Utente"
+
+#: views/admin/tpl-add-user.php:16
+msgid "Action (Required)."
+msgstr "Azione (Obbligatorio)."
+
+#: views/admin/tpl-add-user.php:19
+msgid "Create"
+msgstr "Crea"
+
+#: views/admin/tpl-add-user.php:20
+msgid "Auto Create"
+msgstr "Crea in automatico"
+
+#: views/admin/tpl-add-user.php:21
+msgid "Cust Create"
+msgstr ""
+
+#: views/admin/tpl-add-user.php:22
+msgid "SSO Create"
+msgstr "Crea SSO"
+
+#: views/admin/tpl-add-user.php:25 views/admin/tpl-add-user.php:60
+msgid "Type of User (Required)"
+msgstr "Tipo di Utente (Obbligatorio)"
+
+#: views/admin/tpl-add-user.php:36
+msgid "Email Address"
+msgstr "Indirizzo Email"
+
+#: views/admin/tpl-add-user.php:38
+msgid "This address is used for zoom (Required)."
+msgstr "Questo indirizzo è utilizzato per zoom (Obbligatorio)."
+
+#: views/admin/tpl-add-user.php:42
+msgid "First Name"
+msgstr "Nome"
+
+#: views/admin/tpl-add-user.php:45
+msgid "First Name of the User (Required)."
+msgstr "Nome dell'Utente (Obbligatorio)."
+
+#: views/admin/tpl-add-user.php:49
+msgid "Last Name"
+msgstr "Cognome"
+
+#: views/admin/tpl-add-user.php:51
+msgid "Last Name of the User (Required)."
+msgstr "Cognome dell'Utente (Obbligatorio)."
+
+#: views/admin/tpl-add-user.php:54
+msgid "User Type (Required)."
+msgstr "Tipo di Utente (Obbligatorio)."
+
+#: views/admin/tpl-add-user.php:57
+msgid "Basic User"
+msgstr "Utente Base"
+
+#: views/admin/tpl-add-user.php:58
+msgid "Pro User"
+msgstr "Utente Pro"
+
+#: views/admin/tpl-assign-host-id.php:25 views/admin/tpl-list-users.php:23
+msgid "SN"
+msgstr "SN"
+
+#: views/admin/tpl-assign-host-id.php:26 views/admin/tpl-list-users.php:25
+msgid "Email"
+msgstr "Email"
+
+#: views/admin/tpl-assign-host-id.php:27 views/admin/tpl-list-users.php:26
+msgid "Name"
+msgstr "Nome"
+
+#: views/admin/tpl-assign-host-id.php:28
+msgid "Host ID"
+msgstr "Host-ID"
+
+#: views/admin/tpl-edit-meeting.php:18
+msgid "Edit a Meeting"
+msgstr "Modifica un Meeting"
+
+#: views/admin/tpl-edit-meeting.php:18
+msgid "Back to List"
+msgstr "Torna a Lista"
+
+#: views/admin/tpl-edit-meeting.php:30
+msgid "Meeting Added To Zoom Successfully!"
+msgstr "Meeting Aggiunto a Zoom con successo!"
+
+#: views/admin/tpl-list-meetings.php:29 views/admin/tpl-reports.php:32
+msgid "Meetings"
+msgstr "Meetings"
+
+#: views/admin/tpl-list-meetings.php:38
+msgid "Select bulk action"
+msgstr "Seleziona una azione in blocco"
+
+#: views/admin/tpl-list-meetings.php:40
+msgid "Move to Trash"
+msgstr "Sposta nel Cestino"
+
+#: views/admin/tpl-list-meetings.php:49
+msgid "Select a User"
+msgstr "Seleziona un Utente"
+
+#: views/admin/tpl-list-meetings.php:63
+msgid "Meeting ID"
+msgstr "Meeting ID"
+
+#: views/admin/tpl-list-meetings.php:64
+msgid "Topic"
+msgstr "Argomento"
+
+#: views/admin/tpl-list-meetings.php:65
+msgid "Status"
+msgstr "Status"
+
+#: views/admin/tpl-list-meetings.php:66
+msgid "Start Time"
+msgstr "Orario di Inizio"
+
+#: views/admin/tpl-list-meetings.php:67
+msgid "End/Resume Meeting"
+msgstr "Termina/Riprendi Meeting"
+
+#: views/admin/tpl-list-meetings.php:68 views/admin/tpl-list-users.php:27
+msgid "Created On"
+msgstr "Creato il"
+
+#: views/admin/tpl-list-meetings.php:83
+msgid "Trash"
+msgstr "Cestino"
+
+#: views/admin/tpl-list-meetings.php:117
+msgid "End Meeting"
+msgstr "Termina Meeting"
+
+#: views/admin/tpl-list-meetings.php:122
+msgid "Resume Meeting"
+msgstr "Riprendi Meeting"
+
+#: views/admin/tpl-list-users.php:8
+msgid "Flush User Cache"
+msgstr "Svuota Cache Utente"
+
+#: views/admin/tpl-list-users.php:24
+msgid "User ID"
+msgstr "ID Utente"
+
+#: views/admin/tpl-list-users.php:28
+msgid "Last Login"
+msgstr "Ultimo Login"
+
+#: views/admin/tpl-list-users.php:29
+msgid "Last Client"
+msgstr "Ultimo Cliente"
+
+#: views/admin/tpl-reports.php:6
+msgid "1. Daily Report"
+msgstr "1. Report Giornaliero"
+
+#: views/admin/tpl-reports.php:7
+msgid "2. Account Report"
+msgstr "2. Report dell'Account"
+
+#: views/admin/tpl-reports.php:23
+msgid "Enter the date to check:"
+msgstr "Inserisci la data da controllare:"
+
+#: views/admin/tpl-reports.php:31
+msgid "Date"
+msgstr "Data"
+
+#: views/admin/tpl-reports.php:33
+msgid "New Users"
+msgstr "Nuovi Utenti"
+
+#: views/admin/tpl-reports.php:34
+msgid "Participants"
+msgstr "Partecipanti"
+
+#: views/admin/tpl-reports.php:35
+msgid "Meeting Minutes"
+msgstr "Minuti del Meeting"
+
+#: views/admin/tpl-reports.php:54
+msgid "Select a Date to Check..."
+msgstr "Seleziona una Data da Controllare..."
+
+#: views/admin/tpl-reports.php:75
+msgid "Searching From: "
+msgstr "Ricerca da: "
+
+#: views/admin/tpl-reports.php:76
+msgid "Total Records Found: "
+msgstr "Totale di Records Trovati: "
+
+#: views/admin/tpl-reports.php:77
+msgid "Total Meetings Held: "
+msgstr "Totale Meeting Effettuati: "
+
+#: views/admin/tpl-reports.php:78
+msgid "Total Participants Involved: "
+msgstr "Totale Partecipanti Coinvolti: "
+
+#: views/admin/tpl-reports.php:79
+msgid "Total Meeting Minutes Combined: "
+msgstr "Minuti Totali del Meeting Combinati: "
+
+#: views/admin/tpl-reports.php:87
+msgid "Get account report for a specified period."
+msgstr "Ottieni il report dell'account per un periodo specifico."
+
+#: views/admin/tpl-reports.php:87
+msgid "Print"
+msgstr "Stampa"
+
+#: views/admin/tpl-reports.php:89
+msgid "From"
+msgstr "Da"
+
+#: views/admin/tpl-reports.php:91
+msgid "To"
+msgstr "A"
+
+#: views/admin/tpl-reports.php:99
+msgid "By"
+msgstr "Da"
+
+#: views/admin/tpl-reports.php:100
+msgid "Meetings Held"
+msgstr "Meeting Effettuati"
+
+#: views/admin/tpl-reports.php:101
+msgid "Total Participants"
+msgstr "Partecipanti Totali"
+
+#: views/admin/tpl-reports.php:102
+msgid "Total Meeting Minutes"
+msgstr "Minuti Totali del Meeting"
+
+#: views/admin/tpl-reports.php:103
+msgid "Last Login Time"
+msgstr "Orario Ultimo Login"
+
+#: views/admin/tpl-reports.php:111
+msgid "No Records Found.."
+msgstr "Nessun Record Trovato.."
+
+#: views/admin/tpl-reports.php:126
+msgid "Enter a value to Check..."
+msgstr "Inserisci un valore da controllare..."
+
+#: views/admin/tpl-settings.php:20
+msgid "API Key"
+msgstr "API Key"
+
+#: views/admin/tpl-settings.php:24
+msgid "API Secret Key"
+msgstr "API Secret Key"
+
+#: views/admin/tpl-settings.php:28
+msgid "Vanity URL"
+msgstr "Vanity URL"
+
+#: views/admin/tpl-settings.php:37
+msgid "Save Changes"
+msgstr "Salva Modifiche"
+
+#: views/admin/tpl-settings.php:63
+msgid "Plugin guide"
+msgstr "Guida del plugin (inglese)"
+
+#: views/admin/tpl-settings.php:64
+msgid "Contact for additional Support"
+msgstr "Contatta per un supporto aggiuntivo"
+
+#: wp-zoom-addon.php:55
+msgid ""
+"Zoom Video Conferencing on WordPress is an extended version of Video "
+"Conferencing with Zoom API plugin and cannot work along with this plugin"
+msgstr ""
+"Zoom Video Conferencing su WordPress è una versione estesa del plugin "
+"Conferencing with Zoom API e non può funzionare insieme a questo plugin"

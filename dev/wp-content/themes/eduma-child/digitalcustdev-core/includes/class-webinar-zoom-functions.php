@@ -18,6 +18,33 @@ class DigitalCustDev_Webinars {
 		add_action( 'post_updated', array( $this, 'updated_lesson' ), 10, 3 );
 
 		add_action( 'wp_ajax_check_webinar_existing_date', array( $this, 'check_webinars' ) );
+
+		add_action( 'wp_ajax_check_webinar_existing_date_for_zoom', array( $this, 'check_webinars_for_zoom' ) );
+
+		// add_action('admin_init', array($this, 'callbackTestFunction'));
+	}
+
+	public function callbackTestFunction(){
+		$selected_compare = '30/05/2020 00:45';
+		$selected_compare = str_replace('/', '-', $selected_compare);
+		echo 'selectd compair: ' . date( 'd/m/Y', strtotime( $selected_compare ) ). '<br/>';
+		$args             = array(
+			'post_type' => 'lp_lesson',
+			'post_status' => array('publish','pending'),
+			'meta_query' => array(
+				array(
+					'key' => 'zoom_date',
+					'value' => date( 'd/m/Y', strtotime( $selected_compare ) ),
+					'compare' => 'LIKE'
+				)
+			)
+		);
+		// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
+		$lessons          	= get_posts( $args );
+
+		echo '<pre>';
+		print_r($lessons);
+		echo '</pre>';
 	}
 
 	function create_lesson_webinar( $id, $section_id, $course_id ) {
@@ -30,6 +57,7 @@ class DigitalCustDev_Webinars {
 		$post_type    = get_post_type( $id );
 
 		if ( $post_type === "lp_lesson" && ! empty( $course_title ) && ! empty( $start_time ) ) {
+			// echo 'create omar 6<br>';
 			$this->create_webinar( $id );
 		} else {
 			return;
@@ -37,7 +65,9 @@ class DigitalCustDev_Webinars {
 	}
 
 	function updated_lesson( $post_id, $post_after, $post_before ) {
-		$course_id = LP_Request::get_string( 'course_ID' );
+		$course_curd = new LP_Course_CURD();
+		$course_id = $course_curd->get_course_by_item( $post_id );
+		$course_id = $course_id[0];
 
 		set_post_format( $post_id, 'video' );
 
@@ -45,10 +75,12 @@ class DigitalCustDev_Webinars {
 			return;
 		}
 
-		$start_time   = get_post_meta( $post_id, '_webinar_start_time', true );
+		
+		$start_time   = get_post_meta( $post_id, 'zoom_date', true );
 		$course_title = get_the_title( $post_id );
 		$post_type    = get_post_type( $post_id );
 		if ( $post_type === "lp_lesson" && ! empty( $course_title ) && ! empty( $start_time ) ) {
+			update_post_meta( $post_id, 'test', 'inside condition' );
 			$this->create_webinar( $post_id );
 		}
 	}
@@ -82,6 +114,7 @@ class DigitalCustDev_Webinars {
 
 		$post_metas = LP_Request::get( 'postMeta' );
 		if ( ! empty( $post_metas ) ) {
+			// echo 'create omar 5<br>';
 			$this->create_webinar( $post_id, $post_metas );
 		}
 	}
@@ -89,11 +122,14 @@ class DigitalCustDev_Webinars {
 	function create_webinar( $post_id, $post_metas = array() ) {
 		$post_type = get_post_type( $post_id );
 		//$author_id = learn_press_get_current_user_id();
+		// echo 'post type: ' . $post_type . '<br/>';
 		$author_id = get_post_field( 'post_author', $post_id );
 
 		if ( "lp_lesson" != $post_type ) {
 			return;
 		}
+
+		
 
 		if ( get_post_status( $post_id ) === 'draft' && 'auto-draft' === get_post_status( $post_id ) && 'trash' === get_post_status( $post_id ) ) {
 			return;
@@ -102,9 +138,12 @@ class DigitalCustDev_Webinars {
 		$lesson         = get_post( $post_id );
 		$webinar_exists = get_post_meta( $post_id, '_webinar_ID', true );
 		if ( empty( $webinar_exists ) ) {
-			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
-			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
+			$timezone   = get_post_meta( $post_id, 'time_zone', true );
+			$start_time = get_post_meta( $post_id, 'zoom_date', true );
+			$start_time = str_replace('/', '-', $start_time);
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+			
+			
 			$host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
 
 			if ( ! empty( $post_metas ) ) {
@@ -112,6 +151,7 @@ class DigitalCustDev_Webinars {
 				$start_time = ! empty( $post_metas['_lp_webinar_when'] ) ? date( "Y-m-d\TH:i:s", strtotime( $post_metas['_lp_webinar_when'] ) ) : date( "Y-m-d\TH:i:s" );
 			}
 
+			
 			if ( ! empty( $host_id ) ) {
 				//Create webinar here
 				$postData        = array(
@@ -119,7 +159,7 @@ class DigitalCustDev_Webinars {
 					'type'       => 5,
 					'start_time' => ! empty( $start_time ) ? $start_time : date( "Y-m-d\TH:i:s" ),
 					'timezone'   => ! empty( $timezone ) ? $timezone : '',
-					'agenda'     => $lesson->post_content,
+					// 'agenda'     => $lesson->post_content,
 					'settings'   => array(
 						'host_video'        => false,
 						'panelists_video'   => true,
@@ -129,6 +169,7 @@ class DigitalCustDev_Webinars {
 					)
 				);
 				$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
+				
 				$created_webinar = json_decode( $created_webinar );
 				if ( ! empty( $created_webinar ) ) {
 					update_post_meta( $post_id, '_webinar_ID', $created_webinar->id );
@@ -257,6 +298,99 @@ class DigitalCustDev_Webinars {
 		wp_die();
 	}
 
+
+
+
+
+		//Check admin zoom occcupied time
+		function check_webinars_for_zoom() {
+			$curd = new LP_Course_CURD();
+			$user_id = get_current_user_id();
+			$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
+			$result  = array();
+	
+			
+			$times            	= $this->webinar_times();
+			$selected         	= filter_input( INPUT_POST, 'selected' );
+			$selected_compare 	= str_replace( '/', '-', $selected );
+			// $selected_compare 	= date( 'Y/m/d', strtotime( $selected_compare ) );
+	
+			$args             = array(
+				'post_type' => 'lp_lesson',
+				'post_status' => array('publish','pending'),
+				'meta_query' => array(
+					array(
+						'key' => 'zoom_date',
+						'value' => date( 'd/m/Y', strtotime( $selected_compare ) ),
+						'compare' => 'LIKE'
+					)
+				)
+			);
+			// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
+			$lessons          	= get_posts( $args );
+			 
+			$course_idss = array();
+			$newtime 			= array();
+			$test = '';
+			if ( ! empty( $lessons ) ) {
+				foreach ( $lessons as $lesson ){
+					$course_ids = $curd->get_course_by_item( $lesson->ID );
+					$course_status = get_post($course_ids[0]);
+					if($course_status->post_status != 'draft'):
+						$start_time = get_post_meta( $lesson->ID, 'zoom_date', true );
+						$timezone   = get_post_meta( $lesson->ID, 'time_zone', true );
+						$duration   = get_post_meta( $lesson->ID, '_lp_duration', true );
+						
+						
+						$change_sdate = str_replace( '/', '-', $start_time );
+						$start_time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
+						
+						$end_time     = date( 'Y-m-d H:i', strtotime( $start_time . '+' . $duration ) );
+						
+						if ( $start_time <= $end_time && date( 'Y-m-d', strtotime( $change_sdate ) ) === date( 'Y-m-d', strtotime( $selected_compare ) ) ) {
+							$time_starting = date( 'H:i', strtotime( $start_time ));
+							$time_ending   = date( 'H:i', strtotime( $end_time ) );
+							$test = 'omar';
+							foreach ( $times as $k => $time ) {
+								if ( $time >= $time_starting && $time <= $time_ending ) {
+									array_push($newtime, $time);
+								}
+							}
+						}
+					endif; // if($course_status->post_status != 'draft'):
+				}
+			}
+	
+			
+			if ( count($times) <= 0 ) {
+				$result = array( 
+					'allowed_times' => false, 
+					'date' => $selected, 
+					'disabled_date' => $selected_compare 
+				);
+			} else {
+				$newtime2 = $newtime;
+				// $newtime = array_diff($times, $newtime);
+				$result = array( 
+					'allowed_times' => $times, 
+					'hide_time' => $newtime2,
+					'course_ids' => $course_ids,
+					'date' => $selected,
+					'lessons' => $lessons,
+					'end_time' => $end_time,
+					'user_id' => $user_id,
+					'change_sdate' => $change_sdate, 
+					'test' => $test, 
+					'start_time' => $start_time,
+					'end_time' => $end_time,
+					'selected_compare' => date( 'Y-m-d', strtotime( $selected_compare )) 
+				);
+			}
+	
+			wp_send_json( $result );
+			wp_die();
+		}
+	
 	/*function check_webinars() {
 		$user_id = get_current_user_id();
 		$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );

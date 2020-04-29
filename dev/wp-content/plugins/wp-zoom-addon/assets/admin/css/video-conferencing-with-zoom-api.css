@@ -1,0 +1,88 @@
+/**
+*  Deepen
+*  @since  1.0.0
+*/
+
+.zvc-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.zvc_listing_table {
+    margin-top: 20px;
+}
+
+.select_zvc_user_listings_wrapp {
+    margin: 20px 0px;
+}
+
+.zvc-text-left {
+    text-align: left;
+}
+
+.zvc-text-center {
+    text-align: center;
+}
+
+#zvc-cover {
+    background: url("../images/ajax-loader.gif") no-repeat scroll center center #f1f1f1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    opacity: 0.5;
+}
+
+.zvc_getting_user_info_content p {
+    padding: 0px !important;
+}
+
+.zvc_daily_reports_check_form {
+    padding: 20px 0px;
+}
+
+.zvc_accounts_reports_check_form {
+    padding-bottom: 20px;
+}
+
+.zvc-position-floater-left {
+    width: 65%;
+    padding: 30px;
+    border: 1px solid #ccc;
+    background: #fff;
+    margin-right:10px;
+}
+
+.zvc-position-floater-right {
+    width: 24%;
+    margin-top: 16px;
+}
+
+.zvc-position-floater-right .zvc-information-sec {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin: 0 0 16px 0;
+}
+
+.zvc-position-clear {
+    clear: both;
+}
+
+.zoom-api-example-section .zoom-api-basic-usage code,
+.zoom-api-example-section .zoom-api-vanityurl-usage code {
+    padding: 10px;
+    line-height: 3;
+}
+.zoom-api-example-section .zoom-api-basic-usage .zoom-api-basic-usage-description,
+.zoom-api-example-section .zoom-api-vanityurl-usage .zoom-api-vanityurl-usage-description {
+    margin-top: 26px;
+}
+.zoom-api-example-section .zoom-api-basic-usage .zoom-api-basic-usage-description label,
+.zoom-api-example-section .zoom-api-vanityurl-usage .zoom-api-vanityurl-usage-description label {
+    font-size: 16px;
+    font-weight: 600;
+}
+.zoom-api-vanityurl-usage {
+    margin-top: 40px;
+}

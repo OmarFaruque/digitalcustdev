@@ -1,0 +1,16 @@
+# Copyright (C) 2017 Video Conferencing with Zoom API
+# This file is distributed under the same license as the Video Conferencing with Zoom API package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Video Conferencing with Zoom API\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/video-"
+"conferencing-with-zoom-api\n"
+"POT-Creation-Date: 2017-01-11 10:59:55+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-01-11 16:47+0530\n"
+"Last-Translator: Deepen Bajracharya <dpen.connectify@gmail.com>\n"
+"Language-Team: Deepen Bajracharya <dpen.connectify@gmail.com>\n"
+"Language: fr\n"
+"X-Generator: Poedit 1.5.4\n"
