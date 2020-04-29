@@ -102,7 +102,75 @@
 		thisitem.closest('.acf-file-uploader').removeClass('has-value');
 	});
 
-	jQuery('.xdsoft_datepicker').datetimepicker();
+	// jQuery('.xdsoft_datepicker').datetimepicker();
+
+	var getTimesbyDate = function (result, value) {
+		var allowed_times = [];
+		if (result.date === value) {
+			$.each(result.allowed_times, function (c, t) {
+				// console.log('t: ' + t);
+				// console.log('c: ' + c);
+				allowed_times.push(t);
+			});
+		}
+
+		return allowed_times;
+	}
+
+
+	var showDatePicker = function ($event, allowed_times, $changeDate, disabledDates = false) {
+		var fmt = new DateFormatter(),
+		cardate = new Date();
+		console.log(cardate);
+		$($event.target).datetimepicker({
+			format: 'd/m/Y H:i',
+			// formatTime: 'h:i a',
+			minDate: 0,
+			step: 15,
+			startDate: new Date(),
+			closeOnDateSelect: false,
+			validateOnBlur: false,
+			yearStart: cardate.getFullYear(),
+			yearEnd: cardate.getFullYear() + 1,
+			onShow: function (ct) {
+				var that = this;
+
+				that.setOptions({
+					allowTimes: allowed_times,
+					disabledDates: [disabledDates]
+				});
+
+				$('.xdsoft_time_variant .xdsoft_time').each(function(index){
+					// console.log('test omar');
+				});
+
+			}
+		});
+		$($event.target).datetimepicker('show');
+	}
+
+
+	jQuery(document).on('click', '.xdsoft_datepicker', function(e){
+		var lession_id = jQuery('input[name="post_ID"]').val();
+		$.ajax({
+			method: 'POST',
+			url: ajaxurl,
+			data: {
+				action: 'check_webinar_existing_date', 
+				selected: e.target.value,
+				lession_id: lession_id
+			},
+			success: function (result) {
+				var allowed_times = getTimesbyDate(result, e.target.value);
+				console.log(allowed_times);
+					if (result.disabled_date) {
+						showDatePicker(e, allowed_times, true, result.disabled_date, );
+					} else {
+						showDatePicker(e, allowed_times, true, result.hide_time);
+					}
+			}
+		});
+	});
 
 
 })( jQuery );
