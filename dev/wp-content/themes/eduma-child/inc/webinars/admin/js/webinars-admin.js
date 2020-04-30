@@ -155,9 +155,10 @@
 			}, 
 			onChangeDateTime: function (dp, $input) {
 				var selectedDate = new Date($input.val()),
+				errors = '',
 				time = $input.val().split(' ');
 				time = time[1];
-				console.log(time);
+				
 				$.ajax({
 					method: 'POST',
 					url: ajaxurl,
@@ -166,11 +167,10 @@
 						selected: $input.val()
 					},
 					success: function (result) {
-						console.log(result);
+						// console.log(result);
 						var desabletime = result.hide_time;
 						$('.xdsoft_time_variant .xdsoft_time').each(function(index){
 							var thistime = $(this).text();
-							
 							if(desabletime.indexOf(thistime) !== -1){
 								$(this).addClass('xdsoft_disabled');
 							}
@@ -180,7 +180,14 @@
 						* Show error msg
 						*/
 						if(desabletime.indexOf(time) !== -1){
-							console.log('show error omar');
+							errors += '<li><strong>'+result.lessons[0].post_title+': </strong> The Webinar time is already occupied by the previous lesson, the webinar should start 15 mminutes after the end of the previous - correct it to submit your webinar.</li>';
+							errors += '<li><strong>'+result.lessons[0].post_title+': </strong> It can\'t be earlier than the previous lession - correct it to submit your webinar. </li>';
+							jQuery('<div class="zoom-error"><ul>'+errors+'</ul></div>').insertBefore(jQuery('div#zoom_section_wrap'));	
+							// console.log('show error omar');
+							jQuery('div#publishing-action').find('input[type="submit"]').prop('disabled', true);
+						}else{
+							jQuery(document).find('div.zoom-error').remove();
+							jQuery('div#publishing-action').find('input[type="submit"]').prop('disabled', false);
 						}
 
 

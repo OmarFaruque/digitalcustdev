@@ -348,9 +348,11 @@ class DigitalCustDev_Webinars {
 						$end_time     = date( 'Y-m-d H:i', strtotime( $start_time . '+' . $duration ) );
 						
 						if ( $start_time <= $end_time && date( 'Y-m-d', strtotime( $change_sdate ) ) === date( 'Y-m-d', strtotime( $selected_compare ) ) ) {
-							$time_starting = date( 'H:i', strtotime( $start_time ));
-							$time_ending   = date( 'H:i', strtotime( $end_time ) );
-							$test = 'omar';
+							// $time_starting = date( 'H:i', strtotime( $start_time ));
+							// $time_ending   = date( 'H:i', strtotime( $end_time ) );
+							$time_starting = date( 'H:i', strtotime("-15 minutes", strtotime( $start_time )) );
+							$time_ending   = date( 'H:i', strtotime("+15 minutes", strtotime( $end_time ) ) );
+							// $test = 'omar';
 							foreach ( $times as $k => $time ) {
 								if ( $time >= $time_starting && $time <= $time_ending ) {
 									array_push($newtime, $time);

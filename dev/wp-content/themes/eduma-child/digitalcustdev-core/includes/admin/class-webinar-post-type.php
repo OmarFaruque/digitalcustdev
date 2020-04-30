@@ -148,7 +148,7 @@ class Admin_DigitalCustDev_Webinar {
 				
 				$tzlists = zvc_get_timezone_options();
 				echo $infoTExt;
-				$output = '<div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
+				$output = '<div id="zoom_section_wrap"><div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
 				$output .= '<input autocomplete="off" name="zoom_date" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
 				$output .= '<div class="d-block"><label for="time_zone">'.__('TimeZone', 'webinar').'</label>';
 				$output .= '<select name="time_zone" id="time_zone" class="form-control w-100">';
@@ -156,7 +156,7 @@ class Admin_DigitalCustDev_Webinar {
 					$selected = ($k == $time_zone) ? 'selected':'';
 					$output .= '<option '.$selected.' value="'.$k.'">'.$st.'</option>';
 				}
-				$output .= '</select></div>';
+				$output .= '</select></div></div>';
 
 				echo $output;
 			
