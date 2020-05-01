@@ -73,8 +73,33 @@ class Webinars_Admin {
 		add_filter('learn-press/payment-settings/general', array($this, 'addFreeEnrollCheckboxToSettingsGeneral'));
 		// add_filter('the_content', array($this, 'testcontent'));
 		add_filter('learn-press/course-require-enrollment', array($this, 'customRequiredEnroll'));
+
+		// Add countdown to single lession 
+		add_filter('embed_oembed_html', array($this, 'addcountdowntoembedvideoforlessionVideo'), 10, 4);
 	}
 
+
+	public function addcountdowntoembedvideoforlessionVideo($html, $url, $attr, $post_ID){
+		$show = false;
+		if(is_singular( 'lp_lesson' )){
+			echo 'its lp lession';
+		}
+		if(is_singular( 'lp_course' )){
+			global $wp_query;
+			$vars = $wp_query->query_vars;
+			if(isset($vars['item-type']) && $vars['item-type'] == 'lp_lesson') $show = true;
+		}
+
+		if (strpos($url, 'youtube.com')!==false || strpos($url, 'youtu.be')!==false) {
+			/*  YOU CAN CHANGE RESULT HTML CODE HERE */			
+			if($show){
+				learn_press_get_template( 'single-course/lesson-countdown.php' );
+				$html = '<div class="Omar youtube-wrap">'.$html.'</div>';
+			} 
+		}
+		return $html;
+
+	}
 
 	public function customRequiredEnroll($return){
 		$allowfreeEnroll = LP()->settings()->get( 'free_enroll_allow' );
