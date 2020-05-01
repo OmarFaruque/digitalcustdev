@@ -1532,8 +1532,12 @@ if ( !function_exists( 'thim_content_item_lesson_media' ) ) {
 		if ( !empty( $introVideo ) && !$course_item->is_blocked() && $can_view_item ) {
 			?>
 			<div class="learn-press-video-intro">
+				
+			<div class="tp-event-top lp-lesson position-relative">
+				<?php learn_press_get_template( 'single-course/lesson-countdown.php' ); ?>
 				<div class="video-content">
 					<?php echo $introVideo; ?>
+				</div>
 				</div>
 			</div>
 			<?php

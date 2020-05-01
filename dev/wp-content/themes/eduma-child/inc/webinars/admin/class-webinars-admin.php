@@ -76,25 +76,109 @@ class Webinars_Admin {
 
 		// Add countdown to single lession 
 		add_filter('embed_oembed_html', array($this, 'addcountdowntoembedvideoforlessionVideo'), 10, 4);
+	
+		// Course update hook 
+		add_action( 'post_updated_lp_course', array( $this, 'updated_course' ), 10, 3 );
+	
+		add_action( 'wp_head', array($this, 'testFunction') );
 	}
 
 
+
+	public function testFunction(){
+		$postid = 13909;
+		$metas = get_post_meta( $postid, '_lp_co_teacher', false );
+		$post_author_id = get_post_field( 'post_author', $postid );
+		$authors = array_merge($metas, array($post_author_id));
+		// echo 'author id: ' . $post_author_id . '<br/>';
+		echo '<pre>';
+		print_r($authors);
+		echo '</pre>';
+
+		foreach($authors as $s):
+		// 	$action = ($s == get_post_field( 'post_author', $postid )) ? 'create' : 'custCreate';
+		// $postData = array(
+		// 	'action'     => $action,
+		// 	'email'      => sanitize_email( filter_input( INPUT_POST, 'email' ) ),
+		// 	'first_name' => sanitize_text_field( filter_input( INPUT_POST, 'first_name' ) ),
+		// 	'last_name'  => sanitize_text_field( filter_input( INPUT_POST, 'last_name' ) ),
+		// 	'type'       => filter_input( INPUT_POST, 'type' )
+		// );
+
+		// $created_user = zoom_conference()->createAUser( $postData );
+		// $result       = json_decode( $created_user );
+		// if ( ! empty( $result->code ) ) {
+		// 	self::set_message( 'error', $result->message );
+		// } else {
+		// 	self::set_message( 'updated', __( "Created a User. Please check email for confirmation. Added user will only appear in the list after approval.", "video-conferencing-with-zoom-api" ) );
+
+		// 	//After user has been created delete this transient in order to fetch latest Data.
+		// 	video_conferencing_zoom_api_delete_user_cache();
+		// }
+
+		endforeach;
+
+
+	}
+
+	/*
+	* Update LP course and update zoom user
+	*/
+	public function updated_course($post_id, $post_after, $post_before){
+
+
+		// $postData = array(
+		// 	'action'     => 'custCreate',
+		// 	'email'      => sanitize_email( filter_input( INPUT_POST, 'email' ) ),
+		// 	'first_name' => sanitize_text_field( filter_input( INPUT_POST, 'first_name' ) ),
+		// 	'last_name'  => sanitize_text_field( filter_input( INPUT_POST, 'last_name' ) ),
+		// 	'type'       => filter_input( INPUT_POST, 'type' )
+		// );
+
+		// $created_user = zoom_conference()->createAUser( $postData );
+		// $result       = json_decode( $created_user );
+		// if ( ! empty( $result->code ) ) {
+		// 	self::set_message( 'error', $result->message );
+		// } else {
+		// 	self::set_message( 'updated', __( "Created a User. Please check email for confirmation. Added user will only appear in the list after approval.", "video-conferencing-with-zoom-api" ) );
+
+		// 	//After user has been created delete this transient in order to fetch latest Data.
+		// 	video_conferencing_zoom_api_delete_user_cache();
+		// }
+
+	}
+
 	public function addcountdowntoembedvideoforlessionVideo($html, $url, $attr, $post_ID){
 		$show = false;
-		if(is_singular( 'lp_lesson' )){
-			echo 'its lp lession';
-		}
-		if(is_singular( 'lp_course' )){
+		if(is_singular( 'lp_course' ) && !get_post_meta( $post_ID, '_lp_lesson_video_intro_internal', true )){
 			global $wp_query;
 			$vars = $wp_query->query_vars;
-			if(isset($vars['item-type']) && $vars['item-type'] == 'lp_lesson') $show = true;
+			if(isset($vars['item-type']) && $vars['item-type'] == 'lp_lesson'){
+
+				$start_time = get_post_meta( $post_ID, 'zoom_date', true );
+				$change_sdate = str_replace( '/', '-', $start_time );
+				$time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
+									
+				$current_time = date( 'Y-m-d H:i' );
+				
+				if($start_time &&  $time > $current_time ) {
+					$show = true;
+				}
+			}
 		}
+		
 
 		if (strpos($url, 'youtube.com')!==false || strpos($url, 'youtu.be')!==false) {
 			/*  YOU CAN CHANGE RESULT HTML CODE HERE */			
 			if($show){
-				learn_press_get_template( 'single-course/lesson-countdown.php' );
-				$html = '<div class="Omar youtube-wrap">'.$html.'</div>';
+				ob_start();
+				?>
+				<div class="tp-event-top lp-lesson position-relative">
+				<?php learn_press_get_template( 'single-course/lesson-countdown.php' ); ?>
+				<div class="youtube-wrap"><?php echo $html; ?></div>
+				</div>
+				<?php
+				$html = ob_get_clean();
 			} 
 		}
 		return $html;
