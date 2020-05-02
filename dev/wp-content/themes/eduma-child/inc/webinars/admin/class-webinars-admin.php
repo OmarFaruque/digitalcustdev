@@ -78,74 +78,127 @@ class Webinars_Admin {
 		add_filter('embed_oembed_html', array($this, 'addcountdowntoembedvideoforlessionVideo'), 10, 4);
 	
 		// Course update hook 
-		add_action( 'post_updated_lp_course', array( $this, 'updated_course' ), 10, 3 );
+		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
-		add_action( 'wp_head', array($this, 'testFunction') );
+		// add_action( 'admin_init', array($this, 'testFunction') );
 	}
-
-
 
 	public function testFunction(){
 		$postid = 13909;
+		// $this->createZoomUserWhileUPdateWebinar($postid);
+		// $this->create_zoom_meeting($postid);
+	}
+	
+
+
+	public function createZoomUserWhileUPdateWebinar($post_id){
+		$postid = $post_id;
 		$metas = get_post_meta( $postid, '_lp_co_teacher', false );
 		$post_author_id = get_post_field( 'post_author', $postid );
 		$authors = array_merge($metas, array($post_author_id));
-		// echo 'author id: ' . $post_author_id . '<br/>';
-		echo '<pre>';
-		print_r($authors);
-		echo '</pre>';
 
-		foreach($authors as $s):
-		// 	$action = ($s == get_post_field( 'post_author', $postid )) ? 'create' : 'custCreate';
-		// $postData = array(
-		// 	'action'     => $action,
-		// 	'email'      => sanitize_email( filter_input( INPUT_POST, 'email' ) ),
-		// 	'first_name' => sanitize_text_field( filter_input( INPUT_POST, 'first_name' ) ),
-		// 	'last_name'  => sanitize_text_field( filter_input( INPUT_POST, 'last_name' ) ),
-		// 	'type'       => filter_input( INPUT_POST, 'type' )
-		// );
+		foreach($authors as $user_id):
+			$action 	= 'custCreate';
+			$user_data 	= get_user_by( 'id', $user_id );
+			$metas 		= get_user_meta( $user_id );
+			$firstname 	= (get_user_meta( $user_id, 'first_name', true )) ? get_user_meta( $user_id, 'first_name', true ) : get_user_meta( $user_id, 'nickname', true );
+			$lastname 	= (get_user_meta( $user_id, 'last_name', true )) ? get_user_meta( $user_id, 'last_name', true ) : '';
+			$user_email = $user_data->data->user_email;
 
-		// $created_user = zoom_conference()->createAUser( $postData );
-		// $result       = json_decode( $created_user );
-		// if ( ! empty( $result->code ) ) {
-		// 	self::set_message( 'error', $result->message );
-		// } else {
-		// 	self::set_message( 'updated', __( "Created a User. Please check email for confirmation. Added user will only appear in the list after approval.", "video-conferencing-with-zoom-api" ) );
 
-		// 	//After user has been created delete this transient in order to fetch latest Data.
-		// 	video_conferencing_zoom_api_delete_user_cache();
-		// }
+			$postData = array(
+				'action'     => $action,
+				'email'      => $user_email,
+				'first_name' => $firstname,
+				'last_name'  => $lastname,
+				'type'       => 1,
+				'status' 	 => 'deactivate'
+			);
 
+			$created_user = zoom_conference()->createAUser( $postData );
+			$result       = json_decode( $created_user );
+			// echo 'Prent result<pre>';
+			// print_r($result);
+			// echo '</pre>';
+			if ( ! empty( $result->code ) ) {
+				
+			} else {
+				update_option( '_zvc_user_lists', '' );
+				update_option( '_zvc_user_lists_expiry_time', '' );
+			}
 		endforeach;
+	}
 
 
+	/**
+	 * Create a new Meeting
+	 *
+	 * @since  2.1.0
+	 * @author Deepen
+	 */
+	private static function create_zoom_meeting($postid) {
+		// check_admin_referer( '_zoom_add_meeting_nonce_action', '_zoom_add_meeting_nonce' );
+		
+		$metas = get_post_meta( $postid, '_lp_co_teacher', false );
+		$post_author_id = get_post_field( 'post_author', $postid );
+		$authors = array_merge($metas, array($post_author_id));
+
+		foreach($authors as $user_id):
+
+		$create_meeting_arr = array(
+			'userId'                    => $user_id,
+			'meetingTopic'              => get_the_title( $postid ),
+			'agenda'                    => __('Meeting Description', 'webinar'),
+			'start_date'                => filter_input( INPUT_POST, 'start_date' ),
+			'timezone'                  => filter_input( INPUT_POST, 'timezone' ),
+			'password'                  => filter_input( INPUT_POST, 'password' ),
+			'duration'                  => filter_input( INPUT_POST, 'duration' ),
+			'join_before_host'          => filter_input( INPUT_POST, 'join_before_host' ),
+			'option_host_video'         => filter_input( INPUT_POST, 'option_host_video' ),
+			'option_participants_video' => filter_input( INPUT_POST, 'option_participants_video' ),
+			'option_mute_participants'  => filter_input( INPUT_POST, 'option_mute_participants' ),
+			'option_enforce_login'      => filter_input( INPUT_POST, 'option_enforce_login' ),
+			'option_auto_recording'     => filter_input( INPUT_POST, 'option_auto_recording' ),
+			'alternative_host_ids'      => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
+		);
+
+		echo 'Output aray <br/><pre>';
+		print_r($create_meeting_arr);
+		echo '</pre>';
+		$meeting_created = array();
+		// $meeting_created = json_decode( zoom_conference()->createAMeeting( $create_meeting_arr ) );
+		if ( ! empty( $meeting_created->error ) ) {
+			self::set_message( 'error', $meeting_created->error->message );
+		} else if ( ! empty( $meeting_created->code ) && $meeting_created->code == 1113 ) {
+			self::set_message( 'error', $meeting_created->message );
+		} else {
+			self::set_message( 'updated', sprintf( __( "Created meeting %s at %s. Join %s", "video-conferencing-with-zoom-api" ), $meeting_created->topic, $meeting_created->created_at, "<a target='_blank' href='" . $meeting_created->join_url . "'>Here</a>" ) );
+
+			/**
+			 * Fires after meeting has been Created
+			 *
+			 * @since  2.0.1
+			 */
+			do_action( 'zvc_after_created_meeting', $meeting_created );
+		}
+		endforeach;
 	}
 
 	/*
 	* Update LP course and update zoom user
 	*/
 	public function updated_course($post_id, $post_after, $post_before){
-
-
-		// $postData = array(
-		// 	'action'     => 'custCreate',
-		// 	'email'      => sanitize_email( filter_input( INPUT_POST, 'email' ) ),
-		// 	'first_name' => sanitize_text_field( filter_input( INPUT_POST, 'first_name' ) ),
-		// 	'last_name'  => sanitize_text_field( filter_input( INPUT_POST, 'last_name' ) ),
-		// 	'type'       => filter_input( INPUT_POST, 'type' )
-		// );
-
-		// $created_user = zoom_conference()->createAUser( $postData );
-		// $result       = json_decode( $created_user );
-		// if ( ! empty( $result->code ) ) {
-		// 	self::set_message( 'error', $result->message );
-		// } else {
-		// 	self::set_message( 'updated', __( "Created a User. Please check email for confirmation. Added user will only appear in the list after approval.", "video-conferencing-with-zoom-api" ) );
-
-		// 	//After user has been created delete this transient in order to fetch latest Data.
-		// 	video_conferencing_zoom_api_delete_user_cache();
-		// }
-
+		$post_type = get_post_type( $post_id );
+		if ( $post_type != 'lp_course' ) {
+			return;
+		}
+		if ( "webinar" != get_post_meta( $post_id, '_course_type', true ) ) {
+			return;
+		}
+		if(get_post_status($post_id) != 'publish' ){
+			return;
+		}
+		$this->createZoomUserWhileUPdateWebinar($post_id);
 	}
 
 	public function addcountdowntoembedvideoforlessionVideo($html, $url, $attr, $post_ID){
