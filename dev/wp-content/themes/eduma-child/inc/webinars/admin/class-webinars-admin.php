@@ -1,4 +1,7 @@
 <?php
+use \Firebase\JWT\JWT;
+// require WP_PLUGIN_DIR  . '/video-conferencing-with-zoom-api/vendor/autoload.php';
+
 
 /**
  * The admin-specific functionality of the plugin.
@@ -20,6 +23,8 @@
  * @subpackage Webinars/admin
  * @author     Dennis Mwaniki <theguy3474@gmail.com>
  */
+
+
 class Webinars_Admin {
 
 	/**
@@ -54,7 +59,17 @@ class Webinars_Admin {
 		$this->init();
 
 	}
+	private function generateJWTKey() {
+		$key    = zoom_conference()->zoom_api_key;
+		$secret = zoom_conference()->zoom_api_secret;
 
+		$token = array(
+			"iss" => $key,
+			"exp" => time() + 3600 //60 seconds as suggested
+		);
+
+		return JWT::encode( $token, $secret );
+	}
 	protected function init(){
 		add_filter( 'learn-press/course-settings-fields/archive', array($this, 'settingsFilters') );
 
@@ -80,13 +95,49 @@ class Webinars_Admin {
 		// Course update hook 
 		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
-		// add_action( 'admin_init', array($this, 'testFunction') );
+		add_action( 'admin_init', array($this, 'testFunction') );
 	}
 
 	public function testFunction(){
+
+
 		$postid = 13909;
+		$createAUserArray              = array();
+			$createAUserArray['action']    = 'deactivate';
 		// $this->createZoomUserWhileUPdateWebinar($postid);
 		// $this->create_zoom_meeting($postid);
+		// https://api.zoom.us/v2/users/sRl6M-rtRpKPoBsSYCWqSg/deactivate
+		
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+		CURLOPT_URL => "https://api.zoom.us/v2/users/instr5@instr5.instr5/status",
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 30,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "PUT",
+		CURLOPT_POSTFIELDS => "{\"action\":\"deactivate\"}",
+		CURLOPT_HTTPHEADER => array(
+			"authorization: Bearer ".$this->generateJWTKey()."",
+			"content-type: application/json"
+		),
+		));
+
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+
+		curl_close($curl);
+
+		if ($err) {
+		echo "cURL Error #:" . $err;
+		} else {
+		echo $response;
+		}
+
+
+
 	}
 	
 
@@ -117,9 +168,9 @@ class Webinars_Admin {
 
 			$created_user = zoom_conference()->createAUser( $postData );
 			$result       = json_decode( $created_user );
-			// echo 'Prent result<pre>';
-			// print_r($result);
-			// echo '</pre>';
+			echo 'Prent result<pre>';
+			print_r($result);
+			echo '</pre>';
 			if ( ! empty( $result->code ) ) {
 				
 			} else {
