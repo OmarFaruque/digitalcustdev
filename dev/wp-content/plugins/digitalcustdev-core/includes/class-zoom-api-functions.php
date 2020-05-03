@@ -1,4 +1,5 @@
 <?php
+use \Firebase\JWT\JWT;
 /**
  * @author Deepen.
  * @created_on 7/2/19
@@ -24,6 +25,18 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) ) {
 			return self::$_instance;
 		}
 
+		private function generateJWTKey() {
+			$key    = zoom_conference()->zoom_api_key;
+			$secret = zoom_conference()->zoom_api_secret;
+	
+			$token = array(
+				"iss" => $key,
+				"exp" => time() + 3600 //60 seconds as suggested
+			);
+	
+			return JWT::encode( $token, $secret );
+		}
+
 		public function __construct() {
 			parent::__construct();
 
@@ -47,7 +60,38 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) ) {
 		}
 
 		public function updateWebinar( $webinarId, $data = array() ) {
-			return $this->sendRequest( 'webinars/' . $webinarId, $data, "PATCH" );
+			// return $this->sendRequest( 'webinars/' . $webinarId, $data, "PATCH" );
+		echo 'inside omar fa';
+			$curl = curl_init();
+
+			curl_setopt_array($curl, array(
+			  CURLOPT_URL => "https://api.zoom.us/v2/webinars/" . $webinarId,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => "",
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 30,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => "PATCH",
+			  CURLOPT_POSTFIELDS => http_build_query($data),
+			  CURLOPT_HTTPHEADER => array(
+				"authorization: Bearer " . $this->generateJWTKey(),
+				"content-type: application/json"
+			  ),
+			));
+			
+			$response = curl_exec($curl);
+			$err = curl_error($curl);
+			
+			curl_close($curl);
+			
+			if ($err) {
+			  echo "cURL Error #:" . $err;
+			} else {
+			  echo $response;
+			}
+			
+		
+		
 		}
 
 		public function deleteWebinar( $webinarId ) {

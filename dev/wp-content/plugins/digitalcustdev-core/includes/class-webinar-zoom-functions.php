@@ -36,15 +36,17 @@ class DigitalCustDev_Webinars {
 		}
 	}
 
-	function updated_lesson( $post_id, $post_after, $post_before ) {
+	public function updated_lesson( $post_id, $post_after, $post_before ) {
 		$course_id = LP_Request::get_string( 'course_ID' );
 
 		set_post_format( $post_id, 'video' );
 
+		update_post_meta( $post_id, 'omar2', 'ttttttt' );
 		if ( "webinar" != get_post_meta( $course_id, '_course_type', true ) ) {
 			return;
 		}
 
+		
 		$start_time   = get_post_meta( $post_id, '_webinar_start_time', true );
 		$course_title = get_the_title( $post_id );
 		$post_type    = get_post_type( $post_id );
@@ -82,7 +84,7 @@ class DigitalCustDev_Webinars {
 
 		$post_metas = LP_Request::get( 'postMeta' );
 		if ( ! empty( $post_metas ) ) {
-			$this->create_webinar( $post_id, $post_metas );
+			$this->create_webinar( $post_id );
 		}
 	}
 
@@ -102,6 +104,7 @@ class DigitalCustDev_Webinars {
 		$lesson         = get_post( $post_id );
 		$webinar_exists = get_post_meta( $post_id, '_webinar_ID', true );
 		if ( empty( $webinar_exists ) ) {
+			update_post_meta( $post_id, 'omar2', 'inside if' );
 			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
 			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
@@ -136,6 +139,7 @@ class DigitalCustDev_Webinars {
 				}
 			}
 		} else {
+			// update_post_meta( $post_id, 'omar2', 'inside else' );
 			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
 			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );

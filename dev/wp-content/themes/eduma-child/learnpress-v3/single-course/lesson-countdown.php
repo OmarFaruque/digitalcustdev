@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( class_exists( 'WPEMS' ) ) {
     $item = LP_Global::course_item();
-    $start_time = get_post_meta( $item->get_id(), 'zoom_date', true );
+    $start_time = get_post_meta( $item->get_id(), '_lp_webinar_when', true );
 	$change_sdate = str_replace( '/', '-', $start_time );
 	$time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
 						

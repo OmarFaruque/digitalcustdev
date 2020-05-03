@@ -37,8 +37,8 @@ class Admin_DigitalCustDev_Webinar {
 			return;
 		}
 
-		if(isset($_REQUEST['zoom_date'])) update_post_meta( $post_id, 'zoom_date', $_REQUEST['zoom_date'] );
-		if(isset($_REQUEST['time_zone'])) update_post_meta( $post_id, 'time_zone', $_REQUEST['time_zone'] );
+		if(isset($_REQUEST['_lp_webinar_when'])) update_post_meta( $post_id, '_lp_webinar_when', $_REQUEST['_lp_webinar_when'] );
+		if(isset($_REQUEST['_lp_timezone'])) update_post_meta( $post_id, '_lp_timezone', $_REQUEST['_lp_timezone'] );
 
 	}
 
@@ -138,8 +138,8 @@ class Admin_DigitalCustDev_Webinar {
 				$course_type = get_post_meta( $course[0]->ID, '_course_type', true );
 				// echo 'course type: ' . $course_type . '<br/>';
 
-				$zoom_date = get_post_meta( $post->ID, 'zoom_date', true );
-				$time_zone = get_post_meta($post->ID, 'time_zone', true);
+				$zoom_date = get_post_meta( $post->ID, '_lp_webinar_when', true );
+				$time_zone = get_post_meta($post->ID, '_lp_timezone', true);
 				$infoTExt = __( 'Create an event to create zoom meeting for this event.', 'digitalcustdev-core' );
 
 				if(get_post_meta( $post->ID, '_webinar_ID', true )) $infoTExt = sprintf('Synchronization with ZOOM is done: %s', $zoom_date);
@@ -149,9 +149,9 @@ class Admin_DigitalCustDev_Webinar {
 				$tzlists = zvc_get_timezone_options();
 				echo $infoTExt;
 				$output = '<div id="zoom_section_wrap"><div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
-				$output .= '<input autocomplete="off" name="zoom_date" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
+				$output .= '<input autocomplete="off" name="_lp_webinar_when" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
 				$output .= '<div class="d-block"><label for="time_zone">'.__('TimeZone', 'webinar').'</label>';
-				$output .= '<select name="time_zone" id="time_zone" class="form-control w-100">';
+				$output .= '<select name="_lp_timezone" id="time_zone" class="form-control w-100">';
 				foreach($tzlists as $k => $st){
 					$selected = ($k == $time_zone) ? 'selected':'';
 					$output .= '<option '.$selected.' value="'.$k.'">'.$st.'</option>';

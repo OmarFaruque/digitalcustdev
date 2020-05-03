@@ -96,18 +96,64 @@ class Webinars_Admin {
 		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
 		add_action( 'admin_init', array($this, 'testFunction') );
+
+		// Add Emall Template to Admin settings for Email
+		add_filter('learn-press/email-section-classes', array($this, 'addEmailTemplateForUpdateLession'));
 	}
 
+
+	public function addEmailTemplateForUpdateLession($groups){
+		array_push(
+			$groups,
+			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_update_email.php'
+			// include "email-groups/class-lp-settings-new-order-emails.php",
+		);
+		// echo 'sections <br/><pre>';
+		// print_r($groups);
+		// echo '</pre>';
+		return $groups;
+	}
 	public function testFunction(){
-		$postid = 16018;
-		$this->create_zoom_meeting($postid);
-	
+		$post_id = 11185;
+		// $this->create_zoom_webinar_meeting($postid);
+		$lesson = get_post($post_id);
+			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
+
+			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
+			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
+			$start_time = str_replace('/', '-', $start_time);
+			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+
+			// echo 'webinar id: ' . $webinar_id . '<br/>';
+			// echo 'start time: ' . $start_time . '<br/>';
+			if ( ! empty( $webinar_id ) ) {
+				//Create webinar here
+				$postData = array(
+					'topic'      => $lesson->post_title,
+					'type'       => 5,
+					'start_time' => $start_time,
+					'timezone'   => ! empty( $timezone ) ? $timezone : '',
+					'agenda'     => $lesson->post_content,
+					'settings'   => array(
+						'host_video'        => false,
+						'panelists_video'   => true,
+						'approval_type'     => 0,
+						'registration_type' => 1,
+						'auto_recording'    => 'cloud'
+					)
+				);
+			}
+
+				//Updated
+				$return = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+				// echo 'Omar Update Return <pre>';
+				// print_r($return);
+				// echo '</pre>';
 
 
 
 	}
 	
-
 
 	public function createZoomUserWhileUPdateWebinar($post_id){
 		$postid = $post_id;
@@ -162,87 +208,61 @@ class Webinars_Admin {
 	}
 
 
-	/**
-	 * Create a new Meeting
-	 *
-	 * @since  2.1.0
-	 * @author Deepen
-	 */
-	private static function create_zoom_meeting($postid) {
-		// check_admin_referer( '_zoom_add_meeting_nonce_action', '_zoom_add_meeting_nonce' );
-		$card = new LP_Course_CURD();
-		
-		
-		$metas = get_post_meta( $postid, '_lp_co_teacher', false );
-		$post_author_id = get_post_field( 'post_author', $postid );
-		$authors = array_merge($metas, array($post_author_id));
-
-		$lessions = get_course_lessons($postid);
-		echo 'Lessionsj: <br/><pre>';
-		print_r($lessions);
-		echo '</pre>';
-		foreach($lessions as $sl){
-			
-		}
-
-		
-
-		// foreach($authors as $user_id):
-
-		// $create_meeting_arr = array(
-		// 	'userId'                    => $user_id,
-		// 	'meetingTopic'              => get_the_title( $postid ),
-		// 	'agenda'                    => __('Meeting Description', 'webinar'),
-		// 	'start_date'                => filter_input( INPUT_POST, 'start_date' ),
-		// 	'timezone'                  => filter_input( INPUT_POST, 'timezone' ),
-		// 	'password'                  => filter_input( INPUT_POST, 'password' ),
-		// 	'duration'                  => filter_input( INPUT_POST, 'duration' ),
-		// 	'join_before_host'          => filter_input( INPUT_POST, 'join_before_host' ),
-		// 	'option_host_video'         => filter_input( INPUT_POST, 'option_host_video' ),
-		// 	'option_participants_video' => filter_input( INPUT_POST, 'option_participants_video' ),
-		// 	'option_mute_participants'  => filter_input( INPUT_POST, 'option_mute_participants' ),
-		// 	'option_enforce_login'      => filter_input( INPUT_POST, 'option_enforce_login' ),
-		// 	'option_auto_recording'     => filter_input( INPUT_POST, 'option_auto_recording' ),
-		// 	'alternative_host_ids'      => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
-		// );
-
-		// echo 'Output aray <br/><pre>';
-		// print_r($create_meeting_arr);
-		// echo '</pre>';
-		// $meeting_created = array();
-		// // $meeting_created = json_decode( zoom_conference()->createAMeeting( $create_meeting_arr ) );
-		// if ( ! empty( $meeting_created->error ) ) {
-		// 	self::set_message( 'error', $meeting_created->error->message );
-		// } else if ( ! empty( $meeting_created->code ) && $meeting_created->code == 1113 ) {
-		// 	self::set_message( 'error', $meeting_created->message );
-		// } else {
-		// 	self::set_message( 'updated', sprintf( __( "Created meeting %s at %s. Join %s", "video-conferencing-with-zoom-api" ), $meeting_created->topic, $meeting_created->created_at, "<a target='_blank' href='" . $meeting_created->join_url . "'>Here</a>" ) );
-
-		// 	/**
-		// 	 * Fires after meeting has been Created
-		// 	 *
-		// 	 * @since  2.0.1
-		// 	 */
-		// 	do_action( 'zvc_after_created_meeting', $meeting_created );
-		// }
-		// endforeach;
-	}
 
 	/*
 	* Update LP course and update zoom user
 	*/
 	public function updated_course($post_id, $post_after, $post_before){
 		$post_type = get_post_type( $post_id );
-		if ( $post_type != 'lp_course' ) {
-			return;
-		}
-		if ( "webinar" != get_post_meta( $post_id, '_course_type', true ) ) {
-			return;
-		}
-		if(get_post_status($post_id) != 'publish' ){
-			return;
-		}
-		$this->createZoomUserWhileUPdateWebinar($post_id);
+		
+
+		// For Course post type
+		if($post_type == 'lp_course' && "webinar" == get_post_meta( $post_id, '_course_type', true )):
+			if(get_post_status($post_id) == 'publish' ){
+				$this->createZoomUserWhileUPdateWebinar($post_id);
+			}
+
+			// if webinar set as draft
+			if( get_post_status($post_id) == 'draft'){
+				update_post_meta( $post_id, 'draftupdate', 'Omar update' );
+				$lessons = get_course_lessons($post->ID);
+				foreach($lessons as $sl):
+					$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
+					if ( $webinar_id ){
+						dcd_zoom_conference()->deleteWebinar( $webinar_id );
+					}
+				endforeach;
+			}
+		endif;
+
+
+
+		// For Lession post type
+		if ( $post_type === "lp_lesson" && !empty( get_the_title( $post_id ) ) && !empty( get_post_meta( $post_id, '_webinar_start_time', true ) ) ):
+			$lesson = get_post($post_id);
+			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
+			if ( ! empty( $webinar_id ) ) {
+				//Create webinar here
+				$postData = array(
+					'topic'      => $lesson->post_title,
+					'type'       => 5,
+					'start_time' => $start_time,
+					'timezone'   => ! empty( $timezone ) ? $timezone : '',
+					'agenda'     => $lesson->post_content,
+					'settings'   => array(
+						'host_video'        => false,
+						'panelists_video'   => true,
+						'approval_type'     => 0,
+						'registration_type' => 1,
+						'auto_recording'    => 'cloud'
+					)
+				);
+
+				//Updated
+				dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+			}
+		endif;
+		
 	}
 
 	public function addcountdowntoembedvideoforlessionVideo($html, $url, $attr, $post_ID){
@@ -252,7 +272,7 @@ class Webinars_Admin {
 			$vars = $wp_query->query_vars;
 			if(isset($vars['item-type']) && $vars['item-type'] == 'lp_lesson'){
 
-				$start_time = get_post_meta( $post_ID, 'zoom_date', true );
+				$start_time = get_post_meta( $post_ID, '_lp_webinar_when', true );
 				$change_sdate = str_replace( '/', '-', $start_time );
 				$time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
 									

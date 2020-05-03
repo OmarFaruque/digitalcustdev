@@ -33,7 +33,7 @@ class DigitalCustDev_Webinars {
 			'post_status' => array('publish','pending'),
 			'meta_query' => array(
 				array(
-					'key' => 'zoom_date',
+					'key' => '_lp_webinar_when',
 					'value' => date( 'd/m/Y', strtotime( $selected_compare ) ),
 					'compare' => 'LIKE'
 				)
@@ -75,14 +75,16 @@ class DigitalCustDev_Webinars {
 			return;
 		}
 
-		
-		$start_time   = get_post_meta( $post_id, 'zoom_date', true );
-		$course_title = get_the_title( $post_id );
-		$post_type    = get_post_type( $post_id );
-		if ( $post_type === "lp_lesson" && ! empty( $course_title ) && ! empty( $start_time ) ) {
-			update_post_meta( $post_id, 'test', 'inside condition' );
-			$this->create_webinar( $post_id );
+		if(get_post_status($course_id) == 'publish' ){
+			$start_time   = get_post_meta( $post_id, '_lp_webinar_when', true );
+			$course_title = get_the_title( $post_id );
+			$post_type    = get_post_type( $post_id );
+			if ( $post_type === "lp_lesson" && ! empty( $course_title ) && ! empty( $start_time ) ) {
+				$this->create_webinar( $post_id );
+			}
 		}
+
+		
 	}
 
 	function delete_webinar_when_section_removed( $item_id, $cid ) {
@@ -138,8 +140,8 @@ class DigitalCustDev_Webinars {
 		$lesson         = get_post( $post_id );
 		$webinar_exists = get_post_meta( $post_id, '_webinar_ID', true );
 		if ( empty( $webinar_exists ) ) {
-			$timezone   = get_post_meta( $post_id, 'time_zone', true );
-			$start_time = get_post_meta( $post_id, 'zoom_date', true );
+			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
+			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
 			$start_time = str_replace('/', '-', $start_time);
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
 			
@@ -320,7 +322,7 @@ class DigitalCustDev_Webinars {
 				'post_status' => array('publish','pending'),
 				'meta_query' => array(
 					array(
-						'key' => 'zoom_date',
+						'key' => '_lp_webinar_when',
 						'value' => date( 'd/m/Y', strtotime( $selected_compare ) ),
 						'compare' => 'LIKE'
 					)
@@ -337,8 +339,8 @@ class DigitalCustDev_Webinars {
 					$course_ids = $curd->get_course_by_item( $lesson->ID );
 					$course_status = get_post($course_ids[0]);
 					if($course_status->post_status != 'draft'):
-						$start_time = get_post_meta( $lesson->ID, 'zoom_date', true );
-						$timezone   = get_post_meta( $lesson->ID, 'time_zone', true );
+						$start_time = get_post_meta( $lesson->ID, '_lp_webinar_when', true );
+						$timezone   = get_post_meta( $lesson->ID, '_lp_timezone', true );
 						$duration   = get_post_meta( $lesson->ID, '_lp_duration', true );
 						
 						

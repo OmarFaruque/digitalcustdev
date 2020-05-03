@@ -34,6 +34,7 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 			add_filter( 'zvc_allow_zoom_host_id_user_role', array( $this, 'add_roles' ) );
 		}
 
+	
 		/**
 		 * Create a Webinar
 		 *
