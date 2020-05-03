@@ -99,42 +99,9 @@ class Webinars_Admin {
 	}
 
 	public function testFunction(){
-
-
-		$postid = 13909;
-		$createAUserArray              = array();
-			$createAUserArray['action']    = 'deactivate';
-		// $this->createZoomUserWhileUPdateWebinar($postid);
-		// $this->create_zoom_meeting($postid);
-		// https://api.zoom.us/v2/users/sRl6M-rtRpKPoBsSYCWqSg/deactivate
-		
-		$curl = curl_init();
-
-		curl_setopt_array($curl, array(
-		CURLOPT_URL => "https://api.zoom.us/v2/users/instr5@instr5.instr5/status",
-		CURLOPT_RETURNTRANSFER => true,
-		CURLOPT_ENCODING => "",
-		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 30,
-		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => "PUT",
-		CURLOPT_POSTFIELDS => "{\"action\":\"deactivate\"}",
-		CURLOPT_HTTPHEADER => array(
-			"authorization: Bearer ".$this->generateJWTKey()."",
-			"content-type: application/json"
-		),
-		));
-
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-
-		curl_close($curl);
-
-		if ($err) {
-		echo "cURL Error #:" . $err;
-		} else {
-		echo $response;
-		}
+		$postid = 16018;
+		$this->create_zoom_meeting($postid);
+	
 
 
 
@@ -162,21 +129,35 @@ class Webinars_Admin {
 				'email'      => $user_email,
 				'first_name' => $firstname,
 				'last_name'  => $lastname,
-				'type'       => 1,
-				'status' 	 => 'deactivate'
+				'type'       => 1
 			);
 
 			$created_user = zoom_conference()->createAUser( $postData );
 			$result       = json_decode( $created_user );
-			echo 'Prent result<pre>';
-			print_r($result);
-			echo '</pre>';
-			if ( ! empty( $result->code ) ) {
-				
-			} else {
-				update_option( '_zvc_user_lists', '' );
-				update_option( '_zvc_user_lists_expiry_time', '' );
-			}
+			
+			if ( empty( $result->code ) ) {
+					$curl = curl_init();
+					curl_setopt_array($curl, array(
+					CURLOPT_URL => "https://api.zoom.us/v2/users/".$result->id."/status",
+					CURLOPT_RETURNTRANSFER => true,
+					CURLOPT_ENCODING => "",
+					CURLOPT_MAXREDIRS => 10,
+					CURLOPT_TIMEOUT => 30,
+					CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+					CURLOPT_CUSTOMREQUEST => "PUT",
+					CURLOPT_POSTFIELDS => "{\"action\":\"deactivate\"}",
+					CURLOPT_HTTPHEADER => array(
+						"authorization: Bearer ".$this->generateJWTKey()."",
+						"content-type: application/json"
+					),
+					));
+
+					$response = curl_exec($curl);
+					$err = curl_error($curl);
+
+					curl_close($curl);
+
+			} 
 		endforeach;
 	}
 
@@ -189,50 +170,62 @@ class Webinars_Admin {
 	 */
 	private static function create_zoom_meeting($postid) {
 		// check_admin_referer( '_zoom_add_meeting_nonce_action', '_zoom_add_meeting_nonce' );
+		$card = new LP_Course_CURD();
+		
 		
 		$metas = get_post_meta( $postid, '_lp_co_teacher', false );
 		$post_author_id = get_post_field( 'post_author', $postid );
 		$authors = array_merge($metas, array($post_author_id));
 
-		foreach($authors as $user_id):
-
-		$create_meeting_arr = array(
-			'userId'                    => $user_id,
-			'meetingTopic'              => get_the_title( $postid ),
-			'agenda'                    => __('Meeting Description', 'webinar'),
-			'start_date'                => filter_input( INPUT_POST, 'start_date' ),
-			'timezone'                  => filter_input( INPUT_POST, 'timezone' ),
-			'password'                  => filter_input( INPUT_POST, 'password' ),
-			'duration'                  => filter_input( INPUT_POST, 'duration' ),
-			'join_before_host'          => filter_input( INPUT_POST, 'join_before_host' ),
-			'option_host_video'         => filter_input( INPUT_POST, 'option_host_video' ),
-			'option_participants_video' => filter_input( INPUT_POST, 'option_participants_video' ),
-			'option_mute_participants'  => filter_input( INPUT_POST, 'option_mute_participants' ),
-			'option_enforce_login'      => filter_input( INPUT_POST, 'option_enforce_login' ),
-			'option_auto_recording'     => filter_input( INPUT_POST, 'option_auto_recording' ),
-			'alternative_host_ids'      => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
-		);
-
-		echo 'Output aray <br/><pre>';
-		print_r($create_meeting_arr);
+		$lessions = get_course_lessons($postid);
+		echo 'Lessionsj: <br/><pre>';
+		print_r($lessions);
 		echo '</pre>';
-		$meeting_created = array();
-		// $meeting_created = json_decode( zoom_conference()->createAMeeting( $create_meeting_arr ) );
-		if ( ! empty( $meeting_created->error ) ) {
-			self::set_message( 'error', $meeting_created->error->message );
-		} else if ( ! empty( $meeting_created->code ) && $meeting_created->code == 1113 ) {
-			self::set_message( 'error', $meeting_created->message );
-		} else {
-			self::set_message( 'updated', sprintf( __( "Created meeting %s at %s. Join %s", "video-conferencing-with-zoom-api" ), $meeting_created->topic, $meeting_created->created_at, "<a target='_blank' href='" . $meeting_created->join_url . "'>Here</a>" ) );
-
-			/**
-			 * Fires after meeting has been Created
-			 *
-			 * @since  2.0.1
-			 */
-			do_action( 'zvc_after_created_meeting', $meeting_created );
+		foreach($lessions as $sl){
+			
 		}
-		endforeach;
+
+		
+
+		// foreach($authors as $user_id):
+
+		// $create_meeting_arr = array(
+		// 	'userId'                    => $user_id,
+		// 	'meetingTopic'              => get_the_title( $postid ),
+		// 	'agenda'                    => __('Meeting Description', 'webinar'),
+		// 	'start_date'                => filter_input( INPUT_POST, 'start_date' ),
+		// 	'timezone'                  => filter_input( INPUT_POST, 'timezone' ),
+		// 	'password'                  => filter_input( INPUT_POST, 'password' ),
+		// 	'duration'                  => filter_input( INPUT_POST, 'duration' ),
+		// 	'join_before_host'          => filter_input( INPUT_POST, 'join_before_host' ),
+		// 	'option_host_video'         => filter_input( INPUT_POST, 'option_host_video' ),
+		// 	'option_participants_video' => filter_input( INPUT_POST, 'option_participants_video' ),
+		// 	'option_mute_participants'  => filter_input( INPUT_POST, 'option_mute_participants' ),
+		// 	'option_enforce_login'      => filter_input( INPUT_POST, 'option_enforce_login' ),
+		// 	'option_auto_recording'     => filter_input( INPUT_POST, 'option_auto_recording' ),
+		// 	'alternative_host_ids'      => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
+		// );
+
+		// echo 'Output aray <br/><pre>';
+		// print_r($create_meeting_arr);
+		// echo '</pre>';
+		// $meeting_created = array();
+		// // $meeting_created = json_decode( zoom_conference()->createAMeeting( $create_meeting_arr ) );
+		// if ( ! empty( $meeting_created->error ) ) {
+		// 	self::set_message( 'error', $meeting_created->error->message );
+		// } else if ( ! empty( $meeting_created->code ) && $meeting_created->code == 1113 ) {
+		// 	self::set_message( 'error', $meeting_created->message );
+		// } else {
+		// 	self::set_message( 'updated', sprintf( __( "Created meeting %s at %s. Join %s", "video-conferencing-with-zoom-api" ), $meeting_created->topic, $meeting_created->created_at, "<a target='_blank' href='" . $meeting_created->join_url . "'>Here</a>" ) );
+
+		// 	/**
+		// 	 * Fires after meeting has been Created
+		// 	 *
+		// 	 * @since  2.0.1
+		// 	 */
+		// 	do_action( 'zvc_after_created_meeting', $meeting_created );
+		// }
+		// endforeach;
 	}
 
 	/*

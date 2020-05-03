@@ -164,10 +164,9 @@ if ( ! function_exists( 'video_conferencing_zoom_api_get_user_transients' ) ) {
 		//Check if any transient by name is available
 		$check_transient = get_transient( '_zvc_user_lists' );
 		if ( $check_transient ) {
-			echo 'inside helper inside if';
 			$users = $check_transient->users;
 		} else {
-			echo 'inside helper inside else';
+		
 			$encoded_users = zoom_conference()->listUsers();
 			$decoded_users = json_decode( $encoded_users );
 			
