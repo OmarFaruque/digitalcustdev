@@ -13,8 +13,7 @@ class LP_Settings_Webinar_Update_Emails extends LP_Settings_Emails_Group {
 		$this->items    = array(
 			'webinar-update-admin',
 			'webinar-update-instructor',
-			'webinar-update-user',
-			'webinar-update-guest'
+			'webinar-update-user'
 		);
 
 		parent::__construct();

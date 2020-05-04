@@ -71,6 +71,7 @@ class Webinars_Admin {
 		return JWT::encode( $token, $secret );
 	}
 	protected function init(){
+		// echo 'omar tst omar';
 		add_filter( 'learn-press/course-settings-fields/archive', array($this, 'settingsFilters') );
 
 		/* Change course title */
@@ -99,60 +100,58 @@ class Webinars_Admin {
 
 		// Add Emall Template to Admin settings for Email
 		add_filter('learn-press/email-section-classes', array($this, 'addEmailTemplateForUpdateLession'));
+		
+		// Load custom email template
+		add_action( 'learn-press/register-emails', array( $this, 'custom_emails_setting' ), 20, 2 );
+		add_action( 'admin_init', array( $this, 'backward_load_emails' ) );
+
+		//Add Email New Action 
+		add_filter('learn-press/email-actions', array($this, 'customizeEmailAction'));
 	}
 
+
+	public function testFunction(){
+	
+
+	}
+	
+	/*
+	* Action 
+	*/
+	public function customizeEmailAction($triggers){
+		
+		return $triggers;
+	}
+
+
+	/**
+	* Add email setting class.
+	*/
+	public function custom_emails_setting( $emails ) {
+			if ( ! class_exists( 'LP_Settings_Emails_Group' ) ) {
+				include_once LP_PLUGIN_PATH . 'inc/admin/settings/email-groups/class-lp-settings-emails-group.php';
+			}
+			$emails['LP_Email_Webinar_Update_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-user.php' );
+			$emails['LP_Email_Webinar_Update_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-admin.php' );
+			$emails['LP_Email_Webinar_Update_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-instructor.php' );
+			LP_Emails::instance()->emails = $emails;
+			
+	}
+	public function backward_load_emails() {
+		if ( class_exists( 'LP_Emails' ) ) {
+			$emails = LP_Emails::instance()->emails;
+			$this->custom_emails_setting( $emails );
+		}
+	}
 
 	public function addEmailTemplateForUpdateLession($groups){
 		array_push(
 			$groups,
 			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_update_email.php'
-			// include "email-groups/class-lp-settings-new-order-emails.php",
 		);
-		// echo 'sections <br/><pre>';
-		// print_r($groups);
-		// echo '</pre>';
 		return $groups;
 	}
-	public function testFunction(){
-		$post_id = 11185;
-		// $this->create_zoom_webinar_meeting($postid);
-		$lesson = get_post($post_id);
-			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
 
-			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
-			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
-			$start_time = str_replace('/', '-', $start_time);
-			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
-
-			// echo 'webinar id: ' . $webinar_id . '<br/>';
-			// echo 'start time: ' . $start_time . '<br/>';
-			if ( ! empty( $webinar_id ) ) {
-				//Create webinar here
-				$postData = array(
-					'topic'      => $lesson->post_title,
-					'type'       => 5,
-					'start_time' => $start_time,
-					'timezone'   => ! empty( $timezone ) ? $timezone : '',
-					'agenda'     => $lesson->post_content,
-					'settings'   => array(
-						'host_video'        => false,
-						'panelists_video'   => true,
-						'approval_type'     => 0,
-						'registration_type' => 1,
-						'auto_recording'    => 'cloud'
-					)
-				);
-			}
-
-				//Updated
-				$return = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
-				// echo 'Omar Update Return <pre>';
-				// print_r($return);
-				// echo '</pre>';
-
-
-
-	}
 	
 
 	public function createZoomUserWhileUPdateWebinar($post_id){
@@ -241,6 +240,11 @@ class Webinars_Admin {
 		if ( $post_type === "lp_lesson" && !empty( get_the_title( $post_id ) ) && !empty( get_post_meta( $post_id, '_webinar_start_time', true ) ) ):
 			$lesson = get_post($post_id);
 			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
+			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
+			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
+			$start_time = str_replace('/', '-', $start_time);
+			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+
 			if ( ! empty( $webinar_id ) ) {
 				//Create webinar here
 				$postData = array(

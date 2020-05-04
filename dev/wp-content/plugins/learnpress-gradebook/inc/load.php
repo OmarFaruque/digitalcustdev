@@ -48,6 +48,7 @@ class LP_Addon_Gradebook extends LP_Addon {
 	}
 
 	public function load_emails( &$emails ) {
+		// echo 'grade book omar';
 		//require_once LP_ADDON_GRADEBOOK_PLUGIN_PATH . "/inc/class-lp-email-gradebook.php";
 		$emails['LP_Email_Gradebook'] = include( LP_ADDON_GRADEBOOK_PLUGIN_PATH . "/inc/class-lp-email-gradebook.php" );
 	}

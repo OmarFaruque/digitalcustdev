@@ -49,7 +49,9 @@ class LP_Settings_Emails_Group extends LP_Settings {
 
 	public function admin_page() {
 		$current = $this->get_current_section();
-
+		// echo 'items <pre>';
+		// print_r($this->items);
+		// echo '</pre>';
 		echo '<ul class="subsubsub">';
 		foreach ( $this->items as $email ) {
 			if ( $current == $email->id ) {
