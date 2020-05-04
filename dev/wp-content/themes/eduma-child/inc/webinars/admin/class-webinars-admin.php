@@ -96,7 +96,7 @@ class Webinars_Admin {
 		// Course update hook 
 		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
-		add_action( 'admin_init', array($this, 'testFunction') );
+		add_action( 'admin_footer', array($this, 'testFunction') );
 
 		// Add Emall Template to Admin settings for Email
 		add_filter('learn-press/email-section-classes', array($this, 'addEmailTemplateForUpdateLession'));
@@ -107,19 +107,36 @@ class Webinars_Admin {
 
 		//Add Email New Action 
 		add_filter('learn-press/email-actions', array($this, 'customizeEmailAction'));
+		add_action( 'learn-press/zoom-webinar-lession-update/notification', array( $this, 'trigger' ), 99, 3 );
 	}
 
 
 	public function testFunction(){
-	
+		echo 'echo omar ff';
+		$user_id = 138;
+		$post_id = 11183;
+		do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
 
 	}
 	
+
+	/*
+	* send Email for zoom webinar lesson update
+	*/
+	// do_action( 'learn-press/user-enrolled-course', $course_id, $user_id, $user_course );
+	public function trigger($course_id, $user_id, $user_item_id){
+		$this->course_id    = $course_id;
+		$this->user_id      = $user_id;
+		$this->user_item_id = $user_item_id;
+
+		LP_Emails::instance()->set_current( $this->id );
+	}
+
 	/*
 	* Action 
 	*/
 	public function customizeEmailAction($triggers){
-		
+		$triggers[] = 'learn-press/zoom-webinar-lession-update';
 		return $triggers;
 	}
 
@@ -237,7 +254,7 @@ class Webinars_Admin {
 
 
 		// For Lession post type
-		if ( $post_type === "lp_lesson" && !empty( get_the_title( $post_id ) ) && !empty( get_post_meta( $post_id, '_webinar_start_time', true ) ) ):
+		if ( $post_type === "lp_lesson" && !empty( get_the_title( $post_id ) ) && !empty( get_post_meta( $post_id, '_lp_webinar_when', true ) ) ):
 			$lesson = get_post($post_id);
 			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
 			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
@@ -264,6 +281,11 @@ class Webinars_Admin {
 
 				//Updated
 				dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+				$user_id = 138;
+				$post_id = 11417;
+				do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
+				// do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
+				// do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
 			}
 		endif;
 		

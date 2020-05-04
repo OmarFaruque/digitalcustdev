@@ -72,7 +72,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 				)
 			);
 
-			add_action( 'learn-press/instructor-evaluated-assignment', array( $this, 'trigger' ), 99, 2 );
+			add_action( 'learn-press/zoom-update-lession-instructor', array( $this, 'trigger' ), 99, 2 );
 		}
 
 		/**
@@ -81,25 +81,38 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function trigger( $assignment_id, $user_id ) {
-			if ( ! $this->enable ) {
+		public function trigger( $post_id, $user_id ) {
+			$courses = learn_press_get_item_courses( $post_id );
+
+			
+			echo 'course instructors <pre>';
+			print_r($courses);
+			echo '</pre>';
+
+			if ( ! $course_instructors ) {
 				return false;
 			}
+			echo 'test omar';
+			// if ( ! $this->enable ) {
+			// 	update_post_meta( $post_id, 'notenable', 'omarHook' );
+			// 	return false;
+			// }
 			if ( ! ( $user = learn_press_get_user( $user_id ) ) ) {
+				update_post_meta( $post_id, 'notuserid', 'omarHook' );
 				return false;
 			}
 			LP_Emails::instance()->set_current( $this->id );
 			$format     = $this->email_format == 'plain_text' ? 'plain' : 'html';
-			$assignment = get_post( $assignment_id );
+			$post = get_post( $post_id );
 
-			$courses = learn_press_get_item_courses( $assignment_id );
+			$courses = learn_press_get_item_courses( $post_id );
 			$course  = get_post( $courses[0]->ID );
 
 			$this->object    = $this->get_common_template_data(
 				$format,
 				array(
-					'assignment_id'    => $assignment_id,
-					'assignment_name'  => $assignment->post_title,
+					'assignment_id'    => $post_id,
+					'assignment_name'  => $post->post_title,
 					'assignment_url'   => learn_press_get_course_item_permalink($course->ID, $assignment_id),
 					'course_id'        => $course->ID,
 					'course_name'      => $course->post_title,
@@ -113,8 +126,8 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 			$this->variables = $this->data_to_variables( $this->object );
 
 			$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-
-			return $return;
+			echo 'this recepant : ' . $this->get_recipient() . '<br/>';
+			// return $return;
 		}
 	}
 }

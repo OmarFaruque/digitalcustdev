@@ -72,7 +72,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 				)
 			);
 
-			add_action( 'learn-press/instructor-evaluated-assignment', array( $this, 'trigger' ), 99, 2 );
+			add_action( 'learn-press/zoom-update-lession-admin', array( $this, 'trigger' ), 99, 2 );
 		}
 
 		/**
