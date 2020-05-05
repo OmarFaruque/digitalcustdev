@@ -82,23 +82,10 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 		 * @return bool
 		 */
 		public function trigger( $post_id, $user_id ) {
-			$courses = learn_press_get_item_courses( $post_id );
-
-			
-			echo 'course instructors <pre>';
-			print_r($courses);
-			echo '</pre>';
-
-			if ( ! $course_instructors ) {
+			if ( ! $this->enable ) {
 				return false;
 			}
-			echo 'test omar';
-			// if ( ! $this->enable ) {
-			// 	update_post_meta( $post_id, 'notenable', 'omarHook' );
-			// 	return false;
-			// }
 			if ( ! ( $user = learn_press_get_user( $user_id ) ) ) {
-				update_post_meta( $post_id, 'notuserid', 'omarHook' );
 				return false;
 			}
 			LP_Emails::instance()->set_current( $this->id );
@@ -107,7 +94,10 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 
 			$courses = learn_press_get_item_courses( $post_id );
 			$course  = get_post( $courses[0]->ID );
-
+			$co_teachers = get_post_meta( $courses[0]->ID, '_lp_co_teacher', false );
+			if(!$co_teachers){
+				return false;
+			}
 			$this->object    = $this->get_common_template_data(
 				$format,
 				array(

@@ -114,7 +114,7 @@ class Webinars_Admin {
 	public function testFunction(){
 		echo 'echo omar ff';
 		$user_id = 138;
-		$post_id = 11183;
+		$post_id = 11185;
 		do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
 
 	}
