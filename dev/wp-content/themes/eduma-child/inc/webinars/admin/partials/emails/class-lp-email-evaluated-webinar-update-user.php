@@ -75,12 +75,12 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_User' ) ) {
 		}
 
 		/**
-		 * @param $assignment_id
+		 * @param $post_id
 		 * @param $user_id
 		 *
 		 * @return bool
 		 */
-		public function trigger( $assignment_id, $user_id ) {
+		public function trigger( $post_id, $user_id ) {
 			if ( ! $this->enable ) {
 				return false;
 			}
@@ -89,17 +89,18 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_User' ) ) {
 			}
 			LP_Emails::instance()->set_current( $this->id );
 			$format     = $this->email_format == 'plain_text' ? 'plain' : 'html';
-			$assignment = get_post( $assignment_id );
+			$lesson = get_post( $post_id );
 
-			$courses = learn_press_get_item_courses( $assignment_id );
+			$courses = learn_press_get_item_courses( $post_id );
 			$course  = get_post( $courses[0]->ID );
+			
 
 			$this->object    = $this->get_common_template_data(
 				$format,
 				array(
-					'assignment_id'    => $assignment_id,
-					'assignment_name'  => $assignment->post_title,
-					'assignment_url'   => learn_press_get_course_item_permalink($course->ID, $assignment_id),
+					'lesson_id'    => $post_id,
+					'lesson_name'  => $lesson->post_title,
+					'lesson_url'   => learn_press_get_course_item_permalink($course->ID, $assignment_id),
 					'course_id'        => $course->ID,
 					'course_name'      => $course->post_title,
 					'course_url'       => get_the_permalink( $course->ID ),
@@ -110,10 +111,14 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_User' ) ) {
 				)
 			);
 			$this->variables = $this->data_to_variables( $this->object );
-			$this->recipient = $user->get_email();
-
-			$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-
+			$limit = - 1;
+			$curd  = new LP_Course_CURD();
+			$students = $curd->get_user_enrolled( $courses[0]->ID, $limit );
+			foreach($students as $sS):
+				$author_obj = get_user_by('id', $sS->ID);
+				$this->recipient = $author_obj->data->user_email;
+				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+			endforeach;
 			return $return;
 		}
 	}

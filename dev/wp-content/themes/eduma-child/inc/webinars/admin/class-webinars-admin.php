@@ -96,7 +96,7 @@ class Webinars_Admin {
 		// Course update hook 
 		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
-		add_action( 'admin_footer', array($this, 'testFunction') );
+		// add_action( 'admin_footer', array($this, 'testFunction') );
 
 		// Add Emall Template to Admin settings for Email
 		add_filter('learn-press/email-section-classes', array($this, 'addEmailTemplateForUpdateLession'));
@@ -115,7 +115,8 @@ class Webinars_Admin {
 		echo 'echo omar ff';
 		$user_id = 138;
 		$post_id = 11185;
-		do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
+		
+		do_action( 'learn-press/zoom-update-lession-user', $post_id, $user_id );
 
 	}
 	
@@ -281,11 +282,10 @@ class Webinars_Admin {
 
 				//Updated
 				dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
-				$user_id = 138;
-				$post_id = 11417;
+				$user_id = get_current_user_id();
 				do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
-				// do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
-				// do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
+				do_action( 'learn-press/zoom-update-lession-user', $post_id, $user_id );
+				do_action( 'learn-press/zoom-update-lession-admin', $post_id, $user_id );
 			}
 		endif;
 		

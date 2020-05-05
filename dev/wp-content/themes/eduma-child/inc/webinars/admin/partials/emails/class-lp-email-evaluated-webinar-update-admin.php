@@ -81,7 +81,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function trigger( $assignment_id, $user_id ) {
+		public function trigger( $post_id, $user_id ) {
 			if ( ! $this->enable ) {
 				return false;
 			}
@@ -90,24 +90,24 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 			}
 			LP_Emails::instance()->set_current( $this->id );
 			$format     = $this->email_format == 'plain_text' ? 'plain' : 'html';
-			$assignment = get_post( $assignment_id );
+			$lesson = get_post( $post_id );
 
-			$courses = learn_press_get_item_courses( $assignment_id );
+			$courses = learn_press_get_item_courses( $post_id );
 			$course  = get_post( $courses[0]->ID );
 
 			$this->object    = $this->get_common_template_data(
 				$format,
 				array(
-					'assignment_id'    => $assignment_id,
-					'assignment_name'  => $assignment->post_title,
-					'assignment_url'   => learn_press_get_course_item_permalink($course->ID, $assignment_id),
-					'course_id'        => $course->ID,
-					'course_name'      => $course->post_title,
-					'course_url'       => get_the_permalink( $course->ID ),
-					'user_id'          => $user_id,
-					'user_name'        => learn_press_get_profile_display_name( $user ),
-					'user_email'       => $user->get_email(),
-					'user_profile_url' => learn_press_user_profile_link( $user_id )
+					'lesson_id'    		=> $lesson_id,
+					'lesson_name'  		=> $lesson->post_title,
+					'lesson_url'   		=> learn_press_get_course_item_permalink($course->ID, $assignment_id),
+					'course_id'        	=> $course->ID,
+					'course_name'      	=> $course->post_title,
+					'course_url'       	=> get_the_permalink( $course->ID ),
+					'user_id'          	=> $user_id,
+					'user_name'        	=> learn_press_get_profile_display_name( $user ),
+					'user_email'       	=> $user->get_email(),
+					'user_profile_url' 	=> learn_press_user_profile_link( $user_id )
 				)
 			);
 			$this->variables = $this->data_to_variables( $this->object );

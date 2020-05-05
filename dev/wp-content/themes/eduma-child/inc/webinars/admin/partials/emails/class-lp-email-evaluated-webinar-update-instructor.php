@@ -51,7 +51,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 			$this->template_html  = 'emails/evaluated-assignment-instractor.php';
 			$this->template_plain = 'emails/plain/evaluated-assignment-instractor.php';
 
-			$this->default_subject = __( '[{{site_title}}] You just got update for webinar lession ({{lession_name}})', 'webinar' );
+			$this->default_subject = __( '[{{site_title}}] You just got update for webinar lession ({{lesson_name}})', 'webinar' );
 			$this->default_heading = __( 'Update Webinar Lession on Zoom', 'learnpress-assignments' );
 			$this->recipient       = LP()->settings->get( 'emails_' . $this->id . '.recipients', $this->_get_admin_email() );
 
@@ -98,26 +98,33 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 			if(!$co_teachers){
 				return false;
 			}
+			$zoom_api_meeting_link = get_post_meta( $post_id, '_webinar_details', true );
+
 			$this->object    = $this->get_common_template_data(
 				$format,
 				array(
-					'assignment_id'    => $post_id,
-					'assignment_name'  => $post->post_title,
-					'assignment_url'   => learn_press_get_course_item_permalink($course->ID, $assignment_id),
-					'course_id'        => $course->ID,
-					'course_name'      => $course->post_title,
-					'course_url'       => get_the_permalink( $course->ID ),
-					'user_id'          => $user_id,
-					'user_name'        => learn_press_get_profile_display_name( $user ),
-					'user_email'       => $user->get_email(),
-					'user_profile_url' => learn_press_user_profile_link( $user_id )
+					'lesson_id'    		=> $post_id,
+					'lesson_name'  		=> $post->post_title,
+					'lesson_url'   		=> learn_press_get_course_item_permalink($course->ID, $assignment_id),
+					'course_id'        	=> $course->ID,
+					'course_name'      	=> $course->post_title,
+					'course_url'       	=> get_the_permalink( $course->ID ),
+					'user_id'          	=> $user_id,
+					'user_name'        	=> learn_press_get_profile_display_name( $user ),
+					'user_email'       	=> $user->get_email(),
+					'user_profile_url' 	=> learn_press_user_profile_link( $user_id ),
+					'zoom_url' 		   	=> $zoom_api_meeting_link->join_url
 				)
 			);
 			$this->variables = $this->data_to_variables( $this->object );
 
-			$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-			echo 'this recepant : ' . $this->get_recipient() . '<br/>';
-			// return $return;
+			foreach($co_teachers as $sins):
+				$author_obj = get_user_by('id', $sins);
+				$this->recipient = $author_obj->data->user_email;
+				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+			endforeach;
+
+			return $return;
 		}
 	}
 }
