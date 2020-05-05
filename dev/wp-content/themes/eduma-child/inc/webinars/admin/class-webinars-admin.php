@@ -264,7 +264,7 @@ class Webinars_Admin {
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
 
 			if ( ! empty( $webinar_id ) ) {
-				//Create webinar here
+				//Create webinar here f
 				$postData = array(
 					'topic'      => $lesson->post_title,
 					'type'       => 5,
