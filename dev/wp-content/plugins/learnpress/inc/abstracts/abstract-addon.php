@@ -306,7 +306,6 @@ class LP_Addon {
 	 * @return string
 	 */
 	public function locate_template( $template_name ) {
-		
 		return learn_press_locate_template( $template_name, $this->get_template_path(), dirname( $this->plugin_file ) . '/templates/' );
 	}
 

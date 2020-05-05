@@ -208,9 +208,7 @@ class LP_Profile_Tabs extends LP_Array_Access {
 			}
 		}
 		$args         = array_map( '_learn_press_urlencode', $args );
-			
 		$profile_link = trailingslashit( learn_press_get_page_link( 'profile' ) );
-		
 		if ( $profile_link ) {
 			if ( get_option( 'permalink_structure' ) ) {
 				$url = trailingslashit( $profile_link . join( "/", array_values( $args ) ) );
@@ -321,9 +319,10 @@ class LP_Profile_Tabs extends LP_Array_Access {
 		if ( $all_tabs = $this->get() ) {
 			foreach ( $all_tabs as $key => $tab ) {
 				// If current user do not have permission and/or tab is invisible
-					// if ( ! $profile->current_user_can( 'view-tab-' . $key ) ) {
-				// 	continue;
-				// }
+				if ( ! $profile->current_user_can( 'view-tab-' . $key ) ) {
+					continue;
+				}
+
 				$tabs[ $key ] = $tab;
 			}
 		}

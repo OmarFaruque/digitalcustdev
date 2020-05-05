@@ -190,6 +190,7 @@
          * @returns {boolean}
          */
         function onSearchInputKeypress(e) {
+
             if (e.type === 'keypress' && e.keyCode === 13) {
                 return false;
             }
@@ -332,7 +333,6 @@
         }
 
         function initEvents() {
-            
             // Live events
             $(document)
                 .on('learn-press/nav-tabs/clicked', onTabCourseClick)

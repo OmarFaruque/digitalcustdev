@@ -141,7 +141,7 @@ class LP_Page_Controller {
 
 			if ( false === $user->can_view_item( $lp_course_item->get_id() ) && ! $user->get_item_url( $lp_course_item->get_id() ) ) {
 				if ( false !== ( $redirect = apply_filters( 'learn-press/redirect-forbidden-access-item-url', $lp_course->get_permalink() ) ) ) {
-					// wp_redirect( $redirect );
+					wp_redirect( $redirect );
 					exit();
 				}
 			}

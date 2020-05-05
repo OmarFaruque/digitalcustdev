@@ -364,14 +364,7 @@ class LP_Section_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 		} else if ( $item['type'] == LP_QUIZ_CPT ) {
 			$quiz_curd  = new LP_Quiz_CURD();
 			$item['id'] = $quiz_curd->create( $args );
-		}
-		
-		// else if( $item['type'] == LP_ASSIGNMENT_CPT){
-		// 	$assignment_curd  = new LP_ASSIGNMENT_CURD();
-		// 	$item['id'] = $assignment_curd->create( $args );
-		// }
-		
-		else {
+		} else {
 			$item['id'] = apply_filters( 'learn-press/new-section-item-data', $item['id'], $item, $args, $this->course_id );
 		}
 
@@ -386,7 +379,6 @@ class LP_Section_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 
 		// add item to section
 		return $this->add_items_section( $section_id, array( $item ) );
-		// return 'omar return';
 	}
 
 	/**

@@ -268,6 +268,7 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 		 * @return LP_Profile_Tabs
 		 */
 		public function get_tabs() {
+
 			if ( $this->_tabs === null ) {
 				$settings        = LP()->settings;
 				$course_sections = array();
@@ -772,7 +773,6 @@ if ( ! class_exists( 'LP_Profile' ) ) {
 					break;
 				default:
 					$query = $this->_curd->query_own_courses( $this->get_user_data( 'id' ), $args );
-					// $query = query_own_courses_custom( $this->get_user_data( 'id' ), $args );
 			}
 
 			return $query;

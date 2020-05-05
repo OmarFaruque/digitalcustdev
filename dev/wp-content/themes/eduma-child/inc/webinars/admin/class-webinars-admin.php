@@ -108,7 +108,37 @@ class Webinars_Admin {
 		//Add Email New Action 
 		add_filter('learn-press/email-actions', array($this, 'customizeEmailAction'));
 		add_action( 'learn-press/zoom-webinar-lession-update/notification', array( $this, 'trigger' ), 99, 3 );
+		
+		remove_filter( 'learn-press/checkout-no-payment-result', array( 'LP_Request', 'maybe_redirect_checkout') );
+		add_filter( 'learn-press/checkout-no-payment-result', array( __CLASS__, 'maybe_redirect_checkout_custom' ), 20, 2 );
+	
 	}
+
+	public static function maybe_redirect_checkout_custom( $result, $order_id ) {
+		echo 'Test Omar';
+		//
+		$course_id = get_transient( 'checkout_enroll_course_id' );
+		if(!$course_id){
+			if(isset($_REQUEST['enroll-course']) && $_REQUEST['enroll-course']){
+				$course_id = $_REQUEST['enroll-course'];
+			}
+		}
+		if ( $course_id ) {
+			$course = learn_press_get_course( $course_id );
+			$course_items = $course->get_items();
+			$first_item = ($course_items[0]) ? $course_items[0] : 0;
+			LP_Request::do_enroll( $course_id, $order_id, 'enroll-course', $first_item );
+			delete_transient( 'checkout_enroll_course_id' );
+			unset( $result['redirect'] );
+
+
+
+			
+		}
+
+		return $result;
+	}
+
 
 
 	public function testFunction(){

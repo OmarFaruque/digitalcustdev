@@ -185,7 +185,6 @@ class LP_GDPR {
 	 */
 	public function user_owned_courses( $email_address, $page ) {
 
-		
 		$number       = 10; // Limit us to avoid timing out
 		$page         = (int) $page;
 		$export_items = array();

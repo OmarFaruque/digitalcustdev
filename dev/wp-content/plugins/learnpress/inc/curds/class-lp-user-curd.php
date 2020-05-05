@@ -27,7 +27,7 @@ class LP_User_CURD extends LP_Object_Data_CURD implements LP_Interface_CURD {
 	 *
 	 * @param int $the_user
 	 * @param int $the_course
-	*/
+	 */
 	public function __construct( $the_user = 0, $the_course = 0 ) {
 		$this->_user_id   = $the_user;
 		$this->_course_id = $the_course;
