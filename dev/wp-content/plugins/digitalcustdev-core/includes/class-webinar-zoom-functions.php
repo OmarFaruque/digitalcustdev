@@ -91,7 +91,11 @@ class DigitalCustDev_Webinars {
 	function create_webinar( $post_id, $post_metas = array() ) {
 		$post_type = get_post_type( $post_id );
 		//$author_id = learn_press_get_current_user_id();
-		$author_id = get_post_field( 'post_author', $post_id );
+
+		$get_administrator  = get_user_by( 'email', get_option( 'admin_email' ) );
+		// $author_id = get_post_field( 'post_author', $post_id );
+		$author_id = $get_administrator->ID;
+		update_post_meta( $post_id, 'omsrauthorid', $author_id );
 
 		if ( "lp_lesson" != $post_type ) {
 			return;
@@ -133,6 +137,7 @@ class DigitalCustDev_Webinars {
 				);
 				$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
 				$created_webinar = json_decode( $created_webinar );
+				// update_post_meta( $post_id, 'hostfrom', $created_webinar );
 				if ( ! empty( $created_webinar ) ) {
 					update_post_meta( $post_id, '_webinar_ID', $created_webinar->id );
 					update_post_meta( $post_id, '_webinar_details', $created_webinar );

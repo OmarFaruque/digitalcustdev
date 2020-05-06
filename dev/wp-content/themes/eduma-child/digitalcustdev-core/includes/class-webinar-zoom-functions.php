@@ -123,9 +123,11 @@ class DigitalCustDev_Webinars {
 
 	function create_webinar( $post_id, $post_metas = array() ) {
 		$post_type = get_post_type( $post_id );
-		//$author_id = learn_press_get_current_user_id();
-		// echo 'post type: ' . $post_type . '<br/>';
-		$author_id = get_post_field( 'post_author', $post_id );
+		
+		$get_administrator  = get_user_by( 'email', get_option( 'admin_email' ) );
+		// $author_id = get_post_field( 'post_author', $post_id );
+		$author_id = $get_administrator->ID;
+		update_post_meta( $post_id, 'omsrauthorid', get_option( 'admin_email' ) );
 
 		if ( "lp_lesson" != $post_type ) {
 			return;
@@ -146,7 +148,8 @@ class DigitalCustDev_Webinars {
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
 			
 			
-			$host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
+			// $host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
+			$host_id = LP()->settings->get( 'zoom_master_host' );
 
 			if ( ! empty( $post_metas ) ) {
 				$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;

@@ -96,7 +96,7 @@ class Webinars_Admin {
 		// Course update hook 
 		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
-		// add_action( 'admin_footer', array($this, 'testFunction') );
+		// add_action( 'admin_init', array($this, 'testFunction') );
 
 		// Add Emall Template to Admin settings for Email
 		add_filter('learn-press/email-section-classes', array($this, 'addEmailTemplateForUpdateLession'));
@@ -112,11 +112,25 @@ class Webinars_Admin {
 		remove_filter( 'learn-press/checkout-no-payment-result', array( 'LP_Request', 'maybe_redirect_checkout') );
 		add_filter( 'learn-press/checkout-no-payment-result', array( __CLASS__, 'maybe_redirect_checkout_custom' ), 20, 2 );
 	
+
+		// Add host field to learnpress general section 
+		add_filter('learn_press_general_settings', array($this, 'addHostCallback'));
+	}
+
+	/*
+	* Add a custom field to learnpress general section 
+	*/
+	public function addHostCallback($callback){
+		$callback[] = array(
+			'title' => 'Zoom Master Host ID',
+			'id' => 'zoom_master_host',
+			'type' => 'text',
+			'default' => 'RKLktIrtSG-RKL_pPSYk_w'
+		);
+		return $callback;
 	}
 
 	public static function maybe_redirect_checkout_custom( $result, $order_id ) {
-		echo 'Test Omar';
-		//
 		$course_id = get_transient( 'checkout_enroll_course_id' );
 		if(!$course_id){
 			if(isset($_REQUEST['enroll-course']) && $_REQUEST['enroll-course']){
@@ -124,30 +138,25 @@ class Webinars_Admin {
 			}
 		}
 		if ( $course_id ) {
+			update_post_meta( $order_id, 'coursse_id_tet', 'Omar Faruque' );
 			$course = learn_press_get_course( $course_id );
 			$course_items = $course->get_items();
 			$first_item = ($course_items[0]) ? $course_items[0] : 0;
 			LP_Request::do_enroll( $course_id, $order_id, 'enroll-course', $first_item );
+			DigitalCustDev_WooCommerce_Hooks::register_into_webinar_using_learnpress_order_id($order_id);
 			delete_transient( 'checkout_enroll_course_id' );
-			unset( $result['redirect'] );
-
-
-
-			
+			unset( $result['redirect'] );	
 		}
-
-		return $result;
+		// return $result;
+		return 'oooooooo';
 	}
 
 
 
 	public function testFunction(){
-		echo 'echo omar ff';
-		$user_id = 138;
-		$post_id = 11185;
-		
-		do_action( 'learn-press/zoom-update-lession-user', $post_id, $user_id );
-
+		echo 'admin omar init <br/>';
+		$order_id = 16158;
+		DigitalCustDev_WooCommerce_Hooks::register_into_webinar_using_learnpress_order_id($order_id);
 	}
 	
 
@@ -229,6 +238,7 @@ class Webinars_Admin {
 			$result       = json_decode( $created_user );
 			
 			if ( empty( $result->code ) ) {
+					update_user_meta( $user_id, 'user_zoom_hostid', $result->id );
 					$curl = curl_init();
 					curl_setopt_array($curl, array(
 					CURLOPT_URL => "https://api.zoom.us/v2/users/".$result->id."/status",
@@ -246,6 +256,8 @@ class Webinars_Admin {
 					));
 
 					$response = curl_exec($curl);
+
+				
 					$err = curl_error($curl);
 
 					curl_close($curl);
@@ -261,6 +273,7 @@ class Webinars_Admin {
 	*/
 	public function updated_course($post_id, $post_after, $post_before){
 		$post_type = get_post_type( $post_id );
+		$author_id = get_post_field( 'post_author', $post_id );
 		
 
 		// For Course post type
@@ -316,6 +329,39 @@ class Webinars_Admin {
 				do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
 				do_action( 'learn-press/zoom-update-lession-user', $post_id, $user_id );
 				do_action( 'learn-press/zoom-update-lession-admin', $post_id, $user_id );
+			}else{
+				
+				// $host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
+				
+				// if ( ! empty( $host_id ) ) {
+				// 	//Create webinar here
+					
+				// 	$postData        = array(
+				// 		'topic'      => $lesson->post_title,
+				// 		'type'       => 5,
+				// 		'start_time' => ! empty( $start_time ) ? $start_time : date( "Y-m-d\TH:i:s" ),
+				// 		'timezone'   => ! empty( $timezone ) ? $timezone : '',
+				// 		// 'agenda'     => $lesson->post_content,
+				// 		'settings'   => array(
+				// 			'host_video'        => false,
+				// 			'panelists_video'   => true,
+				// 			'approval_type'     => 0,
+				// 			'registration_type' => 1,
+				// 			'auto_recording'    => 'cloud'
+				// 		)
+				// 	);
+					
+				// 	$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
+					
+				// 	update_post_meta( $post_id, 'host_id', $created_webinar );
+
+				// 	$created_webinar = json_decode( $created_webinar );
+				// 	if ( ! empty( $created_webinar ) ) {
+				// 		update_post_meta( $post_id, '_webinar_ID', $created_webinar->id );
+				// 		update_post_meta( $post_id, '_webinar_details', $created_webinar );
+				// 	}
+				// }
+
 			}
 		endif;
 		
