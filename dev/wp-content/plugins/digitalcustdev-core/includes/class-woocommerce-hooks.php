@@ -22,7 +22,7 @@ class DigitalCustDev_WooCommerce_Hooks {
 		$lp_order_items = $lp_order->get_items();
 		$user_id        = $lp_order->get_user_id();
 		$customer       = get_userdata( $user_id );
-echo 'inside register into webinar function ';
+// echo 'inside register into webinar function ';
 		
 
 		if ( ! empty( $lp_order_items ) ) {

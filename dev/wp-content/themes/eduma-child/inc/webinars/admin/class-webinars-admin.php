@@ -109,12 +109,76 @@ class Webinars_Admin {
 		add_filter('learn-press/email-actions', array($this, 'customizeEmailAction'));
 		add_action( 'learn-press/zoom-webinar-lession-update/notification', array( $this, 'trigger' ), 99, 3 );
 		
-		remove_filter( 'learn-press/checkout-no-payment-result', array( 'LP_Request', 'maybe_redirect_checkout') );
-		add_filter( 'learn-press/checkout-no-payment-result', array( __CLASS__, 'maybe_redirect_checkout_custom' ), 20, 2 );
+		
 	
 
 		// Add host field to learnpress general section 
 		add_filter('learn_press_general_settings', array($this, 'addHostCallback'));
+
+		// LearnPress order complete status
+		
+		add_action('learn_press_payment_complete', array($this, 'completeLearnPressCallback'));
+		add_action('learn-press/payment-complete', array($this, 'completeLearnPressCallback'));
+
+		// Schedule Event for webinar notification to user/co-instructor/Admin
+		add_action('after_setup_theme', array($this, 'addScheduleEventCallbackForWebinar') );
+		add_filter('cron_schedules', array($this, 'my_cron_schedules'));
+	}
+
+	/*
+	* Send Notificatin before 1 hour to all type of related user. 
+	* Source : https://developer.wordpress.org/reference/functions/wp_schedule_event/
+	*/
+	public function addScheduleEventCallbackForWebinar(){
+		// wp_schedule_event( time(), 'hourly',  array($this, 'callbackScheduleEventForWebinar') );
+		wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
+	}
+
+	public function callbackScheduleEventForWebinar(){
+		$argc = array(
+			'post_type' => LP_LESSON_CPT,
+			'post_status' => array( 'publish' ),
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key' => '_lp_webinar_when',
+					'value' => 'Wisconsin',
+				),
+				array(
+					'key' => 'city',
+					'compare' => 'EXISTS',
+				)
+			)
+
+		);	
+		
+		WP_Query($args)
+	}
+
+
+
+
+	function my_cron_schedules($schedules){
+		if(!isset($schedules["5min"])){
+			$schedules["5min"] = array(
+				'interval' => 5*60,
+				'display' => __('Once every 5 minutes'));
+		}
+		if(!isset($schedules["30min"])){
+			$schedules["30min"] = array(
+				'interval' => 30*60,
+				'display' => __('Once every 30 minutes'));
+		}
+		return $schedules;
+	}
+	
+
+
+
+
+
+	public function completeLearnPressCallback($order_id){
+		DigitalCustDev_WooCommerce_Hooks::register_into_webinar_using_learnpress_order_id($order_id);
 	}
 
 	/*
@@ -130,26 +194,6 @@ class Webinars_Admin {
 		return $callback;
 	}
 
-	public static function maybe_redirect_checkout_custom( $result, $order_id ) {
-		$course_id = get_transient( 'checkout_enroll_course_id' );
-		if(!$course_id){
-			if(isset($_REQUEST['enroll-course']) && $_REQUEST['enroll-course']){
-				$course_id = $_REQUEST['enroll-course'];
-			}
-		}
-		if ( $course_id ) {
-			update_post_meta( $order_id, 'coursse_id_tet', 'Omar Faruque' );
-			$course = learn_press_get_course( $course_id );
-			$course_items = $course->get_items();
-			$first_item = ($course_items[0]) ? $course_items[0] : 0;
-			LP_Request::do_enroll( $course_id, $order_id, 'enroll-course', $first_item );
-			DigitalCustDev_WooCommerce_Hooks::register_into_webinar_using_learnpress_order_id($order_id);
-			delete_transient( 'checkout_enroll_course_id' );
-			unset( $result['redirect'] );	
-		}
-		// return $result;
-		return 'oooooooo';
-	}
 
 
 
