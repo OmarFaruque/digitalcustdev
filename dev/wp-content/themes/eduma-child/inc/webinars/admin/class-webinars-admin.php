@@ -96,7 +96,7 @@ class Webinars_Admin {
 		// Course update hook 
 		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
-		// add_action( 'admin_init', array($this, 'testFunction') );
+		add_action( 'admin_init', array($this, 'testFunction') );
 
 		// Add Emall Template to Admin settings for Email
 		add_filter('learn-press/email-section-classes', array($this, 'addEmailTemplateForUpdateLession'));
@@ -125,16 +125,28 @@ class Webinars_Admin {
 		add_filter('cron_schedules', array($this, 'my_cron_schedules'));
 	}
 
+
+
+	
+	public function testFunction(){
+		// $this->callbackScheduleEventForWebinar();
+	
+	}
+	
+
+
 	/*
 	* Send Notificatin before 1 hour to all type of related user. 
 	* Source : https://developer.wordpress.org/reference/functions/wp_schedule_event/
 	*/
 	public function addScheduleEventCallbackForWebinar(){
 		// wp_schedule_event( time(), 'hourly',  array($this, 'callbackScheduleEventForWebinar') );
-		wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
+		// wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
 	}
 
 	public function callbackScheduleEventForWebinar(){
+		$thistime = date("Y-m-d H:i:s", strtotime('-1 hours', time()));
+		$current = date('Y-m-d H:i:s');
 		$argc = array(
 			'post_type' => LP_LESSON_CPT,
 			'post_status' => array( 'publish' ),
@@ -142,17 +154,48 @@ class Webinars_Admin {
 				'relation' => 'AND',
 				array(
 					'key' => '_lp_webinar_when',
-					'value' => 'Wisconsin',
+					'value' => date( 'd/m/Y', strtotime( $thistime ) ),
+					'compare' => 'LIKE'
 				),
 				array(
-					'key' => 'city',
-					'compare' => 'EXISTS',
+					'key' => '_lp_webinar_when',
+					'value' => date( 'd/m/Y H:i', strtotime( $thistime ) ),
+					'compare' => '>=', // Return the ones greater than today's date
+				),
+				array(
+					'key' => '_lp_webinar_when',
+					'value' => date( 'd/m/Y H:i', strtotime( $current ) ),
+					'compare' => '<=', // Return the ones greater than today's date
+				),
+				array(
+					'key' => '_webinar_ID',
+					'compare' => 'EXISTS'
 				)
 			)
-
 		);	
+
 		
-		WP_Query($args)
+		
+		$webinars = get_posts($argc);
+
+		if($webinars):
+			foreach($webinars as $swebinars):
+				$webinarid = get_post_meta( $swebinars->ID, '_webinar_ID', true );
+				$registrantLit  = dcd_zoom_conference()->getWebinarRegistrantList($webinarid);
+				$registrantLit = json_decode($registrantLit);
+				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
+				echo 'Lists <br><pre>';
+				print_r($registrantLit);
+				echo '</pre>';
+
+				
+				do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
+				do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
+				do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
+			endforeach;
+		endif;
+
+
 	}
 
 
@@ -197,12 +240,6 @@ class Webinars_Admin {
 
 
 
-	public function testFunction(){
-		echo 'admin omar init <br/>';
-		$order_id = 16158;
-		DigitalCustDev_WooCommerce_Hooks::register_into_webinar_using_learnpress_order_id($order_id);
-	}
-	
 
 	/*
 	* send Email for zoom webinar lesson update
@@ -235,6 +272,11 @@ class Webinars_Admin {
 			$emails['LP_Email_Webinar_Update_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-user.php' );
 			$emails['LP_Email_Webinar_Update_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-admin.php' );
 			$emails['LP_Email_Webinar_Update_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-instructor.php' );
+
+			// Notification email template 
+			$emails['LP_Email_Webinar_Notification_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-user.php' );
+			$emails['LP_Email_Webinar_Notification_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-admin.php' );
+			$emails['LP_Email_Webinar_Notification_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-instructor.php' );
 			LP_Emails::instance()->emails = $emails;
 			
 	}
@@ -249,6 +291,10 @@ class Webinars_Admin {
 		array_push(
 			$groups,
 			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_update_email.php'
+		);
+		array_push(
+			$groups,
+			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_start_notification_email.php'
 		);
 		return $groups;
 	}
