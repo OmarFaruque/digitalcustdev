@@ -189,6 +189,7 @@ class Webinars_Admin {
 		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
+				dcd_zoom_conference()->enableUserStatistoActive($post_author_id);
 				do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
 				do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
 				do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
