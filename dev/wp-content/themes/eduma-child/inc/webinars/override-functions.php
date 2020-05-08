@@ -1547,3 +1547,104 @@ if ( !function_exists( 'thim_content_item_lesson_media' ) ) {
 
 // add_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
+
+
+
+	/*
+	* Send Notificatin before 1 hour to all type of related user. 
+	* Source : https://developer.wordpress.org/reference/functions/wp_schedule_event/
+	*/
+	function addScheduleEventCallbackForWebinar(){
+		if(!wp_next_scheduled("callbackScheduleEventForWebinar"))
+        {
+			wp_schedule_event( time(), 'hourly',  'callbackScheduleEventForWebinar' );
+		}
+		// wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
+	}
+
+
+	add_action( 'admin_init', 'callbackScheduleEventForWebinarFunction' );
+
+	function callbackScheduleEventForWebinarFunction(){
+
+		$thistime = date("Y-m-d H:i:s", strtotime('-1 hours', time()));
+		$current = date('Y-m-d H:i:s');
+		// echo 'current time: ' . $current . '<br/>';
+
+		$argc = array(
+			'post_type' => LP_LESSON_CPT,
+			'post_status' => array( 'publish' ),
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key' => '_lp_webinar_when',
+					'value' => date( 'd/m/Y', strtotime( $thistime ) ),
+					'compare' => 'LIKE'
+				),
+				array(
+					'key' => '_lp_webinar_when',
+					'value' => date( 'd/m/Y H:i', strtotime( $thistime ) ),
+					'compare' => '>=', // Return the ones greater than today's date
+				),
+				array(
+					'key' => '_lp_webinar_when',
+					'value' => date( 'd/m/Y H:i', strtotime( $current ) ),
+					'compare' => '<=', // Return the ones greater than today's date
+				),
+				array(
+					'key' => '_webinar_ID',
+					'compare' => 'EXISTS'
+				)
+			)
+		);	
+
+		$webinars = get_posts($argc);
+
+		// echo 'Posts <br/><pre>';
+		// print_r($webinars);
+		// echo '</pre>';
+
+		if(!empty($webinars)):
+			foreach($webinars as $swebinars):
+
+				$course = learn_press_get_item_courses( $swebinars->ID );
+				$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+				$webinar_author = get_post_field( 'post_author', $course[0]->ID );
+				array_push($allAuthors, $webinar_author);
+				
+				
+				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
+
+				foreach($allAuthors as $sauthor):
+					// echo 'author jids : ' . $sauthor . '<br/>';
+					dcd_zoom_conference()->enableUserStatistoActive($sauthor);
+					$updateType = dcd_zoom_conference()->updateZoomUserType($sauthor);
+					echo 'update type: ' . $updateType . '<br/>';
+				endforeach;
+
+
+				do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
+				do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
+				do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
+			endforeach;
+		endif;
+	}
+
+
+	function my_cron_schedules($schedules){
+		if(!isset($schedules["5min"])){
+			$schedules["5min"] = array(
+				'interval' => 5*60,
+				'display' => __('Once every 5 minutes'));
+		}
+		if(!isset($schedules["30min"])){
+			$schedules["30min"] = array(
+				'interval' => 30*60,
+				'display' => __('Once every 30 minutes'));
+		}
+		return $schedules;
+	}
+	
+	// add_filter('cron_schedules', array($this, 'my_cron_schedules'));
+	add_action('wp', 'addScheduleEventCallbackForWebinar' );
+	add_action('callbackScheduleEventForWebinar', 'callbackScheduleEventForWebinarFunction');

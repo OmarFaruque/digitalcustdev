@@ -142,6 +142,50 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 			} 
 		}
 
+
+		/*
+		Update User type
+		*/
+		public function updateZoomUserType($user_id){
+			$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
+			if($host_id):
+			$curl = curl_init();
+			$data = array();
+			$data['type'] = 2;
+			$postFields = json_encode($data);
+			curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.zoom.us/v2/users/" . $host_id,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "PATCH",
+			CURLOPT_POSTFIELDS => $postFields,
+			CURLOPT_HTTPHEADER => array(
+				"authorization: Bearer ".$this->generateJWTKey()."",
+				"content-type: application/json"
+			),
+			));
+
+			$response = curl_exec($curl);
+			$err = curl_error($curl);
+
+			curl_close($curl);
+
+			if ($err) {
+			return "cURL Error #:" . $err;
+			} else {
+			return $response;
+			}
+		else:
+			return false;
+		endif;
+		}
+
+
+
+
 		function add_roles( $roles ) {
 			$roles[] = 'lp_teacher';
 
