@@ -96,7 +96,7 @@ class Webinars_Admin {
 		// Course update hook 
 		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
 	
-		add_action( 'admin_init', array($this, 'testFunction') );
+		add_action( 'admin_footer', array($this, 'testFunction') );
 
 		// Add Emall Template to Admin settings for Email
 		add_filter('learn-press/email-section-classes', array($this, 'addEmailTemplateForUpdateLession'));
@@ -121,15 +121,16 @@ class Webinars_Admin {
 		add_action('learn-press/payment-complete', array($this, 'completeLearnPressCallback'));
 
 		// Schedule Event for webinar notification to user/co-instructor/Admin
-		add_action('after_setup_theme', array($this, 'addScheduleEventCallbackForWebinar') );
-		add_filter('cron_schedules', array($this, 'my_cron_schedules'));
+		add_action('wp', array($this, 'addScheduleEventCallbackForWebinar') );
+		add_action('callbackScheduleEventForWebinar', array($this, 'callbackScheduleEventForWebinarFunction'));
+		// add_filter('cron_schedules', array($this, 'my_cron_schedules'));
 	}
 
 
 
 	
 	public function testFunction(){
-		// $this->callbackScheduleEventForWebinar();
+		// $this->callbackScheduleEventForWebinarFunction();
 	
 	}
 	
@@ -140,13 +141,20 @@ class Webinars_Admin {
 	* Source : https://developer.wordpress.org/reference/functions/wp_schedule_event/
 	*/
 	public function addScheduleEventCallbackForWebinar(){
-		// wp_schedule_event( time(), 'hourly',  array($this, 'callbackScheduleEventForWebinar') );
+		if(!wp_next_scheduled("callbackScheduleEventForWebinar"))
+        {
+			wp_schedule_event( time(), 'hourly',  array($this, 'callbackScheduleEventForWebinar'), null );
+		}
 		// wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
 	}
 
-	public function callbackScheduleEventForWebinar(){
+	public function callbackScheduleEventForWebinarFunction(){
+
 		$thistime = date("Y-m-d H:i:s", strtotime('-1 hours', time()));
 		$current = date('Y-m-d H:i:s');
+
+		echo 'this time: ' . $thistime . '<br/>';
+		echo 'current time: ' . $current . '<br/>';
 		$argc = array(
 			'post_type' => LP_LESSON_CPT,
 			'post_status' => array( 'publish' ),
@@ -177,18 +185,10 @@ class Webinars_Admin {
 		
 		
 		$webinars = get_posts($argc);
-
-		if($webinars):
+		
+		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
-				$webinarid = get_post_meta( $swebinars->ID, '_webinar_ID', true );
-				$registrantLit  = dcd_zoom_conference()->getWebinarRegistrantList($webinarid);
-				$registrantLit = json_decode($registrantLit);
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
-				echo 'Lists <br><pre>';
-				print_r($registrantLit);
-				echo '</pre>';
-
-				
 				do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
 				do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
 				do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );

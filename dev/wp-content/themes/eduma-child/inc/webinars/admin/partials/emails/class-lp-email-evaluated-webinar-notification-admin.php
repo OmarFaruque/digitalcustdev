@@ -108,7 +108,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_Admin' ) ) {
 					'user_name'        	=> learn_press_get_profile_display_name( $user ),
 					'user_email'       	=> $user->get_email(),
 					'user_profile_url' 	=> learn_press_user_profile_link( $user_id ),
-					'join_link'			=> '';
+					'join_link'			=> ''
 				)
 			);
 			$this->variables = $this->data_to_variables( $this->object );

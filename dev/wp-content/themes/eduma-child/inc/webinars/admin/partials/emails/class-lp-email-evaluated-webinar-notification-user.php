@@ -67,7 +67,8 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_User' ) ) {
 					'{{course_url}}',
 					'{{user_id}}',
 					'{{user_name}}',
-					'{{user_email}}'
+					'{{user_email}}',
+					'{{join_url}}'
 				)
 			);
 
@@ -81,6 +82,12 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_User' ) ) {
 		 * @return bool
 		 */
 		public function trigger( $post_id, $user_id ) {
+			$webinarid = get_post_meta( $post_id, '_webinar_ID', true );
+			
+			$registrantLit  = dcd_zoom_conference()->getWebinarRegistrantList($webinarid);
+			$registrantLit = json_decode($registrantLit);
+			$registrants = $registrantLit->registrants;
+			
 			if ( ! $this->enable ) {
 				return false;
 			}
@@ -94,7 +101,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_User' ) ) {
 			$courses = learn_press_get_item_courses( $post_id );
 			$course  = get_post( $courses[0]->ID );
 			
-
+			foreach($registrants as $sS):
 			$this->object    = $this->get_common_template_data(
 				$format,
 				array(
@@ -107,16 +114,14 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_User' ) ) {
 					'user_id'          => $user_id,
 					'user_name'        => learn_press_get_profile_display_name( $user ),
 					'user_email'       => $user->get_email(),
-					'user_profile_url' => learn_press_user_profile_link( $user_id )
+					'user_profile_url' => learn_press_user_profile_link( $user_id ),
+					'join_url' 			=> $sS->join_url
 				)
 			);
-			$this->variables = $this->data_to_variables( $this->object );
-			$limit = - 1;
-			$curd  = new LP_Course_CURD();
-			$students = $curd->get_user_enrolled( $courses[0]->ID, $limit );
-			foreach($students as $sS):
-				$author_obj = get_user_by('id', $sS->ID);
-				$this->recipient = $author_obj->data->user_email;
+				
+				$this->variables = $this->data_to_variables( $this->object );
+				$this->recipient = $sS->email;
+				$this->recipient = 'ronymaha@gmail.com';
 				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 			endforeach;
 			return $return;
