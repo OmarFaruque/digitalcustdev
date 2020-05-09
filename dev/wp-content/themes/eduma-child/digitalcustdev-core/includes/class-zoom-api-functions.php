@@ -113,7 +113,6 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 
 		public function enableUserStatistoActive($user_id){
 			if ( !empty( $user_id ) ) {
-				update_user_meta( $user_id, 'user_zoom_hostid', $result->id );
 				$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
 				$curl = curl_init();
 				curl_setopt_array($curl, array(
@@ -142,6 +141,38 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 			} 
 		}
 
+
+		/*
+		* Webinar Start Token
+		*/
+		public function zoomWebinarStartToken($user_id){
+			$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
+			$curl = curl_init();
+
+			curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://api.zoom.us/v2/users/".$host_id."/token",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_HTTPHEADER => array(
+				"authorization: Bearer ".$this->generateJWTKey().""
+			),
+			));
+
+			$response = curl_exec($curl);
+			$err = curl_error($curl);
+
+			curl_close($curl);
+
+			if ($err) {
+				return "cURL Error #:" . $err;
+			} else {
+				return $response;
+			}
+		}
 
 		/*
 		Update User type

@@ -1563,7 +1563,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	}
 
 
-	add_action( 'admin_init', 'callbackScheduleEventForWebinarFunction' );
+	// add_action( 'admin_init', 'callbackScheduleEventForWebinarFunction' );
 
 	function callbackScheduleEventForWebinarFunction(){
 
@@ -1600,32 +1600,62 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 		$webinars = get_posts($argc);
 
-		// echo 'Posts <br/><pre>';
-		// print_r($webinars);
-		// echo '</pre>';
-
 		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
-
+				
 				$course = learn_press_get_item_courses( $swebinars->ID );
 				$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+				
 				$webinar_author = get_post_field( 'post_author', $course[0]->ID );
 				array_push($allAuthors, $webinar_author);
 				
 				
+				
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
 
+				$usreHosts = array();
+				$token = '';
 				foreach($allAuthors as $sauthor):
-					// echo 'author jids : ' . $sauthor . '<br/>';
-					dcd_zoom_conference()->enableUserStatistoActive($sauthor);
-					$updateType = dcd_zoom_conference()->updateZoomUserType($sauthor);
-					echo 'update type: ' . $updateType . '<br/>';
+					if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
+						dcd_zoom_conference()->enableUserStatistoActive($sauthor);
+						dcd_zoom_conference()->updateZoomUserType($sauthor);
+						$token = dcd_zoom_conference()->zoomWebinarStartToken($sauthor);
+
+						
+						array_push($usreHosts, get_user_meta( $sauthor, 'user_zoom_hostid', true ));
+
+					}
 				endforeach;
 
+				// Add Alternative Host
+		// 		echo 'Posts hosts <br/><pre>';
+		// print_r($usreHosts);
+		// echo '</pre>';
+				if(count($usreHosts) > 0):
+					echo 'inside user host: ';
+					$webinar_id = get_post_meta( $swebinars->ID, '_webinar_ID', true );
+					if ( ! empty( $webinar_id ) ) {
+						//Create webinar here
+						$postData = array(
+							'settings'   => array(
+								'alternative_hosts' => implode(',', $usreHosts)
+							)
+						);
+		
+						//Updated
+						$update = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+						// echo 'UPdate <br/><pre>';
+						// print_r($update);
+						// echo '</pre>';
+					}
+				endif;
 
-				do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
-				do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
-				do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
+				if(!empty($token)){
+					do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
+					do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
+					do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
+				}
+				
 			endforeach;
 		endif;
 	}
