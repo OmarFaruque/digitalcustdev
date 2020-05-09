@@ -20,7 +20,7 @@ class LP_Settings_Webinar_Notification_Emails extends LP_Settings_Emails_Group {
 	}
 
 	public function __toString() {
-		return __('Webinar Start Notification', 'learnpress');
+		return __('Webinar Notification (1 Hour)', 'learnpress');
 	}
 }
 

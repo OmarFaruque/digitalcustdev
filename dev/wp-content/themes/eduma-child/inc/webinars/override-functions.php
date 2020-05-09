@@ -1559,6 +1559,14 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
         {
 			wp_schedule_event( time(), 'hourly',  'callbackScheduleEventForWebinar' );
 		}
+
+		// Schedule Event for 10 mints
+		if(!wp_next_scheduled("callbackScheduleEventForWebinar"))
+        {
+			wp_schedule_event( time(), '10min',  'callbackScheduleEventForWebinarOnTenMin' );
+		}
+
+
 		// wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
 	}
 
@@ -1620,7 +1628,6 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 						dcd_zoom_conference()->enableUserStatistoActive($sauthor);
 						dcd_zoom_conference()->updateZoomUserType($sauthor);
 						$token = dcd_zoom_conference()->zoomWebinarStartToken($sauthor);
-
 						
 						array_push($usreHosts, get_user_meta( $sauthor, 'user_zoom_hostid', true ));
 
@@ -1672,9 +1679,28 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				'interval' => 30*60,
 				'display' => __('Once every 30 minutes'));
 		}
+		if(!isset($schedules["10min"])){
+			$schedules["10min"] = array(
+				'interval' => 10*60,
+				'display' => __('Once every 10 minutes'));
+		}
 		return $schedules;
+	}
+
+
+	/*
+	* Wp Schedule Event for Top Ten
+	* Send Notification before 10 min for start webinar
+	*/
+	function callbackScheduleEventForWebinarOnTenMinFunction(){
+	
+	
+		// do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
+		// do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
+		// do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
 	}
 	
 	// add_filter('cron_schedules', array($this, 'my_cron_schedules'));
 	add_action('wp', 'addScheduleEventCallbackForWebinar' );
 	add_action('callbackScheduleEventForWebinar', 'callbackScheduleEventForWebinarFunction');
+	add_action('callbackScheduleEventForWebinarOnTenMin', 'callbackScheduleEventForWebinarOnTenMinFunction');

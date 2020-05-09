@@ -167,8 +167,6 @@ class Webinars_Admin {
 
 
 
-
-
 	/*
 	* send Email for zoom webinar lesson update
 	*/
@@ -205,6 +203,13 @@ class Webinars_Admin {
 			$emails['LP_Email_Webinar_Notification_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-user.php' );
 			$emails['LP_Email_Webinar_Notification_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-admin.php' );
 			$emails['LP_Email_Webinar_Notification_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-instructor.php' );
+
+			// Notification before 10 minutes 
+			// Notification email template 
+			$emails['LP_Email_Webinar_Notification_Before_Ten_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-user.php' );
+			$emails['LP_Email_Webinar_Notification_Before_Ten_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-admin.php' );
+			$emails['LP_Email_Webinar_Notification_Before_Ten_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-instructor.php' );
+
 			LP_Emails::instance()->emails = $emails;
 			
 	}
@@ -223,6 +228,12 @@ class Webinars_Admin {
 		array_push(
 			$groups,
 			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_start_notification_email.php'
+		);
+
+		// Notification before 10 minutes
+		array_push(
+			$groups,
+			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_start_notification_before_ten_email.php'
 		);
 		return $groups;
 	}
@@ -416,7 +427,7 @@ class Webinars_Admin {
 				</div>
 				<?php
 				$html = ob_get_clean();
-			} 
+			}
 		}
 		return $html;
 
