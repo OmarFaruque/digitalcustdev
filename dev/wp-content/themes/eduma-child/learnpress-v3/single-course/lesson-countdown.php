@@ -12,13 +12,15 @@ if ( class_exists( 'WPEMS' ) ) {
 						
     $current_time = date( 'Y-m-d H:i', strtotime('-10 minutes') );
     
+    echo 'current time: ' . $current_time . '<br/>';
+    
     if( $time > $current_time ) {
         ?>
         <div class="entry-countdown">
             <div class="tp_event_counter"
                  data-time="<?php echo esc_attr(date('M j, Y H:i:s O', strtotime($time))); ?>">
             </div>
-        </div>
+        </div> 
         <?php
     }else{
         $course = learn_press_get_item_courses( $item->get_id() );
@@ -27,8 +29,15 @@ if ( class_exists( 'WPEMS' ) ) {
 		$webinar_author = get_post_field( 'post_author', $course[0]->ID );
         array_push($allAuthors, $webinar_author);
         
+
+        $webinar = dcd_zoom_conference()->getZoomWebinarDetails($item->get_id());
+        echo '<pre>';
+        print_r($webinar);
+        echo '</pre>';
+
+
         if(in_array(get_current_user_id(), $allAuthors)){
-            echo do_shortcode( '[zoom_api_link meeting_id="82818727091" class="adada" id="lllllll" target="_self" title="lllll"]' );
+            
         }
         
         ?>
