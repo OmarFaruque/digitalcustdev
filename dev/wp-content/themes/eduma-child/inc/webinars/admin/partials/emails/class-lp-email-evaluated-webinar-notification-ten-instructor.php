@@ -72,7 +72,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Ten_Instructor' ) ) {
 				)
 			);
 
-			add_action( 'learn-press/zoom-notification-lession-instructor', array( $this, 'trigger' ), 99, 2 );
+			add_action( 'learn-press/zoom-notification-lession-ten-min-instructor', array( $this, 'trigger' ), 99, 2 );
 		}
 
 		/**

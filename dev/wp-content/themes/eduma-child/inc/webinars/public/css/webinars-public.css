@@ -707,3 +707,12 @@ div#frontend-editor a.acf-icon.-pencil.dark,
   height: 100%;
   content: '';
 }
+.z-index-1{
+  z-index: 1;
+}
+.font-30{
+  font-size: 30px !important;
+}
+div#joinbutton a {
+  padding: 10px 50px;
+}

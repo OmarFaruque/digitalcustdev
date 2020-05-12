@@ -12,7 +12,7 @@ if ( class_exists( 'WPEMS' ) ) {
 						
     $current_time = date( 'Y-m-d H:i', strtotime('-10 minutes') );
     
-    echo 'current time: ' . $current_time . '<br/>';
+    // echo 'current time: ' . $current_time . '<br/>';
     
     if( $time > $current_time ) {
         ?>
@@ -31,18 +31,27 @@ if ( class_exists( 'WPEMS' ) ) {
         
 
         $webinar = dcd_zoom_conference()->getZoomWebinarDetails($item->get_id());
-        echo '<pre>';
-        print_r($webinar);
-        echo '</pre>';
+        $webinar = json_decode($webinar);
+        // echo 'Webinar Array <br/><pre>';
+        // print_r($webinar);
+        // echo '</pre>';
 
-
+        $join_url = '';
+        $join_text = '';
         if(in_array(get_current_user_id(), $allAuthors)){
-            
+            $join_url = $webinar->start_url;
+            $join_text = __('Start', 'webinar');
+        }else{
+            $join_url = $webinar->join_url;
+            $join_text = __('Join', 'webinar');
         }
-        
         ?>
-        <div id="joinbutton">
-
+         <div class="entry-countdown z-index-1">
+        <div id="joinbutton" class="text-center">
+            <div class="button-inner">
+                <a target="_blank" href="<?php echo $join_url; ?>" class="btn font-30 btn-large btn-primary text-white"><?php echo $join_text; ?></a>
+            </div>
+        </div>
         </div>
     <?php }
 } else {
