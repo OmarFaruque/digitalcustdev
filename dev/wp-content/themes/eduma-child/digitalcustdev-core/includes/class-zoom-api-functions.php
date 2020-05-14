@@ -111,36 +111,29 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		}
 
 
-		public function enableUserStatistoActive($user_id){
+		public function enableUserStatistoActive($user_id, $status){
 			if ( !empty( $user_id ) ) {
 				$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
-				$curl = curl_init();
-				curl_setopt_array($curl, array(
-				CURLOPT_URL => "https://api.zoom.us/v2/users/".$host_id."/status",
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_ENCODING => "",
-				CURLOPT_MAXREDIRS => 10,
-				CURLOPT_TIMEOUT => 30,
-				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-				CURLOPT_CUSTOMREQUEST => "PUT",
-				CURLOPT_POSTFIELDS => "{\"action\":\"activate\"}",
-				CURLOPT_HTTPHEADER => array(
-					"authorization: Bearer ".$this->generateJWTKey()."",
-					"content-type: application/json"
-				),
-				));
 
-				$response = curl_exec($curl);
-
-			
-				$err = curl_error($curl);
-
-				curl_close($curl);
-				return $response;
+				$data = array(
+					'action' => $status
+				);
+				return $this->sendRequest( 'users/'.$host_id.'/status', $data, "PUT" );
 
 			} 
 		}
 
+
+
+		/*
+		* Get Recorded meeting id
+		*/
+		public function getMeetingRecordUrl($meetingId){
+
+			$meetingInfo = dcd_zoom_conference()->getWebinarInfo($meetingId);
+            $meetingInfo = json_decode($meetingInfo);
+			return $this->sendRequest( 'meetings/'.$meetingInfo->uuid.'/recordings', array(), "GET" );
+		}
 
 
 		/*
@@ -299,6 +292,21 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 			endif;
 		}
 
+
+		/**
+		 * Get a Meeting Info
+		 *
+		 * @param  [INT] $id
+		 * @param  [STRING] $host_id
+		 *
+		 * @return array
+		 */
+		public function getWebinarInfo( $id ) {
+			$getMeetingInfoArray = array();
+			$getMeetingInfoArray = apply_filters( 'vczapi_getMeetingInfo', $getMeetingInfoArray );
+
+			return $this->sendRequest( 'webinars/' . $id, $getMeetingInfoArray, "GET" );
+		}
 
 
 

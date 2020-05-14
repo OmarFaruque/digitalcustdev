@@ -1752,7 +1752,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				$token = '';
 				foreach($allAuthors as $sauthor):
 					if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
-						dcd_zoom_conference()->enableUserStatistoActive($sauthor);
+						dcd_zoom_conference()->enableUserStatistoActive($sauthor, 'activate');
 						dcd_zoom_conference()->updateZoomUserType($sauthor);
 						$token = dcd_zoom_conference()->zoomWebinarStartToken($sauthor);
 						

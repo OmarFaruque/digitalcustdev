@@ -35,13 +35,40 @@ if ( class_exists( 'WPEMS' ) ) {
     elseif($time < $count_of_time && date('Y-m-d H:i') > date('Y-m-d H:i', strtotime($endtime))  ){
         
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
+        delete_post_meta( $item->get_id(), '_webinar_statis' );
         $webinarStatus = get_post_meta( $item->get_id(), '_webinar_statis', true );
         if(!$webinarStatus){
             $webinar_end = dcd_zoom_conference()->zoomWebinarStatusEnd($webinarId);
             $update_recording_setting = dcd_zoom_conference()->zoomRecordingSettingsUpdate($webinarId);
+            
+            
+            // Deactivated author
+            $course = learn_press_get_item_courses( $item->get_id() );
+			$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+				
+			$webinar_author = get_post_field( 'post_author', $course[0]->ID );
+			array_push($allAuthors, $webinar_author);
+
+            foreach($allAuthors as $sauthor):
+                if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
+                    $updateStatus = dcd_zoom_conference()->enableUserStatistoActive($sauthor, 'deactivate');
+                }
+            endforeach;
+            
+            $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
+            $record_url = json_decode($record_url);
+
             update_post_meta( $item->get_id(), '_webinar_statis', 1 );
+            ?>
+
+            <div class="entry-countdown no-record">
+                <div class="inner-no-record">
+                    <h3 class="text-center text-white"><?php _e('No record available', 'webinar'); ?></h3>
+                </div>
+            </div>
+            <?php
+
         }
-        
     }
     else{
         $course = learn_press_get_item_courses( $item->get_id() );
