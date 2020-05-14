@@ -10,11 +10,19 @@ if ( class_exists( 'WPEMS' ) ) {
 	$change_sdate = str_replace( '/', '-', $start_time );
 	$time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
 						
-    $current_time = date( 'Y-m-d H:i', strtotime('-10 minutes') );
-    
+    $count_of_time = date( 'Y-m-d H:i', strtotime('-10 minutes') );
+
+    // End Time 
+    $duration   = get_post_meta( $item->get_id(), '_lp_duration', true );
+    $endtime    = strtotime('+'.$duration, strtotime($time));
+    $endtime    = strtotime('+5 minutes', $endtime);
+
+
+
+
     // echo 'current time: ' . $current_time . '<br/>';
     
-    if( $time > $current_time ) {
+    if( $time > $count_of_time ){
         ?>
         <div class="entry-countdown">
             <div class="tp_event_counter"
@@ -22,14 +30,26 @@ if ( class_exists( 'WPEMS' ) ) {
             </div>
         </div> 
         <?php
-    }else{
+    }
+    
+    elseif($time < $count_of_time && date('Y-m-d H:i') > date('Y-m-d H:i', strtotime($endtime))  ){
+        
+        $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
+        $webinarStatus = get_post_meta( $item->get_id(), '_webinar_statis', true );
+        if(!$webinarStatus){
+            $webinar_end = dcd_zoom_conference()->zoomWebinarStatusEnd($webinarId);
+            $update_recording_setting = dcd_zoom_conference()->zoomRecordingSettingsUpdate($webinarId);
+            update_post_meta( $item->get_id(), '_webinar_statis', 1 );
+        }
+        
+    }
+    else{
         $course = learn_press_get_item_courses( $item->get_id() );
 		$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
 				
 		$webinar_author = get_post_field( 'post_author', $course[0]->ID );
         array_push($allAuthors, $webinar_author);
         
-
         $webinar = dcd_zoom_conference()->getZoomWebinarDetails($item->get_id());
         $webinar = json_decode($webinar);
         // echo 'Webinar Array <br/><pre>';
