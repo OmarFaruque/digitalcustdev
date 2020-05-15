@@ -27,3 +27,8 @@
 .zoom-error ul li {
     color: red;
 }
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div.xdsoft_disabled.xdsoft_time:hover,
+.xdsoft_time.xdsoft_disabled, .xdsoft_time.xdsoft_disabled:hover {
+  background-color: #ff8000 !important;
+  color: #fff !important;
+}

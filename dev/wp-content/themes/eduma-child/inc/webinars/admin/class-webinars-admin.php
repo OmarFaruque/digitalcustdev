@@ -314,7 +314,7 @@ class Webinars_Admin {
 			// if webinar set as draft
 			if( get_post_status($post_id) == 'draft'){
 				update_post_meta( $post_id, 'draftupdate', 'Omar update' );
-				$lessons = get_course_lessons($post->ID);
+				$lessons = get_course_lessons($post_id);
 				foreach($lessons as $sl):
 					$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
 					if ( $webinar_id ){

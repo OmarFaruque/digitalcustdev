@@ -27,7 +27,7 @@ $users = video_conferencing_zoom_api_get_user_transients();
 		?>
 	</div>
 
-	<div class="zvc_listing_table">
+	<div class="zvc_listing_table omar">
 		<table id="zvc_users_list_table" class="display" width="100%">
 			<thead>
 			<tr>

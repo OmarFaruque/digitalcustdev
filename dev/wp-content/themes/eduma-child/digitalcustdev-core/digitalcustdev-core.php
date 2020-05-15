@@ -53,7 +53,7 @@ class DigitalCustDev {
 
 		wp_enqueue_script( 'dcd-frontend-course-editor', DIGITALCUSTDEV_PLUGIN_URL . 'assets/js/webinar-frontend-editor.js', array(
 			'frontend-course-editor-custom'
-		) );
+		), time(), false );
 		wp_localize_script( 'dcd-frontend-course-editor', 'dcd_fe_object', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'course_type' => $type
