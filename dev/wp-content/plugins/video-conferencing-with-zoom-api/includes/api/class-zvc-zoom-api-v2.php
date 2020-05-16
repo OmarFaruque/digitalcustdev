@@ -155,6 +155,7 @@ if ( ! class_exists( 'Zoom_Video_Conferencing_Api' ) ) {
 		 * @return array
 		 */
 		public function listUsers( $page = 1 ) {
+			echo 'function 2';
 			$listUsersArray                = array();
 			$listUsersArray['page_size']   = 300;
 			$listUsersArray['page_number'] = absint( $page );

@@ -44,8 +44,22 @@ if ( class_exists( 'WPEMS' ) ) {
             
             // Deactivated author
             $course = learn_press_get_item_courses( $item->get_id() );
-			$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
-				
+            $allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+            
+            $price          = get_post_meta($course[0]->ID, '_lp_price', true);
+            $sales_price    = get_post_meta( $course[0]->ID, '_lp_sale_price', true );
+            $existPrice     = ($sales_price) ? $sales_price : $price;
+            
+            $lessons = get_course_lessons($course[0]->ID);
+
+            $newPrice = $existPrice - (0.5 * $existPrice) / count($lessons);
+            // Re-calculate price
+            if($sales_price){
+                update_post_meta( $course[0]->ID, '_lp_sale_price', $newPrice );
+            }else{
+                update_post_meta( $course[0]->ID, '_lp_price', $newPrice );
+            }
+            
 			$webinar_author = get_post_field( 'post_author', $course[0]->ID );
 			array_push($allAuthors, $webinar_author);
 
@@ -57,8 +71,13 @@ if ( class_exists( 'WPEMS' ) ) {
             
             $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
             $record_url = json_decode($record_url);
+            echo 'webinar id: ' . $webinarId . '<br/>';
+            echo 'Conference Meetings Recorded URL <pre>';
+            print_r($record_url);
+            echo '</pre>';
 
             update_post_meta( $item->get_id(), '_webinar_statis', 1 );
+            }
             ?>
 
             <div class="entry-countdown no-record">
@@ -68,7 +87,7 @@ if ( class_exists( 'WPEMS' ) ) {
             </div>
             <?php
 
-        }
+        
     }
     else{
         $course = learn_press_get_item_courses( $item->get_id() );

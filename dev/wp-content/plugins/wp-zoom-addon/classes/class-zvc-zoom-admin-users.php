@@ -38,6 +38,7 @@ class Zoom_Video_Conferencing_Admin_Users {
 		//Get Template
 		//Requiring Thickbox
 		add_thickbox();
+		echo '<br/>user list omar inside main<br/>';
 		require_once ZOOM_VIDEO_CONFERENCE_PLUGIN_VIEWS_PATH . '/admin/tpl-list-users.php';
 	}
 

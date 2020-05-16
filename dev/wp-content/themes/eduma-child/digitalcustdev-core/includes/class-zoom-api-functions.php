@@ -294,6 +294,21 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 
 
 		/**
+		 * User Function to List
+		 *
+		 * @return array
+		 */
+		public function listUsersByStatus($status) {
+			$listUsersArray              = array(
+				'status' => $status
+			);
+			$listUsersArray['page_size'] = 300;
+
+			return $this->sendRequest( 'users', $listUsersArray, "GET" );
+		}
+
+
+		/**
 		 * Get a Meeting Info
 		 *
 		 * @param  [INT] $id

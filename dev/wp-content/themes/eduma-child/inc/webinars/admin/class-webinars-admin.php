@@ -35,6 +35,7 @@ class Webinars_Admin {
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
 	private $plugin_name;
+	public static $message = '';
 
 	/**
 	 * The version of this plugin.
@@ -121,12 +122,63 @@ class Webinars_Admin {
 		add_action('learn-press/payment-complete', array($this, 'completeLearnPressCallback'));
 
 		// Schedule Event for webinar notification to user/co-instructor/Admin
+
+		// Override Sub menu 
+		add_action( 'admin_menu', array( $this, 'zoom_video_conference_menus' ) );
 		
 		
 	}
 
 
+	public function zoom_video_conference_menus(){
+		global $submenu;
+		remove_submenu_page( 'zoom-video-conferencing', 'zoom-video-conferencing-list-users' );
+		remove_submenu_page( 'themes.php', 'customize.php?return=/dev/wp-admin/admin.php?page=zoom-video-conferencing-list-users' );
+		remove_submenu_page( 'themes.php', 'admin.php?page=zoom-video-conferencing-list-users' );
+		
+		add_submenu_page( 'zoom-video-conferencing', 'Users', __( 'Users', 'video-conferencing-with-zoom-api' ), 'manage_options', 'cst-zoom-video-conferencing-list-users', array( __CLASS__, 'list_users' ) );
+	}
 
+	/**
+	 * List meetings page
+	 *
+	 * @since   1.0.0
+	 * @changes in CodeBase
+	 * @author  Deepen Bajracharya <dpen.connectify@gmail.com>
+	 */
+	public static function list_users() {
+		
+		wp_enqueue_script( 'video-conferencing-with-zoom-api-js' );
+		wp_enqueue_script( 'video-conferencing-with-zoom-api-datable-js' );
+
+		wp_enqueue_style( 'video-conferencing-with-zoom-api' );
+		wp_enqueue_style( 'video-conferencing-with-zoom-api-datable' );
+
+		//Check if any transient by name is available
+		$check_transient = get_transient( '_zvc_user_lists' );
+		if ( isset( $_GET['flush'] ) == true ) {
+			if ( $check_transient ) {
+				delete_transient( '_zvc_user_lists' );
+				self::set_message( 'updated', __( "Flushed User Cache!", "video-conferencing-with-zoom-api" ) );
+			}
+		}
+
+		//Get Template
+		//Requiring Thickbox
+		add_thickbox();
+		// echo '<br/>user list omar Custom<br/>';
+		// learn_press_get_template( 'single-course/lesson-countdown.php' );
+		require_once get_stylesheet_directory() . '/inc/webinars/admin/partials/tpl-list-users.php';
+	}
+
+
+	static function get_message() {
+		return self::$message;
+	}
+
+	static function set_message( $class, $message ) {
+		self::$message = '<div class=' . $class . '><p>' . $message . '</p></div>';
+	}
 	
 	public function testFunction(){
 		// $this->callbackScheduleEventForWebinarFunction();

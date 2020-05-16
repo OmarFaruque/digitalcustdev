@@ -1792,3 +1792,45 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	add_action('wp', 'addScheduleEventCallbackForWebinar' );
 	add_action('callbackScheduleEventForWebinar', 'callbackScheduleEventForWebinarFunction');
 	add_action('callbackScheduleEventForWebinarOnTenMin', 'callbackScheduleEventForWebinarOnTenMinFunction');
+
+
+
+
+
+
+	function cstm_video_conferencing_zoom_api_get_user_transients() {		
+		//Check if any transient by name is available
+		
+		$check_transient = get_transient( '_zvc_user_lists' );
+		if ( $check_transient ) {
+			$users = $check_transient;
+		} else {
+		
+			$active_user = dcd_zoom_conference()->listUsersByStatus('active');
+			$active_user = json_decode( $active_user );
+
+			// Pending User
+			$pending_user = dcd_zoom_conference()->listUsersByStatus('pending');
+			
+
+			$pending_user = json_decode( $pending_user );
+			$userArray = array_merge($active_user->users, $pending_user->users);
+
+
+			// Inactive User
+			$inactive_user = dcd_zoom_conference()->listUsersByStatus('inactive');
+			$inactive_user = json_decode( $inactive_user );
+
+			$decoded_users = array_merge($userArray, $inactive_user->users);
+			
+			if ( ! empty( $active_user->code ) && $active_user->code == 300 ) {
+				$users = false;
+			} else {
+				//storing data to transient and getting those data for fast load by setting to fetch every 15 minutes
+				set_transient( '_zvc_user_lists', $decoded_users, 900 );
+				$users = $decoded_users;
+			}
+		}
+
+		return $users;
+	}

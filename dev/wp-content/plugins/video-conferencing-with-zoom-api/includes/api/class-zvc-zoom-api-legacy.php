@@ -81,6 +81,7 @@ if( !class_exists('Zoom_Video_Conferencing_Api') ) {
      * @return Array
      */
     public function listUsers(){
+      echo 'function 1';
       $listUsersArray = array();
       $listUsersArray['page_size'] = 300;
       return $this->sendRequest('user/list', $listUsersArray);
