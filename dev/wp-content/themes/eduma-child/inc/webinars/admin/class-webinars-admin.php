@@ -361,6 +361,89 @@ class Webinars_Admin {
 		if($post_type == 'lp_course' && "webinar" == get_post_meta( $post_id, '_course_type', true )):
 			if(get_post_status($post_id) == 'publish' ){
 				$this->createZoomUserWhileUPdateWebinar($post_id);
+				$host_id = LP()->settings->get( 'zoom_master_host' );
+				// Create or update webinar in zooom 
+				$lessons = get_course_lessons($post_id);
+				if ( ! empty( $host_id ) ) {
+					foreach($lessons as $sl):
+						$lesson         = get_post( $sl );
+						$webinar_exists = get_post_meta( $sl, '_webinar_ID', true );
+						if ( empty( $webinar_exists ) ) {
+							$timezone   = get_post_meta( $sl, '_lp_timezone', true );
+							$start_time = get_post_meta( $sl, '_lp_webinar_when', true );
+							$start_time = str_replace('/', '-', $start_time);
+							$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+							
+							
+							// $host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
+							$host_id = LP()->settings->get( 'zoom_master_host' );
+
+							if ( ! empty( $post_metas ) ) {
+								$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
+								$start_time = ! empty( $post_metas['_lp_webinar_when'] ) ? date( "Y-m-d\TH:i:s", strtotime( $post_metas['_lp_webinar_when'] ) ) : date( "Y-m-d\TH:i:s" );
+							}
+
+							
+							if ( ! empty( $host_id ) ) {
+								//Create webinar here
+								$postData        = array(
+									'topic'      => $lesson->post_title,
+									'type'       => 5,
+									'start_time' => ! empty( $start_time ) ? $start_time : date( "Y-m-d\TH:i:s" ),
+									'timezone'   => ! empty( $timezone ) ? $timezone : '',
+									// 'agenda'     => $lesson->post_content,
+									'settings'   => array(
+										'host_video'        => false,
+										'panelists_video'   => true,
+										'approval_type'     => 0,
+										'registration_type' => 1,
+										'auto_recording'    => 'cloud'
+									)
+								);
+								$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
+								
+								$created_webinar = json_decode( $created_webinar );
+								if ( ! empty( $created_webinar ) ) {
+									update_post_meta( $post_id, '_webinar_ID', $created_webinar->id );
+									update_post_meta( $post_id, '_webinar_details', $created_webinar );
+								}
+							}
+						} else {
+							$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
+							$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
+							$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+
+							if ( ! empty( $post_metas ) ) {
+								$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
+								$start_time = ! empty( $post_metas['_lp_webinar_when'] ) ? date( "Y-m-d\TH:i:s", strtotime( $post_metas['_lp_webinar_when'] ) ) : date( "Y-m-d\TH:i:s" );
+							}
+
+							$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
+							if ( ! empty( $webinar_id ) ) {
+								//Create webinar here
+								$postData = array(
+									'topic'      => $lesson->post_title,
+									'type'       => 5,
+									'start_time' => $start_time,
+									'timezone'   => ! empty( $timezone ) ? $timezone : '',
+									'agenda'     => $lesson->post_content,
+									'settings'   => array(
+										'host_video'        => false,
+										'panelists_video'   => true,
+										'approval_type'     => 0,
+										'registration_type' => 1,
+										'auto_recording'    => 'cloud'
+									)
+								);
+
+								//Updated
+								dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+							}
+						}
+					endforeach;
+				}
+
+
 			}
 
 			// if webinar set as draft

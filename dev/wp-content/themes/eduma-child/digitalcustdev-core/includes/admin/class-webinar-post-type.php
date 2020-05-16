@@ -138,14 +138,16 @@ class Admin_DigitalCustDev_Webinar {
 				$course_type = get_post_meta( $course[0]->ID, '_course_type', true );
 				// echo 'course type: ' . $course_type . '<br/>';
 
+				$webinarDetails = get_post_meta( $post->ID, '_webinar_details', true );
+
 				$zoom_date = get_post_meta( $post->ID, '_lp_webinar_when', true );
 				$time_zone = get_post_meta($post->ID, '_lp_timezone', true);
 				$infoTExt = __( 'Create an event to create zoom meeting for this event.', 'digitalcustdev-core' );
 
 				if(get_post_meta( $post->ID, '_webinar_ID', true )) $infoTExt = sprintf('Synchronization with ZOOM is done: %s', $zoom_date);
-				if($course_type != 'webinar') $infoTExt = __('Synchronization of date-time with ZOOM is not performed', 'webinar');
-				if($course[0]->post_status != 'publish') $infoTExt = __('Synchronization of date-time with ZOOM is not performed', 'webinar');
-				
+				if($course_type != 'webinar') $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
+				if($course[0]->post_status != 'publish') $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
+				if($course[0]->post_status == 'publish' && $zoom_date && $webinarDetails) $infoTExt = __('Synchronization with ZOOM is done', 'webinar') . ': ' . date('d/m/Y h:i', strtotime($webinarDetails->created_at));
 				$tzlists = zvc_get_timezone_options();
 				echo $infoTExt;
 				$output = '<div id="zoom_section_wrap"><div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';

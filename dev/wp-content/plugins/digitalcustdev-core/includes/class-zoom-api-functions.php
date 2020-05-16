@@ -61,7 +61,6 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) ) {
 
 		public function updateWebinar( $webinarId, $data = array() ) {
 			// return $this->sendRequest( 'webinars/' . $webinarId, $data, "PATCH" );
-		echo 'inside omar fa';
 			$curl = curl_init();
 
 			curl_setopt_array($curl, array(
