@@ -80,7 +80,7 @@ class DigitalCustDev_Webinars {
 			$course_title = get_the_title( $post_id );
 			$post_type    = get_post_type( $post_id );
 			if ( $post_type === "lp_lesson" && ! empty( $course_title ) && ! empty( $start_time ) ) {
-				$this->create_webinar( $post_id );
+				$this->update_webinar( $post_id );
 			}
 		}
 
@@ -121,6 +121,68 @@ class DigitalCustDev_Webinars {
 		}
 	}
 
+	
+	
+	function update_webinar( $post_id, $post_metas = array() ) {
+		$post_type = get_post_type( $post_id );
+		
+		$get_administrator  = get_user_by( 'email', get_option( 'admin_email' ) );
+		// $author_id = get_post_field( 'post_author', $post_id );
+		$author_id = $get_administrator->ID;
+		update_post_meta( $post_id, 'omsrauthorid', get_option( 'admin_email' ) );
+
+		if ( "lp_lesson" != $post_type ) {
+			return;
+		}
+
+		
+
+		if ( get_post_status( $post_id ) === 'draft' && 'auto-draft' === get_post_status( $post_id ) && 'trash' === get_post_status( $post_id ) ) {
+			return;
+		}
+
+		$lesson         = get_post( $post_id );
+		$webinar_exists = get_post_meta( $post_id, '_webinar_ID', true );
+		
+			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
+			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
+			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+
+			if ( ! empty( $post_metas ) ) {
+				$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
+				$start_time = ! empty( $post_metas['_lp_webinar_when'] ) ? date( "Y-m-d\TH:i:s", strtotime( $post_metas['_lp_webinar_when'] ) ) : date( "Y-m-d\TH:i:s" );
+			}
+
+			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
+			if ( ! empty( $webinar_id ) ) {
+				//Create webinar here
+				$postData = array(
+					'topic'      => $lesson->post_title,
+					'type'       => 5,
+					'start_time' => $start_time,
+					'timezone'   => ! empty( $timezone ) ? $timezone : '',
+					'agenda'     => $lesson->post_content,
+					'settings'   => array(
+						'host_video'        => false,
+						'panelists_video'   => true,
+						'approval_type'     => 0,
+						'registration_type' => 1,
+						'auto_recording'    => 'cloud'
+					)
+				);
+
+				//Updated
+				$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+				$updateWebinar = json_decode( $updateWebinar );
+									if ( ! empty( $updateWebinar ) ) {
+										update_post_meta( $post_id, '_webinar_ID', $updateWebinar->id );
+										update_post_meta( $post_id, '_webinar_details', $updateWebinar );
+									}
+			}
+		
+	}
+	
+	
 	function create_webinar( $post_id, $post_metas = array() ) {
 		$post_type = get_post_type( $post_id );
 		

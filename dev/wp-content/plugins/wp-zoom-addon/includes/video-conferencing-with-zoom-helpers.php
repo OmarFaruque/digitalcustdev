@@ -160,7 +160,6 @@ if ( ! function_exists( 'zvc_get_timezone_options' ) ) {
  */
 if ( ! function_exists( 'video_conferencing_zoom_api_get_user_transients' ) ) {
 	function video_conferencing_zoom_api_get_user_transients() {
-		echo 'inside helper plugin 2';
 		//Check if any transient by name is available
 		$check_transient = get_transient( '_zvc_user_lists' );
 		if ( $check_transient ) {

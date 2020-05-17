@@ -361,7 +361,6 @@ if ( ! class_exists( 'Zoom_Video_Conferencing_Api' ) ) {
 		 * @return bool|mixed
 		 */
 		public function listWebinar( $userId ) {
-			echo '<br/>inside webinars omar';
 			$postData              = array();
 			$postData['page_size'] = 300;
 

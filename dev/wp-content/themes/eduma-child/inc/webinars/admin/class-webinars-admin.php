@@ -129,6 +129,13 @@ class Webinars_Admin {
 		// CountDown Section 
 		add_action( 'learn-press/before-content-item-summary/lp_lesson', array($this, 'learn_press_content_item_lesson_countdown'), 20 );
 		
+
+		// add_action('admin_init', array($this, 'tetF'));
+	}
+
+	public function tetF(){
+		$postid = 16255;
+		$this->updated_course($postid, '', '');
 	}
 
 
@@ -372,6 +379,7 @@ class Webinars_Admin {
 				$lessons = get_course_lessons($post_id);
 				if ( ! empty( $host_id ) ) {
 					foreach($lessons as $sl):
+						echo 'single lession: ' . $sl. '<br/>';
 						$lesson         = get_post( $sl );
 						$webinar_exists = get_post_meta( $sl, '_webinar_ID', true );
 						if ( empty( $webinar_exists ) ) {
@@ -404,13 +412,14 @@ class Webinars_Admin {
 										update_post_meta( $sl, '_webinar_details', $created_webinar );
 									}
 								}
-
-
 						} else {
+							
 							$timezone   = get_post_meta( $sl, '_lp_timezone', true );
 							$start_time = get_post_meta( $sl, '_lp_webinar_when', true );
+							if($start_time) $start_time = str_replace('/', '-', $start_time);
 							if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 
+							
 
 							$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
 							if ( ! empty( $webinar_id ) ) {
