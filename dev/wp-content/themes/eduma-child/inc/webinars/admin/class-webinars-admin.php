@@ -126,9 +126,15 @@ class Webinars_Admin {
 		// Override Sub menu 
 		add_action( 'admin_menu', array( $this, 'zoom_video_conference_menus' ) );
 		
+		// CountDown Section 
+		add_action( 'learn-press/before-content-item-summary/lp_lesson', array($this, 'learn_press_content_item_lesson_countdown'), 20 );
 		
 	}
 
+
+	public function learn_press_content_item_lesson_countdown(){
+		learn_press_get_template( 'single-course/lesson-countdown.php' );
+	}
 
 	public function zoom_video_conference_menus(){
 		global $submenu;
@@ -371,20 +377,9 @@ class Webinars_Admin {
 						if ( empty( $webinar_exists ) ) {
 							$timezone   = get_post_meta( $sl, '_lp_timezone', true );
 							$start_time = get_post_meta( $sl, '_lp_webinar_when', true );
-							$start_time = str_replace('/', '-', $start_time);
-							$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+							if($start_time) $start_time = str_replace('/', '-', $start_time);
+							if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 							
-							
-							// $host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
-							$host_id = LP()->settings->get( 'zoom_master_host' );
-
-							if ( ! empty( $post_metas ) ) {
-								$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
-								$start_time = ! empty( $post_metas['_lp_webinar_when'] ) ? date( "Y-m-d\TH:i:s", strtotime( $post_metas['_lp_webinar_when'] ) ) : date( "Y-m-d\TH:i:s" );
-							}
-
-							
-							if ( ! empty( $host_id ) ) {
 								//Create webinar here
 								$postData        = array(
 									'topic'      => $lesson->post_title,
@@ -400,25 +395,24 @@ class Webinars_Admin {
 										'auto_recording'    => 'cloud'
 									)
 								);
-								$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
-								
-								$created_webinar = json_decode( $created_webinar );
-								if ( ! empty( $created_webinar ) ) {
-									update_post_meta( $post_id, '_webinar_ID', $created_webinar->id );
-									update_post_meta( $post_id, '_webinar_details', $created_webinar );
+
+								if($start_time && $timezone){
+									$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
+									$created_webinar = json_decode( $created_webinar );
+									if ( ! empty( $created_webinar ) ) {
+										update_post_meta( $sl, '_webinar_ID', $created_webinar->id );
+										update_post_meta( $sl, '_webinar_details', $created_webinar );
+									}
 								}
-							}
+
+
 						} else {
-							$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
-							$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
-							$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+							$timezone   = get_post_meta( $sl, '_lp_timezone', true );
+							$start_time = get_post_meta( $sl, '_lp_webinar_when', true );
+							if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 
-							if ( ! empty( $post_metas ) ) {
-								$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
-								$start_time = ! empty( $post_metas['_lp_webinar_when'] ) ? date( "Y-m-d\TH:i:s", strtotime( $post_metas['_lp_webinar_when'] ) ) : date( "Y-m-d\TH:i:s" );
-							}
 
-							$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
+							$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
 							if ( ! empty( $webinar_id ) ) {
 								//Create webinar here
 								$postData = array(
@@ -436,8 +430,15 @@ class Webinars_Admin {
 									)
 								);
 
-								//Updated
-								dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+								if($start_time && $timezone){
+									//Updated
+									$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+									$updateWebinar = json_decode( $updateWebinar );
+									if ( ! empty( $updateWebinar ) ) {
+										update_post_meta( $sl, '_webinar_ID', $updateWebinar->id );
+										update_post_meta( $sl, '_webinar_details', $updateWebinar );
+									}
+								}
 							}
 						}
 					endforeach;
@@ -672,7 +673,7 @@ class Webinars_Admin {
 	* Lession metabox for lession video intro
 	*/
 	public function wpdocs_register_meta_boxes() {
-		add_meta_box( 'lession-video-data', __( 'Lession Intro Video', 'textdomain' ), array($this, 'lp_lession_metabox'), 'lp_lesson', 'side', 'core' );
+		add_meta_box( 'lession-video-data', __( 'Lesson Video', 'textdomain' ), array($this, 'lp_lession_metabox'), 'lp_lesson', 'side', 'core' );
 	}
 	
 	public function lp_lession_metabox($post){
@@ -689,7 +690,7 @@ class Webinars_Admin {
 		?>
 		<div class="acf-field acf-field-file acf-field-5d52623d7778a" data-name="upload_intro_video" data-type="file" data-key="field_5d52623d7778a">
 		<div class="acf-label">
-		<label for="acf-field_5d52623d7778a"><?php _e('Upload Intro Video', 'webinar'); ?></label></div>
+		<label for="acf-field_5d52623d7778a"><?php _e('Upload Lesson Video', 'webinar'); ?></label></div>
 		
 		
 		<div class="acf-input">

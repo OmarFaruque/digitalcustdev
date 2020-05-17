@@ -1,4 +1,5 @@
 <?php 
+
 if ( !function_exists( 'thim_get_page_title' ) ) {
 	function thim_get_page_title( $custom_title, $front_title ) {
 		$heading_title = esc_html__( 'Page title', 'eduma' );
@@ -295,6 +296,7 @@ function get_course_lessons($course_id){
 
 add_action('init', 'dcc_rewrite_tags');
 function dcc_rewrite_tags() {
+	add_theme_support( 'post-thumbnails', array('lp_lesson') );
     add_rewrite_tag('%page%', '([^&]+)');
 }
 
@@ -1533,8 +1535,8 @@ if ( !function_exists( 'thim_content_item_lesson_media' ) ) {
 			?>
 			<div class="learn-press-video-intro">
 				
-			<div class="tp-event-top lp-lesson position-relative">
-				<?php learn_press_get_template( 'single-course/lesson-countdown.php' ); ?>
+			<div class="lp-lesson position-relative">
+				<?php //learn_press_get_template( 'single-course/lesson-countdown.php' ); ?>
 				<div class="video-content">
 					<?php echo $introVideo; ?>
 				</div>

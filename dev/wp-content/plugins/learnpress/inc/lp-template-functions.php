@@ -536,7 +536,7 @@ if ( ! function_exists( 'learn_press_course_item_content' ) ) {
 		}
 
 		$item_template_name = learn_press_locate_template( 'single-course/content-item-' . $item->get_item_type() . '.php' );
-		// echo 'template name: ' . $item_template_name . '<br/>';
+		
 		if ( file_exists( $item_template_name ) ) {
 			learn_press_get_template( 'single-course/content-item-' . $item->get_item_type() . '.php' );
 		}

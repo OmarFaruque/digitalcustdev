@@ -24,11 +24,16 @@ if ( class_exists( 'WPEMS' ) ) {
     
     if( $time > $count_of_time ){
         ?>
-        <div class="entry-countdown">
-            <div class="tp_event_counter"
-                 data-time="<?php echo esc_attr(date('M j, Y H:i:s O', strtotime($time))); ?>">
-            </div>
-        </div> 
+        <div class="tp-event-top single_lp_lesson">
+		    <div class="entry-thumbnail">
+				<img width="1000" height="667" src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/presentaion-1.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="https://digitalcustdev.ru/dev/wp-content/uploads/2016/03/presentaion-1.jpg 1000w, https://digitalcustdev.ru/dev/wp-content/uploads/2016/03/presentaion-1-768x512.jpg 768w, https://digitalcustdev.ru/dev/wp-content/uploads/2016/03/presentaion-1-600x400.jpg 600w" sizes="(max-width: 1000px) 100vw, 1000px">			    
+			</div>
+            <div class="entry-countdown">
+                <div class="tp_event_counter"
+                    data-time="<?php echo esc_attr(date('M j, Y H:i:s O', strtotime($time))); ?>">
+                </div>
+            </div> 
+        </div>
         <?php
     }
     
@@ -71,10 +76,10 @@ if ( class_exists( 'WPEMS' ) ) {
             
             $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
             $record_url = json_decode($record_url);
-            echo 'webinar id: ' . $webinarId . '<br/>';
-            echo 'Conference Meetings Recorded URL <pre>';
-            print_r($record_url);
-            echo '</pre>';
+            // echo 'webinar id: ' . $webinarId . '<br/>';
+            // echo 'Conference Meetings Recorded URL <pre>';
+            // print_r($record_url);
+            // echo '</pre>';
 
             update_post_meta( $item->get_id(), '_webinar_statis', 1 );
             }

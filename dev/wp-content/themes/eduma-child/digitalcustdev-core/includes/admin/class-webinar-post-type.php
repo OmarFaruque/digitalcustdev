@@ -147,6 +147,7 @@ class Admin_DigitalCustDev_Webinar {
 				if(get_post_meta( $post->ID, '_webinar_ID', true )) $infoTExt = sprintf('Synchronization with ZOOM is done: %s', $zoom_date);
 				if($course_type != 'webinar') $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
 				if($course[0]->post_status != 'publish') $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
+				if($course[0]->post_status == 'publish' && empty($zoom_date)) $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
 				if($course[0]->post_status == 'publish' && $zoom_date && $webinarDetails) $infoTExt = __('Synchronization with ZOOM is done', 'webinar') . ': ' . date('d/m/Y h:i', strtotime($webinarDetails->created_at));
 				$tzlists = zvc_get_timezone_options();
 				echo $infoTExt;

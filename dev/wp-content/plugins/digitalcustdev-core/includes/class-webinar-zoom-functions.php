@@ -111,7 +111,7 @@ class DigitalCustDev_Webinars {
 			update_post_meta( $post_id, 'omar2', 'inside if' );
 			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
 			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
-			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+			if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 			$host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
 
 			if ( ! empty( $post_metas ) ) {
@@ -135,19 +135,22 @@ class DigitalCustDev_Webinars {
 						'auto_recording'    => 'cloud'
 					)
 				);
-				$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
-				$created_webinar = json_decode( $created_webinar );
-				// update_post_meta( $post_id, 'hostfrom', $created_webinar );
-				if ( ! empty( $created_webinar ) ) {
-					update_post_meta( $post_id, '_webinar_ID', $created_webinar->id );
-					update_post_meta( $post_id, '_webinar_details', $created_webinar );
+			
+				if($timezone && $start_time){
+					$created_webinar = dcd_zoom_conference()->createWebinar( $host_id, $postData );
+					$created_webinar = json_decode( $created_webinar );
+					// update_post_meta( $post_id, 'hostfrom', $created_webinar );
+					if ( ! empty( $created_webinar ) ) {
+						update_post_meta( $post_id, '_webinar_ID', $created_webinar->id );
+						update_post_meta( $post_id, '_webinar_details', $created_webinar );
+					}
 				}
 			}
 		} else {
 			// update_post_meta( $post_id, 'omar2', 'inside else' );
 			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
 			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
-			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+			if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 
 			if ( ! empty( $post_metas ) ) {
 				$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
@@ -172,8 +175,15 @@ class DigitalCustDev_Webinars {
 					)
 				);
 
-				//Updated
-				dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+				if($timezone && $start_time){
+					//Updated
+					$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+					$updateWebinar = json_decode( $updateWebinar );
+									if ( ! empty( $updateWebinar ) ) {
+										update_post_meta( $post_id, '_webinar_ID', $updateWebinar->id );
+										update_post_meta( $post_id, '_webinar_details', $updateWebinar );
+									}
+				}
 			}
 		}
 	}

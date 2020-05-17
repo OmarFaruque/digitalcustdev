@@ -721,3 +721,17 @@ div#joinbutton a {
 .text-white{
   color: white;
 }
+
+
+.single_lp_lesson.tp-event-top:before {
+  position: absolute;
+}
+
+.single_lp_lesson.tp-event-top:before {
+  top: 0;
+  background: rgba(0,0,0,.5);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: '';
+}
