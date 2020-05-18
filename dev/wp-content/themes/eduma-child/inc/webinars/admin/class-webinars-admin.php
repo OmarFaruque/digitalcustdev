@@ -134,8 +134,16 @@ class Webinars_Admin {
 	}
 
 	public function tetF(){
-		$postid = 16255;
-		$this->updated_course($postid, '', '');
+		// $postid = 16255;
+		// $this->updated_course($postid, '', '');
+		$timezone = get_post_meta(16257, '_lp_timezone', true);
+		echo 'timezone: ' . $timezone . '<br/>';
+		$date = new DateTime("now", new DateTimeZone( $timezone ) );
+		echo 'local time: ' . $date->format('Y-m-d H:i:s');
+		echo '<pre>';
+		print_r(localtime(time(), true));
+		echo '</pre>';
+
 	}
 
 
@@ -448,7 +456,8 @@ class Webinars_Admin {
 										update_post_meta( $sl, '_webinar_details', $updateWebinar );
 									}else{
 										$metas = get_post_meta( $sl, '_webinar_details', true );
-										$metas->created_at = date('Y-m-d\TH:i:s');
+										$newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
+										$metas->created_at = $newcreatedtime->format('Y-m-d H:i:s');
 										update_post_meta( $sl, '_webinar_details', $metas );
 									}
 								}
