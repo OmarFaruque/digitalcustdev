@@ -516,6 +516,8 @@
                     }
                 }
             });
+            // Scroll top  
+            $('div#e-page').scrollTop(0);
         });
 
         $('.dcd-course-prev-btn').click(function () {
@@ -542,6 +544,9 @@
                     }
                 }
             });
+
+            // Scroll top  
+            $('div#e-page').scrollTop(0);
         });
     });
 });

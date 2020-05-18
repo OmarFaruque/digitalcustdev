@@ -735,3 +735,7 @@ div#joinbutton a {
   right: 0;
   content: '';
 }
+body.page-frontend-editor p#wplink-link-existing-content,
+body.page-frontend-editor div#search-panel {
+  display: none;
+}

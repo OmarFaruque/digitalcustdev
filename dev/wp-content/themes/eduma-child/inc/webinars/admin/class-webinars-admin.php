@@ -446,6 +446,10 @@ class Webinars_Admin {
 									if ( ! empty( $updateWebinar ) ) {
 										update_post_meta( $sl, '_webinar_ID', $updateWebinar->id );
 										update_post_meta( $sl, '_webinar_details', $updateWebinar );
+									}else{
+										$metas = get_post_meta( $sl, '_webinar_details', true );
+										$metas->created_at = date('Y-m-d\TH:i:s');
+										update_post_meta( $sl, '_webinar_details', $metas );
 									}
 								}
 							}

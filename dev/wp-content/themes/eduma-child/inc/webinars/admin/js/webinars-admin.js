@@ -154,10 +154,12 @@
 				});
 			}, 
 			onChangeDateTime: function (dp, $input) {
+				$('.xdsoft_time_variant .xdsoft_time').removeClass('xdsoft_disabled');
 				var selectedDate = new Date($input.val()),
 				errors = '',
 				time = $input.val().split(' ');
 				time = time[1];
+				var desabletime = '';
 				
 				$.ajax({
 					method: 'POST',
@@ -167,8 +169,8 @@
 						selected: $input.val()
 					},
 					success: function (result) {
-						// console.log(result);
-						var desabletime = result.hide_time;
+						desabletime = result.hide_time;
+						$('.xdsoft_time_variant .xdsoft_time').removeClass('xdsoft_disabled');
 						$('.xdsoft_time_variant .xdsoft_time').each(function(index){
 							var thistime = $(this).text();
 							if(desabletime.indexOf(thistime) !== -1){

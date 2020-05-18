@@ -25,25 +25,12 @@ class DigitalCustDev_Webinars {
 	}
 
 	public function callbackTestFunction(){
-		$selected_compare = '30/05/2020 00:45';
-		$selected_compare = str_replace('/', '-', $selected_compare);
-		echo 'selectd compair: ' . date( 'd/m/Y', strtotime( $selected_compare ) ). '<br/>';
-		$args             = array(
-			'post_type' => 'lp_lesson',
-			'post_status' => array('publish','pending'),
-			'meta_query' => array(
-				array(
-					'key' => '_lp_webinar_when',
-					'value' => date( 'd/m/Y', strtotime( $selected_compare ) ),
-					'compare' => 'LIKE'
-				)
-			)
-		);
-		// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
-		$lessons          	= get_posts( $args );
+		// $this->updated_lesson(16257, '', '');
 
-		echo '<pre>';
-		print_r($lessons);
+		$metas = get_post_meta( 16257, '_webinar_details', true );
+		$metas->created_at = date('Y-m-d\TH:i:s');
+		echo 'Pomsts metas:<pre>';
+		print_r($metas);
 		echo '</pre>';
 	}
 
@@ -79,8 +66,9 @@ class DigitalCustDev_Webinars {
 			$start_time   = get_post_meta( $post_id, '_lp_webinar_when', true );
 			$course_title = get_the_title( $post_id );
 			$post_type    = get_post_type( $post_id );
+			
 			if ( $post_type === "lp_lesson" && ! empty( $course_title ) && ! empty( $start_time ) ) {
-				$this->update_webinar( $post_id );
+				// $this->update_webinar( $post_id );
 			}
 		}
 
@@ -124,6 +112,7 @@ class DigitalCustDev_Webinars {
 	
 	
 	function update_webinar( $post_id, $post_metas = array() ) {
+		
 		$post_type = get_post_type( $post_id );
 		
 		$get_administrator  = get_user_by( 'email', get_option( 'admin_email' ) );
@@ -144,9 +133,10 @@ class DigitalCustDev_Webinars {
 		$lesson         = get_post( $post_id );
 		$webinar_exists = get_post_meta( $post_id, '_webinar_ID', true );
 		
-			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
-			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
-			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
+			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
+			if($start_time) $start_time = str_replace('/', '-', $start_time);
+			if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 
 			if ( ! empty( $post_metas ) ) {
 				$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
@@ -177,6 +167,10 @@ class DigitalCustDev_Webinars {
 									if ( ! empty( $updateWebinar ) ) {
 										update_post_meta( $post_id, '_webinar_ID', $updateWebinar->id );
 										update_post_meta( $post_id, '_webinar_details', $updateWebinar );
+									}else{
+										$metas = get_post_meta( $post_id, '_webinar_details', true );
+										$metas->created_at = date('Y-m-d\TH:i:s');
+										update_post_meta( $post_id, '_webinar_details', $metas );
 									}
 			}
 		
@@ -246,7 +240,8 @@ class DigitalCustDev_Webinars {
 		} else {
 			$timezone   = get_post_meta( $post_id, '_webinar_timezone', true );
 			$start_time = get_post_meta( $post_id, '_webinar_start_time', true );
-			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
+			if($start_time) $start_time = str_replace('/', '-', $start_time);
+			if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 
 			if ( ! empty( $post_metas ) ) {
 				$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;
