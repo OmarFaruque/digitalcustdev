@@ -165,7 +165,6 @@ if ( ! function_exists( 'video_conferencing_zoom_api_get_user_transients' ) ) {
 		if ( $check_transient ) {
 			$users = $check_transient->users;
 		} else {
-		
 			$encoded_users = zoom_conference()->listUsers();
 			$decoded_users = json_decode( $encoded_users );
 			

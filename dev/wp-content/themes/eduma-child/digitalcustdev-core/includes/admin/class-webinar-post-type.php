@@ -15,6 +15,7 @@ class Admin_DigitalCustDev_Webinar {
 	 * @var      $webinar_list_table
 	 */
 	private $webinar_list_table;
+	public static $message = '';
 
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'menu' ) );
@@ -42,6 +43,10 @@ class Admin_DigitalCustDev_Webinar {
 
 	}
 
+
+	static function get_message() {
+		return self::$message;
+	}
 
 	public function add_admin_scripts($hook){
 		if($hook == 'learnpress_page_zoom-webinars'){
@@ -104,6 +109,74 @@ class Admin_DigitalCustDev_Webinar {
 		include_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list.php';
 	}
 
+
+/**
+	 * Update Meeting
+	 *
+	 * @since  2.1.0
+	 * @author Deepen
+	 */
+	private static function update_webinar() {
+		check_admin_referer( '_zoom_update_webinar_nonce_action', '_zoom_update_webinar_nonce' );
+
+		$webinar_id = filter_input( INPUT_POST, 'webinar_id' );
+
+
+		$postData = array(
+			'topic'      => filter_input( INPUT_POST, 'meetingTopic' ),
+			'type'       => 5,
+			'start_time' => filter_input( INPUT_POST, 'start_date' ),
+			'timezone'   => filter_input( INPUT_POST, 'timezone' ),
+			'agenda'     => filter_input( INPUT_POST, 'agenda' ),
+			'settings'   => array(
+				'host_video'        => false,
+				'panelists_video'   => true,
+				'approval_type'     => 0,
+				'registration_type' => 1,
+				'auto_recording'    => 'cloud'
+			)
+		);
+
+		//Updated
+		$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+
+
+
+
+
+
+		$update_meeting_arr = array(
+			'meeting_id'                => filter_input( INPUT_POST, 'meeting_id' ),
+			'topic'                     => filter_input( INPUT_POST, 'meetingTopic' ),
+			'agenda'                    => filter_input( INPUT_POST, 'agenda' ),
+			'start_date'                => filter_input( INPUT_POST, 'start_date' ),
+			'timezone'                  => filter_input( INPUT_POST, 'timezone' ),
+			'password'                  => filter_input( INPUT_POST, 'password' ),
+			'duration'                  => filter_input( INPUT_POST, 'duration' ),
+			'option_jbh'                => filter_input( INPUT_POST, 'join_before_host' ),
+			'option_host_video'         => filter_input( INPUT_POST, 'option_host_video' ),
+			'option_participants_video' => filter_input( INPUT_POST, 'option_participants_video' ),
+			'option_mute_participants'  => filter_input( INPUT_POST, 'option_mute_participants' ),
+			'option_enforce_login'      => filter_input( INPUT_POST, 'option_enforce_login' ),
+			'option_auto_recording'     => filter_input( INPUT_POST, 'option_auto_recording' ),
+			'alternative_host_ids'      => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
+		);
+
+		$meeting_updated = json_decode( zoom_conference()->updateMeetingInfo( $update_meeting_arr ) );
+		if ( ! empty( $meeting_updated->error ) ) {
+			self::set_message( 'error', $meeting_updated->error->message );
+		} else {
+			self::set_message( 'updated', __( "Updated meeting.", "video-conferencing-with-zoom-api" ) );
+		}
+
+		/**
+		 * Fires after meeting has been Updated
+		 *
+		 * @since  2.0.1
+		 */
+		do_action( 'zvc_after_updated_meeting' );
+	}
+
 	function webinars_list() {
 		wp_enqueue_script( 'video-conferencing-with-zoom-api-js' );
 		wp_enqueue_script( 'video-conferencing-with-zoom-api-select2-js' );
@@ -113,7 +186,15 @@ class Admin_DigitalCustDev_Webinar {
 		wp_enqueue_style( 'video-conferencing-with-zoom-api-select2' );
 		wp_enqueue_style( 'video-conferencing-with-zoom-api-datable' );
 
-		require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list-actual-webinars.php';
+		if(isset($_GET['page']) && $_GET['page'] == 'zoom-video-conferencing-webinars' && isset($_GET['edit']) && isset($_GET['host_id'])){
+			if ( isset( $_POST['update_webinar'] ) ) {
+				self::update_webinar();
+			}
+			require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-edit-actual-webinars.php';
+		}else{
+			require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list-actual-webinars.php';
+		}
+		
 	}
 
 	public function register_metabox() {

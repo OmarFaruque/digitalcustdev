@@ -135,14 +135,9 @@ class Webinars_Admin {
 
 	public function tetF(){
 		// $postid = 16255;
-		// $this->updated_course($postid, '', '');
-		$timezone = get_post_meta(16257, '_lp_timezone', true);
-		echo 'timezone: ' . $timezone . '<br/>';
-		$date = new DateTime("now", new DateTimeZone( $timezone ) );
-		echo 'local time: ' . $date->format('Y-m-d H:i:s');
-		echo '<pre>';
-		print_r(localtime(time(), true));
-		echo '</pre>';
+		
+		$check_transient = get_transient( '_zvc_user_lists' );
+
 
 	}
 

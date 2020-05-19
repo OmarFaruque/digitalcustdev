@@ -53,9 +53,11 @@ if ( isset( $_GET['host_id'] ) ) {
 					?>
                     <tr>
                         <td><?php echo $webinar->id; ?></td>
-                        <td><?php echo $webinar->topic; ?>
-                            <div class="row-actions">
-                                <span class="view"><a href="<?php echo ! empty( $webinar->start_url ) ? $webinar->start_url : $webinar->join_url; ?>" rel="permalink" target="_blank"><?php _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a></span>
+                        <td>
+                            <a href="admin.php?page=zoom-video-conferencing-webinars&edit=<?php echo $webinar->id; ?>&host_id=<?php echo $webinar->host_id; ?>"><?php  echo $webinar->topic; ?></a>
+                            <div class="row-actions s-webinar">
+                                <span class="view">
+                                <a href="<?php echo ! empty( $webinar->start_url ) ? $webinar->start_url : $webinar->join_url; ?>" rel="permalink" target="_blank"><?php _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a></span>
                             </div>
                         </td>
                         <td><?php

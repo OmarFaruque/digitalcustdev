@@ -6,6 +6,10 @@ video_conferencing_zoom_api_show_like_popup();
 
 $users = cstm_video_conferencing_zoom_api_get_user_transients();
 
+// echo 'Users <pre>';
+// print_r($users);
+// echo '</pre>';
+
 ?>
 <div id="zvc-cover" style="display: none;"></div>
 <div class="wrap">
@@ -42,8 +46,8 @@ $users = cstm_video_conferencing_zoom_api_get_user_transients();
 			<tbody>
 			<?php
 			$count = 1;
-			if ( ! empty( $users ) ) {
-				foreach ( $users as $user ) {
+			if ( ! empty( $users->users ) ) {
+				foreach ( $users->users as $user ) {
 					?>
 					<tr>
 						<td><?php echo $count ++; ?></td>

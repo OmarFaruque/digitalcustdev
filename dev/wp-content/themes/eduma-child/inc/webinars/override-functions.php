@@ -1801,8 +1801,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 
 	function cstm_video_conferencing_zoom_api_get_user_transients() {		
-		//Check if any transient by name is available
-		
+		//Check if any transient by name is available		
 		$check_transient = get_transient( '_zvc_user_lists' );
 		if ( $check_transient ) {
 			$users = $check_transient;
@@ -1822,8 +1821,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 			// Inactive User
 			$inactive_user = dcd_zoom_conference()->listUsersByStatus('inactive');
 			$inactive_user = json_decode( $inactive_user );
+			
+			$decoded_users = new \stdClass();
+			$decoded_users->users = array_merge($userArray, $inactive_user->users);
 
-			$decoded_users = array_merge($userArray, $inactive_user->users);
 			
 			if ( ! empty( $active_user->code ) && $active_user->code == 300 ) {
 				$users = false;
