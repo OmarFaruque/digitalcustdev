@@ -128,46 +128,30 @@ class Admin_DigitalCustDev_Webinar {
 			'start_time' => filter_input( INPUT_POST, 'start_date' ),
 			'timezone'   => filter_input( INPUT_POST, 'timezone' ),
 			'agenda'     => filter_input( INPUT_POST, 'agenda' ),
+			'duration' 	 => filter_input( INPUT_POST, 'duration' ),
+			'password'   => filter_input( INPUT_POST, 'password' ),
 			'settings'   => array(
 				'host_video'        => false,
 				'panelists_video'   => true,
 				'approval_type'     => 0,
 				'registration_type' => 1,
-				'auto_recording'    => 'cloud'
+				'enforce_login' 	=> filter_input( INPUT_POST, 'option_enforce_login' ),
+				'auto_recording'    => filter_input( INPUT_POST, 'option_auto_recording' ),
+				'alternative_hosts' => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
 			)
 		);
 
 		//Updated
 		$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
 
-
-
-
-
-
-		$update_meeting_arr = array(
-			'meeting_id'                => filter_input( INPUT_POST, 'meeting_id' ),
-			'topic'                     => filter_input( INPUT_POST, 'meetingTopic' ),
-			'agenda'                    => filter_input( INPUT_POST, 'agenda' ),
-			'start_date'                => filter_input( INPUT_POST, 'start_date' ),
-			'timezone'                  => filter_input( INPUT_POST, 'timezone' ),
-			'password'                  => filter_input( INPUT_POST, 'password' ),
-			'duration'                  => filter_input( INPUT_POST, 'duration' ),
-			'option_jbh'                => filter_input( INPUT_POST, 'join_before_host' ),
-			'option_host_video'         => filter_input( INPUT_POST, 'option_host_video' ),
-			'option_participants_video' => filter_input( INPUT_POST, 'option_participants_video' ),
-			'option_mute_participants'  => filter_input( INPUT_POST, 'option_mute_participants' ),
-			'option_enforce_login'      => filter_input( INPUT_POST, 'option_enforce_login' ),
-			'option_auto_recording'     => filter_input( INPUT_POST, 'option_auto_recording' ),
-			'alternative_host_ids'      => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
-		);
-
-		$meeting_updated = json_decode( zoom_conference()->updateMeetingInfo( $update_meeting_arr ) );
-		if ( ! empty( $meeting_updated->error ) ) {
-			self::set_message( 'error', $meeting_updated->error->message );
+		if ( ! empty( $updateWebinar->error ) ) {
+			self::set_message( 'error', $updateWebinar->error->message );
 		} else {
 			self::set_message( 'updated', __( "Updated meeting.", "video-conferencing-with-zoom-api" ) );
 		}
+
+
+
 
 		/**
 		 * Fires after meeting has been Updated

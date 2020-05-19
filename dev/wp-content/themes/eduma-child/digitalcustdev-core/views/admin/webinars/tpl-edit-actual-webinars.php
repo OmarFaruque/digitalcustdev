@@ -182,6 +182,6 @@ update_option( $option, $password, true );
 			</tr>
 			</tbody>
 		</table>
-		<p class="submit"><input type="submit" name="update_meeting" class="button button-primary" value="Update Meeting"></p>
+		<p class="submit"><input type="submit" name="update_webinar" class="button button-primary" value="Update Meeting"></p>
 	</form>
 </div>
