@@ -47,6 +47,9 @@ class Admin_DigitalCustDev_Webinar {
 	static function get_message() {
 		return self::$message;
 	}
+	static function set_message( $class, $message ) {
+		self::$message = '<div class=' . $class . '><p>' . $message . '</p></div>';
+	}
 
 	public function add_admin_scripts($hook){
 		if($hook == 'learnpress_page_zoom-webinars'){
@@ -136,8 +139,7 @@ class Admin_DigitalCustDev_Webinar {
 				'approval_type'     => 0,
 				'registration_type' => 1,
 				'enforce_login' 	=> filter_input( INPUT_POST, 'option_enforce_login' ),
-				'auto_recording'    => filter_input( INPUT_POST, 'option_auto_recording' ),
-				'alternative_hosts' => filter_input( INPUT_POST, 'alternative_host_ids', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY )
+				'auto_recording'    => filter_input( INPUT_POST, 'option_auto_recording' )
 			)
 		);
 
