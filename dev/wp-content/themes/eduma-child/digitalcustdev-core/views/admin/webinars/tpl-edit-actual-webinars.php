@@ -6,28 +6,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 // $users                     = video_conferencing_zoom_api_get_user_transients();
 $users 				   = cstm_video_conferencing_zoom_api_get_user_transients();
 
-// echo '<pre>';
-// print_r($users);
-// echo '</pre>';
 $webinar_info              = json_decode( dcd_zoom_conference()->getWebinarInfo( $_GET['edit'] ) );
-echo '<pre>';
-print_r($webinar_info);
-echo '</pre>';
 
 global $wpdb;
 $metatable = $wpdb->prefix . 'postmeta';
 $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar_info->id );
 $lesson_id = $wpdb->get_row( $lesson_id );
-echo 'post id: ' . $lesson_id->post_id . '<br/>';
-// $course = learn_press_get_item_courses( $lesson_id->post_id );
-// $course = get_post($course[0]);
-// $course_author = $course->post_author;
-// echo 'course author id: ' . $course_author . '<br/>';
-echo 'Metas <pre>';
-print_r($lesson_id);
-echo '</pre>';
-// print_r($lesson_id);
+$course = learn_press_get_item_courses( $lesson_id->post_id );
 
+
+$authorHost = '';
+if($course){
+	$course_author = $course[0]->post_author;
+	
+	$authorHost = get_user_meta($course_author, 'user_zoom_hostid', true);
+}
 
 
 
@@ -202,14 +195,15 @@ update_option( $option, $password, true );
 			<tr>
 				<th scope="row"><label for="settings_alternative_hosts"><?php _e( 'Alternative Hosts', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
-
-
 					<select name="alternative_host_ids[]" multiple class="zvc-hacking-select">
 						<option value=""><?php _e( 'Select a Host', 'video-conferencing-with-zoom-api' ); ?></option>
 						<?php
 						foreach ( $users->users as $user ) :
 							$user_found = false;
 							if ( in_array( $user->email, $option_alternative_hosts ) ) {
+								$user_found = true;
+							}
+							if($user->id == $authorHost){
 								$user_found = true;
 							}
 							?>
