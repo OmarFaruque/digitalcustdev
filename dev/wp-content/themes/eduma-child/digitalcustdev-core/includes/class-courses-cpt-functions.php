@@ -240,9 +240,10 @@ class DigitalCustDev_CPT_Functions {
 		$profileid = $profile->get_user_data( 'id' );
 		$tpllist = false;
 		if($profile->get_user_data( 'id' ) != get_current_user_id()) $tpllist = true;
-
+		echo 'data table omar';
 		wp_enqueue_style( 'digitalcustdev-datable' );
 		wp_enqueue_script( 'digitalcustdev-datable-js' );
+
 		wp_enqueue_script( 'digitalcustdev-core' );
 		if ( current_user_can( 'lp_teacher' ) || current_user_can( 'administrator')) {
 			?>

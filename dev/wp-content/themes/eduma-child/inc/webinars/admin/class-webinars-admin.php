@@ -942,8 +942,8 @@ class Webinars_Admin {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_script( $this->plugin_name, get_stylesheet_directory_uri() . '/inc/webinars/admin/js/webinars-admin.js', array( 'jquery' ), $this->version, true );
+		
+		wp_enqueue_script( $this->plugin_name, get_stylesheet_directory_uri() . '/inc/webinars/admin/js/webinars-admin.js', array( 'jquery', 'video-conferencing-with-zoom-api-datable-js'), $this->version, true );
 
 	}
 	function add_custom_taxonomies() {

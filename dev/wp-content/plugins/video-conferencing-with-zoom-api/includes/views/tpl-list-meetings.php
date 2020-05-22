@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $users = video_conferencing_zoom_api_get_user_transients();
 
 if ( isset( $_GET['host_id'] ) ) {
+
 	$encoded_meetings = zoom_conference()->listMeetings( $_GET['host_id'] );
 	$decoded_meetings = json_decode( $encoded_meetings );
 	$meetings         = $decoded_meetings->meetings;

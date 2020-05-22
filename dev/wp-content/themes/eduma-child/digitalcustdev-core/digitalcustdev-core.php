@@ -79,6 +79,7 @@ class DigitalCustDev {
 			wp_register_script( 'digitalcustdev-datable-js', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/js/jquery.dataTables.min.js', array( 'jquery' ), '1.0.0', true );
 			wp_register_script( 'digitalcustdev-datetimepicker', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/js/jquery.datetimepicker.full.min.js', array( 'jquery' ), '1.0.0', true );
 			wp_register_script( 'digitalcustdev-magnific-popup', DIGITALCUSTDEV_PLUGIN_URL . 'assets/vendor/js/magnific-popup.min.js', array( 'jquery' ), '1.0.0', true );
+			// wp_register_script( 'webinar-list-data-table', get_stylesheet_directory_uri() . '/inc/webinars/admin/js/webinars-admin-list.js', array( 'jquery' ), time(), true );
 
 			// wp_enqueue_style( 'digitalcustdev-bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', false, '1.0.0' );
 			
