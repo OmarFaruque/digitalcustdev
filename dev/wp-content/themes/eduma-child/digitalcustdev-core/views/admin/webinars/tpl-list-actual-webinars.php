@@ -11,8 +11,6 @@ if(isset($users->users)){
     $users = $users->users;
 }
 
-
-
 if ( ! isset( $_GET['host_id'] ) ) {
 	$host_id = $users[0]->id;
 } else {
