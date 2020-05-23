@@ -95,7 +95,7 @@ class Webinars_Admin {
 		add_filter('embed_oembed_html', array($this, 'addcountdowntoembedvideoforlessionVideo'), 10, 4);
 	
 		// Course update hook 
-		add_action( 'post_updated', array( $this, 'updated_course' ), 10, 3 );
+		add_action( 'save_post', array( $this, 'updated_course' ), 10, 3 );
 	
 		add_action( 'admin_footer', array($this, 'testFunction') );
 
@@ -368,7 +368,7 @@ class Webinars_Admin {
 	/*
 	* Update LP course and update zoom user
 	*/
-	public function updated_course($post_id, $post_after, $post_before){
+	public function updated_course($post_id, $post, $update){
 		$post_type = get_post_type( $post_id );
 		$author_id = get_post_field( 'post_author', $post_id );
 		

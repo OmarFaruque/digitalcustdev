@@ -11,9 +11,7 @@ if(isset($users->users)){
     $users = $users->users;
 }
 
-echo 'Usears <br/><pre>';
-print_r($users);
-echo '</pre>';
+
 
 if ( ! isset( $_GET['host_id'] ) ) {
 	$host_id = $users[0]->id;
@@ -23,12 +21,35 @@ if ( ! isset( $_GET['host_id'] ) ) {
 
 $encoded_meetings = dcd_zoom_conference()->listWebinar( $host_id );
 $decoded_meetings = json_decode( $encoded_meetings );
-    
+
+
+
 $webinars         = false;
-if ( ! empty( $decoded_meetings ) ) {
+if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 	$webinars = $decoded_meetings->webinars;
+}else{
+    
+    $host_id = $users[0]->id;
+    $encoded_meetings = dcd_zoom_conference()->listWebinar( $host_id );
+    $decoded_meetings = json_decode( $encoded_meetings );
+    if ( ! empty( $decoded_meetings ) ) {
+        $webinars = $decoded_meetings->webinars;
+    }
+
+    $hoster_user = get_users(array(
+        'meta_key'      => 'user_zoom_hostid',
+        'meta_value'    => $_GET['host_id']
+    ));
 }
 
+
+// echo 'Users <br/><pre>';
+// print_r($users);
+// echo '</pre>';
+// echo '<hr/>';
+// echo 'Webinars <br/><pre>';
+// print_r($webinars);
+// echo '</pre>';
 ?>
 <div class="wrap">
     <h2><?php _e( "Webinars", "video-conferencing-with-zoom-api" ); ?></h2>
@@ -65,13 +86,12 @@ if ( ! empty( $decoded_meetings ) ) {
 			<?php
 			if ( ! empty( $webinars ) ) {
 				foreach ( $webinars as $webinar ) {
+                    
                     $dbusers = get_users(array(
                         'meta_key'      => 'user_zoom_hostid',
                         'meta_value'    => $webinar->host_id
                     ));
-                    // echo 'webinars <br/><pre>';
-                    // print_r($users);
-                    // echo '</pre>';
+
 
 
                     $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar->id );
@@ -80,15 +100,34 @@ if ( ! empty( $decoded_meetings ) ) {
                     
                     $course_id = 0;
                     $alternative_hoster = '';
+                    $alterHostStatus = '';
+                    $course_author_id = 0;
                     if($course){
+                        $course_author_id = $course[0]->post_author;
                         $course_author = get_userdata($course[0]->post_author);
-
+                        $userhostid = get_user_meta( $course[0]->post_author, 'user_zoom_hostid', true );
+                        $key = array_search($userhostid, array_column($users, 'id'));
+                        $alterHostStatus = $users[$key]->status;
+                        
                         // echo 'author info<br/><pre>';
                         // print_r($course_author);
                         // echo '</pre>';
                         $course_id = $course[0]->ID;
                         $alternative_hoster = $course_author->data->user_email;
                     }
+
+
+                    /*
+                    * Filtering for non-master user
+                    */
+                    if(isset($_GET['host_id']) && $_GET['host_id'] != $users[0]->id){
+                        if($hoster_user[0]->ID != $course_author_id){
+                            continue;
+                        } 
+                    }
+
+                    
+
 					?>
                     <tr>
                         <td><?php echo $webinar->id; ?></td>
@@ -97,7 +136,7 @@ if ( ! empty( $decoded_meetings ) ) {
 							$tz       = new DateTimeZone( $timezone );
 							$date     = new DateTime( $webinar->start_time );
 							$date->setTimezone( $tz );
-                            echo $date->format( 'F j, Y, g:i a');
+                            echo $date->format( 'd.m.Y, g:i a');
                             echo '<br/>' . $date->format( '( e )' );
 							?></td>
                         <td>
@@ -122,10 +161,17 @@ if ( ! empty( $decoded_meetings ) ) {
                             </div>
                         </td>
                         <td class="alternative_hoster">
-                            <?php echo ($alternative_hoster) ? $alternative_hoster : '-'; ?>
+                            <?php echo ($alternative_hoster) ? $alternative_hoster . ' ('. ucfirst($alterHostStatus) . ')' : '-'; ?>
+                            <?php if($alternative_hoster): ?>
+                                <div class="row-actions s-webinar">
+                                    <span class="view">
+                                        <a href="<?php  echo ! empty( $webinar->start_url ) ? $webinar->start_url : $webinar->join_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
                         </td>
                         <td>-</td>
-                        <td><?php echo date( 'F j, Y, g:i a', strtotime( $webinar->created_at ) ); ?></td>
+                        <td><?php echo date( 'd.m.Y, g:i a', strtotime( $webinar->created_at ) ); ?></td>
                     </tr>
 					<?php
 				}

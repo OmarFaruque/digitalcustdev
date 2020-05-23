@@ -242,15 +242,21 @@
 
 	// Data Table 
 	if ( jQuery('#zvc_meetings_list_table_customOrder').length > 0) {
-		console.log('its found');
-		jQuery('#zvc_meetings_list_table_customOrder').dataTable({
+		
+		var table = jQuery('#zvc_meetings_list_table_customOrder').dataTable({
 			"pageLength": 25,
+			"searchPanes": [{
+				"viewTotal": true,
+				"columns": [4, 5],
+			}],
 			"order": [[ 1, "desc" ]],
 			"columnDefs": [{
 				"targets": 0,
 				"orderable": false
 			}]
 		});
+
+		
 	}
 
 
