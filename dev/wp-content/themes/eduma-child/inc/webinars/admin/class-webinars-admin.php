@@ -95,7 +95,9 @@ class Webinars_Admin {
 		add_filter('embed_oembed_html', array($this, 'addcountdowntoembedvideoforlessionVideo'), 10, 4);
 	
 		// Course update hook 
-		add_action( 'save_post', array( $this, 'updated_course' ), 10, 3 );
+		add_action( 'save_post', array( $this, 'courseSaveCallbackFunction' ), 10, 3 );
+
+		add_action( 'post_updated', array($this, 'updated_course'), 10, 3 );
 	
 		add_action( 'admin_footer', array($this, 'testFunction') );
 
@@ -134,10 +136,8 @@ class Webinars_Admin {
 	}
 
 	public function tetF(){
-		// $postid = 16255;
-		
-		$check_transient = get_transient( '_zvc_user_lists' );
-
+		$orderid = 16328;
+		$this->completeLearnPressCallback($orderid);
 
 	}
 
@@ -361,14 +361,33 @@ class Webinars_Admin {
 
 			} 
 		endforeach;
+
+		// Delete Transation 
+		delete_transient( '_zvc_user_lists' );
 	}
 
 
 
 	/*
+	* Delete Zoom webinar if gotes to trash
+	*/
+	public function updated_course($post_ID, $post_after, $post_before){
+		if($post_after->post_status == 'trash'){
+				$lessons = get_course_lessons($post_ID);
+				foreach($lessons as $sl):
+					$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
+					if ( $webinar_id ){
+						dcd_zoom_conference()->deleteWebinar( $webinar_id );
+						delete_post_meta( $sl, '_webinar_ID' );
+					}
+				endforeach;
+		}
+	}
+
+	/*
 	* Update LP course and update zoom user
 	*/
-	public function updated_course($post_id, $post, $update){
+	public function courseSaveCallbackFunction($post_id, $post, $update){
 		$post_type = get_post_type( $post_id );
 		$author_id = get_post_field( 'post_author', $post_id );
 		
@@ -382,7 +401,7 @@ class Webinars_Admin {
 				$lessons = get_course_lessons($post_id);
 				if ( ! empty( $host_id ) ) {
 					foreach($lessons as $sl):
-						echo 'single lession: ' . $sl. '<br/>';
+						// echo 'single lession: ' . $sl. '<br/>';
 						$lesson         = get_post( $sl );
 						$webinar_exists = get_post_meta( $sl, '_webinar_ID', true );
 						if ( empty( $webinar_exists ) ) {
@@ -466,12 +485,12 @@ class Webinars_Admin {
 
 			// if webinar set as draft
 			if( get_post_status($post_id) == 'draft'){
-				update_post_meta( $post_id, 'draftupdate', 'Omar update' );
 				$lessons = get_course_lessons($post_id);
 				foreach($lessons as $sl):
 					$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
 					if ( $webinar_id ){
 						dcd_zoom_conference()->deleteWebinar( $webinar_id );
+						delete_post_meta( $sl, '_webinar_ID' );
 					}
 				endforeach;
 			}

@@ -32,7 +32,7 @@ $users = cstm_video_conferencing_zoom_api_get_user_transients();
 	</div>
 
 	<div class="zvc_listing_table omar">
-		<table id="zvc_users_list_table" class="display" width="100%">
+		<table id="zvc_users_list_table" class="display om1" width="100%">
 			<thead>
 			<tr>
 				<th class="zvc-text-left"><?php _e( 'SN', 'video-conferencing-with-zoom-api' ); ?></th>

@@ -134,7 +134,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 							$tz       = new DateTimeZone( $timezone );
 							$date     = new DateTime( $webinar->start_time );
 							$date->setTimezone( $tz );
-                            echo $date->format( 'd.m.Y, g:i a');
+                            echo $date->format( 'd.m.Y, G:i');
                             echo '<br/>' . $date->format( '( e )' );
 							?></td>
                         <td>
@@ -169,7 +169,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                             <?php endif; ?>
                         </td>
                         <td>-</td>
-                        <td><?php echo date( 'd.m.Y, g:i a', strtotime( $webinar->created_at ) ); ?></td>
+                        <td><?php echo date( 'd.m.Y, G:i', strtotime( $webinar->created_at ) ); ?></td>
                     </tr>
 					<?php
 				}
