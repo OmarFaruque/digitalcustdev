@@ -217,6 +217,7 @@ class Webinars_Admin {
 
 
 	public function completeLearnPressCallback($order_id){
+		update_post_meta( $order_id, 'omarworking', 'test update' );
 		DigitalCustDev_WooCommerce_Hooks::register_into_webinar_using_learnpress_order_id($order_id);
 	}
 

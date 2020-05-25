@@ -417,12 +417,14 @@ if ( ! class_exists( 'LP_Order' ) ) {
 				}
 
 				do_action( 'learn_press_payment_complete', $this->get_id() );
+				update_post_meta($this->get_id(), 'insidepomar', 'inside from plguin order');
 
 				/**
 				 * @since 3.0.0
 				 */
 				do_action( 'learn-press/payment-complete', $this->get_id() );
 			} else {
+				update_post_meta($this->get_id(), 'insidepomar4', 'inside from plguin order');
 				do_action( 'learn_press_payment_complete_order_status_' . $this->get_status(), $this->get_id() );
 				/**
 				 * @since 3.0.0
