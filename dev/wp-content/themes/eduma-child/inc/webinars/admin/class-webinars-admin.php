@@ -97,7 +97,7 @@ class Webinars_Admin {
 		// Course update hook 
 		add_action( 'save_post', array( $this, 'courseSaveCallbackFunction' ), 10, 3 );
 
-		add_action( 'post_updated', array($this, 'updated_course'), 10, 3 );
+		add_action( 'post_updated', array($this, 'postUpdateCallback'), 10, 3 );
 	
 		add_action( 'admin_footer', array($this, 'testFunction') );
 
@@ -179,7 +179,7 @@ class Webinars_Admin {
 			}
 		}
 
-		//Get Template
+		//Get Template  ffldfg
 		//Requiring Thickbox
 		add_thickbox();
 		// echo '<br/>user list omar Custom<br/>';
@@ -217,7 +217,7 @@ class Webinars_Admin {
 
 
 	public function completeLearnPressCallback($order_id){
-		update_post_meta( $order_id, 'omarworking', 'test update' );
+		// update_post_meta( $order_id, 'omarworking', 'test update' );
 		DigitalCustDev_WooCommerce_Hooks::register_into_webinar_using_learnpress_order_id($order_id);
 	}
 
@@ -372,7 +372,8 @@ class Webinars_Admin {
 	/*
 	* Delete Zoom webinar if gotes to trash
 	*/
-	public function updated_course($post_ID, $post_after, $post_before){
+	public function postUpdateCallback($post_ID, $post_after, $post_before){
+
 		if($post_after->post_status == 'trash'){
 				$lessons = get_course_lessons($post_ID);
 				foreach($lessons as $sl):
@@ -389,10 +390,18 @@ class Webinars_Admin {
 	* Update LP course and update zoom user
 	*/
 	public function courseSaveCallbackFunction($post_id, $post, $update){
+		// Processs Lp-order
+		if('lp-completed' == get_post_status($post_id) && get_post_type($post_id) == 'lp_order' ){
+			$this->completeLearnPressCallback($post_id);
+		}
+		// End process LP-order
+
+
+
+
 		$post_type = get_post_type( $post_id );
 		$author_id = get_post_field( 'post_author', $post_id );
 		
-
 		// For Course post type
 		if($post_type == 'lp_course' && "webinar" == get_post_meta( $post_id, '_course_type', true )):
 			if(get_post_status($post_id) == 'publish' ){
