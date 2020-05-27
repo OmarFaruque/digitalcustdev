@@ -7,22 +7,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( class_exists( 'WPEMS' ) ) {
     $item = LP_Global::course_item();
     $start_time = get_post_meta( $item->get_id(), '_lp_webinar_when', true );
-	$change_sdate = str_replace( '/', '-', $start_time );
-	$time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
+    $change_sdate = str_replace( '/', '-', $start_time );
+    
+
+    $time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
+    
+    $timezone = get_post_meta($item->get_id(), '_lp_timezone', true);
+    $newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
+    $now = $newcreatedtime->format('Y-m-d H:i:s');
+    // echo 'now : ' .  $now . '<br/>';
 						
-    $count_of_time = date( 'Y-m-d H:i', strtotime('-10 minutes') );
+    $linkvisiable = date( 'Y-m-d H:i', strtotime('-10 minutes', strtotime( $time )) );
 
     // End Time 
     $duration   = get_post_meta( $item->get_id(), '_lp_duration', true );
     $endtime    = strtotime('+'.$duration, strtotime($time));
     $endtime    = strtotime('+5 minutes', $endtime);
 
+    // echo 'end time : ' . date('Y-m-d H:i:s', $endtime) . '<br/>';
 
 
-
-    // echo 'current time: ' . $current_time . '<br/>';
+    // echo 'current time: ' . $linkvisiable . '<br/>';
+    // echo 'Start time: ' . $time . '<br/>';
     
-    if( $time > $count_of_time ){
+    if( $now < $linkvisiable ){
         ?>
         <div class="tp-event-top single_lp_lesson">
 		    <div class="entry-thumbnail">
@@ -37,8 +45,7 @@ if ( class_exists( 'WPEMS' ) ) {
         <?php
     }
     
-    elseif($time < $count_of_time && date('Y-m-d H:i') > date('Y-m-d H:i', strtotime($endtime))  ){
-        
+    elseif($now > date('Y-m-d H:i', $endtime)  ){
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
         delete_post_meta( $item->get_id(), '_webinar_statis' );
         $webinarStatus = get_post_meta( $item->get_id(), '_webinar_statis', true );
@@ -56,6 +63,10 @@ if ( class_exists( 'WPEMS' ) ) {
             $existPrice     = ($sales_price) ? $sales_price : $price;
             
             $lessons = get_course_lessons($course[0]->ID);
+            // echo 'lesssons <br/><pre>';
+            // print_r($lessons);
+            // echo '</pre>';
+            
 
             $newPrice = $existPrice - (0.5 * $existPrice) / count($lessons);
             // Re-calculate price
@@ -79,7 +90,8 @@ if ( class_exists( 'WPEMS' ) ) {
             // echo 'webinar id: ' . $webinarId . '<br/>';
             // echo 'Conference Meetings Recorded URL <pre>';
             // print_r($record_url);
-            // echo '</pre>';
+            // echo '</pre>'; 
+            // echo '<a class="btn btn-primary recorded_url text-center" target="_blank" href="#">Recorded Url</a>';
 
             update_post_meta( $item->get_id(), '_webinar_statis', 1 );
             }
@@ -87,7 +99,7 @@ if ( class_exists( 'WPEMS' ) ) {
 
             <div class="entry-countdown no-record">
                 <div class="inner-no-record">
-                    <h3 class="text-center text-white"><?php _e('No record available', 'webinar'); ?></h3>
+                    <h3 class="text-center text-black"><?php _e('No record available', 'webinar'); ?></h3>
                 </div>
             </div>
             <?php
