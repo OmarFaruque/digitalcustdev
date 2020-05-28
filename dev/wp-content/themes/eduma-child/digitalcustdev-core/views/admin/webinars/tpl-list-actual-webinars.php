@@ -78,6 +78,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                 <th class="zvc-text-left"><?php _e( 'Alternative Host', 'video-conferencing-with-zoom-api' ); ?></th>
                 <th class="zvc-text-left"><?php _e( 'Cloud Recording', 'video-conferencing-with-zoom-api' ); ?></th>
                 <th class="zvc-text-left"><?php _e( 'Created On', 'video-conferencing-with-zoom-api' ); ?></th>
+                
             </tr>
             </thead>
             <tbody>
@@ -95,6 +96,46 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar->id );
                     $lesson_id = $wpdb->get_row( $lesson_id );
                     $course = learn_press_get_item_courses( $lesson_id->post_id );
+
+
+
+
+
+
+                    // change zoom status
+                    $start_time = get_post_meta( $lesson_id->post_id, '_lp_webinar_when', true );
+                    $change_sdate = str_replace( '/', '-', $start_time );
+                    
+                
+                    $time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
+                    
+                    $timezone = get_post_meta($lesson_id->post_id, '_lp_timezone', true);
+                    if($timezone){
+                        $newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
+                        $now = $newcreatedtime->format('Y-m-d H:i:s');
+                        // echo 'now : ' .  $now . '<br/>';
+                                            
+                        $linkvisiable = date( 'Y-m-d H:i', strtotime('-10 minutes', strtotime( $time )) );
+                    
+                        // End Time 
+                        $duration   = get_post_meta( $lesson_id->post_id, '_lp_duration', true );
+                        $endtime    = strtotime('+'.$duration, strtotime($time));
+                        $endtime    = strtotime('+5 minutes', $endtime);
+                    
+
+                        if( $now > $linkvisiable && $now < date('Y-m-d H:i', $endtime) ){
+                            update_post_meta($lesson_id->post_id, 'zoom_status', 'active');
+                        }else{
+                            update_post_meta($lesson_id->post_id, 'zoom_status', 'inactive');
+                        }
+                    }
+
+
+
+
+
+
+                    $zoom_active = get_post_meta($lesson_id->post_id, 'zoom_status', true);
                     
                     $course_id = 0;
                     $alternative_hoster = '';
@@ -124,20 +165,34 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         } 
                     }
 
+                    if(!$webinar->start_time){
+                        continue;
+                    }
+
+                   
+
+                    $timezone = ! empty( $webinar->timezone ) ? $webinar->timezone : "America/Los_Angeles";
+					$tz       = new DateTimeZone( $timezone );
+					$date     = new DateTime( $webinar->start_time );
+                    $date->setTimezone( $tz );
                     
+                    if(date('Y-m-d') > $date->format( 'Y-m-d') ){
+                        continue;
+                    }
+
 
 					?>
-                    <tr>
+                    <tr data-time="<?php echo $webinar->start_time; ?>" class="<?php echo 'zoom_'. $zoom_active; ?>">
                         <td><?php echo $webinar->id; ?></td>
-                        <td><?php
-							$timezone = ! empty( $webinar->timezone ) ? $webinar->timezone : "America/Los_Angeles";
-							$tz       = new DateTimeZone( $timezone );
-							$date     = new DateTime( $webinar->start_time );
-							$date->setTimezone( $tz );
+                        <td 
+                         data-sort="<?php 
+                         //echo $date->format( 'd-m-Y');
+                         echo $zoom_active;
+                        ?>"><?php
                             echo $date->format( 'd.m.Y, G:i');
                             echo '<br/>' . $date->format( '( e )' );
 							?></td>
-                        <td>
+                        <td >
                             <a href="admin.php?page=zoom-video-conferencing-webinars&edit=<?php echo $webinar->id; ?>&host_id=<?php echo $webinar->host_id; ?>"><?php  echo $webinar->topic; ?></a>
                             
                         </td>
@@ -170,6 +225,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         </td>
                         <td>-</td>
                         <td><?php echo date( 'd.m.Y, G:i', strtotime( $webinar->created_at ) ); ?></td>
+                        
                     </tr>
 					<?php
 				}

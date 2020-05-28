@@ -373,16 +373,50 @@ class Webinars_Admin {
 	* Delete Zoom webinar if gotes to trash
 	*/
 	public function postUpdateCallback($post_ID, $post_after, $post_before){
+		if($post_after->post_status == 'trash' && get_post_type( $post_ID ) == 'lp_course' && "webinar" == get_post_meta( $post_ID, '_course_type', true )){
+				//Delete attachemnt
+				$post_id = $post_ID;
+				$post_author_id = get_post_field( 'post_author', $post_id );
 
-		if($post_after->post_status == 'trash'){
-				$lessons = get_course_lessons($post_ID);
-				foreach($lessons as $sl):
-					$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
-					if ( $webinar_id ){
-						dcd_zoom_conference()->deleteWebinar( $webinar_id );
-						delete_post_meta( $sl, '_webinar_ID' );
+				if ( has_post_thumbnail( $post_id ) ) {
+					$attachment_id = get_post_thumbnail_id( $post_id );
+					wp_delete_attachment( $attachment_id, true );
+
+					// $post_id = get_transient( get_current_user_id() . 'e_post_id' );
+					delete_transient( $post_author_id . 'e_post_id' );
+				}
+
+				/* Delete Folder */
+				if($post_id){
+					$upload_dir = wp_get_upload_dir();
+					$user = get_user_by( 'id', $post_author_id );
+					$param = array();
+					$param['path'] = $upload_dir['basedir'] .'/'. $user->data->user_nicename . '/' . $post_id;
+					removeDirectory($param['path']);
+				}
+				
+
+				/*
+				* Delete related items
+				*/
+				$course    = learn_press_get_course( $post_id );
+				$items     = $course->get_items();
+				foreach($items as $lesson){
+					$post_type = get_post_type( $lesson );
+					if($post_type == 'lp_quiz'){
+						$questions = learn_press_get_quiz_questions($lesson);
+						foreach($questions as $singleQueston){
+							wp_delete_post( $singleQueston, true );	
+						}
 					}
-				endforeach;
+					//Delete Webinar Details
+					$webinar_id = get_post_meta( $lesson, '_webinar_ID', true );
+					if ( $webinar_id ) {
+						dcd_zoom_conference()->deleteWebinar( $webinar_id );
+					}
+					wp_delete_post( $lesson, true );	
+				}
+				wp_delete_post( $post_id, true );
 		}
 	}
 

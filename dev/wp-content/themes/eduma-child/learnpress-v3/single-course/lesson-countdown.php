@@ -31,6 +31,7 @@ if ( class_exists( 'WPEMS' ) ) {
     // echo 'Start time: ' . $time . '<br/>';
     
     if( $now < $linkvisiable ){
+        update_post_meta($item->get_id(), 'zoom_status', 'inactive');
         ?>
         <div class="tp-event-top single_lp_lesson">
 		    <div class="entry-thumbnail">
@@ -46,6 +47,7 @@ if ( class_exists( 'WPEMS' ) ) {
     }
     
     elseif($now > date('Y-m-d H:i', $endtime)  ){
+        update_post_meta($item->get_id(), 'zoom_status', 'inactive');
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
         delete_post_meta( $item->get_id(), '_webinar_statis' );
         $webinarStatus = get_post_meta( $item->get_id(), '_webinar_statis', true );
@@ -107,6 +109,8 @@ if ( class_exists( 'WPEMS' ) ) {
         
     }
     else{
+        // echo 'post id: ' . $item->get_id() . '<br/>';
+        update_post_meta($item->get_id(), 'zoom_status', 'active');
         $course = learn_press_get_item_courses( $item->get_id() );
 		$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
 				

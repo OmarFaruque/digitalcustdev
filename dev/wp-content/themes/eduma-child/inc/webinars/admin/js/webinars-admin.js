@@ -119,6 +119,7 @@
 
 
 	var showDatePicker = function ($event, allowed_times, $changeDate, disabledDates = false) {
+		
 		var fmt = new DateFormatter(),
 		cardate = new Date();
 		console.log(cardate);
@@ -146,6 +147,7 @@
 
 			},
 			onGenerate:function(ct,$i){
+				console.log(disabledDates);
 				$('.xdsoft_time_variant .xdsoft_time').each(function(index){
 					var thistime = $(this).text();
 					if(disabledDates.indexOf(thistime) !== -1){
@@ -154,6 +156,7 @@
 				});
 			}, 
 			onChangeDateTime: function (dp, $input) {
+				console.log('onchagne omar');
 				$('.xdsoft_time_variant .xdsoft_time').removeClass('xdsoft_disabled');
 				var selectedDate = new Date($input.val()),
 				errors = '',
@@ -227,7 +230,7 @@
 			},
 			success: function (result) {
 				var allowed_times = getTimesbyDate(result, e.target.value);
-				// console.log(allowed_times);
+				console.log(result);
 					if (result.disabled_date) {
 						showDatePicker(e, allowed_times, true, result.disabled_date, );
 					} else {
@@ -249,7 +252,7 @@
 				"viewTotal": true,
 				"columns": [4, 5],
 			}],
-			"order": [[ 1, "desc" ]],
+			"order": [[ 1, "asc" ]],
 			"columnDefs": [{
 				"targets": 0,
 				"orderable": false

@@ -38,3 +38,10 @@ form.zvc-meetings-form input.regular-text {
 form.zvc-meetings-form span.select2.select2-container {
     min-width: 50%;
 }
+
+table#zvc_meetings_list_table_customOrder tbody > tr.zoom_active {
+    background-color: #007cba30;
+}
+/* table#zvc_meetings_list_table_customOrder.dataTable.display tbody tr.odd>.sorting_1, table#zvc_meetings_list_table_customOrder.dataTable.order-column.stripe tbody tr.odd>.sorting_1 {
+    background-color: transparent;
+} */

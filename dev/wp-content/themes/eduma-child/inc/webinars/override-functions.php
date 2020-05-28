@@ -1563,7 +1563,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		}
 
 		// Schedule Event for 10 mints
-		if(!wp_next_scheduled("callbackScheduleEventForWebinar"))
+		if(!wp_next_scheduled("callbackScheduleEventForWebinarOnTenMin"))
         {
 			wp_schedule_event( time(), '10min',  'callbackScheduleEventForWebinarOnTenMin' );
 		}
@@ -1685,13 +1685,6 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		}
 		return $schedules;
 	}
-
-
-
-
-
-
-
 
 
 
