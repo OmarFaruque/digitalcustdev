@@ -45,6 +45,6 @@ table#zvc_meetings_list_table_customOrder tbody > tr.zoom_active {
 /* body.post-type-lp_lesson tbody#the-list tr{
     background-color: #ff00001f;
 } */
-body.post-type-lp_lesson tbody#the-list tr.syncronized {
+body.post-type-lp_lesson tbody#the-list tr.syncronized td.meta-zoom_date {
     background: #00800024;
 }

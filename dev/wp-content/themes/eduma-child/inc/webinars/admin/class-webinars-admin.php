@@ -156,8 +156,9 @@ class Webinars_Admin {
 				if($when){
 					$when = str_replace('/', '-', $when);
 					$when = date('Y/m/d H:i', strtotime($when));
-					echo $when . '<br/>';
-					echo '('. get_post_meta($post_id, '_lp_timezone', true) . ')';
+					echo '<span class="'.get_post_meta($post_id, 'zoom_status', true).'">'. $when . '<br/>';
+					echo '('. get_post_meta($post_id, '_lp_timezone', true) . ')</span>';
+
 				}else{
 					echo '—';
 				}
@@ -852,7 +853,7 @@ class Webinars_Admin {
 			if ( 'Zoom Date' === $_REQUEST['orderby'] ) {
 				$query->set( 'orderby', 'meta_value' );
 				$query->set( 'meta_key', '_lp_webinar_when' );
-				$query->set( 'meta_type', 'DATE' );
+				$query->set( 'meta_type', 'DATETIME' );
 				$query->set( 'order', $_REQUEST['order'] );
 			}
 		}
