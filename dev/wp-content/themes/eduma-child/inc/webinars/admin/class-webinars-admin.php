@@ -78,6 +78,13 @@ class Webinars_Admin {
 		/* Change course title */
 		add_filter( 'display_post_states', array($this, 'ecs_add_post_state'), 10, 2 );
 		add_filter( 'manage_lp_course_posts_columns', array( $this, 'manage_course_posts_columns' ) );
+		
+		//Lesson new column to admin
+		add_filter( 'manage_lp_lesson_posts_columns', array( $this, 'manage_lesson_posts_columns' ) );
+		add_filter( 'manage_edit-lp_lesson_sortable_columns', array( $this, 'manage_lesson_posts_columns' ) );
+		add_action( 'manage_lp_lesson_posts_custom_column' , array($this, 'zoomDateCallbacktoColumn'), 20, 2 );
+		// add_action( 'pre_get_posts', 'smashing_posts_orderby' );
+
 		add_filter( 'wp_insert_post_empty_content', array($this, 'allow_empty_post'), 10, 2 );
 		add_action( 'admin_menu', array( $this, 'notify_new_course' ) );
 		add_action( 'pre_get_posts', array($this, 'course_duration_by_lesson_total_duration') );
@@ -139,6 +146,24 @@ class Webinars_Admin {
 		$orderid = 16328;
 		$this->completeLearnPressCallback($orderid);
 
+	}
+
+	public function zoomDateCallbacktoColumn($column, $post_id){
+		
+		switch ( $column ) {
+			case 'meta-zoom_date':
+				$when = get_post_meta($post_id, '_lp_webinar_when', true);
+				if($when){
+					$when = str_replace('/', '-', $when);
+					$when = date('Y/m/d H:i', strtotime($when));
+					echo $when . '<br/>';
+					echo '('. get_post_meta($post_id, '_lp_timezone', true) . ')';
+				}else{
+					echo '—';
+				}
+				
+			break;
+		}
 	}
 
 
@@ -821,6 +846,20 @@ class Webinars_Admin {
 	*/
 	public function course_duration_by_lesson_total_duration($query){
 		global $post;
+		
+		// For LP_LESSON POST type
+		if(is_admin() && $_REQUEST['post_type'] == 'lp_lesson' ) {
+			if ( 'Zoom Date' === $_REQUEST['orderby'] ) {
+				$query->set( 'orderby', 'meta_value' );
+				$query->set( 'meta_key', '_lp_webinar_when' );
+				$query->set( 'meta_type', 'DATE' );
+				$query->set( 'order', $_REQUEST['order'] );
+			}
+		}
+
+
+
+		// for course post type
 		if(is_admin() && $_REQUEST['action'] == 'edit' && get_post_type( $post ) == 'lp_course' ) {
 			$lessons = get_course_lessons($post->ID);
 			$course_type = get_post_meta( $post->ID, '_course_type', true );
@@ -925,6 +964,16 @@ class Webinars_Admin {
 		return $column;
 	}
 
+
+	/*
+	* Lesson column filter
+	*/
+	public function manage_lesson_posts_columns($column){
+		$column = array_slice($column, 0, 6, true) +
+		array("meta-zoom_date" => __('Zoom Date', 'webinar')) +
+		array_slice($column, 6, count($column) - 1, true) ;
+		return $column;
+	}
 
 	/*
 	* Course column customization 
