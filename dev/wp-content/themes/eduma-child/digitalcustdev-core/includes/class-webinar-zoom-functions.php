@@ -382,8 +382,8 @@ class DigitalCustDev_Webinars {
 				'post_status' => array('publish','pending'),
 				'meta_query' => array(
 					array(
-						'key' => '_lp_webinar_when',
-						'value' => date( 'd/m/Y', strtotime( $selected_compare ) ),
+						'key' => '_lp_webinar_when_gmt',
+						'value' => date( 'Y-m-d', strtotime( $selected_compare ) ),
 						'compare' => 'LIKE'
 					)
 				)
@@ -399,7 +399,7 @@ class DigitalCustDev_Webinars {
 					$course_ids = $curd->get_course_by_item( $lesson->ID );
 					$course_status = get_post($course_ids[0]);
 					if($course_status->post_status != 'draft'):
-						$start_time = get_post_meta( $lesson->ID, '_lp_webinar_when', true );
+						$start_time = get_post_meta( $lesson->ID, '_lp_webinar_when_gmt', true );
 						$timezone   = get_post_meta( $lesson->ID, '_lp_timezone', true );
 						$duration   = get_post_meta( $lesson->ID, '_lp_duration', true );
 						

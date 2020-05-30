@@ -143,8 +143,13 @@ class Webinars_Admin {
 	}
 
 	public function tetF(){
-		$orderid = 16328;
-		$this->completeLearnPressCallback($orderid);
+
+		
+		
+		
+		// echo 'gmt: ' . get_gmt_from_date($currentdate) . '<br/>';
+		// echo 'gmdate: ' . gmdate('Y-m-d h:i:s') . '<br/>';
+		
 
 	}
 

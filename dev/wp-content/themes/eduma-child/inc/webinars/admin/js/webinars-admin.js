@@ -262,7 +262,7 @@
 
 
 	/* add seperate color for syncronized zoom webinar in learnpress > lesson */
-	console.log('pageNow: ' + pagenow);
+	// console.log('pageNow: ' + pagenow);
 	if(pagenow && pagenow == 'edit-lp_lesson'){
 		jQuery('tbody#the-list tr').each(function(){
 			if(jQuery(this).find('td.meta-zoom_date').text().length > 2){

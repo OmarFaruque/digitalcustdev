@@ -38,10 +38,31 @@ class Admin_DigitalCustDev_Webinar {
 			return;
 		}
 
-		if(isset($_REQUEST['_lp_webinar_when'])) update_post_meta( $post_id, '_lp_webinar_when', $_REQUEST['_lp_webinar_when'] );
-		if(isset($_REQUEST['_lp_timezone'])) update_post_meta( $post_id, '_lp_timezone', $_REQUEST['_lp_timezone'] );
+		if(isset($_REQUEST['_lp_webinar_when'])){
+			update_post_meta( $post_id, '_lp_webinar_when', $_REQUEST['_lp_webinar_when'] );
+			
+			$timezone	= 'UTC';
+			$webinarDate = str_replace('/', '-', $_REQUEST['_lp_webinar_when']);
+			$webinarDate = date('Y-m-d h:i:s', strtotime($webinarDate));
+
+			$tz       	= new DateTimeZone( $timezone );
+			$gmtdate    = new DateTime( $webinarDate );
+			$gmtdate->setTimezone( $tz );
+			$gDate = $gmtdate->format('Y-m-d h:i:s');
+
+			update_post_meta($post_id, '_lp_webinar_when_gmt', $gDate);
+		} 
+		if(isset($_REQUEST['_lp_timezone'])){
+			update_post_meta( $post_id, '_lp_timezone', $_REQUEST['_lp_timezone'] );
+		}
+
+
 
 	}
+
+
+
+
 
 
 	static function get_message() {
