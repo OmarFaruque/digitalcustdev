@@ -139,17 +139,24 @@ class Webinars_Admin {
 		add_action( 'learn-press/before-content-item-summary/lp_lesson', array($this, 'learn_press_content_item_lesson_countdown'), 20 );
 		
 
-		// add_action('admin_init', array($this, 'tetF'));
+		add_action('admin_init', array($this, 'tetF'));
 	}
+
+
+	
 
 	public function tetF(){
 
-		
-		
-		
-		// echo 'gmt: ' . get_gmt_from_date($currentdate) . '<br/>';
-		// echo 'gmdate: ' . gmdate('Y-m-d h:i:s') . '<br/>';
-		
+		$time = '30/05/2020 17:30';
+		$time = str_replace('/', '-', $time);
+		$webinarTime = str_replace('/', '-', $_REQUEST['_lp_webinar_when']);
+		$webinarTime = date('Y-m-d H:i:s', strtotime($$webinarTime));
+		$user_timezone = $_REQUEST['_lp_timezone'];
+		$timezoneoffset = $this->get_timezone_offset($user_timezone);
+		$offset_time = strtotime( date('Y-m-d H:i:s', strtotime($webinarTime)) ) + $timezoneoffset;
+		$gDate = date('Y-m-d H:i:s', $offset_time);
+			
+			echo 'offset timezone: ' . date('Y-m-d H:i:s', $offset_time) . '<br/>';
 
 	}
 

@@ -31,6 +31,20 @@ class Admin_DigitalCustDev_Webinar {
 		add_filter( 'views_edit-lp_course', array( $this, 'filterCourseCount' ), 20 );
 	}
 
+	public function get_timezone_offset($remote_tz, $origin_tz = null) {
+		if($origin_tz === null) {
+			if(!is_string($origin_tz = date_default_timezone_get())) {
+				return false; // A UTC timestamp was returned -- bail out!
+			}
+		}
+		$origin_dtz = new DateTimeZone($origin_tz);
+		$remote_dtz = new DateTimeZone($remote_tz);
+		$origin_dt = new DateTime("now", $origin_dtz);
+		$remote_dt = new DateTime("now", $remote_dtz);
+		$offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+		return $offset;
+	}
+
 
 	public function save_lession_save($post_id){
 		global $post;
@@ -41,14 +55,12 @@ class Admin_DigitalCustDev_Webinar {
 		if(isset($_REQUEST['_lp_webinar_when'])){
 			update_post_meta( $post_id, '_lp_webinar_when', $_REQUEST['_lp_webinar_when'] );
 			
-			$timezone	= 'UTC';
-			$webinarDate = str_replace('/', '-', $_REQUEST['_lp_webinar_when']);
-			$webinarDate = date('Y-m-d h:i:s', strtotime($webinarDate));
-
-			$tz       	= new DateTimeZone( $timezone );
-			$gmtdate    = new DateTime( $webinarDate );
-			$gmtdate->setTimezone( $tz );
-			$gDate = $gmtdate->format('Y-m-d h:i:s');
+			$webinarTime = str_replace('/', '-', $_REQUEST['_lp_webinar_when']);
+			$webinarTime = date('Y-m-d H:i:s', strtotime($webinarTime));
+			$user_timezone = $_REQUEST['_lp_timezone'];
+			$timezoneoffset = $this->get_timezone_offset($user_timezone);
+			$offset_time = strtotime( date('Y-m-d H:i:s', strtotime($webinarTime)) ) + $timezoneoffset;
+			$gDate = date('Y-m-d H:i:s', $offset_time);
 
 			update_post_meta($post_id, '_lp_webinar_when_gmt', $gDate);
 		} 
