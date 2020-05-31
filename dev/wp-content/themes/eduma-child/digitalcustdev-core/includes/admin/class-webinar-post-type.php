@@ -248,8 +248,9 @@ class Admin_DigitalCustDev_Webinar {
 				if($course_type != 'webinar') $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
 				if($course[0]->post_status != 'publish') $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
 				if($course[0]->post_status == 'publish' && empty($zoom_date)) $infoTExt = __('Synchronization with ZOOM is not performed', 'webinar');
-				if($course[0]->post_status == 'publish' && $zoom_date && $webinarDetails) $infoTExt = __('Synchronization with ZOOM is done', 'webinar') . ': ' . date('d/m/Y h:i', strtotime($webinarDetails->created_at));
-				$tzlists = zvc_get_timezone_options();
+				if($course[0]->post_status == 'publish' && $zoom_date && $webinarDetails) $infoTExt = __('Synchronization with ZOOM is done', 'webinar') . ': ' . date('d/m/Y H:i', strtotime($webinarDetails->created_at)) . ' (GMT)';
+				// $tzlists = zvc_get_timezone_options();
+				$tzlists = custom_zvc_get_timezone_options();
 				echo $infoTExt;
 				$output = '<div id="zoom_section_wrap"><div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
 				$output .= '<input autocomplete="off" name="_lp_webinar_when" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';

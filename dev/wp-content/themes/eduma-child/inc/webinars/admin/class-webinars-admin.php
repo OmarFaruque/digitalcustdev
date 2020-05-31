@@ -139,24 +139,52 @@ class Webinars_Admin {
 		add_action( 'learn-press/before-content-item-summary/lp_lesson', array($this, 'learn_press_content_item_lesson_countdown'), 20 );
 		
 
-		add_action('admin_init', array($this, 'tetF'));
+		// add_action('admin_init', array($this, 'tetF'));
 	}
 
 
-	
+	public function get_timezone_offset($remote_tz, $origin_tz = null) {
+		if($origin_tz === null) {
+			if(!is_string($origin_tz = date_default_timezone_get())) {
+				return false; // A UTC timestamp was returned -- bail out!
+			}
+		}
+		$origin_dtz = new DateTimeZone($origin_tz);
+		$remote_dtz = new DateTimeZone($remote_tz);
+		$origin_dt = new DateTime("now", $origin_dtz);
+		$remote_dt = new DateTime("now", $remote_dtz);
+
+		 echo '<pre>';
+		 print_r($remote_dt);
+		 echo '</pre>';
+
+		 echo 'get offset: ' . $remote_dtz->getOffset($remote_dt) . '<br/>';
+		 echo 'get origin offset: ' . $origin_dtz->getOffset($origin_dt) . '<br/>';
+
+		$offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+		echo 'offset: ' . $offset . '<br/>';
+		return $offset;
+	}
 
 	public function tetF(){
+		$selected_compare = '2020-05-31';
+		$args             = array(
+			'post_type' => 'lp_lesson',
+			'post_status' => 'any',
+			'meta_query' => array(
+				array(
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d', strtotime($selected_compare)),
+					'compare' => 'LIKE'
+				)
+			)
+		);
+		// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
+		$lessons          	= get_posts( $args );
 
-		$time = '30/05/2020 17:30';
-		$time = str_replace('/', '-', $time);
-		$webinarTime = str_replace('/', '-', $_REQUEST['_lp_webinar_when']);
-		$webinarTime = date('Y-m-d H:i:s', strtotime($$webinarTime));
-		$user_timezone = $_REQUEST['_lp_timezone'];
-		$timezoneoffset = $this->get_timezone_offset($user_timezone);
-		$offset_time = strtotime( date('Y-m-d H:i:s', strtotime($webinarTime)) ) + $timezoneoffset;
-		$gDate = date('Y-m-d H:i:s', $offset_time);
-			
-			echo 'offset timezone: ' . date('Y-m-d H:i:s', $offset_time) . '<br/>';
+		echo '<pre>';
+		print_r($lessons);
+		echo '</pre>';
 
 	}
 
@@ -165,9 +193,12 @@ class Webinars_Admin {
 		switch ( $column ) {
 			case 'meta-zoom_date':
 				$when = get_post_meta($post_id, '_lp_webinar_when', true);
+				$gmt_time = get_post_meta($post_id, '_lp_webinar_when_gmt', true);
+				
 				if($when){
 					$when = str_replace('/', '-', $when);
 					$when = date('Y/m/d H:i', strtotime($when));
+					if($gmt_time) $when = date('Y/m/d H:i', strtotime($gmt_time)) . ' (GMT)<br/><hr/>' . $when;
 					echo '<span class="'.get_post_meta($post_id, 'zoom_status', true).'">'. $when . '<br/>';
 					echo '('. get_post_meta($post_id, '_lp_timezone', true) . ')</span>';
 
@@ -864,7 +895,7 @@ class Webinars_Admin {
 		if(is_admin() && $_REQUEST['post_type'] == 'lp_lesson' ) {
 			if ( 'Zoom Date' === $_REQUEST['orderby'] ) {
 				$query->set( 'orderby', 'meta_value' );
-				$query->set( 'meta_key', '_lp_webinar_when' );
+				$query->set( 'meta_key', '_lp_webinar_when_gmt' );
 				$query->set( 'meta_type', 'DATETIME' );
 				$query->set( 'order', $_REQUEST['order'] );
 			}

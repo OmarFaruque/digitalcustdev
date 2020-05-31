@@ -361,7 +361,19 @@ class DigitalCustDev_Webinars {
 	}
 
 
-
+	public function get_timezone_offset($remote_tz, $origin_tz = null) {
+		if($origin_tz === null) {
+			if(!is_string($origin_tz = date_default_timezone_get())) {
+				return false; // A UTC timestamp was returned -- bail out!
+			}
+		}
+		$origin_dtz = new DateTimeZone($origin_tz);
+		$remote_dtz = new DateTimeZone($remote_tz);
+		$origin_dt = new DateTime("now", $origin_dtz);
+		$remote_dt = new DateTime("now", $remote_dtz);
+		$offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+		return $offset;
+	}
 
 
 		//Check admin zoom occcupied time
@@ -374,7 +386,16 @@ class DigitalCustDev_Webinars {
 			
 			$times            	= $this->webinar_times();
 			$selected         	= filter_input( INPUT_POST, 'selected' );
+			$timezone         	= filter_input( INPUT_POST, 'timezone' );
 			$selected_compare 	= str_replace( '/', '-', $selected );
+
+			$remote_dtz = new DateTimeZone($timezone);
+			$origin_dt = new DateTime("now", $remote_dtz);
+			$offsetLocalTime = $remote_dtz->getOffset($origin_dt);
+			
+
+
+			
 			// $selected_compare 	= date( 'Y/m/d', strtotime( $selected_compare ) );
 	
 			$args             = array(
@@ -383,7 +404,7 @@ class DigitalCustDev_Webinars {
 				'meta_query' => array(
 					array(
 						'key' => '_lp_webinar_when_gmt',
-						'value' => date( 'Y-m-d', strtotime( $selected_compare ) ),
+						'value' => date( 'Y-m-d', strtotime($selected_compare)),
 						'compare' => 'LIKE'
 					)
 				)
@@ -394,19 +415,33 @@ class DigitalCustDev_Webinars {
 			$course_idss = array();
 			$newtime 			= array();
 			$test = '';
+			$starttimes = array();
 			if ( ! empty( $lessons ) ) {
 				foreach ( $lessons as $lesson ){
 					$course_ids = $curd->get_course_by_item( $lesson->ID );
 					$course_status = get_post($course_ids[0]);
 					if($course_status->post_status != 'draft'):
 						$start_time = get_post_meta( $lesson->ID, '_lp_webinar_when_gmt', true );
-						$timezone   = get_post_meta( $lesson->ID, '_lp_timezone', true );
+						$dbtimezone   = get_post_meta( $lesson->ID, '_lp_timezone', true );
 						$duration   = get_post_meta( $lesson->ID, '_lp_duration', true );
 						
+
+
 						
 						$change_sdate = str_replace( '/', '-', $start_time );
 						$start_time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
+						$start_time = strtotime( date('Y-m-d H:i:s', strtotime($start_time)) ) + $offsetLocalTime;
+						$start_time = date('Y-m-d H:i:s', $start_time);
+						array_push($starttimes, $start_time);
+
+
 						
+						// $dbtimezoneoffset = $this->get_timezone_offset($dbtimezone);
+						// array_push($offestarray, $dbtimezoneoffset);
+						// $offset_time = strtotime( date('Y-m-d H:i:s', strtotime($start_time)) ) + $dbtimezoneoffset;
+						// $start_time = date('Y-m-d H:i', $offset_time);
+
+
 						$end_time     = date( 'Y-m-d H:i', strtotime( $start_time . '+' . $duration ) );
 						
 						if ( $start_time <= $end_time && date( 'Y-m-d', strtotime( $change_sdate ) ) === date( 'Y-m-d', strtotime( $selected_compare ) ) ) {
@@ -445,9 +480,12 @@ class DigitalCustDev_Webinars {
 					'user_id' => $user_id,
 					'change_sdate' => $change_sdate, 
 					'test' => $test, 
-					'start_time' => $start_time,
+					'start_time' => $starttimes,
 					'end_time' => $end_time,
-					'selected_compare' => date( 'Y-m-d', strtotime( $selected_compare )) 
+					'timezone' => $timezone,
+					'timezoneoffset' => $timezoneoffset,
+					'selected_compare' => date( 'Y-m-d', strtotime( $selected_compare )),
+					'gDate' => $gDate
 				);
 			}
 	

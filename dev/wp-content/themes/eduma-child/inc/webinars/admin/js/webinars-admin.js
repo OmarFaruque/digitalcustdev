@@ -147,7 +147,7 @@
 
 			},
 			onGenerate:function(ct,$i){
-				console.log(disabledDates);
+				// console.log(disabledDates);
 				$('.xdsoft_time_variant .xdsoft_time').each(function(index){
 					var thistime = $(this).text();
 					if(disabledDates.indexOf(thistime) !== -1){
@@ -156,22 +156,25 @@
 				});
 			}, 
 			onChangeDateTime: function (dp, $input) {
-				console.log('onchagne omar');
+				// console.log('onchagne omar');
 				$('.xdsoft_time_variant .xdsoft_time').removeClass('xdsoft_disabled');
 				var selectedDate = new Date($input.val()),
 				errors = '',
 				time = $input.val().split(' ');
 				time = time[1];
 				var desabletime = '';
+				var timezone = jQuery('select[name="_lp_timezone"]').val();
 				
 				$.ajax({
 					method: 'POST',
 					url: ajaxurl,
 					data: {
 						action: 'check_webinar_existing_date_for_zoom', 
+						timezone: timezone,
 						selected: $input.val()
 					},
 					success: function (result) {
+						console.log(result);
 						desabletime = result.hide_time;
 						$('.xdsoft_time_variant .xdsoft_time').removeClass('xdsoft_disabled');
 						$('.xdsoft_time_variant .xdsoft_time').each(function(index){
@@ -220,17 +223,20 @@
 
 	jQuery(document).on('click', '.xdsoft_datepicker', function(e){
 		var lession_id = jQuery('input[name="post_ID"]').val();
+		var timezone = jQuery('select[name="_lp_timezone"]').val();
 		$.ajax({
 			method: 'POST',
 			url: ajaxurl,
 			data: {
 				action: 'check_webinar_existing_date_for_zoom', 
+				timezone: timezone,
 				selected: e.target.value,
 				lession_id: lession_id
 			},
 			success: function (result) {
-				var allowed_times = getTimesbyDate(result, e.target.value);
 				console.log(result);
+				var allowed_times = getTimesbyDate(result, e.target.value);
+				
 					if (result.disabled_date) {
 						showDatePicker(e, allowed_times, true, result.disabled_date, );
 					} else {

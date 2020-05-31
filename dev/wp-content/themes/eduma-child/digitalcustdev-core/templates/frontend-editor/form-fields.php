@@ -26,7 +26,7 @@ defined( 'ABSPATH' ) or die;
     <li class="e-form-field timezone">
         <label v-html="field.name"></label>
         <div class="e-form-field-input">
-			<?php $tzlists = zvc_get_timezone_options(); ?>
+			<?php $tzlists = custom_zvc_get_timezone_options(); ?>
             <select class="select2-select" v-model="settingValue">
 				<?php foreach ( $tzlists as $k => $tzlist ) { ?>
                     <option value="<?php echo $k; ?>"><?php echo $tzlist; ?></option>
