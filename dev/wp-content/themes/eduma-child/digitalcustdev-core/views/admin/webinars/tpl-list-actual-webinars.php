@@ -69,7 +69,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
             <thead>
             <tr>
                 <th class="zvc-text-left"><?php _e( 'Webinar ID', 'video-conferencing-with-zoom-api' ); ?></th>
-                <th class="zvc-text-left" class="zvc-text-left"><?php _e( 'Start Time', 'video-conferencing-with-zoom-api' ); ?></th>
+                <th class="zvc-text-left" class="zvc-text-left"><?php _e( 'Action Time', 'video-conferencing-with-zoom-api' ); ?></th>
                 <th class="zvc-text-left"><?php _e( 'Topic (Webinar Lesson)', 'video-conferencing-with-zoom-api' ); ?></th>
                 <th class="zvc-text-left"><?php _e( 'Webinar Course', 'video-conferencing-with-zoom-api' ); ?></th>
                 
@@ -86,6 +86,10 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 			if ( ! empty( $webinars ) ) {
 				foreach ( $webinars as $webinar ) {
                     
+
+
+                    
+
                     $dbusers = get_users(array(
                         'meta_key'      => 'user_zoom_hostid',
                         'meta_value'    => $webinar->host_id
@@ -180,6 +184,17 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         continue;
                     }
 
+                    $endtime = strtotime("+".$webinar->duration." minutes", strtotime($date->format( 'd.m.Y, G:i' )));
+                    $endtime = date('G:i', $endtime);
+                    
+                    
+
+                    // Calculate GMT time 
+                    $timezoneoffset = get_timezone_offset($webinar->timezone);
+                    $gmtStartTime = date('d.m.Y, G:i', strtotime($date->format( 'd.m.Y, G:i')) + $timezoneoffset);
+                    $gmtStartEnd = strtotime("+".$webinar->duration." minutes", strtotime($gmtStartTime));
+                    $gmtStartEnd = date('G:i', $gmtStartEnd);
+
 
 					?>
                     <tr data-time="<?php echo $webinar->start_time; ?>" class="<?php echo 'zoom_'. $zoom_active; ?>">
@@ -189,8 +204,11 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                          //echo $date->format( 'd-m-Y');
                          echo $zoom_active;
                         ?>"><?php
-                            echo $date->format( 'd.m.Y, G:i');
-                            echo '<br/>' . $date->format( '( e )' );
+                            echo '<small>' . $gmtStartTime . '-' . $gmtStartEnd . '</small>';
+                            echo '<br/><small>(GMT)</small>';
+                            echo '<hr/>';
+                            echo '<small>' . $date->format( 'd.m.Y, G:i') . '-' . $endtime . '</small>';
+                            echo '<br/><small>' . $date->format( '(e)' ) . '</small>';
 							?></td>
                         <td >
                             <a href="admin.php?page=zoom-video-conferencing-webinars&edit=<?php echo $webinar->id; ?>&host_id=<?php echo $webinar->host_id; ?>"><?php  echo $webinar->topic; ?></a>

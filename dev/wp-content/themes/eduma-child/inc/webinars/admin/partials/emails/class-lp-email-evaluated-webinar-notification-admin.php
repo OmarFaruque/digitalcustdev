@@ -51,7 +51,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_Admin' ) ) {
 			$this->template_html  = 'emails/evaluated-notification-admin.php';
 			$this->template_plain = 'emails/plain/evaluated-notification-admin.php';
 
-			$this->default_subject = __( '[{{site_title}}] You just got update for webinar lession ({{lession_name}})', 'webinar' );
+			$this->default_subject = __( '[{{site_title}}] You just got update for webinar lession ({{lesson_name}})', 'webinar' );
 			$this->default_heading = __( 'Update Webinar Lesson on Zoom', 'webinar' );
 			$this->recipient       = LP()->settings->get( 'emails_' . $this->id . '.recipients', $this->_get_admin_email() );
 

@@ -1557,9 +1557,9 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	* Source : https://developer.wordpress.org/reference/functions/wp_schedule_event/
 	*/
 	function addScheduleEventCallbackForWebinar(){
-		if(!wp_next_scheduled("callbackScheduleEventForWebinar"))
+		if(!wp_next_scheduled("webinar_1hbefore")) // webinar_1hbefore callbackScheduleEventForWebinar
         {
-			wp_schedule_event( time(), 'hourly',  'callbackScheduleEventForWebinar' );
+			wp_schedule_event( time(), 'hourly',  'webinar_1hbefore' );
 		}
 
 		// Schedule Event for 10 mints
@@ -1572,14 +1572,44 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		// wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
 	}
 
+	function custom_emails_setting( $emails ) {
+		if ( ! class_exists( 'LP_Settings_Emails_Group' ) ) {
+			include_once LP_PLUGIN_PATH . 'inc/admin/settings/email-groups/class-lp-settings-emails-group.php';
+		}
+		$emails['LP_Email_Webinar_Update_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-user.php' );
+		$emails['LP_Email_Webinar_Update_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-admin.php' );
+		$emails['LP_Email_Webinar_Update_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-instructor.php' );
 
+		// Notification email template 
+		$emails['LP_Email_Webinar_Notification_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-user.php' );
+		$emails['LP_Email_Webinar_Notification_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-admin.php' );
+		$emails['LP_Email_Webinar_Notification_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-instructor.php' );
+
+		// Notification before 10 minutes 
+		// Notification email template 
+		$emails['LP_Email_Webinar_Notification_Before_Ten_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-user.php' );
+		$emails['LP_Email_Webinar_Notification_Before_Ten_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-admin.php' );
+		$emails['LP_Email_Webinar_Notification_Before_Ten_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-instructor.php' );
+
+		LP_Emails::instance()->emails = $emails;
+		
+}
 	
+	// add_action( 'admin_init', 'testCallbackFunction' );
+	function testCallbackFunction(){
+		callbackScheduleEventForWebinarFunction();
+	}
+
 
 	function callbackScheduleEventForWebinarFunction(){
+		if ( class_exists( 'LP_Emails' ) ) {
+			$emails = LP_Emails::instance()->emails;
+			custom_emails_setting( $emails );
+		}
 
 		$thistime = date("Y-m-d H:i:s", strtotime('-1 hours', time()));
 		$current = date('Y-m-d H:i:s');
-		// echo 'current time: ' . $current . '<br/>';
+		
 
 		$argc = array(
 			'post_type' => LP_LESSON_CPT,
@@ -1635,12 +1665,8 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					}
 				endforeach;
 
-				// Add Alternative Host
-		// 		echo 'Posts hosts <br/><pre>';
-		// print_r($usreHosts);
-		// echo '</pre>';
 				if(count($usreHosts) > 0):
-					echo 'inside user host: ';
+					// echo 'inside user host: ';
 					$webinar_id = get_post_meta( $swebinars->ID, '_webinar_ID', true );
 					if ( ! empty( $webinar_id ) ) {
 						//Create webinar here
@@ -1657,7 +1683,6 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 						// echo '</pre>';
 					}
 				endif;
-
 					do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
 					do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
 					do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
@@ -1695,6 +1720,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	*/
 	// add_action( 'admin_init', 'callbackScheduleEventForWebinarOnTenMinFunction' );
 	function callbackScheduleEventForWebinarOnTenMinFunction(){
+		if ( class_exists( 'LP_Emails' ) ) {
+			$emails = LP_Emails::instance()->emails;
+			custom_emails_setting( $emails );
+		}
 	
 		$thistime = date("Y-m-d H:i:s", strtotime('-10 minutes', time()));
 		$current = date('Y-m-d H:i:s');
@@ -1783,9 +1812,9 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		endif;
 	}
 	
-	// add_filter('cron_schedules', array($this, 'my_cron_schedules'));
+	add_filter('cron_schedules', 'my_cron_schedules');
 	add_action('wp', 'addScheduleEventCallbackForWebinar' );
-	add_action('callbackScheduleEventForWebinar', 'callbackScheduleEventForWebinarFunction');
+	add_action('webinar_1hbefore', 'callbackScheduleEventForWebinarFunction');
 	add_action('callbackScheduleEventForWebinarOnTenMin', 'callbackScheduleEventForWebinarOnTenMinFunction');
 
 
@@ -1979,3 +2008,21 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		}
 	}
 	
+
+	function get_timezone_offset($remote_tz, $origin_tz = null) {
+		if($origin_tz === null) {
+			if(!is_string($origin_tz = date_default_timezone_get())) {
+				return false; // A UTC timestamp was returned -- bail out!
+			}
+		}
+		$origin_dtz = new DateTimeZone($origin_tz);
+		$remote_dtz = new DateTimeZone($remote_tz);
+		$origin_dt = new DateTime("now", $origin_dtz);
+		$remote_dt = new DateTime("now", $remote_dtz);
+
+	
+
+		$offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
+	
+		return $offset;
+	}

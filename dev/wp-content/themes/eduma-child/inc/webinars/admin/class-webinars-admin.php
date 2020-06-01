@@ -167,23 +167,10 @@ class Webinars_Admin {
 	}
 
 	public function tetF(){
-		$selected_compare = '2020-05-31';
-		$args             = array(
-			'post_type' => 'lp_lesson',
-			'post_status' => 'any',
-			'meta_query' => array(
-				array(
-					'key' => '_lp_webinar_when_gmt',
-					'value' => date( 'Y-m-d', strtotime($selected_compare)),
-					'compare' => 'LIKE'
-				)
-			)
-		);
-		// $lession_id 	  	= filter_input( INPUT_POST, 'lession_id' );
-		$lessons          	= get_posts( $args );
+		// echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>';
 
 		echo '<pre>';
-		print_r($lessons);
+		print_r(_get_cron_array());
 		echo '</pre>';
 
 	}
@@ -329,32 +316,11 @@ class Webinars_Admin {
 	/**
 	* Add email setting class.
 	*/
-	public function custom_emails_setting( $emails ) {
-			if ( ! class_exists( 'LP_Settings_Emails_Group' ) ) {
-				include_once LP_PLUGIN_PATH . 'inc/admin/settings/email-groups/class-lp-settings-emails-group.php';
-			}
-			$emails['LP_Email_Webinar_Update_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-user.php' );
-			$emails['LP_Email_Webinar_Update_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-admin.php' );
-			$emails['LP_Email_Webinar_Update_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-update-instructor.php' );
-
-			// Notification email template 
-			$emails['LP_Email_Webinar_Notification_Evaluated_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-user.php' );
-			$emails['LP_Email_Webinar_Notification_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-admin.php' );
-			$emails['LP_Email_Webinar_Notification_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-instructor.php' );
-
-			// Notification before 10 minutes 
-			// Notification email template 
-			$emails['LP_Email_Webinar_Notification_Before_Ten_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-user.php' );
-			$emails['LP_Email_Webinar_Notification_Before_Ten_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-admin.php' );
-			$emails['LP_Email_Webinar_Notification_Before_Ten_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-instructor.php' );
-
-			LP_Emails::instance()->emails = $emails;
-			
-	}
+	
 	public function backward_load_emails() {
 		if ( class_exists( 'LP_Emails' ) ) {
 			$emails = LP_Emails::instance()->emails;
-			$this->custom_emails_setting( $emails );
+			custom_emails_setting( $emails );
 		}
 	}
 
