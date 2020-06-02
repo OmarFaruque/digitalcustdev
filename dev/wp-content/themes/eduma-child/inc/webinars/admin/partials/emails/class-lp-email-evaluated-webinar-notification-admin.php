@@ -113,6 +113,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_Admin' ) ) {
 			);
 			$this->variables = $this->data_to_variables( $this->object );
 
+			// echo 'this receipent: ' . $this->get_recipient() . '<br/>';
 			$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 
 			return $return;

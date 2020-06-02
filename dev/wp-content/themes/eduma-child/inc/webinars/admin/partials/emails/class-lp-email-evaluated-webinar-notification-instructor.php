@@ -121,7 +121,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_Instructor' ) ) {
 			foreach($co_teachers as $sins):
 				$author_obj = get_user_by('id', $sins);
 				$this->recipient = $author_obj->data->user_email;
-				echo 'this get receipent: ' . $this->get_recipient() . '<br/>';
+				// echo 'this get receipent: ' . $this->get_recipient() . '<br/>';
 				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 			endforeach;
 			return $return;

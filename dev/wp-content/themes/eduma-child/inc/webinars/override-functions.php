@@ -1557,16 +1557,16 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	* Source : https://developer.wordpress.org/reference/functions/wp_schedule_event/
 	*/
 	function addScheduleEventCallbackForWebinar(){
-		if(!wp_next_scheduled("webinar_1hbefore")) // webinar_1hbefore callbackScheduleEventForWebinar
+		if(!wp_next_scheduled("webinar_10mbefore")) // webinar_10mbefore callbackScheduleEventForWebinar
         {
-			wp_schedule_event( time(), 'hourly',  'webinar_1hbefore' );
+			wp_schedule_event( time(), '10min',  'webinar_10mbefore' );
 		}
 
 		// Schedule Event for 10 mints
-		if(!wp_next_scheduled("callbackScheduleEventForWebinarOnTenMin"))
-        {
-			wp_schedule_event( time(), '10min',  'callbackScheduleEventForWebinarOnTenMin' );
-		}
+		// if(!wp_next_scheduled("callbackScheduleEventForWebinarOnTenMin"))
+        // {
+		// 	wp_schedule_event( time(), '10min',  'callbackScheduleEventForWebinarOnTenMin' );
+		// }
 
 
 		// wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
@@ -1607,8 +1607,16 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 			custom_emails_setting( $emails );
 		}
 
-		$thistime = date("Y-m-d H:i:s", strtotime('-1 hours', time()));
-		$current = date('Y-m-d H:i:s');
+
+		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
+		$current = $newcreatedtime->format('Y-m-d H:i:s');
+
+		echo 'current time: ' . $current . '<br/>';
+
+		$thistime = date("Y-m-d H:i:s", strtotime('+1 hours', strtotime($current)));
+
+		echo 'this time: ' . $thistime . '<br/>';
+		
 		
 
 		$argc = array(
@@ -1617,32 +1625,40 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 			'meta_query' => array(
 				'relation' => 'AND',
 				array(
-					'key' => '_lp_webinar_when',
-					'value' => date( 'd/m/Y', strtotime( $thistime ) ),
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d', strtotime( $thistime ) ),
 					'compare' => 'LIKE'
 				),
 				array(
-					'key' => '_lp_webinar_when',
-					'value' => date( 'd/m/Y H:i', strtotime( $thistime ) ),
-					'compare' => '>=', // Return the ones greater than today's date
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d H:i', strtotime( $thistime ) ),
+					'compare' => '<=', // Return the ones greater than today's date
 				),
 				array(
-					'key' => '_lp_webinar_when',
-					'value' => date( 'd/m/Y H:i', strtotime( $current ) ),
-					'compare' => '<=', // Return the ones greater than today's date
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d H:i', strtotime( $current ) ),
+					'compare' => '>=', // Return the ones greater than today's date
 				),
 				array(
 					'key' => '_webinar_ID',
 					'compare' => 'EXISTS'
+				),
+				array(
+					'key' => 'email_send_status_1_hour',
+					'compare' => 'NOT EXISTS'
 				)
 			)
 		);	
 
 		$webinars = get_posts($argc);
 
+		echo 'Webinars test <br/><pre>';
+		print_r($webinars);
+		echo '</pre>';
+
 		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
-				
+				update_post_meta($webinar->ID, 'email_send_status_1_hour', 1);
 				$course = learn_press_get_item_courses( $swebinars->ID );
 				$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
 				
@@ -1684,11 +1700,15 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					}
 				endif;
 					do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
-					do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
+					// do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
 					do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
 								
 			endforeach;
 		endif;
+
+
+		//Before 10 Min
+		callbackScheduleEventForWebinarOnTenMinFunction();
 	}
 
 
@@ -1725,9 +1745,11 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 			custom_emails_setting( $emails );
 		}
 	
-		$thistime = date("Y-m-d H:i:s", strtotime('-10 minutes', time()));
-		$current = date('Y-m-d H:i:s');
-		// echo 'current time: ' . $current . '<br/>';
+		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
+		$current = $newcreatedtime->format('Y-m-d H:i:s');
+		
+		$thistime = date("Y-m-d H:i:s", strtotime('+10 minutes', strtotime($current)));
+		
 
 		$argc = array(
 			'post_type' => LP_LESSON_CPT,
@@ -1735,23 +1757,27 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 			'meta_query' => array(
 				'relation' => 'AND',
 				array(
-					'key' => '_lp_webinar_when',
-					'value' => date( 'd/m/Y', strtotime( $thistime ) ),
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d', strtotime( $thistime ) ),
 					'compare' => 'LIKE'
 				),
 				array(
-					'key' => '_lp_webinar_when',
-					'value' => date( 'd/m/Y H:i', strtotime( $thistime ) ),
-					'compare' => '>=', // Return the ones greater than today's date
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d H:i', strtotime( $thistime ) ),
+					'compare' => '<=', // Return the ones greater than today's date
 				),
 				array(
-					'key' => '_lp_webinar_when',
-					'value' => date( 'd/m/Y H:i', strtotime( $current ) ),
-					'compare' => '<=', // Return the ones greater than today's date
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d H:i', strtotime( $current ) ),
+					'compare' => '>=', // Return the ones greater than today's date
 				),
 				array(
 					'key' => '_webinar_ID',
 					'compare' => 'EXISTS'
+				),
+				array(
+					'key' => 'email_send_status_10min',
+					'compare' => 'NOT EXISTS'
 				)
 			)
 		);	
@@ -1761,7 +1787,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
-				
+				update_post_meta($webinar->ID, 'email_send_status_10min', 1);
 				$course = learn_press_get_item_courses( $swebinars->ID );
 				$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
 				
@@ -1814,7 +1840,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	
 	add_filter('cron_schedules', 'my_cron_schedules');
 	add_action('wp', 'addScheduleEventCallbackForWebinar' );
-	add_action('webinar_1hbefore', 'callbackScheduleEventForWebinarFunction');
+	add_action('webinar_10mbefore', 'callbackScheduleEventForWebinarFunction');
 	add_action('callbackScheduleEventForWebinarOnTenMin', 'callbackScheduleEventForWebinarOnTenMinFunction');
 
 
