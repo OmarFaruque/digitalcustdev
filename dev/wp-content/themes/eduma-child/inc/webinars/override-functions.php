@@ -1700,7 +1700,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					}
 				endif;
 					do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
-					// do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
+					do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
 					do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
 								
 			endforeach;
