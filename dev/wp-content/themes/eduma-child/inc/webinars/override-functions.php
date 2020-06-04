@@ -1611,11 +1611,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
 		$current = $newcreatedtime->format('Y-m-d H:i:s');
 
-		echo 'current time: ' . $current . '<br/>';
+		// echo 'now: ' . $current . '<br/>';
+		$thistime = date("Y-m-d H:i:s", strtotime('+61 minutes', strtotime($current)));
+		// echo 'this time: ' . $thistime . '<br/>';
 
-		$thistime = date("Y-m-d H:i:s", strtotime('+1 hours', strtotime($current)));
-
-		echo 'this time: ' . $thistime . '<br/>';
 		
 		
 
@@ -1652,13 +1651,13 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 		$webinars = get_posts($argc);
 
-		echo 'Webinars test <br/><pre>';
-		print_r($webinars);
-		echo '</pre>';
+		// echo 'Webinars test <br/><pre>';
+		// print_r($webinars);
+		// echo '</pre>';
 
 		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
-				update_post_meta($webinar->ID, 'email_send_status_1_hour', 1);
+				update_post_meta($swebinars->ID, 'email_send_status_1_hour', 1);
 				$course = learn_press_get_item_courses( $swebinars->ID );
 				$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
 				
@@ -1691,12 +1690,8 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 								'alternative_hosts' => implode(',', $usreHosts)
 							)
 						);
-		
 						//Updated
 						$update = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
-						// echo 'UPdate <br/><pre>';
-						// print_r($update);
-						// echo '</pre>';
 					}
 				endif;
 					do_action( 'learn-press/zoom-notification-lession-instructor', $swebinars->ID, $post_author_id );
@@ -1748,7 +1743,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
 		$current = $newcreatedtime->format('Y-m-d H:i:s');
 		
-		$thistime = date("Y-m-d H:i:s", strtotime('+10 minutes', strtotime($current)));
+		$thistime = date("Y-m-d H:i:s", strtotime('+13 minutes', strtotime($current)));
 		
 
 		$argc = array(
@@ -1787,32 +1782,42 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
-				update_post_meta($webinar->ID, 'email_send_status_10min', 1);
+				update_post_meta($swebinars->ID, 'email_send_status_10min', 1);
 				$course = learn_press_get_item_courses( $swebinars->ID );
-				$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+				// $allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
 				
+				$allAuthors = array();
 				$webinar_author = get_post_field( 'post_author', $course[0]->ID );
-				array_push($allAuthors, $webinar_author);
-				
+				// array_push($allAuthors, $webinar_author);
+				$alternative_host = get_post_meta($swebinars, '_lp_alternative_host', true);
 				
 				
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
 
 				$usreHosts = array();
 				$token = '';
-				foreach($allAuthors as $sauthor):
-					if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
-						dcd_zoom_conference()->enableUserStatistoActive($sauthor, 'activate');
-						dcd_zoom_conference()->updateZoomUserType($sauthor);
-						$token = dcd_zoom_conference()->zoomWebinarStartToken($sauthor);
+				// foreach($allAuthors as $sauthor):
+				// 	if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
+				// 		dcd_zoom_conference()->enableUserStatistoActive($sauthor, 'activate');
+				// 		dcd_zoom_conference()->updateZoomUserType($sauthor);
+				// 		$token = dcd_zoom_conference()->zoomWebinarStartToken($sauthor);
 						
-						array_push($usreHosts, get_user_meta( $sauthor, 'user_zoom_hostid', true ));
+				// 		array_push($usreHosts, get_user_meta( $sauthor, 'user_zoom_hostid', true ));
 
-					}
-				endforeach;
+				// 	}
+				// endforeach;
+
+				
+				dcd_zoom_conference()->enableUserStatistoActive($alternative_host, 'activate');
+				dcd_zoom_conference()->updateZoomUserType($alternative_host);
+				$token = dcd_zoom_conference()->zoomWebinarStartToken($alternative_host);
+						
+				array_push($usreHosts, $alternative_host);
+
+				
 
 				if(count($usreHosts) > 0):
-					echo 'inside user host: ';
+					// echo 'inside user host: ';
 					$webinar_id = get_post_meta( $swebinars->ID, '_webinar_ID', true );
 					if ( ! empty( $webinar_id ) ) {
 						//Create webinar here
@@ -1854,7 +1859,6 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		if ( $check_transient ) {
 			$users = $check_transient;
 		} else {
-		
 			$active_user = dcd_zoom_conference()->listUsersByStatus('active');
 			$active_user = json_decode( $active_user );
 
@@ -2051,4 +2055,20 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		$offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
 	
 		return $offset;
+	}
+
+
+
+	/*
+	* Next Cron event time
+	* Source: https://wordpress.stackexchange.com/questions/83270/when-does-next-cron-job-run-time-from-now
+	*/
+
+	function wb_get_next_cron_time( $cron_name ){
+		foreach( _get_cron_array() as $timestamp => $crons ){
+			if( in_array( $cron_name, array_keys( $crons ) ) ){
+				return $timestamp - time();
+			}
+		}
+		return false;
 	}

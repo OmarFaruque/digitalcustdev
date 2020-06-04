@@ -94,8 +94,11 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_Instructor' ) ) {
 
 			$courses = learn_press_get_item_courses( $post_id );
 			$course  = get_post( $courses[0]->ID );
-			$co_teachers = get_post_meta( $courses[0]->ID, '_lp_co_teacher', false );
-			if(!$co_teachers){
+
+
+			// $co_teachers = get_post_meta( $courses[0]->ID, '_lp_co_teacher', false );
+			$course_author = get_userdata($courses[0]->post_author);
+			if(!$course_author){
 				return false;
 			}
 			$zoom_api_meeting_link = get_post_meta( $post_id, '_webinar_details', true );
@@ -118,13 +121,25 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_Instructor' ) ) {
 			);
 			$this->variables = $this->data_to_variables( $this->object );
 
-			foreach($co_teachers as $sins):
-				$author_obj = get_user_by('id', $sins);
-				$this->recipient = $author_obj->data->user_email;
+			// foreach($co_teachers as $sins):
+				// $author_obj = get_user_by('id', $sins);
+				// echo 'post id: ' . $post_id . '<br/>';
+				if(get_post_meta($post_id, '_lp_alternative_host', true)){
+					$users = cstm_video_conferencing_zoom_api_get_user_transients();
+					$users = $users->users;
+					$userKey = array_search(get_post_meta($post_id, '_lp_alternative_host', true), array_column($users, 'id'));    
+					$hosterMail = $users[$userKey]->email;
+					$alternative_hoster = $hosterMail;
+				}else{
+					$alternative_hoster = $course_author->data->user_email;
+				}
+
+				// $this->recipient = $author_obj->data->user_email;
+				$this->recipient = $alternative_hoster;
 				// echo 'this get receipent: ' . $this->get_recipient() . '<br/>';
 				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-			endforeach;
-			return $return;
+			// endforeach;
+				return $return;
 		}
 	}
 }

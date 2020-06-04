@@ -157,6 +157,11 @@ class Admin_DigitalCustDev_Webinar {
 
 		$webinar_id = filter_input( INPUT_POST, 'webinar_id' );
 
+		$lesson_id = filter_input( INPUT_POST, 'lesson_id' );
+
+		if(isset($_POST['alternative_host_ids'])){
+			update_post_meta( $lesson_id, '_lp_alternative_host', $_POST['alternative_host_ids'] );
+		}
 
 		$postData = array(
 			'topic'      => filter_input( INPUT_POST, 'meetingTopic' ),

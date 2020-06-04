@@ -7,6 +7,7 @@ global $wpdb;
 $metatable = $wpdb->prefix . 'postmeta';
 //Check if any transient by name is available
 $users = cstm_video_conferencing_zoom_api_get_user_transients();
+// $users = cstm_video_conferencing_zoom_api_get_user_transients();
 if(isset($users->users)){
     $users = $users->users;
 }
@@ -16,6 +17,7 @@ if ( ! isset( $_GET['host_id'] ) ) {
 } else {
 	$host_id = $_GET['host_id'];
 }
+
 
 $encoded_meetings = dcd_zoom_conference()->listWebinar( $host_id );
 $decoded_meetings = json_decode( $encoded_meetings );
@@ -41,13 +43,6 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 }
 
 
-// echo 'Users <br/><pre>';
-// print_r($users);
-// echo '</pre>';
-// echo '<hr/>';
-// echo 'Webinars <br/><pre>';
-// print_r($webinars);
-// echo '</pre>';
 ?>
 <div class="wrap">
     <h2><?php _e( "Webinars", "video-conferencing-with-zoom-api" ); ?></h2>
@@ -85,26 +80,14 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 			<?php
 			if ( ! empty( $webinars ) ) {
 				foreach ( $webinars as $webinar ) {
-                    
 
-
-                    
-
-                    $dbusers = get_users(array(
-                        'meta_key'      => 'user_zoom_hostid',
-                        'meta_value'    => $webinar->host_id
-                    ));
-
-
+                    // Hoster Mail
+                    $userKey = array_search($webinar->host_id, array_column($users, 'id'));    
+                    $hosterMail = $users[$userKey]->email;
 
                     $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar->id );
                     $lesson_id = $wpdb->get_row( $lesson_id );
                     $course = learn_press_get_item_courses( $lesson_id->post_id );
-
-
-
-
-
 
                     // change zoom status
                     $start_time = get_post_meta( $lesson_id->post_id, '_lp_webinar_when', true );
@@ -123,8 +106,10 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     
                         // End Time 
                         $duration   = get_post_meta( $lesson_id->post_id, '_lp_duration', true );
+                       
                         $endtime    = strtotime('+'.$duration, strtotime($time));
                         $endtime    = strtotime('+5 minutes', $endtime);
+                      
                     
 
                         if( $now > $linkvisiable && $now < date('Y-m-d H:i', $endtime) ){
@@ -134,31 +119,36 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         }
                     }
 
-
-
-
-
-
                     $zoom_active = get_post_meta($lesson_id->post_id, 'zoom_status', true);
                     
                     $course_id = 0;
                     $alternative_hoster = '';
                     $alterHostStatus = '';
                     $course_author_id = 0;
+
+            
+
                     if($course){
+                        $course_id = $course[0]->ID;
                         $course_author_id = $course[0]->post_author;
                         $course_author = get_userdata($course[0]->post_author);
-                        $userhostid = get_user_meta( $course[0]->post_author, 'user_zoom_hostid', true );
+
+                        $userhostid = '';
+                        
+                        if(get_post_meta( $lesson_id->post_id, '_lp_alternative_host', true )){
+                            echo 'lesson post id: ' . $lesson_id->post_id . '<br/>';
+                            $userhostid = get_post_meta( $lesson_id->post_id, '_lp_alternative_host', true );
+                        }else{
+                            $userhostid = get_user_meta( $course[0]->post_author, 'user_zoom_hostid', true );
+                        }
+
                         $key = array_search($userhostid, array_column($users, 'id'));
                         $alterHostStatus = $users[$key]->status;
                         
-                        // echo 'author info<br/><pre>';
-                        // print_r($course_author);
-                        // echo '</pre>';
-                        $course_id = $course[0]->ID;
-                        $alternative_hoster = $course_author->data->user_email;
+                        $alternative_hoster = $users[$key]->email;
                     }
 
+                    
 
                     /*
                     * Filtering for non-master user
@@ -183,6 +173,9 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     if(date('Y-m-d') > $date->format( 'Y-m-d') ){
                         continue;
                     }
+
+                    // echo 'start time: ' . $webinar->start_time . '<br/>';
+                    // echo 'duration: ' . $webinar->duration . '<br/>';
 
                     $endtime = strtotime("+".$webinar->duration." minutes", strtotime($date->format( 'd.m.Y, G:i' )));
                     $endtime = date('G:i', $endtime);
@@ -221,8 +214,8 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         <td>
                             <?php echo $webinar->host_id; ?>
                             <?php
-                                if($dbusers){
-                                    echo '<br/>('.$dbusers[0]->data->user_email.')';
+                                if($hosterMail){
+                                    echo '<br/>('.$hosterMail.')';
                                 }
                             ?>
                             <div class="row-actions s-webinar">

@@ -6,11 +6,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( class_exists( 'WPEMS' ) ) {
     $item = LP_Global::course_item();
-    $start_time = get_post_meta( $item->get_id(), '_lp_webinar_when', true );
+    $start_time = get_post_meta( $item->get_id(), '_lp_webinar_when_gmt', true );
     $change_sdate = str_replace( '/', '-', $start_time );
     
 
-    $time   = date( 'Y-m-d H:i', strtotime( $change_sdate ) );
+    $time   = date( 'Y-m-d H:i:s', strtotime( $change_sdate ) );
     
     $timezone = get_post_meta($item->get_id(), '_lp_timezone', true);
     $newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
@@ -30,7 +30,13 @@ if ( class_exists( 'WPEMS' ) ) {
     // echo 'current time: ' . $linkvisiable . '<br/>';
     // echo 'Start time: ' . $time . '<br/>';
     
-    if( $now < $linkvisiable ){
+
+
+    
+    $nextEventTime = wb_get_next_cron_time('webinar_10mbefore');
+
+
+    if( $now > $linkvisiable && $now < date('Y-m-d H:i', $endtime)){
         update_post_meta($item->get_id(), 'zoom_status', 'inactive');
         ?>
         <div class="tp-event-top single_lp_lesson">
@@ -68,7 +74,9 @@ if ( class_exists( 'WPEMS' ) ) {
             // echo 'lesssons <br/><pre>';
             // print_r($lessons);
             // echo '</pre>';
-            
+
+
+               
 
             $newPrice = $existPrice - (0.5 * $existPrice) / count($lessons);
             // Re-calculate price
@@ -97,6 +105,8 @@ if ( class_exists( 'WPEMS' ) ) {
 
             update_post_meta( $item->get_id(), '_webinar_statis', 1 );
             }
+
+           
             ?>
 
             <div class="entry-countdown no-record">
@@ -122,6 +132,10 @@ if ( class_exists( 'WPEMS' ) ) {
         // echo 'Webinar Array <br/><pre>';
         // print_r($webinar);
         // echo '</pre>';
+
+        // echo 'next event time: ' . $nextEventTime . '<br/>';
+        // $timeleft =  strtotime($time) - time();
+        // echo 'start time left: ' . $timeleft . '<br/>';
 
         $join_url = '';
         $join_text = '';

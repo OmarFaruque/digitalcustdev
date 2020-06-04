@@ -15,10 +15,16 @@ $lesson_id = $wpdb->get_row( $lesson_id );
 $course = learn_press_get_item_courses( $lesson_id->post_id );
 
 
+
+
 $authorHost = '';
-if($course){
+
+if(empty($authorHost)){
+	$authorHost = get_post_meta( $lesson_id->post_id, '_lp_alternative_host', true );
+}
+
+if($course && empty($authorHost)){
 	$course_author = $course[0]->post_author;
-	
 	$authorHost = get_user_meta($course_author, 'user_zoom_hostid', true);
 }
 
@@ -68,7 +74,6 @@ update_option( $option, $password, true );
 
 
 		$message = self::get_message();
-
 		if ( isset( $message ) && ! empty( $message ) ) {
 			echo $message;
 		}
@@ -92,6 +97,8 @@ update_option( $option, $password, true );
 	<form action="?page=zoom-video-conferencing-webinars&edit=<?php echo esc_attr( $_GET['edit'] ); ?>&host_id=<?php echo esc_attr( $_GET['host_id'] ); ?>" method="POST" class="zvc-meetings-form">
 		<?php wp_nonce_field( '_zoom_update_webinar_nonce_action', '_zoom_update_webinar_nonce' ); ?>
 		<input type="hidden" name="webinar_id" value="<?php echo $webinar_info->id; ?>">
+		<input type="hidden" name="lesson_id" value="<?php echo $lesson_id->post_id; ?>">
+		
 		<table class="form-table">
 			<tbody>
 			<tr>
@@ -195,7 +202,7 @@ update_option( $option, $password, true );
 			<tr>
 				<th scope="row"><label for="settings_alternative_hosts"><?php _e( 'Alternative Hosts', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
-					<select name="alternative_host_ids[]" multiple class="zvc-hacking-select">
+					<select name="alternative_host_ids" class="zvc-hacking-select">
 						<option value=""><?php _e( 'Select a Host', 'video-conferencing-with-zoom-api' ); ?></option>
 						<?php
 						foreach ( $users->users as $user ) :

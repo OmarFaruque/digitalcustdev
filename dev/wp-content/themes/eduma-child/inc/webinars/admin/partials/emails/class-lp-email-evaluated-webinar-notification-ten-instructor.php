@@ -118,11 +118,22 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Ten_Instructor' ) ) {
 			);
 			$this->variables = $this->data_to_variables( $this->object );
 
-			foreach($co_teachers as $sins):
-				$author_obj = get_user_by('id', $sins);
-				$this->recipient = $author_obj->data->user_email;
+			// foreach($co_teachers as $sins):
+			// 	$author_obj = get_user_by('id', $sins);
+
+				if(get_post_meta($post_id, '_lp_alternative_host', true)){
+					$users = cstm_video_conferencing_zoom_api_get_user_transients();
+					$users = $users->users;
+					$userKey = array_search(get_post_meta($post_id, '_lp_alternative_host', true), array_column($users, 'id'));    
+					$hosterMail = $users[$userKey]->email;
+					$alternative_hoster = $hosterMail;
+				}else{
+					$alternative_hoster = $course_author->data->user_email;
+				}
+
+				$this->recipient = $alternative_hoster;
 				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
-			endforeach;
+			// endforeach;
 
 			return $return;
 		}

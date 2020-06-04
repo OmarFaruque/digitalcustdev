@@ -82,7 +82,7 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 			return $this->sendRequest( 'webinars/' . $webinarId . '/registrants', $data, "POST" );
 		}
 		public function getWebinarRegistrantList($webinarId){
-			echo 'this pi key: ' . $this->api_url . '<br/>';
+			// echo 'this pi key: ' . $this->api_url . '<br/>';
 			$curl = curl_init();
 
 			curl_setopt_array($curl, array(
@@ -111,14 +111,13 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		}
 
 
-		public function enableUserStatistoActive($user_id, $status){
-			if ( !empty( $user_id ) ) {
-				$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
+		public function enableUserStatistoActive($hostid, $status){
+			if ( !empty( $hostid ) ) {
 
 				$data = array(
 					'action' => $status
 				);
-				return $this->sendRequest( 'users/'.$host_id.'/status', $data, "PUT" );
+				return $this->sendRequest( 'users/'.$hostid.'/status', $data, "PUT" );
 
 			} 
 		}
@@ -188,8 +187,9 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		/*
 		* Webinar Start Token
 		*/
-		public function zoomWebinarStartToken($user_id){
-			$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
+		public function zoomWebinarStartToken($hostid){
+			// $host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
+			$host_id = $hostid;
 			$curl = curl_init();
 
 			curl_setopt_array($curl, array(
@@ -220,8 +220,8 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		/*
 		Update User type
 		*/
-		public function updateZoomUserType($user_id){
-			$host_id = get_user_meta( $user_id, 'user_zoom_hostid', true );
+		public function updateZoomUserType($hostid){
+			$host_id = $hostid;
 			if($host_id):
 			$curl = curl_init();
 			$data = array();

@@ -121,7 +121,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_User' ) ) {
 				
 				$this->variables = $this->data_to_variables( $this->object );
 				$this->recipient = $sS->email;
-				$this->recipient = 'ronymaha@gmail.com';
+				// $this->recipient = 'ronymaha@gmail.com';
 				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 			endforeach;
 			return $return;

@@ -167,11 +167,54 @@ class Webinars_Admin {
 	}
 
 	public function tetF(){
+		$host_id = LP()->settings->get( 'zoom_master_host' );
+		echo 'testf omar';
 		// echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>';
+		$sl = 11417;
+		$timezone   = get_post_meta( $sl, '_lp_timezone', true );
+							$start_time = get_post_meta( $sl, '_lp_webinar_when', true );
+							$duration = get_post_meta( $sl, '_lp_duration', true );
+							$duration = (int)$duration;
+							echo 'duration: ' . $duration . '<br/>';
+							if($start_time) $start_time = str_replace('/', '-', $start_time);
+							if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 
-		echo '<pre>';
-		print_r(_get_cron_array());
-		echo '</pre>';
+							
+
+							$webinar_id = get_post_meta( $sl, '_webinar_ID', true );
+							if ( ! empty( $webinar_id ) ) {
+								//Create webinar here
+								$postData = array(
+									'topic'      => $lesson->post_title,
+									'type'       => 5,
+									'start_time' => $start_time,
+									'duration' 	=> $duration,
+									'timezone'   => ! empty( $timezone ) ? $timezone : '',
+									'agenda'     => $lesson->post_content,
+									'settings'   => array(
+										'host_video'        => false,
+										'panelists_video'   => true,
+										'approval_type'     => 0,
+										'registration_type' => 1,
+										'auto_recording'    => 'cloud'
+									)
+								);
+
+								if($start_time && $timezone){
+									//Updated
+									$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+									$updateWebinar = json_decode( $updateWebinar );
+									if ( ! empty( $updateWebinar ) ) {
+										// update_post_meta( $sl, '_webinar_ID', $updateWebinar->id );
+										update_post_meta( $sl, '_webinar_details', $updateWebinar );
+									}else{
+										$metas = get_post_meta( $sl, '_webinar_details', true );
+										$newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
+										$metas->created_at = $newcreatedtime->format('Y-m-d H:i:s');
+										update_post_meta( $sl, '_webinar_details', $metas );
+									}
+								}
+							}
 
 	}
 
@@ -485,6 +528,8 @@ class Webinars_Admin {
 						$webinar_exists = get_post_meta( $sl, '_webinar_ID', true );
 						if ( empty( $webinar_exists ) ) {
 							$timezone   = get_post_meta( $sl, '_lp_timezone', true );
+							$duration = get_post_meta( $sl, '_lp_duration', true );
+							$duration = (int)$duration;
 							$start_time = get_post_meta( $sl, '_lp_webinar_when', true );
 							if($start_time) $start_time = str_replace('/', '-', $start_time);
 							if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
@@ -493,6 +538,7 @@ class Webinars_Admin {
 								$postData        = array(
 									'topic'      => $lesson->post_title,
 									'type'       => 5,
+									'duration' => $duration,
 									'start_time' => ! empty( $start_time ) ? $start_time : date( "Y-m-d\TH:i:s" ),
 									'timezone'   => ! empty( $timezone ) ? $timezone : '',
 									// 'agenda'     => $lesson->post_content,
@@ -515,8 +561,15 @@ class Webinars_Admin {
 								}
 						} else {
 							
+							// Update Alternative Host
+							$authorhostid = get_user_meta($author_id, 'user_zoom_hostid', true);
+							update_post_meta( $sl, '_lp_alternative_host', $authorhostid );
+
+
 							$timezone   = get_post_meta( $sl, '_lp_timezone', true );
 							$start_time = get_post_meta( $sl, '_lp_webinar_when', true );
+							$duration = get_post_meta( $sl, '_lp_duration', true );
+							$duration = (int)$duration;
 							if($start_time) $start_time = str_replace('/', '-', $start_time);
 							if($start_time) $start_time = date( "Y-m-d\TH:i:s", strtotime( $start_time ) );
 
@@ -529,6 +582,7 @@ class Webinars_Admin {
 									'topic'      => $lesson->post_title,
 									'type'       => 5,
 									'start_time' => $start_time,
+									'duration' 	=> $duration,
 									'timezone'   => ! empty( $timezone ) ? $timezone : '',
 									'agenda'     => $lesson->post_content,
 									'settings'   => array(
@@ -545,7 +599,7 @@ class Webinars_Admin {
 									$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
 									$updateWebinar = json_decode( $updateWebinar );
 									if ( ! empty( $updateWebinar ) ) {
-										update_post_meta( $sl, '_webinar_ID', $updateWebinar->id );
+										// update_post_meta( $sl, '_webinar_ID', $updateWebinar->id );
 										update_post_meta( $sl, '_webinar_details', $updateWebinar );
 									}else{
 										$metas = get_post_meta( $sl, '_webinar_details', true );
@@ -582,6 +636,8 @@ class Webinars_Admin {
 			$lesson = get_post($post_id);
 			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
 			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
+			$duration = get_post_meta( $sl, '_lp_duration', true );
+			$duration = (int)$duration;
 			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
 			$start_time = str_replace('/', '-', $start_time);
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
@@ -592,6 +648,7 @@ class Webinars_Admin {
 					'topic'      => $lesson->post_title,
 					'type'       => 5,
 					'start_time' => $start_time,
+					'duration' 	=> $duration,
 					'timezone'   => ! empty( $timezone ) ? $timezone : '',
 					'agenda'     => $lesson->post_content,
 					'settings'   => array(
