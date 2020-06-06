@@ -48,6 +48,9 @@ $users = cstm_video_conferencing_zoom_api_get_user_transients();
 			$count = 1;
 			if ( ! empty( $users->users ) ) {
 				foreach ( $users->users as $user ) {
+					$status = $user->status;
+					// echo 'type: ' . $user->type . '<br/>';
+					if($user->type == 2) $status = $status . ', ' . __('Licensed', 'webinar'); 
 					?>
 					<tr>
 						<td><?php echo $count ++; ?></td>
@@ -58,7 +61,7 @@ $users = cstm_video_conferencing_zoom_api_get_user_transients();
 						<div id="zvc_getting_user_info" style="display:none;">
 							<div class="zvc_getting_user_info_content"></div>
 						</div>
-						<td><?php echo $user->status;  ?></td>
+						<td><?php echo $status;  ?></td>
 					</tr>
 					<?php
 				}

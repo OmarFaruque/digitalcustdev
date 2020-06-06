@@ -220,12 +220,12 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		/*
 		Update User type
 		*/
-		public function updateZoomUserType($hostid){
+		public function updateZoomUserType($hostid, $type){
 			$host_id = $hostid;
 			if($host_id):
 			$curl = curl_init();
 			$data = array();
-			$data['type'] = 2;
+			$data['type'] = $type;
 			$postFields = json_encode($data);
 			curl_setopt_array($curl, array(
 			CURLOPT_URL => "https://api.zoom.us/v2/users/" . $host_id,
@@ -248,9 +248,9 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 			curl_close($curl);
 
 			if ($err) {
-			return "cURL Error #:" . $err;
+				return "cURL Error #:" . $err;
 			} else {
-			return $response;
+				return 'success';
 			}
 		else:
 			return false;

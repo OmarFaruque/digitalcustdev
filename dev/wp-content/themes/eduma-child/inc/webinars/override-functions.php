@@ -1742,9 +1742,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	
 		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
 		$current = $newcreatedtime->format('Y-m-d H:i:s');
+		// echo 'curent time: ' . $current . '<br/>';
 		
 		$thistime = date("Y-m-d H:i:s", strtotime('+14 minutes', strtotime($current)));
-		
+		// echo 'Tjhis time: ' . $thistime . '<br/>';
 		
 
 		$argc = array(
@@ -1779,7 +1780,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		);	
 
 		$webinars = get_posts($argc);
-		// echo '<pre>';
+		// echo 'webinars<pre>';
 		// print_r($webinars);
 		// echo '</pre>';
 
@@ -1794,6 +1795,8 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				$webinar_author = get_post_field( 'post_author', $course[0]->ID );
 				// array_push($allAuthors, $webinar_author);
 				$alternative_host = get_post_meta($swebinars->ID, '_lp_alternative_host', true);
+
+
 				
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
 
@@ -1812,9 +1815,16 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 				
 				dcd_zoom_conference()->enableUserStatistoActive($alternative_host, 'activate');
-				dcd_zoom_conference()->updateZoomUserType($alternative_host);
+				if(get_option( 'zoom_current_active_hoster')){
+					dcd_zoom_conference()->updateZoomUserType(get_option( 'zoom_current_active_hoster'), 1);	
+				}
+
+				$update = dcd_zoom_conference()->updateZoomUserType($alternative_host, 2);
+				if($update == 'success'){
+					update_option( 'zoom_current_active_hoster', $alternative_host);
+				}
 				$token = dcd_zoom_conference()->zoomWebinarStartToken($alternative_host);
-						
+				// echo 'stgart token: ' . $token . '<br/>';		
 				array_push($usreHosts, $alternative_host);
 
 				
@@ -1838,7 +1848,6 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 					}
 				endif;
-
 
 				if(!empty($token)){
 					do_action( 'learn-press/zoom-notification-lession-ten-min-instructor', $swebinars->ID, $post_author_id );

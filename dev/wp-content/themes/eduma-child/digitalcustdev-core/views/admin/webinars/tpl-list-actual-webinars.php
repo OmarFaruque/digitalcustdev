@@ -136,7 +136,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         $userhostid = '';
                         
                         if(get_post_meta( $lesson_id->post_id, '_lp_alternative_host', true )){
-                            echo 'lesson post id: ' . $lesson_id->post_id . '<br/>';
+                            // echo 'lesson post id: ' . $lesson_id->post_id . '<br/>';
                             $userhostid = get_post_meta( $lesson_id->post_id, '_lp_alternative_host', true );
                         }else{
                             $userhostid = get_user_meta( $course[0]->post_author, 'user_zoom_hostid', true );
@@ -144,10 +144,13 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 
                         $key = array_search($userhostid, array_column($users, 'id'));
                         $alterHostStatus = $users[$key]->status;
+                        $hoster_type = $users[$key]->type;
+                        $hoster_type = ($hoster_type == 2) ? __(', Licensed', 'webinar') : '';
                         
                         $alternative_hoster = $users[$key]->email;
                     }
 
+                    
                     
 
                     /*
@@ -164,6 +167,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     }
 
                    
+                  
 
                     $timezone = ! empty( $webinar->timezone ) ? $webinar->timezone : "America/Los_Angeles";
 					$tz       = new DateTimeZone( $timezone );
@@ -225,11 +229,11 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                             </div>
                         </td>
                         <td class="alternative_hoster">
-                            <?php echo ($alternative_hoster) ? $alternative_hoster . ' ('. ucfirst($alterHostStatus) . ')' : '-'; ?>
-                            <?php if($alternative_hoster): ?>
+                            <?php echo ($alternative_hoster) ? $alternative_hoster . ' ('. ucfirst($alterHostStatus) .$hoster_type.')' : '-'; ?>
+                            <?php if($alternative_hoster && isset($webinar->start_url)): ?>
                                 <div class="row-actions s-webinar">
                                     <span class="view">
-                                        <a href="<?php  echo ! empty( $webinar->start_url ) ? $webinar->start_url : $webinar->join_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a>
+                                        <a href="<?php  echo $webinar->start_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a>
                                     </span>
                                 </div>
                             <?php endif; ?>
