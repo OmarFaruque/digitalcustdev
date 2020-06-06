@@ -1742,10 +1742,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	
 		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
 		$current = $newcreatedtime->format('Y-m-d H:i:s');
-		// echo 'curent time: ' . $current . '<br/>';
+		echo 'curent time: ' . $current . '<br/>';
 		
 		$thistime = date("Y-m-d H:i:s", strtotime('+14 minutes', strtotime($current)));
-		// echo 'Tjhis time: ' . $thistime . '<br/>';
+		echo 'Tjhis time: ' . $thistime . '<br/>';
 		
 
 		$argc = array(
@@ -1772,10 +1772,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					'key' => '_webinar_ID',
 					'compare' => 'EXISTS'
 				),
-				array(
-					'key' => 'email_send_status_10min',
-					'compare' => 'NOT EXISTS'
-				)
+				// array(
+				// 	'key' => 'email_send_status_10min',
+				// 	'compare' => 'NOT EXISTS'
+				// )
 			)
 		);	
 
@@ -1801,7 +1801,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
 
 				$usreHosts = array();
-				$token = '';
+				$start_url = '';
 				// foreach($allAuthors as $sauthor):
 				// 	if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
 				// 		dcd_zoom_conference()->enableUserStatistoActive($sauthor, 'activate');
@@ -1823,8 +1823,19 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				if($update == 'success'){
 					update_option( 'zoom_current_active_hoster', $alternative_host);
 				}
-				$token = dcd_zoom_conference()->zoomWebinarStartToken($alternative_host);
+				$master_host = LP()->settings->get( 'zoom_master_host' );
+				$token = dcd_zoom_conference()->zoomWebinarStartToken($master_host);
+				$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($swebinars->ID);
+				$webinarDetails = json_decode($webinarDetails);
+
+				// echo 'webinar details <pre>';
+				// print_r($webinarDetails);
+				// echo '</pre>';
+
+
 				// echo 'stgart token: ' . $token . '<br/>';		
+				update_post_meta($swebinars->ID, 'start_url', $webinarDetails->start_url);
+				update_post_meta($swebinars->ID, 'master_token', $token);
 				array_push($usreHosts, $alternative_host);
 
 				

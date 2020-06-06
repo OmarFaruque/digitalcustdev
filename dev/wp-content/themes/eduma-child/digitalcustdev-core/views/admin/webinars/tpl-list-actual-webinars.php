@@ -28,7 +28,6 @@ $webinars         = false;
 if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 	$webinars = $decoded_meetings->webinars;
 }else{
-    
     $host_id = $users[0]->id;
     $encoded_meetings = dcd_zoom_conference()->listWebinar( $host_id );
     $decoded_meetings = json_decode( $encoded_meetings );
@@ -87,6 +86,18 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 
                     $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar->id );
                     $lesson_id = $wpdb->get_row( $lesson_id );
+                    $start_url = get_post_meta($lesson_id->post_id, 'start_url', true);
+                    
+                    $master_token = get_post_meta($lesson_id->post_id, 'master_token', true);
+                    $master_url = '';
+                    if($master_token){
+                        $master_token = json_decode($master_token);
+                        $master_token = $master_token->token;
+                        $urlexpload = explode('?', $start_url);
+                        $master_url = $urlexpload[0] . '?zak='.$master_token;
+
+                    }
+                    
                     $course = learn_press_get_item_courses( $lesson_id->post_id );
 
                     // change zoom status
@@ -222,18 +233,20 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                                     echo '<br/>('.$hosterMail.')';
                                 }
                             ?>
+                            <?php if(!empty($master_url)): ?>
                             <div class="row-actions s-webinar">
                                 <span class="view">
-                                    <a href="<?php  echo ! empty( $webinar->start_url ) ? $webinar->start_url : $webinar->join_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a>
+                                    <a href="<?php  echo ! empty( $master_url ) ? $master_url : $webinar->join_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a>
                                 </span>
                             </div>
+                            <?php endif; ?>
                         </td>
                         <td class="alternative_hoster">
                             <?php echo ($alternative_hoster) ? $alternative_hoster . ' ('. ucfirst($alterHostStatus) .$hoster_type.')' : '-'; ?>
-                            <?php if($alternative_hoster && isset($webinar->start_url)): ?>
+                            <?php if($alternative_hoster && $start_url): ?>
                                 <div class="row-actions s-webinar">
                                     <span class="view">
-                                        <a href="<?php  echo $webinar->start_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a>
+                                        <a href="<?php echo $start_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Meeting', 'video-conferencing-with-zoom-api' ); ?></a>
                                     </span>
                                 </div>
                             <?php endif; ?>
