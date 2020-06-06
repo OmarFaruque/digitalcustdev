@@ -639,6 +639,12 @@ class Webinars_Admin {
 			$duration = get_post_meta( $sl, '_lp_duration', true );
 			$duration = (int)$duration;
 			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
+			
+			// UPdate alternative host
+			$authorhostid = get_user_meta($author_id, 'user_zoom_hostid', true);
+			update_post_meta( $post_id, '_lp_alternative_host', $authorhostid );
+
+
 			$start_time = str_replace('/', '-', $start_time);
 			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
 

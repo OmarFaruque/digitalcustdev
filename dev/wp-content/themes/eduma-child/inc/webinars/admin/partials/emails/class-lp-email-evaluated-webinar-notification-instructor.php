@@ -136,7 +136,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_Instructor' ) ) {
 
 				// $this->recipient = $author_obj->data->user_email;
 				$this->recipient = $alternative_hoster;
-				// echo 'this get receipent: ' . $this->get_recipient() . '<br/>';
+				echo 'this get receipent: ' . $this->get_recipient() . '<br/>';
 				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 			// endforeach;
 				return $return;

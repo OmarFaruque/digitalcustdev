@@ -120,9 +120,16 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Ten_User' ) ) {
 			);
 				
 				$this->variables = $this->data_to_variables( $this->object );
-				$this->recipient = $sS->email;
-				// $this->recipient = 'ronymaha@gmail.com';
-				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+
+				$userbymail = get_user_by('email', $sS->email);
+				$return = false;
+				if(!get_user_meta($userbymail->ID, 'mail_ten_min_user_status' . $post_id, true)){
+					$this->recipient = $sS->email;
+					$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+					if($return){
+						update_user_meta( $userbymail->ID, 'mail_ten_min_user_status' . $post_id, 1 );
+					}
+				}
 			endforeach;
 			return $return;
 		}

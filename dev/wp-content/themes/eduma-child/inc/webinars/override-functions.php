@@ -1698,7 +1698,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					do_action( 'learn-press/zoom-notification-lession-user', $swebinars->ID, $post_author_id );
 					do_action( 'learn-press/zoom-notification-lession-admin', $swebinars->ID, $post_author_id );
 								
-			endforeach;
+			endforeach; //foreach($webinars as $swebinars):
 		endif;
 
 
@@ -1743,7 +1743,8 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
 		$current = $newcreatedtime->format('Y-m-d H:i:s');
 		
-		$thistime = date("Y-m-d H:i:s", strtotime('+13 minutes', strtotime($current)));
+		$thistime = date("Y-m-d H:i:s", strtotime('+14 minutes', strtotime($current)));
+		
 		
 
 		$argc = array(
@@ -1778,6 +1779,9 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		);	
 
 		$webinars = get_posts($argc);
+		// echo '<pre>';
+		// print_r($webinars);
+		// echo '</pre>';
 
 
 		if(!empty($webinars)):
@@ -1789,8 +1793,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				$allAuthors = array();
 				$webinar_author = get_post_field( 'post_author', $course[0]->ID );
 				// array_push($allAuthors, $webinar_author);
-				$alternative_host = get_post_meta($swebinars, '_lp_alternative_host', true);
-				
+				$alternative_host = get_post_meta($swebinars->ID, '_lp_alternative_host', true);
 				
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
 
@@ -1815,6 +1818,9 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				array_push($usreHosts, $alternative_host);
 
 				
+				// echo 'HOsts<pre>';
+				// print_r($usreHosts);
+				// echo '</pre>';
 
 				if(count($usreHosts) > 0):
 					// echo 'inside user host: ';
@@ -1833,6 +1839,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					}
 				endif;
 
+
 				if(!empty($token)){
 					do_action( 'learn-press/zoom-notification-lession-ten-min-instructor', $swebinars->ID, $post_author_id );
 					do_action( 'learn-press/zoom-notification-lession-ten-user', $swebinars->ID, $post_author_id );
@@ -1846,7 +1853,6 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	add_filter('cron_schedules', 'my_cron_schedules');
 	add_action('wp', 'addScheduleEventCallbackForWebinar' );
 	add_action('webinar_10mbefore', 'callbackScheduleEventForWebinarFunction');
-	add_action('callbackScheduleEventForWebinarOnTenMin', 'callbackScheduleEventForWebinarOnTenMinFunction');
 
 
 

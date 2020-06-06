@@ -95,9 +95,16 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Instructor' ) ) {
 			$courses = learn_press_get_item_courses( $post_id );
 			$course  = get_post( $courses[0]->ID );
 			$co_teachers = get_post_meta( $courses[0]->ID, '_lp_co_teacher', false );
+
+			$author_id = get_post_field( 'post_author', $courses[0]->ID );
+			array_push($co_teachers, $author_id);
+
+
 			if(!$co_teachers){
 				return false;
 			}
+
+
 			$zoom_api_meeting_link = get_post_meta( $post_id, '_webinar_details', true );
 
 			$this->object    = $this->get_common_template_data(

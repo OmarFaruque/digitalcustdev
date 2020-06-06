@@ -131,8 +131,17 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Ten_Instructor' ) ) {
 					$alternative_hoster = $course_author->data->user_email;
 				}
 
-				$this->recipient = $alternative_hoster;
-				$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+				$userbymail = get_user_by('email', $alternative_hoster);
+
+				$return = false;
+				
+				if(!get_user_meta($userbymail->ID, 'mail_ten_min_status' . $post_id, true)){
+					$this->recipient = $alternative_hoster;
+					$return = $this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+					if($return){
+						update_user_meta( $userbymail->ID, 'mail_ten_min_status' . $post_id, 1 );
+					}
+				}
 			// endforeach;
 
 			return $return;
