@@ -195,7 +195,7 @@ if ( !function_exists( 'thim_item_meta_duration' ) ) {
 	function thim_item_meta_duration( $item ) {
 		$duration = $item->get_duration();
 		$item_id = $item->get_id();
-		$date = get_post_meta( $item_id, '_lp_webinar_when', true );
+		$date = get_post_meta( $item_id, '_lp_webinar_when_gmt', true );
 		
 		$date = str_replace('/', '-', $date);
 		
@@ -218,7 +218,7 @@ if ( !function_exists( 'thim_item_meta_duration' ) ) {
 				if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y', strtotime($date)) .' in '.date('H:i', strtotime($date)).'   '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
 				if($progress  >= 0 && $progress <= $duration->get() ) $metaDuration = __('In Progress', 'webinars');
 				if(strtotime($datewithDuration) < strtotime($wnewtime) ) $metaDuration = __('Passed', 'webinars');
-				echo '<span class="meta hh duration">' . $metaDuration . '</span>';
+				echo '<span class="omar meta hh duration">' . $metaDuration . '</span>';
 				
 			}else{
 				echo '<span class="meta duration">' . $duration->to_timer( $format, true ) . '</span>';

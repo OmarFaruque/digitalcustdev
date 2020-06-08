@@ -171,9 +171,12 @@ class Admin_DigitalCustDev_Webinar {
 			
 			$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($webinar_id);
 			update_post_meta($swebinars->ID, 'start_url', $webinarDetails->start_url);
+
 			// update_option( '_zvc_user_lists', '' );
 			delete_transient( '_zvc_user_lists' );
 		}
+
+
 
 		$postData = array(
 			'topic'      => filter_input( INPUT_POST, 'meetingTopic' ),
@@ -201,12 +204,11 @@ class Admin_DigitalCustDev_Webinar {
 				dcd_zoom_conference()->enableUserStatistoActive(get_option( 'zoom_current_active_hoster'), 'deactivate');
 			}
 
+			$statusChange = dcd_zoom_conference()->enableUserStatistoActive(filter_input( INPUT_POST, 'alternative_host_ids' ), 'activate');
 			$update = dcd_zoom_conference()->updateZoomUserType(filter_input( INPUT_POST, 'alternative_host_ids' ), 2);
-			if($update == 'success'){
+			if($update == 'success'){	
 				update_option( 'zoom_current_active_hoster', filter_input( INPUT_POST, 'alternative_host_ids' ));
-				dcd_zoom_conference()->enableUserStatistoActive(filter_input( INPUT_POST, 'alternative_host_ids' ), 'deactivate');
 				// $token = dcd_zoom_conference()->zoomWebinarStartToken(filter_input( INPUT_POST, 'alternative_host_ids' ));
-				
 			}
 		}
 

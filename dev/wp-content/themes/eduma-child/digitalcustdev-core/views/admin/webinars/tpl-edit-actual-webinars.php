@@ -59,6 +59,8 @@ if ( ! empty( $option_alternative_hosts ) ) {
 
 $start_url = $webinar_info->start_url;
 
+// echo 'start url: ' . $start_url . '<br/>';
+
 
 // Creating WP Option for Meeting Password, to verify from front-end without making calls to API.
 $password = $webinar_info->password;
