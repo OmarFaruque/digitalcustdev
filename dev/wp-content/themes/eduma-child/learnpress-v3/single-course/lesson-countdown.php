@@ -122,10 +122,15 @@ if ( class_exists( 'WPEMS' ) ) {
         // echo 'post id: ' . $item->get_id() . '<br/>';
         update_post_meta($item->get_id(), 'zoom_status', 'active');
         $course = learn_press_get_item_courses( $item->get_id() );
-		$allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+        $allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+        
+        // echo '<pre>';
+        // print_r($allAuthors);
+        // echo '</pre>';
+        // echo 'current user id: ' . get_current_user_id() . '<br/>';
 				
 		$webinar_author = get_post_field( 'post_author', $course[0]->ID );
-        array_push($allAuthors, $webinar_author);
+        // array_push($allAuthors, $webinar_author);
         
         $webinar = dcd_zoom_conference()->getZoomWebinarDetails($item->get_id());
         $webinar = json_decode($webinar);
@@ -139,19 +144,32 @@ if ( class_exists( 'WPEMS' ) ) {
 
         $join_url = '';
         $join_text = '';
-        if(in_array(get_current_user_id(), $allAuthors)){
+        $errorMsg = '';
+        if(get_current_user_id() == $webinar_author){
             $join_url = $webinar->start_url;
             $join_text = __('Start', 'webinar');
-        }else{
+        }
+        elseif(in_array(get_current_user_id(), $allAuthors)){
+            $errorMsg = __('Sorry, but you are not a hoster of the lesson..', 'webinar');
+        }
+        else{
             $join_url = $webinar->join_url;
             $join_text = __('Join', 'webinar');
         }
+
+        
         ?>
          <div class="entry-countdown z-index-1">
         <div id="joinbutton" class="text-center">
+            <?php if(empty($errorMsg)): ?>
             <div class="button-inner">
                 <a target="_blank" href="<?php echo $join_url; ?>" class="btn font-30 btn-large btn-primary text-white"><?php echo $join_text; ?></a>
             </div>
+            <?php else: ?>
+                <div class="errorMsg">
+                    <h3><?php echo $errorMsg; ?></h3>
+                </div>
+            <?php endif; ?>
         </div>
         </div>
     <?php }

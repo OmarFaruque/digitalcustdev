@@ -43,7 +43,7 @@ $webinarBeforeTen = date('Y-m-d H:i:s', strtotime('-10 minutes', strtotime($webi
 // $meetingInfo = json_decode($meetingInfo);
 // return dcd_zoom_conference()->sendRequest( 'meetings/'.$meetingInfo->uuid.'/recordings', array(), "GET" );
 // echo 'Recorded Vide <br/><pre>';
-// print_r($meetingInfo);
+// print_r($webinar_info);
 // echo '</pre>';
 
 
@@ -54,6 +54,11 @@ $option_alternative_hosts  = $webinar_info->settings->alternative_hosts ? $webin
 if ( ! empty( $option_alternative_hosts ) ) {
 	$option_alternative_hosts = explode( ', ', $option_alternative_hosts );
 }
+
+
+
+$start_url = $webinar_info->start_url;
+
 
 // Creating WP Option for Meeting Password, to verify from front-end without making calls to API.
 $password = $webinar_info->password;
@@ -202,6 +207,8 @@ update_option( $option, $password, true );
 			<tr>
 				<th scope="row"><label for="settings_alternative_hosts"><?php _e( 'Alternative Hosts', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
+					<div class="alternativeHosterWrap">
+					<div class="pull-left w-50">
 					<select name="alternative_host_ids" class="zvc-hacking-select">
 						<option value=""><?php _e( 'Select a Host', 'video-conferencing-with-zoom-api' ); ?></option>
 						<?php
@@ -217,8 +224,23 @@ update_option( $option, $password, true );
 							<option value="<?php echo $user->id; ?>" <?php echo $user_found ? 'selected' : null; ?>><?php echo $user->first_name . ' ( ' . $user->email . ' )'; ?></option>
 						<?php endforeach; ?>
 					</select>
+					</div>
+					<div class="pull-left w-50">
+						<div class="form-group">
+							<label for="actiontozoom">
+							<input type="checkbox" name="actiontozoom" value="1" id="actiontozoom">
+							<?php _e('Action to Zoom ?', 'webinar'); ?></label>
+						</div>
+					</div>
+					</div>
 					<p class="description" id="settings_alternative_hosts"><?php _e( 'Alternative hosts IDs. Multiple value separated by comma.', 'video-conferencing-with-zoom-api' ); ?></p>
-					<p class="description" id="settings_alternative_hosts"><strong><?php _e( 'This option is only available for a Licensed level Zoom account user. Check the Prerequisites for this feature <a target="_blank" href="https://support.zoom.us/hc/en-us/articles/208220166-Alternative-host">here</a>', 'video-conferencing-with-zoom-api' ); ?></strong></p>
+					<p class="description" id="settings_alternative_hosts"><strong><?php _e( 'This option is only available for a Licensed level Zoom account user. Check the Prerequisites for this feature <a target="_blank" href="https://support.zoom.us/hc/en-us/articles/208220166-Alternative-host">here</a>', 'video-conferencing-with-zoom-api' ); ?></strong>
+						<?php if($start_url): ?>
+                                    <br/><span class="view">
+                                        <a href="<?php echo $start_url; ?>" rel="permalink" target="_blank"><?php  _e( 'Start Webinar', 'video-conferencing-with-zoom-api' ); ?></a>
+                                    </span>
+                            <?php endif; ?>
+					</p>
 
 					<!-- Show start link -->
 					<p>

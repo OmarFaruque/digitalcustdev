@@ -1742,10 +1742,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	
 		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
 		$current = $newcreatedtime->format('Y-m-d H:i:s');
-		echo 'curent time: ' . $current . '<br/>';
+		// echo 'curent time: ' . $current . '<br/>';
 		
 		$thistime = date("Y-m-d H:i:s", strtotime('+14 minutes', strtotime($current)));
-		echo 'Tjhis time: ' . $thistime . '<br/>';
+		// echo 'Tjhis time: ' . $thistime . '<br/>';
 		
 
 		$argc = array(

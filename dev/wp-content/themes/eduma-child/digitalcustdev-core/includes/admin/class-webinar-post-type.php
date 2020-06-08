@@ -156,11 +156,23 @@ class Admin_DigitalCustDev_Webinar {
 		check_admin_referer( '_zoom_update_webinar_nonce_action', '_zoom_update_webinar_nonce' );
 
 		$webinar_id = filter_input( INPUT_POST, 'webinar_id' );
+		// echo 'webinar id: ' . $webinar_id . '<br/>';
 
 		$lesson_id = filter_input( INPUT_POST, 'lesson_id' );
 
+		$actiontozoom = filter_input( INPUT_POST, 'actiontozoom' );
+
+		// echo 'action to zoom: ' . $actiontozoom . '<br/>';
+		
+
 		if(isset($_POST['alternative_host_ids'])){
+			// echo 'st alternative host';
 			update_post_meta( $lesson_id, '_lp_alternative_host', $_POST['alternative_host_ids'] );
+			
+			$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($webinar_id);
+			update_post_meta($swebinars->ID, 'start_url', $webinarDetails->start_url);
+			// update_option( '_zvc_user_lists', '' );
+			delete_transient( '_zvc_user_lists' );
 		}
 
 		$postData = array(
@@ -180,6 +192,24 @@ class Admin_DigitalCustDev_Webinar {
 				'auto_recording'    => filter_input( INPUT_POST, 'option_auto_recording' )
 			)
 		);
+
+		if($actiontozoom){
+			$postData['settings']['alternative_hosts'] = filter_input( INPUT_POST, 'alternative_host_ids' );
+
+			if(get_option( 'zoom_current_active_hoster')){
+				dcd_zoom_conference()->updateZoomUserType(get_option( 'zoom_current_active_hoster'), 1);	
+				dcd_zoom_conference()->enableUserStatistoActive(get_option( 'zoom_current_active_hoster'), 'deactivate');
+			}
+
+			$update = dcd_zoom_conference()->updateZoomUserType(filter_input( INPUT_POST, 'alternative_host_ids' ), 2);
+			if($update == 'success'){
+				update_option( 'zoom_current_active_hoster', filter_input( INPUT_POST, 'alternative_host_ids' ));
+				dcd_zoom_conference()->enableUserStatistoActive(filter_input( INPUT_POST, 'alternative_host_ids' ), 'deactivate');
+				// $token = dcd_zoom_conference()->zoomWebinarStartToken(filter_input( INPUT_POST, 'alternative_host_ids' ));
+				
+			}
+		}
+
 
 		//Updated
 		$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );

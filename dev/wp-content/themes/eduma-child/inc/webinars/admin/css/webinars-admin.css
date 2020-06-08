@@ -48,3 +48,18 @@ table#zvc_meetings_list_table_customOrder tbody > tr.zoom_active {
 body.post-type-lp_lesson tbody#the-list tr.syncronized td.meta-zoom_date {
     background: #00800024;
 }
+.alternativeHosterWrap {
+    display: block;
+    overflow: hidden;
+}
+.alternativeHosterWrap > div {
+    width: 50%;
+}
+.alternativeHosterWrap > div:first-child span.select2.select2-container {
+    width: 100% !important;
+}
+.alternativeHosterWrap > div:last-child label {
+    margin-left: 15px;
+    padding: 4px;
+    display: block;
+}
