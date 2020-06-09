@@ -12,10 +12,24 @@ if ( class_exists( 'WPEMS' ) ) {
 
     $time   = date( 'Y-m-d H:i:s', strtotime( $change_sdate ) );
     
-    $timezone = get_post_meta($item->get_id(), '_lp_timezone', true);
+    // $timezone = get_post_meta($item->get_id(), '_lp_timezone', true);
+
+    // echo '<pre>';
+    // print_r($_COOKIE);
+    // echo '</pre>';
+
+    $browserTimezone = 'UTC';
+    if(isset($_COOKIE['wb_timezone'])) $browserTimezone = new DateTimeZone($_COOKIE['wb_timezone']);
+
+    
+    $timezone = 'UTC';
     $newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
     $now = $newcreatedtime->format('Y-m-d H:i:s');
-    // echo 'now : ' .  $now . '<br/>';
+    $offset = $browserTimezone->getOffset($newcreatedtime);
+    $now = date('Y-m-d H:i:s', strtotime($now) + $offset);
+    
+    $time = date('Y-m-d H:i:s', strtotime($time) + $offset);
+    
 						
     $linkvisiable = date( 'Y-m-d H:i', strtotime('-10 minutes', strtotime( $time )) );
 
@@ -26,27 +40,32 @@ if ( class_exists( 'WPEMS' ) ) {
 
     // echo 'end time : ' . date('Y-m-d H:i:s', $endtime) . '<br/>';
 
-
-    // echo 'current time: ' . $linkvisiable . '<br/>';
-    // echo 'Start time: ' . $time . '<br/>';
-    
-
-
-    
     $nextEventTime = wb_get_next_cron_time('webinar_10mbefore');
+    
+    // Thumb Image
+    $course = learn_press_get_item_courses( $item->get_id() );
+    $thumbImgSrc = (has_post_thumbnail($course[0]->ID)) ? wp_get_attachment_url( get_post_thumbnail_id($course[0]->ID) ) : get_stylesheet_directory_uri() . '/assets/images/presentaion-1.jpg';
 
 
-    if( $now > $linkvisiable && $now < date('Y-m-d H:i', $endtime)){
+    if( $now < $linkvisiable && $linkvisiable < date('Y-m-d H:i', $endtime)){
         update_post_meta($item->get_id(), 'zoom_status', 'inactive');
+        $time = date('Y-m-d H:i:s', strtotime('-3 hours', strtotime($time)));
+        $date = new DateTime(date('Y-m-d H:i:s', strtotime($time)));
+        
         ?>
         <div class="tp-event-top single_lp_lesson">
 		    <div class="entry-thumbnail">
-				<img width="1000" height="667" src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/presentaion-1.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="https://digitalcustdev.ru/dev/wp-content/uploads/2016/03/presentaion-1.jpg 1000w, https://digitalcustdev.ru/dev/wp-content/uploads/2016/03/presentaion-1-768x512.jpg 768w, https://digitalcustdev.ru/dev/wp-content/uploads/2016/03/presentaion-1-600x400.jpg 600w" sizes="(max-width: 1000px) 100vw, 1000px">			    
+				<img width="1000" height="667" 
+                src="<?php echo $thumbImgSrc; ?>" 
+                class="attachment-post-thumbnail size-post-thumbnail wp-post-image" 
+                alt="" srcset="<?php echo $thumbImgSrc; ?>" sizes="(max-width: 1000px) 100vw, 1000px">			    
 			</div>
             <div class="entry-countdown">
                 <div class="tp_event_counter"
-                    data-time="<?php echo esc_attr(date('M j, Y H:i:s O', strtotime($time))); ?>">
+                    data-time="<?php echo esc_attr($date->format('M j, Y H:i:s O')); ?>">
                 </div>
+               
+                
             </div> 
         </div>
         <?php
@@ -63,7 +82,6 @@ if ( class_exists( 'WPEMS' ) ) {
             
             
             // Deactivated author
-            $course = learn_press_get_item_courses( $item->get_id() );
             $allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
             
             $price          = get_post_meta($course[0]->ID, '_lp_price', true);

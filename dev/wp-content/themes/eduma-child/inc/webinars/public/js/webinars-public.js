@@ -547,6 +547,8 @@ jQuery(document).on('click', '.e-tab.active button#insert-media-button.insert-me
 /* Lession Media End  */
 
 
+
+
 });  // Document ready end
 
 function mobile_switch(obj){
@@ -595,4 +597,8 @@ jQuery(window).load(function(){
     newmint = ("0" + newmint).slice(-2)
 	cookiedate = newdate.getFullYear() + '-' + month + '-' + newgetdate + ' '+ newdate.getHours() + ':' + newmint
 	document.cookie = "nowdate=" + cookiedate;
+
+	// Store timezone
+	document.cookie = "wb_timezone=" + Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 });

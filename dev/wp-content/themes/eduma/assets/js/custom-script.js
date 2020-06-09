@@ -1682,6 +1682,7 @@ var thim_scroll = true;
         // countdown each
         var counts = $('.tp_event_counter');
         for (var i = 0; i < counts.length; i++) {
+            console.log('countruer 2');
             var time = $(counts[i]).attr('data-time');
             time = new Date(time);
 

@@ -213,17 +213,20 @@ if ( !function_exists( 'thim_item_meta_duration' ) ) {
 			);
 
 			if($date){
+				// echo 'inside 1 <br/>';
 				$metaDuration = '';
 				// if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y H:i', strtotime($date)) .' & '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
-				if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y', strtotime($date)) .' in '.date('H:i', strtotime($date)).'   '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
+				if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y', strtotime($date)) .' in '.date('H:i', strtotime($date)).' (GMT)   '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
 				if($progress  >= 0 && $progress <= $duration->get() ) $metaDuration = __('In Progress', 'webinars');
 				if(strtotime($datewithDuration) < strtotime($wnewtime) ) $metaDuration = __('Passed', 'webinars');
 				echo '<span class="omar meta hh duration">' . $metaDuration . '</span>';
 				
 			}else{
+				// echo 'inside 2 <br/>';
 				echo '<span class="meta duration">' . $duration->to_timer( $format, true ) . '</span>';
 			}
 		} elseif ( is_string( $duration ) && strlen( $duration ) ) {
+			// echo 'inside 3 <br/>';
 			echo '<span class="meta dd duration">' . $duration . '</span>';
 		}
 	}
@@ -2078,6 +2081,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 	
 
+		
 		$offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
 	
 		return $offset;

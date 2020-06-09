@@ -1747,7 +1747,9 @@ var woof_js_after_ajax_done;
 	jQuery(document).ready(function () {
 		// countdown each
 		var counts = $('.tp_event_counter');
+		
 		for (var i = 0; i < counts.length; i++) {
+			console.log('this counter');
 			var time = $(counts[i]).attr('data-time');
 			time = new Date(time);
 
