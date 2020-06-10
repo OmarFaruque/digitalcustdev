@@ -195,15 +195,30 @@ if ( !function_exists( 'thim_item_meta_duration' ) ) {
 	function thim_item_meta_duration( $item ) {
 		$duration = $item->get_duration();
 		$item_id = $item->get_id();
-		$date = get_post_meta( $item_id, '_lp_webinar_when_gmt', true );
+		$date = get_post_meta( $item_id, '_lp_webinar_when', true );
 		
 		$date = str_replace('/', '-', $date);
 		
 		$datewithDuration = date('Y-m-d h:i:s', strtotime($date) + $duration->get() );
-		$wnewtime = date('Y-m-d h:i:s a', time());
+		
+		
+		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
+		$wnewtime = $newcreatedtime->format('Y-m-d h:i:s');
+
+		// $wnewtime = date('Y-m-d h:i:s a', time());
 		
 		$progress  = strtotime($datewithDuration) - strtotime($wnewtime);
 		
+		$userTimezone = get_post_meta($item_id, '_lp_timezone', true);
+		$browserTimezone = new DateTimeZone($userTimezone);
+
+		$utcTime = new DateTime("now", new DateTimeZone( 'UTC' ) );
+		$offset = $browserTimezone->getOffset($utcTime);
+		$offsetHours = $offset / 3600;
+		$offsetHours = number_format($offsetHours, 2);
+		$offsetHours = ($offsetHours > 0) ? '+'.$offsetHours : '-'.$offsetHours;
+
+
 		if ( is_a( $duration, 'LP_Duration' ) && $duration->get() ) {
 			$format = array(
 				'day'    => _x( '%s day', 'duration', 'eduma' ),
@@ -216,7 +231,7 @@ if ( !function_exists( 'thim_item_meta_duration' ) ) {
 				// echo 'inside 1 <br/>';
 				$metaDuration = '';
 				// if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y H:i', strtotime($date)) .' & '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
-				if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y', strtotime($date)) .' in '.date('H:i', strtotime($date)).' (GMT)   '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
+				if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y', strtotime($date)) .' in '.date('H:i', strtotime($date)).' (GMT'.$offsetHours.')   '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
 				if($progress  >= 0 && $progress <= $duration->get() ) $metaDuration = __('In Progress', 'webinars');
 				if(strtotime($datewithDuration) < strtotime($wnewtime) ) $metaDuration = __('Passed', 'webinars');
 				echo '<span class="omar meta hh duration">' . $metaDuration . '</span>';

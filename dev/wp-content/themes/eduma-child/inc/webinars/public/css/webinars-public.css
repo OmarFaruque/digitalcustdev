@@ -739,3 +739,51 @@ body.page-frontend-editor p#wplink-link-existing-content,
 body.page-frontend-editor div#search-panel {
   display: none;
 }
+
+.tp-event-top .entry-countdown #lesson_zoom_counter .countdown-section {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 15px;
+  padding: 0;
+  text-align: center;
+}
+
+.tp-event-top .entry-countdown #lesson_zoom_counter .countdown-section .countdown-amount {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 50px;
+  height: 50px;
+  color: #fff;
+  margin: 14px 0 0;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+.tp-event-top .entry-countdown #lesson_zoom_counter {
+  background: 0 0;
+  border: 0;
+  padding: 0;
+  text-align: center;
+}
+.tp-event-top .entry-countdown #lesson_zoom_counter .countdown-row .countdown-section .countdown-period {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  display: block;
+  width: 100%;
+}
+.tp-event-top .entry-countdown #lesson_zoom_counter .countdown-row {
+  overflow: hidden;
+  text-align: center;
+  display: inline-block;
+  margin: auto;
+  padding: 0;
+  width: auto;
+  clear: inherit;
+}

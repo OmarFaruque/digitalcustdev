@@ -4,6 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
+
+// echo 'from option: ' . get_option('gmt_offset') . '<br/>';
+
+
 if ( class_exists( 'WPEMS' ) ) {
     $item = LP_Global::course_item();
     $start_time = get_post_meta( $item->get_id(), '_lp_webinar_when_gmt', true );
@@ -18,6 +22,7 @@ if ( class_exists( 'WPEMS' ) ) {
     // print_r($_COOKIE);
     // echo '</pre>';
 
+
     $browserTimezone = 'UTC';
     if(isset($_COOKIE['wb_timezone'])) $browserTimezone = new DateTimeZone($_COOKIE['wb_timezone']);
 
@@ -25,10 +30,10 @@ if ( class_exists( 'WPEMS' ) ) {
     $timezone = 'UTC';
     $newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
     $now = $newcreatedtime->format('Y-m-d H:i:s');
-    $offset = $browserTimezone->getOffset($newcreatedtime);
-    $now = date('Y-m-d H:i:s', strtotime($now) + $offset);
     
-    $time = date('Y-m-d H:i:s', strtotime($time) + $offset);
+    // $offset = $browserTimezone->getOffset($newcreatedtime);
+    // $now = date('Y-m-d H:i:s', strtotime($now) + $offset);
+    
     
 						
     $linkvisiable = date( 'Y-m-d H:i', strtotime('-10 minutes', strtotime( $time )) );
@@ -49,7 +54,7 @@ if ( class_exists( 'WPEMS' ) ) {
 
     if( $now < $linkvisiable && $linkvisiable < date('Y-m-d H:i', $endtime)){
         update_post_meta($item->get_id(), 'zoom_status', 'inactive');
-        $time = date('Y-m-d H:i:s', strtotime('-3 hours', strtotime($time)));
+        // $time = date('Y-m-d H:i:s', strtotime('-3 hours', strtotime($time)));
         $date = new DateTime(date('Y-m-d H:i:s', strtotime($time)));
         
         ?>
@@ -61,11 +66,12 @@ if ( class_exists( 'WPEMS' ) ) {
                 alt="" srcset="<?php echo $thumbImgSrc; ?>" sizes="(max-width: 1000px) 100vw, 1000px">			    
 			</div>
             <div class="entry-countdown">
-                <div class="tp_event_counter"
-                    data-time="<?php echo esc_attr($date->format('M j, Y H:i:s O')); ?>">
-                </div>
-               
-                
+                <!-- <div class="tp_event_counter"
+                    data-time="<?php //echo esc_attr($date->format('M j, Y H:i:s O')); ?>">
+                </div>  -->
+
+                <div id="lesson_zoom_counter" class="text-white" data-time="<?php echo esc_attr($date->format('M j, Y H:i:s')); ?>">
+                </div> 
             </div> 
         </div>
         <?php
