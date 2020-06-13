@@ -167,7 +167,7 @@ class Webinars_Admin {
 	}
 
 	public function tetF(){
-		$host_id = LP()->settings->get( 'zoom_master_host' );
+		$host_id = get_option('zoom_master_host');
 		echo 'testf omar';
 		// echo '<pre>'; print_r( _get_cron_array() ); echo '</pre>';
 		$sl = 11417;
@@ -250,8 +250,92 @@ class Webinars_Admin {
 		remove_submenu_page( 'zoom-video-conferencing', 'zoom-video-conferencing-list-users' );
 		remove_submenu_page( 'themes.php', 'customize.php?return=/dev/wp-admin/admin.php?page=zoom-video-conferencing-list-users' );
 		remove_submenu_page( 'themes.php', 'admin.php?page=zoom-video-conferencing-list-users' );
+
+		
+		remove_submenu_page( 'zoom-video-conferencing', 'zoom-video-conferencing-settings' );
+		remove_submenu_page( 'themes.php', 'customize.php?return=/dev/wp-admin/admin.php?page=zoom-video-conferencing-settings' );
+		remove_submenu_page( 'themes.php', 'admin.php?page=zoom-video-conferencing-settings' );
 		
 		add_submenu_page( 'zoom-video-conferencing', 'Users', __( 'Users', 'video-conferencing-with-zoom-api' ), 'manage_options', 'cst-zoom-video-conferencing-list-users', array( __CLASS__, 'list_users' ) );
+
+		
+		add_submenu_page( 'zoom-video-conferencing', 'Settings', __( 'Settings', 'video-conferencing-with-zoom-api' ), 'manage_options', 'cst-zoom-video-conferencing-settings', array( __CLASS__, 'zoom_video_conference_api_zoom_settings' ) );
+	}
+
+
+
+	/*
+	* Override zoom settings page from child-theme
+	*/	
+	public function zoom_video_conference_api_zoom_settings() {
+		wp_enqueue_script( 'video-conferencing-with-zoom-api-js' );
+		wp_enqueue_style( 'video-conferencing-with-zoom-api' );
+
+		if ( isset( $_POST['save_zoom_settings'] ) ) {
+			//Nonce
+			check_admin_referer( '_zoom_settings_update_nonce_action', '_zoom_settings_nonce' );
+			$zoom_api_key                   = filter_input( INPUT_POST, 'zoom_api_key' );
+			$zoom_api_secret                = filter_input( INPUT_POST, 'zoom_api_secret' );
+			$vanity_url                     = esc_url( filter_input( INPUT_POST, 'vanity_url' ) );
+			$zoom_alternative_join          = esc_html( filter_input( INPUT_POST, 'zoom_alternative_join' ) );
+			$zoom_btn_css_class             = esc_html( filter_input( INPUT_POST, 'zoom_btn_css_class' ) );
+			$zoom_help_text_disable         = filter_input( INPUT_POST, 'zoom_help_text_disable' );
+			$zoom_compatiblity_text_disable = filter_input( INPUT_POST, 'zoom_compatiblity_text_disable' );
+			$zoom_width_window              = filter_input( INPUT_POST, 'zoom_width_meeting_window' );
+			$zoom_height_window             = filter_input( INPUT_POST, 'zoom_height_meeting_window' );
+			$zoom_ssl_message               = filter_input( INPUT_POST, 'zoom_ssl_message' );
+			$zoom_master_host 				= filter_input( INPUT_POST, 'zoom_master_host' );
+
+			update_option( 'zoom_api_key', $zoom_api_key );
+			update_option( 'zoom_api_secret', $zoom_api_secret );
+			update_option( 'zoom_vanity_url', $vanity_url );
+			update_option( 'zoom_alternative_join', $zoom_alternative_join );
+			update_option( 'zoom_btn_css_class', $zoom_btn_css_class );
+			update_option( 'zoom_help_text_disable', $zoom_help_text_disable );
+			update_option( 'zoom_compatiblity_text_disable', $zoom_compatiblity_text_disable );
+			update_option( 'zoom_width_meeting_window', $zoom_width_window );
+			update_option( 'zoom_height_meeting_window', $zoom_height_window );
+			update_option( 'zoom_ssl_message', $zoom_ssl_message );
+			update_option( 'zoom_master_host', $zoom_master_host );
+
+
+			//After user has been created delete this transient in order to fetch latest Data.
+			delete_transient( '_zvc_user_lists' );
+
+			if ( get_option( 'zoom_api_key' ) && get_option( 'zoom_api_secret' ) ) {
+				$encoded_users = zoom_conference()->listUsers();
+				$decoded       = json_decode( $encoded_users );
+				
+				if ( $decoded && isset( $decoded->code ) ) {
+					$code_family = substr( $decoded->code, 0, 1 );
+					if ( $code_family != 2 ) {
+						?>
+						<div id="message" class="notice notice-error">
+							<p><strong><?php _e( 'ZOOM API ERROR: ', 'video-conferencing-with-zoom-api' ); ?></strong>
+								<?php esc_html_e( $decoded->message ); ?><br />
+							<?php if( $decoded->code == 124 ): ?>
+								<?php _e( 'This means Something is wrong with the entered API KEYS, Please follow this <a target="_blank" href="https://elearningevolve.com/blog/zoom-api-keys">guide</a> to correctly generate the API key values added below.', 'video-conferencing-with-zoom-api' ); ?>
+							<?php else: ?>
+								<?php _e( 'This means Something is wrong with calling the Zoom API with your configuration, please contact <a target="_blank" href="https://support.zoom.us/">Zoom support</a> or report on <a target="_blank" href="https://devforum.zoom.us/">Zoom forum</a> with the above error message for further assistance.', 'video-conferencing-with-zoom-api' ); ?>
+							<?php endif; ?>
+							</p>
+						</div>
+						<?php
+					} else {
+						?>
+						<div id="message" class="notice notice-success is-dismissible">
+							<p><?php _e( 'Successfully Updated. Please refresh this page.', 'video-conferencing-with-zoom-api' ); ?></p>
+							<button type="button" class="notice-dismiss"><span class="screen-reader-text"><?php _e( 'Dismiss this notice.', 'video-conferencing-with-zoom-api' ); ?></span></button>
+						</div>
+						<?php
+					}
+				}
+			}
+		}
+
+		//Get Template
+		// require_once ZOOM_VIDEO_CONFERENCE_PLUGIN_VIEWS_PATH . '/admin/tpl-settings.php';
+		require_once get_stylesheet_directory() . '/inc/webinars/admin/partials/tpl-settings.php';
 	}
 
 	/**
@@ -518,7 +602,7 @@ class Webinars_Admin {
 		if($post_type == 'lp_course' && "webinar" == get_post_meta( $post_id, '_course_type', true )):
 			if(get_post_status($post_id) == 'publish' ){
 				$this->createZoomUserWhileUPdateWebinar($post_id);
-				$host_id = LP()->settings->get( 'zoom_master_host' );
+				$host_id = get_option('zoom_master_host');
 				// Create or update webinar in zooom 
 				$lessons = get_course_lessons($post_id);
 				if ( ! empty( $host_id ) ) {
@@ -633,6 +717,8 @@ class Webinars_Admin {
 
 		// For Lession post type
 		if ( $post_type === "lp_lesson" && !empty( get_the_title( $post_id ) ) && !empty( get_post_meta( $post_id, '_lp_webinar_when', true ) ) ):
+			delete_post_meta( $post_id, 'master_token' );
+			delete_post_meta( $post_id, 'start_url' );
 			$lesson = get_post($post_id);
 			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
 			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );

@@ -55,6 +55,7 @@ body.post-type-lp_lesson tbody#the-list tr.syncronized td.meta-zoom_date {
 .alternativeHosterWrap > div {
     width: 50%;
 }
+td.zoom_master_host span.select2.select2-container,
 .alternativeHosterWrap > div:first-child span.select2.select2-container {
     width: 100% !important;
 }

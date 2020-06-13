@@ -205,7 +205,8 @@ class DigitalCustDev_Webinars {
 			
 			
 			// $host_id    = get_user_meta( $author_id, 'user_zoom_hostid', true );
-			$host_id = LP()->settings->get( 'zoom_master_host' );
+			// $host_id = get_option('zoom_master_host');
+			$host_id = get_option('zoom_master_host');
 
 			if ( ! empty( $post_metas ) ) {
 				$timezone   = ! empty( $post_metas['_lp_timezone'] ) ? $post_metas['_lp_timezone'] : $timezone;

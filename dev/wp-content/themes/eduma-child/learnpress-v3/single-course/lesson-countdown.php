@@ -15,18 +15,25 @@ if ( class_exists( 'WPEMS' ) ) {
     
 
     $time   = date( 'Y-m-d H:i:s', strtotime( $change_sdate ) );
+
+    $master_token = get_post_meta($item->get_id(), 'master_token', true);
+    $start_url = get_post_meta($item->get_id(), 'start_url', true);
+
+    // echo 'startUrl: ' . $start_url . '<br/>';
+    // echo 'm0aster token: ' . $master_token . '<br/>';
     
-    // $timezone = get_post_meta($item->get_id(), '_lp_timezone', true);
+    // $timezone-- = get_post_meta($item->get_id(), '_lp_timezone', true);
 
-    // echo '<pre>';
-    // print_r($_COOKIE);
-    // echo '</pre>';
+    
+    
+
+                    
 
 
-    $browserTimezone = 'UTC';
+    $browserTimezone = new DateTimeZone('UTC');
     if(isset($_COOKIE['wb_timezone'])) $browserTimezone = new DateTimeZone($_COOKIE['wb_timezone']);
-
     
+
     $timezone = 'UTC';
     $newcreatedtime = new DateTime("now", new DateTimeZone( $timezone ) );
     $now = $newcreatedtime->format('Y-m-d H:i:s');
@@ -45,7 +52,14 @@ if ( class_exists( 'WPEMS' ) ) {
 
     // echo 'end time : ' . date('Y-m-d H:i:s', $endtime) . '<br/>';
 
-    $nextEventTime = wb_get_next_cron_time('webinar_10mbefore');
+    
+    // echo 'current user hoster: ' . get_user_meta(get_current_user_id(), 'user_zoom_hostid', true) . '<br/>';
+    // echo 'webinar hoster: ' . get_post_meta($item->get_id(), '_lp_alternative_host', true) . '<br/>';
+
+    
+    
+    
+
     
     // Thumb Image
     $course = learn_press_get_item_courses( $item->get_id() );
@@ -148,13 +162,11 @@ if ( class_exists( 'WPEMS' ) ) {
         $course = learn_press_get_item_courses( $item->get_id() );
         $allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
         
-        // echo '<pre>';
-        // print_r($allAuthors);
-        // echo '</pre>';
+       
         // echo 'current user id: ' . get_current_user_id() . '<br/>';
 				
 		$webinar_author = get_post_field( 'post_author', $course[0]->ID );
-        // array_push($allAuthors, $webinar_author);
+        array_push($allAuthors, $webinar_author);
         
         $webinar = dcd_zoom_conference()->getZoomWebinarDetails($item->get_id());
         $webinar = json_decode($webinar);
@@ -162,15 +174,32 @@ if ( class_exists( 'WPEMS' ) ) {
         // print_r($webinar);
         // echo '</pre>';
 
-        // echo 'next event time: ' . $nextEventTime . '<br/>';
-        // $timeleft =  strtotime($time) - time();
-        // echo 'start time left: ' . $timeleft . '<br/>';
 
         $join_url = '';
         $join_text = '';
         $errorMsg = '';
-        if(get_current_user_id() == $webinar_author){
+
+        $hoster = false;
+        $master_host = get_option('zoom_master_host');
+        if(get_user_meta(get_current_user_id(), 'user_zoom_hostid', true) == get_post_meta($item->get_id(), '_lp_alternative_host', true)){
+            $hoster = true;
+        }
+        if(get_user_meta(get_current_user_id(), 'user_zoom_hostid', true) == $master_host){
+            $hoster = true;
+        }
+
+
+        if($start_url && $hoster){
             $join_url = $webinar->start_url;
+            if(get_user_meta(get_current_user_id(), 'user_zoom_hostid', true) == $master_host){
+                $master_token = get_post_meta($item->get_id(), 'master_token', true);
+                if($master_token){
+                    $master_token = json_decode($master_token);
+                    $master_token = $master_token->token;
+                    $urlexpload = explode('?', $start_url);
+                    $join_url = $urlexpload[0] . '?zak='.$master_token;
+                }
+            }
             $join_text = __('Start', 'webinar');
         }
         elseif(in_array(get_current_user_id(), $allAuthors)){
@@ -181,20 +210,36 @@ if ( class_exists( 'WPEMS' ) ) {
             $join_text = __('Join', 'webinar');
         }
 
+
+        
+
+                    
+
+
+        
+        $userlocaltime = new DateTime("now", $browserTimezone);
+        $userlocaltime = $userlocaltime->format('Y-m-d H:i:s');
+        $nextEventSecond = wb_get_next_cron_time('webinar_10mbefore');
+        $nextAvailableLink = date('Y-m-d H:i:s', strtotime('+'.$nextEventSecond.' seconds', strtotime($userlocaltime)));
+
+        if(!$start_url && $hoster){
+            $errorMsg = sprintf('Please be patient we are awaiting webinar connection link. Your link will be available at %s, please reload the page.', $nextAvailableLink);
+        }
         
         ?>
-         <div class="entry-countdown z-index-1">
-        <div id="joinbutton" class="text-center">
-            <?php if(empty($errorMsg)): ?>
-            <div class="button-inner">
-                <a target="_blank" href="<?php echo $join_url; ?>" class="btn font-30 btn-large btn-primary text-white"><?php echo $join_text; ?></a>
-            </div>
-            <?php else: ?>
-                <div class="errorMsg">
-                    <h3><?php echo $errorMsg; ?></h3>
+        <?php ?>
+        <div class="entry-countdown z-index-1">
+            <div id="joinbutton" class="text-center">
+                <?php if(empty($errorMsg)): ?>
+                <div class="button-inner">
+                    <a target="_blank" href="<?php echo $join_url; ?>" class="btn font-30 btn-large btn-primary text-white"><?php echo $join_text; ?></a>
                 </div>
-            <?php endif; ?>
-        </div>
+                <?php else: ?>
+                    <div class="errorMsg">
+                        <h3><?php echo $errorMsg; ?></h3>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
     <?php }
 } else {

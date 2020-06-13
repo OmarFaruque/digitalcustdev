@@ -16,11 +16,11 @@ $zoom_subscribe_link            = get_option( 'zoom_subscribe_link' );
 ?>
 <div class="wrap">
 	<h1><?php _e( 'Settings', 'video-conferencing-with-zoom-api' ); ?></h1>
-
+	
 	<?php video_conferencing_zoom_api_show_like_popup(); ?>
 	<div class="zvc-row">
 		<div class="zvc-position-floater-left">
-			<form action="?page=zoom-video-conferencing-settings" method="POST">
+			<form action="?page=cst-zoom-video-conferencing-settings" method="POST">
 				<?php wp_nonce_field( '_zoom_settings_update_nonce_action', '_zoom_settings_nonce' ); ?>
 				<h2><strong><?php _e( 'Please follow', 'video-conferencing-with-zoom-api' ); ?> <a target="_blank" href="https://elearningevolve.com/blog/zoom-api-keys/"><?php _e( 'this guide', 'video-conferencing-with-zoom-api' ); ?> </a> <?php _e( 'to generate the below API values from your Zoom account', 'video-conferencing-with-zoom-api' ); ?></strong></h2>
 				<table class="form-table">
@@ -102,6 +102,27 @@ $zoom_subscribe_link            = get_option( 'zoom_subscribe_link' );
 									<option <?php echo ( $zoom_ssl_message == 1 ) ? 'selected="selected"' : ''; ?> name="yes" value="1"><?php _e( 'Yes', 'video-conferencing-with-zoom-api' ); ?></option>
 								</select>
 								<p class="description">Show/Hide SSL Message on Front-End.</p>
+							</td>
+						</tr>
+
+						<!-- Master Hoster -->
+						<tr>
+							<th><label><?php _e( 'Master Host', 'video-conferencing-with-zoom-api' ); ?></label></th>
+							<td class="zoom_master_host">
+								<select name="zoom_master_host" class="zvc-hacking-select">
+									<option value=""><?php _e( 'Select a Host', 'video-conferencing-with-zoom-api' ); ?></option>
+									<?php
+									$users = cstm_video_conferencing_zoom_api_get_user_transients();
+									foreach ( $users->users as $user ) :
+										// echo '<pre>';
+										// print_r($user);
+										// echo '</pre>';
+										$user_found = get_option('zoom_master_host');
+																				?>
+										<option value="<?php echo $user->id; ?>" <?php echo $user_found == $user->id ? 'selected' : null; ?>><?php echo $user->first_name . ' ( ' . $user->email . ' )'; ?></option>
+									<?php endforeach; ?>
+								</select>
+								<p class="description"><?php _e('Master host', 'webinar'); ?></p>
 							</td>
 						</tr>
 					</tbody>

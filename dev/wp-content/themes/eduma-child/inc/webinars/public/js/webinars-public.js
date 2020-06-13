@@ -582,7 +582,8 @@ function lesson_countdown(){
 	document.getElementById("lesson_zoom_counter").innerHTML =  '<span class="countdown-row">' + display + '</span>';
 
 	// If the count down is finished, write some text
-	if (distance < 0) {
+
+	if (distance < 600000) {
 		clearInterval(x);
 		location.reload();
 	}

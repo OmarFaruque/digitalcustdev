@@ -201,15 +201,20 @@ if ( !function_exists( 'thim_item_meta_duration' ) ) {
 		
 		$datewithDuration = date('Y-m-d h:i:s', strtotime($date) + $duration->get() );
 		
+		// echo 'duration time: ' . $datewithDuration . '<br/>';
 		
-		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
+		$userTimezone = get_post_meta($item_id, '_lp_timezone', true);
+		$newcreatedtime = new DateTime("now", new DateTimeZone( $userTimezone ) );
 		$wnewtime = $newcreatedtime->format('Y-m-d h:i:s');
+		
+
+		// echo 'now: ' . $wnewtime  . '<br/>';
 
 		// $wnewtime = date('Y-m-d h:i:s a', time());
 		
 		$progress  = strtotime($datewithDuration) - strtotime($wnewtime);
 		
-		$userTimezone = get_post_meta($item_id, '_lp_timezone', true);
+		
 		$browserTimezone = new DateTimeZone($userTimezone);
 
 		$utcTime = new DateTime("now", new DateTimeZone( 'UTC' ) );
@@ -1841,7 +1846,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				if($update == 'success'){
 					update_option( 'zoom_current_active_hoster', $alternative_host);
 				}
-				$master_host = LP()->settings->get( 'zoom_master_host' );
+				$master_host = get_option('zoom_master_host');
 				$token = dcd_zoom_conference()->zoomWebinarStartToken($master_host);
 				$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($swebinars->ID);
 				$webinarDetails = json_decode($webinarDetails);
@@ -1854,6 +1859,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				// echo 'stgart token: ' . $token . '<br/>';		
 				update_post_meta($swebinars->ID, 'start_url', $webinarDetails->start_url);
 				update_post_meta($swebinars->ID, 'master_token', $token);
+				// update_post_meta($swebinars->ID, 'master_host', $master_host);
 				array_push($usreHosts, $alternative_host);
 
 				
