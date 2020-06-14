@@ -80,24 +80,27 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 			if ( ! empty( $webinars ) ) {
 				foreach ( $webinars as $webinar ) {
 
+                    // echo '<pre>';
+                    // print_r($webinar);
+                    // echo '</pre>';
+
                     // Hoster Mail
                     $userKey = array_search($webinar->host_id, array_column($users, 'id'));    
                     $hosterMail = $users[$userKey]->email;
 
                     $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar->id );
                     $lesson_id = $wpdb->get_row( $lesson_id );
-                    $start_url = get_post_meta($lesson_id->post_id, 'start_url', true);
+                    $start_url = get_post_meta($lesson_id->post_id, 'ah_start_link', true);
+                    echo 'start url: ' . $start_url . '<br/>';
+                    
 
                     
                     
-                    $master_token = get_post_meta($lesson_id->post_id, 'master_token', true);
+                    
+                    $master_token = get_option('zoom_master_host_token');
                     $master_url = '';
                     if($master_token){
-                        $master_token = json_decode($master_token);
-                        $master_token = $master_token->token;
-                        $urlexpload = explode('?', $start_url);
-                        $master_url = $urlexpload[0] . '?zak='.$master_token;
-
+                        $master_url = get_post_meta($lesson_id->post_id, 'mh_start_link', true);
                     }
                     
                     $course = learn_press_get_item_courses( $lesson_id->post_id );
@@ -154,13 +157,20 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         }else{
                             $userhostid = get_user_meta( $course[0]->post_author, 'user_zoom_hostid', true );
                         }
+                        // echo 'hosterid: ' . $userhostid . '<br/>';
 
                         $key = array_search($userhostid, array_column($users, 'id'));
+                        // echo 'key: ' . $key . '<br/>';
+                        // echo '<pre>';
+                        // print_r($users[$key]);
+                        // echo '</pre>';
                         $alterHostStatus = $users[$key]->status;
                         $hoster_type = $users[$key]->type;
                         $hoster_type = ($hoster_type == 2) ? __(', Licensed', 'webinar') : '';
                         
                         $alternative_hoster = $users[$key]->email;
+
+                        // echo 'alternative hoster: ' . $alternative_hoster . '<br/>';
                     }
 
                     
@@ -197,17 +207,13 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     $endtime = strtotime("+".$webinar->duration." minutes", strtotime($date->format( 'd.m.Y, G:i' )));
                     $endtime = date('G:i', $endtime);
                     
-                    
-
                     // Calculate GMT time 
                     $timezoneoffset = get_timezone_offset($webinar->timezone);
                     $gmtStartTime = date('d.m.Y, G:i', strtotime($date->format( 'd.m.Y, G:i')) + $timezoneoffset);
                     $gmtStartEnd = strtotime("+".$webinar->duration." minutes", strtotime($gmtStartTime));
                     $gmtStartEnd = date('G:i', $gmtStartEnd);
 
-
                     
-
 					?>
                     <tr data-time="<?php echo $webinar->start_time; ?>" class="<?php echo 'zoom_'. $zoom_active; ?>">
                         <td><?php echo $webinar->id; ?></td>

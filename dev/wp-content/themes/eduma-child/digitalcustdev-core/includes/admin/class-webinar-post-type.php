@@ -170,9 +170,20 @@ class Admin_DigitalCustDev_Webinar {
 			update_post_meta( $lesson_id, '_lp_alternative_host', $_POST['alternative_host_ids'] );
 			
 			$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($webinar_id);
-			update_post_meta($swebinars->ID, 'start_url', $webinarDetails->start_url);
+			
+			$hoster_token = get_post_meta($lesson_id, 'alternative_hoster_token', true);
+			// echo 'token: ' . $hoster_token . '<br/>';
+			if($hoster_token){
+				// $hoster_token = json_decode($hoster_token);
+				// $hoster_token = $hoster_token->token;
+				$urlexpload = explode('?', $webinarDetails->start_url);
+				$hoster_start_url = $urlexpload[0] . '?zak='.$hoster_token;
 
-			// update_option( '_zvc_user_lists', '' );
+				update_post_meta($lesson_id, 'ah_start_link', $hoster_start_url);
+			}else{
+				delete_post_meta($lesson_id , 'ah_start_link' );
+			}
+
 			delete_transient( '_zvc_user_lists' );
 		}
 

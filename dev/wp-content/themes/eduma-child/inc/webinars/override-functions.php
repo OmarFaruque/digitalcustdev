@@ -1829,10 +1829,8 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				// 	if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
 				// 		dcd_zoom_conference()->enableUserStatistoActive($sauthor, 'activate');
 				// 		dcd_zoom_conference()->updateZoomUserType($sauthor);
-				// 		$token = dcd_zoom_conference()->zoomWebinarStartToken($sauthor);
-						
+				// 		$token = dcd_zoom_conference()->zoomWebinarStartToken($sauthor);	
 				// 		array_push($usreHosts, get_user_meta( $sauthor, 'user_zoom_hostid', true ));
-
 				// 	}
 				// endforeach;
 
@@ -1847,19 +1845,22 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					update_option( 'zoom_current_active_hoster', $alternative_host);
 				}
 				$master_host = get_option('zoom_master_host');
-				$token = dcd_zoom_conference()->zoomWebinarStartToken($master_host);
+				
+				$hoster_token = dcd_zoom_conference()->zoomWebinarStartToken($alternative_host);
 				$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($swebinars->ID);
 				$webinarDetails = json_decode($webinarDetails);
 
-				// echo 'webinar details <pre>';
-				// print_r($webinarDetails);
-				// echo '</pre>';
 
-
-				// echo 'stgart token: ' . $token . '<br/>';		
-				update_post_meta($swebinars->ID, 'start_url', $webinarDetails->start_url);
-				update_post_meta($swebinars->ID, 'master_token', $token);
-				// update_post_meta($swebinars->ID, 'master_host', $master_host);
+				// ah_start_link
+				if($hoster_token){
+                    $hoster_token = json_decode($hoster_token);
+                    $hoster_token = $hoster_token->token;
+                    $urlexpload = explode('?', $webinarDetails->start_url);
+					$hoster_start_url = $urlexpload[0] . '?zak='.$hoster_token;
+					update_post_meta($swebinars->ID, 'ah_start_link', $hoster_start_url);
+                }
+				// update_post_meta($swebinars->ID, 'master_token', $token);
+				update_post_meta($swebinars->ID, 'alternative_hoster_token', $hoster_token);
 				array_push($usreHosts, $alternative_host);
 
 				

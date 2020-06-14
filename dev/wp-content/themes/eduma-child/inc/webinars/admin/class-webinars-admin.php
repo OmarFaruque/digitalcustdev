@@ -298,6 +298,10 @@ class Webinars_Admin {
 			update_option( 'zoom_ssl_message', $zoom_ssl_message );
 			update_option( 'zoom_master_host', $zoom_master_host );
 
+			$token = dcd_zoom_conference()->zoomWebinarStartToken($zoom_master_host);
+			update_option( 'zoom_master_host_token', $token );
+
+
 
 			//After user has been created delete this transient in order to fetch latest Data.
 			delete_transient( '_zvc_user_lists' );
@@ -641,6 +645,7 @@ class Webinars_Admin {
 									if ( ! empty( $created_webinar ) ) {
 										update_post_meta( $sl, '_webinar_ID', $created_webinar->id );
 										update_post_meta( $sl, '_webinar_details', $created_webinar );
+										update_post_meta( $sl, 'mh_start_link', $created_webinar->start_url );
 									}
 								}
 						} else {
@@ -717,7 +722,6 @@ class Webinars_Admin {
 
 		// For Lession post type
 		if ( $post_type === "lp_lesson" && !empty( get_the_title( $post_id ) ) && !empty( get_post_meta( $post_id, '_lp_webinar_when', true ) ) ):
-			delete_post_meta( $post_id, 'master_token' );
 			delete_post_meta( $post_id, 'start_url' );
 			$lesson = get_post($post_id);
 			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );

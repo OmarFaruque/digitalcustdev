@@ -16,10 +16,10 @@ if ( class_exists( 'WPEMS' ) ) {
 
     $time   = date( 'Y-m-d H:i:s', strtotime( $change_sdate ) );
 
-    $master_token = get_post_meta($item->get_id(), 'master_token', true);
-    $start_url = get_post_meta($item->get_id(), 'start_url', true);
+    $master_token = get_option('zoom_master_host_token');
+    $ah_start_link = get_post_meta($item->get_id(), 'ah_start_link', true);
 
-    // echo 'startUrl: ' . $start_url . '<br/>';
+    // echo 'startUrl: ' . $ah_start_link . '<br/>';
     // echo 'm0aster token: ' . $master_token . '<br/>';
     
     // $timezone-- = get_post_meta($item->get_id(), '_lp_timezone', true);
@@ -189,16 +189,15 @@ if ( class_exists( 'WPEMS' ) ) {
         }
 
 
-        if($start_url && $hoster){
+        if($ah_start_link && $hoster){
             $join_url = $webinar->start_url;
+            $hoster_token = get_post_meta($item->get_id(), 'alternative_hoster_token', true);
+            if($hoster_token){
+                $join_url = get_post_meta($lesson_id->post_id, 'ah_start_link', true);
+            }
+
             if(get_user_meta(get_current_user_id(), 'user_zoom_hostid', true) == $master_host){
-                $master_token = get_post_meta($item->get_id(), 'master_token', true);
-                if($master_token){
-                    $master_token = json_decode($master_token);
-                    $master_token = $master_token->token;
-                    $urlexpload = explode('?', $start_url);
-                    $join_url = $urlexpload[0] . '?zak='.$master_token;
-                }
+                $join_url = get_post_meta($lesson_id->post_id, 'mh_start_link', true);
             }
             $join_text = __('Start', 'webinar');
         }
@@ -222,7 +221,7 @@ if ( class_exists( 'WPEMS' ) ) {
         $nextEventSecond = wb_get_next_cron_time('webinar_10mbefore');
         $nextAvailableLink = date('Y-m-d H:i:s', strtotime('+'.$nextEventSecond.' seconds', strtotime($userlocaltime)));
 
-        if(!$start_url && $hoster){
+        if(!$ah_start_link && $hoster){
             $errorMsg = sprintf('Please be patient we are awaiting webinar connection link. Your link will be available at %s, please reload the page.', $nextAvailableLink);
         }
         
