@@ -168,14 +168,15 @@ class Admin_DigitalCustDev_Webinar {
 		if(isset($_POST['alternative_host_ids'])){
 			// echo 'st alternative host';
 			update_post_meta( $lesson_id, '_lp_alternative_host', $_POST['alternative_host_ids'] );
+
 			
-			$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($webinar_id);
 			
+			$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($lesson_id);
+			$webinarDetails = json_decode($webinarDetails);
+
 			$hoster_token = get_post_meta($lesson_id, 'alternative_hoster_token', true);
-			// echo 'token: ' . $hoster_token . '<br/>';
 			if($hoster_token){
-				// $hoster_token = json_decode($hoster_token);
-				// $hoster_token = $hoster_token->token;
+
 				$urlexpload = explode('?', $webinarDetails->start_url);
 				$hoster_start_url = $urlexpload[0] . '?zak='.$hoster_token;
 

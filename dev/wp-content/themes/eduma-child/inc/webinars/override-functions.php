@@ -287,16 +287,20 @@ function thim_sc_get_wibner_categories( $cats = false ) {
 
 
 function get_course_lessons($course_id){
+	// $curd = new LP_Section_CURD( $course_id );
 	$course = learn_press_get_course( $course_id );
-	$sections = $course->get_curriculum_raw();
+	
 	$lessons = array();
-	if ( ! empty( $sections ) ) {
-		foreach ( $sections as $section ) {
-				if ( isset( $section['items'] ) && is_array( $section['items'] ) ) {
-					foreach($section['items'] as $singleitem){
-						if($singleitem['type'] == 'lp_lesson') array_push($lessons, $singleitem['id']);
+	if($course){
+		$sections = $course->get_curriculum_raw();
+		if ( ! empty( $sections ) ) {
+			foreach ( $sections as $section ) {
+					if ( isset( $section['items'] ) && is_array( $section['items'] ) ) {
+						foreach($section['items'] as $singleitem){
+							if($singleitem['type'] == 'lp_lesson') array_push($lessons, $singleitem['id']);
+						}
 					}
-				}
+			}
 		}
 	}
 	return $lessons;
@@ -1585,11 +1589,11 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 			wp_schedule_event( time(), '10min',  'webinar_10mbefore' );
 		}
 
-		// Schedule Event for 10 mints
-		// if(!wp_next_scheduled("callbackScheduleEventForWebinarOnTenMin"))
-        // {
-		// 	wp_schedule_event( time(), '10min',  'callbackScheduleEventForWebinarOnTenMin' );
-		// }
+		// Schedule Event for 05 mints
+		if(!wp_next_scheduled("webinar_5minafter"))
+        {
+			wp_schedule_event( time(), '5min',  'webinar_5minafter' );
+		}
 
 
 		// wp_schedule_event( time(), '5min',  array($this, 'callbackScheduleEventForWebinar') );
@@ -1795,10 +1799,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 					'key' => '_webinar_ID',
 					'compare' => 'EXISTS'
 				),
-				// array(
-				// 	'key' => 'email_send_status_10min',
-				// 	'compare' => 'NOT EXISTS'
-				// )
+				array(
+					'key' => 'email_send_status_10min',
+					'compare' => 'NOT EXISTS'
+				)
 			)
 		);	
 
@@ -1818,7 +1822,7 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				$webinar_author = get_post_field( 'post_author', $course[0]->ID );
 				// array_push($allAuthors, $webinar_author);
 				$alternative_host = get_post_meta($swebinars->ID, '_lp_alternative_host', true);
-
+				
 
 				
 				$post_author_id = get_post_field( 'post_author', $swebinars->ID );
@@ -1858,10 +1862,12 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
                     $urlexpload = explode('?', $webinarDetails->start_url);
 					$hoster_start_url = $urlexpload[0] . '?zak='.$hoster_token;
 					update_post_meta($swebinars->ID, 'ah_start_link', $hoster_start_url);
+					delete_transient( '_zvc_user_lists' );
                 }
 				// update_post_meta($swebinars->ID, 'master_token', $token);
 				update_post_meta($swebinars->ID, 'alternative_hoster_token', $hoster_token);
 				array_push($usreHosts, $alternative_host);
+
 
 				
 				// echo 'HOsts<pre>';
@@ -1899,6 +1905,98 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 	add_action('wp', 'addScheduleEventCallbackForWebinar' );
 	add_action('webinar_10mbefore', 'callbackScheduleEventForWebinarFunction');
 
+	add_action( 'webinar_5minafter', 'callbackScheduleEventForWebinarAfterFiveMinite' );
+
+
+
+	/*
+	* After zoom end cron event
+	*/
+
+	// add_action('admin_init', 'callbackScheduleEventForWebinarAfterFiveMinite');
+	function callbackScheduleEventForWebinarAfterFiveMinite(){
+		$newcreatedtime = new DateTime("now", new DateTimeZone( 'UTC' ) );
+		$current = $newcreatedtime->format('Y-m-d H:i:s');
+
+		$argc = array(
+			'post_type' => LP_LESSON_CPT,
+			'post_status' => array( 'publish' ),
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key' => '_lp_webinar_when_gmt',
+					'value' => date( 'Y-m-d', strtotime( $current ) ),
+					'compare' => 'LIKE'
+				),
+				array(
+					'key' => '_webinar_ID',
+					'compare' => 'EXISTS'
+				),
+				array(
+					'key' => '_webinar_statis',
+					'compare' => 'NOT EXISTS'
+				)
+			)
+		);	
+
+		$webinars = get_posts($argc);
+
+		if(!empty($webinars)):
+			foreach($webinars as $swb):
+				$course = learn_press_get_item_courses( $swb->ID );
+				
+
+				$duration   = get_post_meta( $swb->ID, '_lp_duration', true );
+				$endtime    = strtotime('+'.$duration, strtotime($time));
+				$endtime    = strtotime('+5 minutes', $endtime);
+				if($current > date('Y-m-d H:i', $endtime)){
+					update_post_meta($swb->ID, 'zoom_status', 'inactive');
+					$webinarId = get_post_meta( $swb->ID, '_webinar_ID', true );
+					$webinarStatus = get_post_meta( $swb->ID, '_webinar_statis', true );
+					if(!$webinarStatus){
+						$webinar_end = dcd_zoom_conference()->zoomWebinarStatusEnd($webinarId);
+						$update_recording_setting = dcd_zoom_conference()->zoomRecordingSettingsUpdate($webinarId);
+						
+						
+						$price          = get_post_meta($course[0]->ID, '_lp_price', true);
+						$sales_price    = get_post_meta( $course[0]->ID, '_lp_sale_price', true );
+						$existPrice     = ($sales_price) ? $sales_price : $price;
+					
+						$lessons = get_course_lessons($course[0]->ID);
+						// echo 'lesssons <br/><pre>';
+						// print_r($lessons);
+						// echo '</pre>';
+
+
+						
+
+						$newPrice = $existPrice - (0.5 * $existPrice) / count($lessons);
+						// Re-calculate price
+						if($sales_price){
+							update_post_meta( $course[0]->ID, '_lp_sale_price', $newPrice );
+						}else{
+							update_post_meta( $course[0]->ID, '_lp_price', $newPrice );
+						}
+
+						$alternative_hoster_host_id = get_post_meta($swb->ID, '_lp_alternative_host', true);
+						dcd_zoom_conference()->enableUserStatistoActive($alternative_hoster_host_id, 'deactivate');
+					
+						
+						$record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
+						$record_url = json_decode($record_url);
+						// echo 'webinar id: ' . $webinarId . '<br/>';
+						// echo 'Conference Meetings Recorded URL <pre>';
+						// print_r($record_url);
+						// echo '</pre>'; 
+						// echo '<a class="btn btn-primary recorded_url text-center" target="_blank" href="#">Recorded Url</a>';
+
+						update_post_meta( $swb->ID, '_webinar_statis', 1 );
+						}
+				}
+			endforeach;
+		endif;
+
+	}
 
 
 

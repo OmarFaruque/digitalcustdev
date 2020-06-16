@@ -8,6 +8,7 @@ $users 				   = cstm_video_conferencing_zoom_api_get_user_transients();
 
 $webinar_info              = json_decode( dcd_zoom_conference()->getWebinarInfo( $_GET['edit'] ) );
 
+
 global $wpdb;
 $metatable = $wpdb->prefix . 'postmeta';
 $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar_info->id );

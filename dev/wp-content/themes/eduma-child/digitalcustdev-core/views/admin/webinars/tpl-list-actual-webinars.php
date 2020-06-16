@@ -91,7 +91,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     $lesson_id = $wpdb->prepare( "SELECT post_id FROM $metatable where meta_key ='_webinar_ID' and meta_value like %s", $webinar->id );
                     $lesson_id = $wpdb->get_row( $lesson_id );
                     $start_url = get_post_meta($lesson_id->post_id, 'ah_start_link', true);
-                    echo 'start url: ' . $start_url . '<br/>';
+                    // echo 'start url: ' . $start_url . '<br/>';
                     
 
                     

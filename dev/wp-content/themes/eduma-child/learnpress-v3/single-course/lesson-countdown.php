@@ -19,7 +19,11 @@ if ( class_exists( 'WPEMS' ) ) {
     $master_token = get_option('zoom_master_host_token');
     $ah_start_link = get_post_meta($item->get_id(), 'ah_start_link', true);
 
-    // echo 'startUrl: ' . $ah_start_link . '<br/>';
+
+
+    // echo 'ah_start_link: ' . $ah_start_link . '<br/>';
+
+    // echo 'master url: ' . get_post_meta($item->get_id(), 'mh_start_link', true) . '<br/>';
     // echo 'm0aster token: ' . $master_token . '<br/>';
     
     // $timezone-- = get_post_meta($item->get_id(), '_lp_timezone', true);
@@ -94,15 +98,11 @@ if ( class_exists( 'WPEMS' ) ) {
     elseif($now > date('Y-m-d H:i', $endtime)  ){
         update_post_meta($item->get_id(), 'zoom_status', 'inactive');
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
-        delete_post_meta( $item->get_id(), '_webinar_statis' );
         $webinarStatus = get_post_meta( $item->get_id(), '_webinar_statis', true );
         if(!$webinarStatus){
             $webinar_end = dcd_zoom_conference()->zoomWebinarStatusEnd($webinarId);
             $update_recording_setting = dcd_zoom_conference()->zoomRecordingSettingsUpdate($webinarId);
             
-            
-            // Deactivated author
-            $allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
             
             $price          = get_post_meta($course[0]->ID, '_lp_price', true);
             $sales_price    = get_post_meta( $course[0]->ID, '_lp_sale_price', true );
@@ -123,15 +123,10 @@ if ( class_exists( 'WPEMS' ) ) {
             }else{
                 update_post_meta( $course[0]->ID, '_lp_price', $newPrice );
             }
-            
-			$webinar_author = get_post_field( 'post_author', $course[0]->ID );
-			array_push($allAuthors, $webinar_author);
 
-            foreach($allAuthors as $sauthor):
-                if(get_user_meta( $sauthor, 'user_zoom_hostid', true )){
-                    $updateStatus = dcd_zoom_conference()->enableUserStatistoActive($sauthor, 'deactivate');
-                }
-            endforeach;
+            $alternative_hoster_host_id = get_post_meta($item->get_id(), '_lp_alternative_host', true);
+            dcd_zoom_conference()->enableUserStatistoActive($alternative_hoster_host_id, 'deactivate');
+           
             
             $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
             $record_url = json_decode($record_url);
@@ -193,11 +188,18 @@ if ( class_exists( 'WPEMS' ) ) {
             $join_url = $webinar->start_url;
             $hoster_token = get_post_meta($item->get_id(), 'alternative_hoster_token', true);
             if($hoster_token){
-                $join_url = get_post_meta($lesson_id->post_id, 'ah_start_link', true);
+                $join_url = get_post_meta($item->get_id(), 'ah_start_link', true);
+                if(!$join_url){
+                    $errorMsg = __('Be patient expect start link ...', 'webinar');
+                }
             }
 
             if(get_user_meta(get_current_user_id(), 'user_zoom_hostid', true) == $master_host){
-                $join_url = get_post_meta($lesson_id->post_id, 'mh_start_link', true);
+                $join_url = get_post_meta($item->get_id(), 'mh_start_link', true);
+                
+                if(!get_post_meta($item->get_id(), 'mh_start_link', true)){
+                    $errorMsg = __('ZOOM Start Link is not available', 'webinar');
+                }
             }
             $join_text = __('Start', 'webinar');
         }
@@ -208,12 +210,6 @@ if ( class_exists( 'WPEMS' ) ) {
             $join_url = $webinar->join_url;
             $join_text = __('Join', 'webinar');
         }
-
-
-        
-
-                    
-
 
         
         $userlocaltime = new DateTime("now", $browserTimezone);
