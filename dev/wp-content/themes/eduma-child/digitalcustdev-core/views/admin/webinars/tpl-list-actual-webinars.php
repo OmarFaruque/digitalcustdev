@@ -80,9 +80,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 			if ( ! empty( $webinars ) ) {
 				foreach ( $webinars as $webinar ) {
 
-                    // echo '<pre>';
-                    // print_r($webinar);
-                    // echo '</pre>';
+               
 
                     // Hoster Mail
                     $userKey = array_search($webinar->host_id, array_column($users, 'id'));    
@@ -214,6 +212,12 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     $gmtStartEnd = date('G:i', $gmtStartEnd);
 
                     
+
+
+
+                    echo '<pre>';
+                    print_r($webinar);
+                    echo '</pre>';
 					?>
                     <tr data-time="<?php echo $webinar->start_time; ?>" class="<?php echo 'zoom_'. $zoom_active; ?>">
                         <td><?php echo $webinar->id; ?></td>

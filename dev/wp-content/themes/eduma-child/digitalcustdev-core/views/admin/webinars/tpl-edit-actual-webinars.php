@@ -8,6 +8,10 @@ $users 				   = cstm_video_conferencing_zoom_api_get_user_transients();
 
 $webinar_info              = json_decode( dcd_zoom_conference()->getWebinarInfo( $_GET['edit'] ) );
 
+echo '<pre>';
+print_r($webinar_info);
+echo '</pre>';
+
 
 global $wpdb;
 $metatable = $wpdb->prefix . 'postmeta';

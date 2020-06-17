@@ -733,6 +733,9 @@ class Webinars_Admin {
 		// For Lession post type
 		if ( $post_type === "lp_lesson" && !empty( get_the_title( $post_id ) ) && !empty( get_post_meta( $post_id, '_lp_webinar_when', true ) ) ):
 			delete_post_meta( $post_id, 'start_url' );
+			delete_post_meta( $post_id, 'zoom_status' );
+			delete_post_meta( $post_id, '_webinar_statis' );
+			
 			$lesson = get_post($post_id);
 			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
 			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );

@@ -128,10 +128,7 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		* Get Recorded meeting id
 		*/
 		public function getMeetingRecordUrl($meetingId){
-
-			$meetingInfo = dcd_zoom_conference()->getWebinarInfo($meetingId);
-            $meetingInfo = json_decode($meetingInfo);
-			return $this->sendRequest( 'meetings/'.$meetingInfo->uuid.'/recordings', array(), "GET" );
+			return $this->sendRequest( 'meetings/'.$meetingId.'/recordings', array(), "GET" );
 		}
 
 

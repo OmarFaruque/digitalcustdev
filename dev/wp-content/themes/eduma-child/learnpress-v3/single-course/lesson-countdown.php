@@ -21,6 +21,7 @@ if ( class_exists( 'WPEMS' ) ) {
 
 
 
+
     // echo 'ah_start_link: ' . $ah_start_link . '<br/>';
 
     // echo 'master url: ' . get_post_meta($item->get_id(), 'mh_start_link', true) . '<br/>';
@@ -96,10 +97,12 @@ if ( class_exists( 'WPEMS' ) ) {
     }
     
     elseif($now > date('Y-m-d H:i', $endtime)  ){
-        update_post_meta($item->get_id(), 'zoom_status', 'inactive');
+        update_post_meta($item->get_id(), 'zoom_status', 'passed');
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
-        $webinarStatus = get_post_meta( $item->get_id(), '_webinar_statis', true );
-        if(!$webinarStatus){
+        
+        $zoom_status = get_post_meta( $item->get_id(), 'zoom_status', true );
+        echo 'zoom status: ' . $zoom_status . '<br/>';
+        if($zoom_status == 'passed'){
             $webinar_end = dcd_zoom_conference()->zoomWebinarStatusEnd($webinarId);
             $update_recording_setting = dcd_zoom_conference()->zoomRecordingSettingsUpdate($webinarId);
             
@@ -128,12 +131,14 @@ if ( class_exists( 'WPEMS' ) ) {
             dcd_zoom_conference()->enableUserStatistoActive($alternative_hoster_host_id, 'deactivate');
            
             
+            $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
             $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
             $record_url = json_decode($record_url);
-            // echo 'webinar id: ' . $webinarId . '<br/>';
-            // echo 'Conference Meetings Recorded URL <pre>';
-            // print_r($record_url);
-            // echo '</pre>'; 
+
+            
+            echo 'Conference Meetings Recorded URL <pre>';
+            print_r($record_url);
+            echo '</pre>'; 
             // echo '<a class="btn btn-primary recorded_url text-center" target="_blank" href="#">Recorded Url</a>';
 
             update_post_meta( $item->get_id(), '_webinar_statis', 1 );

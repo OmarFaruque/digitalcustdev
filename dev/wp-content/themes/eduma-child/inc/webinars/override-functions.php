@@ -1837,18 +1837,20 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 				// 		array_push($usreHosts, get_user_meta( $sauthor, 'user_zoom_hostid', true ));
 				// 	}
 				// endforeach;
-
-				
-				dcd_zoom_conference()->enableUserStatistoActive($alternative_host, 'activate');
-				if(get_option( 'zoom_current_active_hoster')){
-					dcd_zoom_conference()->updateZoomUserType(get_option( 'zoom_current_active_hoster'), 1);	
-				}
-
-				$update = dcd_zoom_conference()->updateZoomUserType($alternative_host, 2);
-				if($update == 'success'){
-					update_option( 'zoom_current_active_hoster', $alternative_host);
-				}
 				$master_host = get_option('zoom_master_host');
+				
+				if($master_host != $alternative_host){
+					dcd_zoom_conference()->enableUserStatistoActive($alternative_host, 'activate');
+				
+					if(get_option( 'zoom_current_active_hoster')){
+						dcd_zoom_conference()->updateZoomUserType(get_option( 'zoom_current_active_hoster'), 1);	
+					}
+
+					$update = dcd_zoom_conference()->updateZoomUserType($alternative_host, 2);
+					if($update == 'success'){
+						update_option( 'zoom_current_active_hoster', $alternative_host);
+					}
+				}
 				
 				$hoster_token = dcd_zoom_conference()->zoomWebinarStartToken($alternative_host);
 				$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($swebinars->ID);
@@ -1941,20 +1943,25 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 
 		$webinars = get_posts($argc);
 
+		
+
 		if(!empty($webinars)):
 			foreach($webinars as $swb):
 				$course = learn_press_get_item_courses( $swb->ID );
-				
+				$time = get_post_meta( $swb->ID, '_lp_webinar_when_gmt', true );
 
 				$duration   = get_post_meta( $swb->ID, '_lp_duration', true );
 				$endtime    = strtotime('+'.$duration, strtotime($time));
 				$endtime    = strtotime('+5 minutes', $endtime);
-				if($current > date('Y-m-d H:i', $endtime)){
-					update_post_meta($swb->ID, 'zoom_status', 'inactive');
+				if($current > date('Y-m-d H:i:s', $endtime)){
+					update_post_meta($swb->ID, 'zoom_status', 'passed');
 					$webinarId = get_post_meta( $swb->ID, '_webinar_ID', true );
 					$webinarStatus = get_post_meta( $swb->ID, '_webinar_statis', true );
 					if(!$webinarStatus){
+
+
 						$webinar_end = dcd_zoom_conference()->zoomWebinarStatusEnd($webinarId);
+
 						$update_recording_setting = dcd_zoom_conference()->zoomRecordingSettingsUpdate($webinarId);
 						
 						
@@ -1981,15 +1988,6 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 						$alternative_hoster_host_id = get_post_meta($swb->ID, '_lp_alternative_host', true);
 						dcd_zoom_conference()->enableUserStatistoActive($alternative_hoster_host_id, 'deactivate');
 					
-						
-						$record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
-						$record_url = json_decode($record_url);
-						// echo 'webinar id: ' . $webinarId . '<br/>';
-						// echo 'Conference Meetings Recorded URL <pre>';
-						// print_r($record_url);
-						// echo '</pre>'; 
-						// echo '<a class="btn btn-primary recorded_url text-center" target="_blank" href="#">Recorded Url</a>';
-
 						update_post_meta( $swb->ID, '_webinar_statis', 1 );
 						}
 				}
