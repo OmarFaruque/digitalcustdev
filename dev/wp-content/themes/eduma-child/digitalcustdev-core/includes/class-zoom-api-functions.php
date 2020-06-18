@@ -173,7 +173,9 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		public function zoomRecordingSettingsUpdate($webinarId){
 			$data = array(
 				'authentication_domains' => get_home_url( ),
+				'share_recording' => 'publicly',
 				'viewer_download' => false,
+				'on_demand' => true,
 				'approval_type' => 0
 			);
 			$data = json_encode($data);

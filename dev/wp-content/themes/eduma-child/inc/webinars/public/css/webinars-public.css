@@ -787,3 +787,6 @@ body.page-frontend-editor div#search-panel {
   width: auto;
   clear: inherit;
 }
+div#video_player_zoom > video {
+  background-color: black;
+}

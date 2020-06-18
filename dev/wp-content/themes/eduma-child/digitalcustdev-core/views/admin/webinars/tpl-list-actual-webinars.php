@@ -215,9 +215,9 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 
 
 
-                    echo '<pre>';
-                    print_r($webinar);
-                    echo '</pre>';
+                    // echo '<pre>';
+                    // print_r($webinar);
+                    // echo '</pre>';
 					?>
                     <tr data-time="<?php echo $webinar->start_time; ?>" class="<?php echo 'zoom_'. $zoom_active; ?>">
                         <td><?php echo $webinar->id; ?></td>

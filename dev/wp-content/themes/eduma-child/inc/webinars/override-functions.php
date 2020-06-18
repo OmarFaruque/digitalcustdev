@@ -1974,8 +1974,16 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 						// print_r($lessons);
 						// echo '</pre>';
 
-
-						
+						// Recorded Url
+						$record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
+			
+						if($record_url){
+							$record_url = json_decode($record_url);
+							$record_key = array_search('shared_screen_with_speaker_view', array_column($record_url->recording_files, 'recording_type'));  
+							$play_url = $record_url->recording_files[$record_key]->download_url;
+							update_post_meta( $swb->ID, 'play_url', $play_url);
+						}
+			
 
 						$newPrice = $existPrice - (0.5 * $existPrice) / count($lessons);
 						// Re-calculate price

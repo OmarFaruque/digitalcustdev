@@ -97,11 +97,27 @@ if ( class_exists( 'WPEMS' ) ) {
     }
     
     elseif($now > date('Y-m-d H:i', $endtime)  ){
-        update_post_meta($item->get_id(), 'zoom_status', 'passed');
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
         
+
+
+
+
+        $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
+        $record_url = json_decode($record_url);
+        $record_key = array_search('shared_screen_with_speaker_view', array_column($record_url->recording_files, 'recording_type'));  
+        $play_url = $record_url->recording_files[$record_key]->download_url;
+        echo '<pre>';
+        print_r($record_url);
+        echo '</pre>';
+
+        echo 'target url: ' . $play_url . '<br/>';
+
+
+
         $zoom_status = get_post_meta( $item->get_id(), 'zoom_status', true );
-        echo 'zoom status: ' . $zoom_status . '<br/>';
+        $play_url = '';
+        $video_error = '';
         if($zoom_status == 'passed'){
             $webinar_end = dcd_zoom_conference()->zoomWebinarStatusEnd($webinarId);
             $update_recording_setting = dcd_zoom_conference()->zoomRecordingSettingsUpdate($webinarId);
@@ -112,15 +128,8 @@ if ( class_exists( 'WPEMS' ) ) {
             $existPrice     = ($sales_price) ? $sales_price : $price;
             
             $lessons = get_course_lessons($course[0]->ID);
-            // echo 'lesssons <br/><pre>';
-            // print_r($lessons);
-            // echo '</pre>';
-
-
-               
 
             $newPrice = $existPrice - (0.5 * $existPrice) / count($lessons);
-            // Re-calculate price
             if($sales_price){
                 update_post_meta( $course[0]->ID, '_lp_sale_price', $newPrice );
             }else{
@@ -130,28 +139,48 @@ if ( class_exists( 'WPEMS' ) ) {
             $alternative_hoster_host_id = get_post_meta($item->get_id(), '_lp_alternative_host', true);
             dcd_zoom_conference()->enableUserStatistoActive($alternative_hoster_host_id, 'deactivate');
            
-            
-            $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
-            $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
-            $record_url = json_decode($record_url);
+          
+         
+            $play_url_meta = get_post_meta( $item->get_id(), 'play_url', true );
 
             
-            echo 'Conference Meetings Recorded URL <pre>';
-            print_r($record_url);
-            echo '</pre>'; 
-            // echo '<a class="btn btn-primary recorded_url text-center" target="_blank" href="#">Recorded Url</a>';
-
             update_post_meta( $item->get_id(), '_webinar_statis', 1 );
+            }else{
+                $userlocaltime = new DateTime("now", $browserTimezone);
+                $userlocaltime = $userlocaltime->format('Y-m-d H:i:s');
+                $nextEventSecond = wb_get_next_cron_time('webinar_5minafter');
+                $nextAvailableLink = date('Y-m-d H:i:s', strtotime('+'.$nextEventSecond.' seconds', strtotime($userlocaltime)));
+                
+                $video_error .= sprintf('Webinar %s %s %s finished <br/>Please be patient we are awaiting the webinar recording. The webinar recording will be available at %s, please reload the page.', get_the_title($item->get_id()), date('Y-m-d', strtotime($start_time)),  $duration, $nextAvailableLink);
+                
+                
             }
+
+            
 
            
             ?>
 
+            <?php if( !empty($play_url_meta)): ?>
+            <div id="video_player_zoom">
+            <video controls>
+                <source src="<?php echo $play_url_meta; ?>" type="video/mp4">
+                Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <?php elseif(!empty($video_error)): ?>
+                <div class="errorvideo">
+                    <h3><?php echo $video_error; ?></h3>
+                </div>
+            <?php else: ?>
             <div class="entry-countdown no-record">
                 <div class="inner-no-record">
+                    <h3 class="mb-0"><?php echo sprintf('Webinar %s %s %s finished.', get_the_title($item->get_id()), date('Y-m-d', strtotime($start_time)),  $duration ); ?></h3>
                     <h3 class="text-center text-black"><?php _e('No record available', 'webinar'); ?></h3>
                 </div>
             </div>
+            <?php endif; ?>
             <?php
 
         
