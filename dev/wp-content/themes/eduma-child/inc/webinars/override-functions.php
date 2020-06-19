@@ -1970,13 +1970,10 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 						$existPrice     = ($sales_price) ? $sales_price : $price;
 					
 						$lessons = get_course_lessons($course[0]->ID);
-						// echo 'lesssons <br/><pre>';
-						// print_r($lessons);
-						// echo '</pre>';
 
 						// Recorded Url
 						$record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
-			
+						$play_url = '';
 						if($record_url){
 							$record_url = json_decode($record_url);
 							$record_key = array_search('shared_screen_with_speaker_view', array_column($record_url->recording_files, 'recording_type'));  
@@ -1996,7 +1993,19 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 						$alternative_hoster_host_id = get_post_meta($swb->ID, '_lp_alternative_host', true);
 						dcd_zoom_conference()->enableUserStatistoActive($alternative_hoster_host_id, 'deactivate');
 					
-						update_post_meta( $swb->ID, '_webinar_statis', 1 );
+
+						$cron_count = get_post_meta( $swb->ID, 'cron_count', true ) ? get_post_meta( $swb->ID, 'cron_count', true ) : 0;
+						$cron_count += 1;
+
+						$stop = false;
+						if(!empty($play_url)){
+							$stop = true;
+							$cron_count += 1;	
+						} 
+						update_post_meta( $swb->ID, 'cron_count', $cron_count );
+						if($cron_count > 1) $stop = true;
+						if($stop) update_post_meta( $swb->ID, '_webinar_statis', 1 );
+						
 						}
 				}
 			endforeach;

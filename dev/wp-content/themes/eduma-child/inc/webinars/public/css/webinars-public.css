@@ -789,4 +789,5 @@ body.page-frontend-editor div#search-panel {
 }
 div#video_player_zoom > video {
   background-color: black;
+  max-width: 100%;
 }
