@@ -1,6 +1,6 @@
 <?php
 /**
- * Class LP_Email_Webinar_Update_Evaluated_Admin
+ * Class LP_Email_Assignment_Submitted_Admin
  *
  * @author   ThimPress
  * @package  LearnPress/Assignments/Classes/Email
@@ -10,11 +10,11 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
+if ( ! class_exists( 'LP_Email_Webinar_Update_Submitted_Admin' ) ) {
 	/**
-	 * Class LP_Email_Webinar_Update_Evaluated_Admin.
+	 * Class LP_Email_Webinar_Update_Submitted_Admin.
 	 */
-	class LP_Email_Webinar_Update_Evaluated_Admin extends LP_Email {
+	class LP_Email_Webinar_Update_Submitted_Admin extends LP_Email {
 
 		/**
 		 * @var
@@ -39,20 +39,20 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 		public $assignment_id = 0;
 
 		/**
-		 * LP_Email_Assignment_Evaluated_Admin constructor.
+		 * LP_Email_Assignment_Submitted_Admin constructor.
 		 */
 		public function __construct() {
 
-			$this->id          = 'webinar-update-admin';
+			$this->id          = 'submitted-assignment-admin';
 			$this->title       = __( 'Admin', 'learnpress-assignments' );
-			$this->description = __( 'Send this email to admin when they have update webinar lesson in zoom.', 'webinar' );
+			$this->description = __( 'Send this email to admin when user have submitted assignment.', 'learnpress-assignments' );
 
 			$this->template_base  = get_stylesheet_directory() . '/inc/webinars/admin/partials/email-template/';
-			$this->template_html  = 'emails/evaluated-assignment-admin.php';
-			$this->template_plain = 'emails/plain/evaluated-assignment-admin.php';
+			$this->template_html  = 'emails/submited-assignment-admin.php';
+			$this->template_plain = 'emails/plain/submitted-assignment-admin.php';
 
-			$this->default_subject = __( '[{{site_title}}] You just got update for webinar lession ({{lesson_name}})', 'webinar' );
-			$this->default_heading = __( 'Update Webinar Lesson on Zoom', 'webinar' );
+			$this->default_subject = __( '[{{site_title}}] Student submit assignment ({{assignment_name}})', 'learnpress-assignments' );
+			$this->default_heading = __( 'New Submit Assignment', 'learnpress-assignments' );
 			$this->recipient       = LP()->settings->get( 'emails_' . $this->id . '.recipients', $this->_get_admin_email() );
 
 			parent::__construct();
@@ -72,7 +72,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 				)
 			);
 
-			add_action( 'learn-press/zoom-update-lession-admin', array( $this, 'trigger' ), 99, 2 );
+			add_action( 'learn-press/student-submitted-assignment', array( $this, 'trigger' ), 99, 2 );
 		}
 
 		/**
@@ -81,33 +81,34 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 		 *
 		 * @return bool
 		 */
-		public function trigger( $post_id, $user_id ) {
+		public function trigger( $assignment_id, $user_id ) {
 			if ( ! $this->enable ) {
 				return false;
 			}
 			if ( ! ( $user = learn_press_get_user( $user_id ) ) ) {
 				return false;
 			}
+
 			LP_Emails::instance()->set_current( $this->id );
 			$format     = $this->email_format == 'plain_text' ? 'plain' : 'html';
-			$lesson = get_post( $post_id );
+			$assignment = get_post( $assignment_id );
 
-			$courses = learn_press_get_item_courses( $post_id );
+			$courses = learn_press_get_item_courses( $assignment_id );
 			$course  = get_post( $courses[0]->ID );
 
 			$this->object    = $this->get_common_template_data(
 				$format,
 				array(
-					'lesson_id'    		=> $lesson_id,
-					'lesson_name'  		=> $lesson->post_title,
-					'lesson_url'   		=> learn_press_get_course_item_permalink($course->ID, $assignment_id),
-					'course_id'        	=> $course->ID,
-					'course_name'      	=> $course->post_title,
-					'course_url'       	=> get_the_permalink( $course->ID ),
-					'user_id'          	=> $user_id,
-					'user_name'        	=> learn_press_get_profile_display_name( $user ),
-					'user_email'       	=> $user->get_email(),
-					'user_profile_url' 	=> learn_press_user_profile_link( $user_id )
+					'assignment_id'    => $assignment_id,
+					'assignment_name'  => $assignment->post_title,
+					'assignment_url'   => learn_press_get_course_item_permalink($course->ID, $assignment_id),
+					'course_id'        => $course->ID,
+					'course_name'      => $course->post_title,
+					'course_url'       => get_the_permalink( $course->ID ),
+					'user_id'          => $user_id,
+					'user_name'        => learn_press_get_profile_display_name( $user ),
+					'user_email'       => $user->get_email(),
+					'user_profile_url' => learn_press_user_profile_link( $user_id )
 				)
 			);
 			$this->variables = $this->data_to_variables( $this->object );
@@ -119,4 +120,4 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 	}
 }
 
-return new LP_Email_Webinar_Update_Evaluated_Admin();
+return new LP_Email_Webinar_Update_Submitted_Admin();

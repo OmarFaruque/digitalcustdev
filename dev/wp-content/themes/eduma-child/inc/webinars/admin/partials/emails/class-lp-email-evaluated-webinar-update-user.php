@@ -67,7 +67,8 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_User' ) ) {
 					'{{course_url}}',
 					'{{user_id}}',
 					'{{user_name}}',
-					'{{user_email}}'
+					'{{user_email}}',
+					'{{webinars_curriculum_html}}'
 				)
 			);
 
@@ -107,7 +108,8 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_User' ) ) {
 					'user_id'          => $user_id,
 					'user_name'        => learn_press_get_profile_display_name( $user ),
 					'user_email'       => $user->get_email(),
-					'user_profile_url' => learn_press_user_profile_link( $user_id )
+					'user_profile_url' => learn_press_user_profile_link( $user_id ),
+					'webinars_curriculum_html' => webinar_curriculum_html($course->ID)
 				)
 			);
 			$this->variables = $this->data_to_variables( $this->object );

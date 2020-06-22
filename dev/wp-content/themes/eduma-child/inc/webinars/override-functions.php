@@ -192,7 +192,7 @@ if ( ! function_exists( 'thim_learnpress_breadcrumb' ) ) {
 
 
 if ( !function_exists( 'thim_item_meta_duration' ) ) {
-	function thim_item_meta_duration( $item ) {
+	function thim_item_meta_duration( $item, $return = '' ) {
 		$duration = $item->get_duration();
 		$item_id = $item->get_id();
 		$date = get_post_meta( $item_id, '_lp_webinar_when', true );
@@ -239,15 +239,29 @@ if ( !function_exists( 'thim_item_meta_duration' ) ) {
 				if( strtotime($date) > strtotime($wnewtime) ) $metaDuration = __('Date', 'webinar') . ': ' . date('d.m.Y', strtotime($date)) .' in '.date('H:i', strtotime($date)).' (GMT'.$offsetHours.')   '.__('Duration', 'webinar').': ' . $duration->to_timer( $format, true );
 				if($progress  >= 0 && $progress <= $duration->get() ) $metaDuration = __('In Progress', 'webinars');
 				if(strtotime($datewithDuration) < strtotime($wnewtime) ) $metaDuration = __('Passed', 'webinars');
-				echo '<span class="omar meta hh duration">' . $metaDuration . '</span>';
+
+				if(empty($return)){
+					echo '<span class="omar meta hh duration">' . $metaDuration . '</span>';
+				}else{
+					return '<span class="omar meta hh duration">' . $metaDuration . '</span>';
+				}
+				
 				
 			}else{
 				// echo 'inside 2 <br/>';
-				echo '<span class="meta duration">' . $duration->to_timer( $format, true ) . '</span>';
+				if(empty($return)){
+					echo '<span class="meta duration">' . $duration->to_timer( $format, true ) . '</span>';
+				}else{
+					return '<span class="meta duration">' . $duration->to_timer( $format, true ) . '</span>';
+				}
 			}
 		} elseif ( is_string( $duration ) && strlen( $duration ) ) {
 			// echo 'inside 3 <br/>';
-			echo '<span class="meta dd duration">' . $duration . '</span>';
+			if(empty($return)){
+				echo '<span class="meta dd duration">' . $duration . '</span>';
+			}else{
+				return '<span class="meta dd duration">' . $duration . '</span>';
+			}
 		}
 	}
 }
@@ -2236,4 +2250,46 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 			}
 		}
 		return false;
+	}
+
+
+
+	/*
+	* Table of lesson currilum
+	*/
+	// add_action('admin_init', 'webinar_curriculum_html');
+	function webinar_curriculum_html($course_id){
+		// $course_id = 18035;
+		$course = learn_press_get_course( $course_id );
+		$lessons = array();
+		
+		$table = '<table style="border-collapse: collapse;"><tbody>';
+		
+		if($course){
+			$sections = $course->get_curriculum_raw();
+
+			$table .= sprintf('<tr>
+					<td style="border:1px solid #555; padding:5px;"><strong>%s</strong></td>
+					<td style="border:1px solid #555; padding:5px;"><strong>%s</strong></td>
+				</tr>', __('Name', 'webinar'), __('Date & Duration', 'webinar') );
+			foreach($sections as $sSection){
+				
+				if ( isset( $sSection['items'] ) && is_array( $sSection['items'] ) && count($sSection['items']) > 0 ) {
+
+					$table .= sprintf('<tr><td style="border:1px solid #555; padding:5px;" colspan="3"><strong>%s</strong></td></tr>', __('Section Name: ', 'webinar') . $sSection['title']);
+					foreach($sSection['items'] as $singleitem){
+						if($singleitem['type'] == 'lp_lesson'){
+							
+							$lesson = LP_Lesson::get_lesson( $singleitem['id'] );
+							$table .= sprintf('<tr>
+								<td style="border:1px solid #555; padding:5px;"><a href="%s">%s</a></td>
+								<td style="border:1px solid #555; padding:5px;">%s</td>
+							</tr>', get_the_permalink( $singleitem['id'] ), get_the_title($singleitem['id']), thim_item_meta_duration($lesson, 'return') );							
+						}
+					}
+				}
+			}
+		}
+		$table .= '</tbody></table>';
+		return $table;
 	}

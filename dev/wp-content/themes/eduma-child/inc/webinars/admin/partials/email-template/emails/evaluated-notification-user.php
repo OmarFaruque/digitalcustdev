@@ -7,5 +7,3 @@
 <p>Click <a href="{{zoom_url}}">{{lesson_name}}</a> to see more. Thanks you</p>
 
 {{footer}}
-
- 
