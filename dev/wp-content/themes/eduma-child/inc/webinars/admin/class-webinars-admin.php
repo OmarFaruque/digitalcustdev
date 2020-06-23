@@ -645,7 +645,8 @@ class Webinars_Admin {
 										'panelists_video'   => true,
 										'approval_type'     => 0,
 										'registration_type' => 1,
-										'auto_recording'    => 'cloud'
+										'auto_recording'    => 'cloud',
+										'registrants_email_notification' => false
 									)
 								);
 
@@ -689,7 +690,8 @@ class Webinars_Admin {
 										'panelists_video'   => true,
 										'approval_type'     => 0,
 										'registration_type' => 1,
-										'auto_recording'    => 'cloud'
+										'auto_recording'    => 'cloud',
+										'registrants_email_notification' => false
 									)
 								);
 
@@ -772,7 +774,8 @@ class Webinars_Admin {
 						'panelists_video'   => true,
 						'approval_type'     => 0,
 						'registration_type' => 1,
-						'auto_recording'    => 'cloud'
+						'auto_recording'    => 'cloud', 
+						'registrants_email_notification' => false
 					)
 				);
 
