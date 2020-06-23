@@ -60,9 +60,9 @@ if ( ! class_exists( 'LP_Email_Webinar_Update_Evaluated_Admin' ) ) {
 			$this->support_variables = array_merge(
 				$this->general_variables,
 				array(
-					'{{assignment_id}}',
-					'{{assignment_name}}',
-					'{{assignment_url}}',
+					'{{lesson_id}}',
+					'{{lesson_name}}',
+					'{{lesson_url}}',
 					'{{course_id}}',
 					'{{course_name}}',
 					'{{course_url}}',

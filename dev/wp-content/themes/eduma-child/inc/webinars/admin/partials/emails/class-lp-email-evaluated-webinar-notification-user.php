@@ -69,7 +69,8 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_User' ) ) {
 					'{{user_name}}',
 					'{{user_email}}',
 					'{{join_url}}',
-					'{{webinars_curriculum_html}}'
+					'{{webinars_curriculum_html}}',
+					'{{webinar_lesson_html}}'
 				)
 			);
 
@@ -117,7 +118,8 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Evaluated_User' ) ) {
 					'user_email'       => $user->get_email(),
 					'user_profile_url' => learn_press_user_profile_link( $user_id ),
 					'join_url' 			=> $sS->join_url,
-					'webinars_curriculum_html' => webinar_curriculum_html($course->ID)
+					'webinars_curriculum_html' => webinar_curriculum_html($course->ID),
+					'webinar_lesson_html' => webinar_lesson_html($post_id)
 				)
 			);
 				

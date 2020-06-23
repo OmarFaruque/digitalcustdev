@@ -193,6 +193,11 @@ if ( ! function_exists( 'thim_learnpress_breadcrumb' ) ) {
 
 if ( !function_exists( 'thim_item_meta_duration' ) ) {
 	function thim_item_meta_duration( $item, $return = '' ) {
+		
+		echo '<pre>';
+		print_r($item);
+		echo '</pre>';
+		
 		$duration = $item->get_duration();
 		$item_id = $item->get_id();
 		$date = get_post_meta( $item_id, '_lp_webinar_when', true );
@@ -2292,4 +2297,34 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		}
 		$table .= '</tbody></table>';
 		return $table;
+	}
+
+
+
+
+	// webinar_lesson_html 
+	if(!function_exists('webinar_lesson_html')){
+		// add_action('admin_init', 'webinar_lesson_html');
+		function webinar_lesson_html($postid){
+			$lesson     = LP_Lesson::get_lesson( $postid );
+
+			$table = '<table style="border-collapse: collapse;"><tbody>';
+			$table .= sprintf(
+				'<tr>
+					<th style="border:1px solid #555; padding:5px;">%s</th>
+					<th style="border:1px solid #555; padding:5px;">%s</th>
+				</tr>', __('Lesson Name', 'webinar'), __('Date & Time', 'webinar')
+			);
+
+			$table .= sprintf(
+				'<tr>
+					<td style="border:1px solid #555; padding:5px;"><a href="%s">%s</a></td>
+					<td style="border:1px solid #555; padding:5px;">%s</td>
+				</tr>', get_the_permalink( $postid ), get_the_title( $postid), thim_item_meta_duration($lesson, 'return')
+			);
+
+			$table .= '</tbody></table>';
+
+			return $table;
+		}
 	}
