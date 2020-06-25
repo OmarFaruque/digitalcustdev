@@ -8,9 +8,9 @@ $users 				   = cstm_video_conferencing_zoom_api_get_user_transients();
 
 $webinar_info              = json_decode( dcd_zoom_conference()->getWebinarInfo( $_GET['edit'] ) );
 
-echo '<pre>';
-print_r($webinar_info);
-echo '</pre>';
+// echo '<pre>';
+// print_r($webinar_info);
+// echo '</pre>';
 
 
 global $wpdb;
@@ -62,7 +62,8 @@ if ( ! empty( $option_alternative_hosts ) ) {
 
 
 
-$start_url = $webinar_info->start_url;
+// $start_url = $webinar_info->start_url;
+$start_url = get_post_meta($lesson_id->post_id, 'ah_start_link', true);
 
 // echo 'start url: ' . $start_url . '<br/>';
 
@@ -73,7 +74,8 @@ $option   = 'zoom_password_meeting_' . $webinar_info->id;
 update_option( $option, $password, true );
 ?>
 <div class="wrap">
-	<h1><?php _e( 'Edit a Webinar', 'video-conferencing-with-zoom-api' ); ?></h1> <a href="?page=zoom-video-conferencing&host_id=<?php echo $webinar_info->host_id; ?>"><?php _e( 'Back to List', 'video-conferencing-with-zoom-api' ); ?></a>
+	<h1><?php _e( 'Edit a Webinar', 'video-conferencing-with-zoom-api' ); ?></h1> 
+	<a href="<?php echo admin_url( 'admin.php?page=zoom-video-conferencing-webinars' ); ?>"><?php _e( 'Back to List', 'video-conferencing-with-zoom-api' ); ?></a>
 
 	<div class="message">
 		<?php
@@ -116,14 +118,14 @@ update_option( $option, $password, true );
 			<tr>
 				<th scope="row"><label for="meetingTopic"><?php _e( 'Webinar Topic *', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
-					<input type="text" name="meetingTopic" size="100" class="regular-text" required value="<?php echo ! empty( $webinar_info->topic ) ? $webinar_info->topic : null; ?>">
+					<input type="text" readonly name="meetingTopic" size="100" class="regular-text" required value="<?php echo ! empty( $webinar_info->topic ) ? $webinar_info->topic : null; ?>">
 					<p class="description" id="meetingTopic-description"><?php _e( 'Webinar topic. (Required).', 'video-conferencing-with-zoom-api' ); ?></p>
 				</td>
 			</tr>
 			<tr>
 				<th scope="row"><label for="meetingAgenda"><?php _e( 'Webinar Agenda', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
-					<input type="text" name="agenda" class="regular-text" value="<?php echo ! empty( $webinar_info->agenda ) ? $webinar_info->agenda : null; ?>">
+					<input type="text" name="agenda" class="w100 regular-text" value="<?php echo ! empty( $webinar_info->agenda ) ? $webinar_info->agenda : null; ?>">
 					<p class="description" id="meetingTopic-description"><?php _e( 'Webinar Description.', 'video-conferencing-with-zoom-api' ); ?></p>
 				</td>
 			</tr>
@@ -153,7 +155,7 @@ update_option( $option, $password, true );
 					$date     = new DateTime( $webinar_info->start_time );
 					$date->setTimezone( $tz );
 					?>
-					<input type="text" name="start_date" id="datetimepicker" data-existingdate="<?php echo $date->format( 'Y-m-d H:i:s' ); ?>" required class="regular-text">
+					<input readonly type="text" name="start_date" id="datetimepicker" data-existingdate="<?php echo $date->format( 'Y-m-d H:i:s' ); ?>" required class="regular-text">
 					<p class="description" id="start_date-description"><?php _e( 'Starting Date and Time of the Webinar (Required).', 'video-conferencing-with-zoom-api' ); ?></p>
 				</td>
 			</tr>
@@ -161,7 +163,7 @@ update_option( $option, $password, true );
 				<th scope="row"><label for="timezone"><?php _e( 'Timezone', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
 					<?php $tzlists = zvc_get_timezone_options(); ?>
-					<select id="timezone" name="timezone" class="zvc-hacking-select">
+					<select readonly disabled id="timezone" name="timezone" class="zvc-hacking-select">
 						<?php foreach ( $tzlists as $k => $tzlist ) { ?>
 							<option value="<?php echo $k; ?>" <?php echo $webinar_info->timezone == $k ? 'selected' : null; ?>><?php echo $tzlist; ?></option>
 						<?php } ?>
@@ -172,7 +174,7 @@ update_option( $option, $password, true );
 			<tr>
 				<th scope="row"><label for="duration"><?php _e( 'Duration', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
-					<input type="number" name="duration" class="regular-text" value="<?php echo $webinar_info->duration ? $webinar_info->duration : null; ?>">
+					<input type="number" readonly name="duration" class="regular-text" value="<?php echo $webinar_info->duration ? $webinar_info->duration : null; ?>">
 					<p class="description" id="duration-description"><?php _e( 'Webinar duration (minutes). (optional)', 'video-conferencing-with-zoom-api' ); ?></p>
 				</td>
 			</tr>
@@ -194,12 +196,12 @@ update_option( $option, $password, true );
 			<tr>
 				<th scope="row"><label for="option_auto_recording"><?php _e( 'Auto Recording', 'video-conferencing-with-zoom-api' ); ?></label></th>
 				<td>
-					<!-- <select id="option_auto_recording" name="option_auto_recording">
-						<option value="none" <?php //echo ! empty( $webinar_info->settings->auto_recording ) && $webinar_info->settings->auto_recording == 'none' ? 'selected' : false; ?>>No Recordings</option>
-						<option value="local" <?php //echo ! empty( $webinar_info->settings->auto_recording ) && $webinar_info->settings->auto_recording == 'local' ? 'selected' : false; ?>>Local</option>
-						<option value="cloud" <?php //echo ! empty( $webinar_info->settings->auto_recording ) && $webinar_info->settings->auto_recording == 'cloud' ? 'selected' : false; ?>>Cloud</option>
-					</select> -->
-					<a href="#"><?php _e('Recording', 'webinar'); ?></a>
+					<select id="option_auto_recording" name="option_auto_recording">
+						<option value="none" <?php echo ! empty( $webinar_info->settings->auto_recording ) && $webinar_info->settings->auto_recording == 'none' ? 'selected' : false; ?>>No Recordings</option>
+						<option value="local" <?php echo ! empty( $webinar_info->settings->auto_recording ) && $webinar_info->settings->auto_recording == 'local' ? 'selected' : false; ?>>Local</option>
+						<option value="cloud" <?php echo ! empty( $webinar_info->settings->auto_recording ) && $webinar_info->settings->auto_recording == 'cloud' ? 'selected' : false; ?>>Cloud</option>
+					</select>
+					<!-- <a href="#"><?php //_e('Recording', 'webinar'); ?></a> -->
 					<p><strong><?php _e( 'Please note that when conducting webinar from the web client only cloud recording feature is available if you are on a Pro or higher level Zoom account. If you are on a free account the recording is not possible.', 'video-conferencing-with-zoom-api' ); ?></strong></p>
 					<p class="description" id="option_auto_recording_description"><?php _e( 'Set what type of auto recording feature you want to add. Default is none.', 'video-conferencing-with-zoom-api' ); ?></p>
 					<p>

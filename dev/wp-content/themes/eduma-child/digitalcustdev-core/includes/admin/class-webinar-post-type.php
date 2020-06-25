@@ -107,7 +107,7 @@ class Admin_DigitalCustDev_Webinar {
 		add_action( 'load-' . $page_hook, array( $this, 'load_webinar_list_table_screen_options' ) );
 
 
-		add_submenu_page( 'zoom-video-conferencing', __( 'Webinars', 'video-conferencing-with-zoom-plank' ), __( 'Webinars', 'video-conferencing-with-zoom-plank' ), 'manage_options', 'zoom-video-conferencing-webinars', array( $this, 'webinars_list' ) );
+		add_submenu_page( 'zoom-video-conferencing', __( 'Webinars', 'video-conferencing-with-zoom-plank' ), __( 'Webinars', 'video-conferencing-with-zoom-plank' ), 'manage_options', 'zoom-video-conferencing-webinars', array( $this, 'webinars_list' ), 2 );
 		
 		
 	
@@ -161,6 +161,7 @@ class Admin_DigitalCustDev_Webinar {
 		$lesson_id = filter_input( INPUT_POST, 'lesson_id' );
 
 		$actiontozoom = filter_input( INPUT_POST, 'actiontozoom' );
+		$option_auto_recording = filter_input( INPUT_POST, 'option_auto_recording' );
 
 		// echo 'action to zoom: ' . $actiontozoom . '<br/>';
 		
@@ -231,6 +232,12 @@ class Admin_DigitalCustDev_Webinar {
 		if ( ! empty( $updateWebinar->error ) ) {
 			self::set_message( 'error', $updateWebinar->error->message );
 		} else {
+
+			
+			$localDetails = get_post_meta( $lesson_id, '_webinar_details', true );
+			$localDetails->settings->auto_recording = $option_auto_recording;
+			update_post_meta($lesson_id, '_webinar_details', $localDetails);
+
 			self::set_message( 'updated', __( "Updated meeting.", "video-conferencing-with-zoom-api" ) );
 		}
 
@@ -266,7 +273,7 @@ class Admin_DigitalCustDev_Webinar {
 	}
 
 	public function register_metabox() {
-		add_meta_box( 'dcd_webinar_link', __( 'Zoom Webinar Link', 'digitalcustdev-core' ), array( $this, 'render' ), 'lp_lesson', 'side', 'high' );
+		add_meta_box( 'dcd_webinar_link', __( 'Zoom Webinar Link', 'digitalcustdev-core' ), array( $this, 'render' ), 'lp_lesson', 'side', 'default' );
 	}
 
 	public function render( $post ) {
@@ -303,7 +310,7 @@ class Admin_DigitalCustDev_Webinar {
 				echo $infoTExt;
 				$output = '<div id="zoom_section_wrap"><div class="d-block mt-1"><label for="zoom_date">'.__('Date', 'webinar').'</label>';
 				$output .= '<input autocomplete="off" name="_lp_webinar_when" id="zoom_date" class="date-picke xdsoft_datepicker form-control w-100" value="'.$zoom_date.'"/></div>';
-				$output .= '<div class="d-block"><label for="time_zone">'.__('TimeZone', 'webinar').'</label>';
+				$output .= '<div class="d-block"><br/><label for="time_zone">'.__('TimeZone', 'webinar').'</label><br/>';
 				$output .= '<select name="_lp_timezone" id="time_zone" class="form-control w-100">';
 				foreach($tzlists as $k => $st){
 					$selected = ($k == $time_zone) ? 'selected':'';

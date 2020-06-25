@@ -140,6 +140,7 @@ class Webinars_Admin {
 		
 
 		// add_action('admin_init', array($this, 'tetF'));
+		
 	}
 
 
@@ -167,63 +168,19 @@ class Webinars_Admin {
 	}
 
 	public function tetF(){
-		
-		$post_id = 18043;
+		// $userid = get_user_meta( get_current_user_id(), 'user_zoom_hostid', true );
+		// $userid = 'IMLk6bCmSbSUioLL2hqKbg';
+		// $dataArray = array(
+		// 	'user_id' => 144, 
+		// 	'hostid' => $userid
+		// );
+		//  echo dcd_zoom_conference()->createUserPicture($dataArray);
 
-		delete_post_meta( $post_id, 'start_url' );
-			$lesson = get_post($post_id);
-			$webinar_id = get_post_meta( $post_id, '_webinar_ID', true );
-			$timezone   = get_post_meta( $post_id, '_lp_timezone', true );
-			$duration = get_post_meta( $sl, '_lp_duration', true );
-			$duration = (int)$duration;
-			$start_time = get_post_meta( $post_id, '_lp_webinar_when', true );
+			$posts = get_post(18050);
+			echo '<pre>';
+			print_r($posts);
+			echo '</pre>';
 			
-			// UPdate alternative host
-			$authorhostid = get_user_meta($author_id, 'user_zoom_hostid', true);
-			update_post_meta( $post_id, '_lp_alternative_host', $authorhostid );
-
-
-			$start_time = str_replace('/', '-', $start_time);
-			$start_time = ! empty( $start_time ) ? date( "Y-m-d\TH:i:s", strtotime( $start_time ) ) : date( "Y-m-d\TH:i:s" );
-
-			if ( ! empty( $webinar_id ) ) {
-
-				// Start url for master host 
-				$webinarDetails = dcd_zoom_conference()->getZoomWebinarDetails($post_id);
-				$webinarDetails = json_decode($webinarDetails);
-
-				echo 'webinar details <pre>';
-				print_r($webinarDetails);
-				echo '</pre>';
-
-				update_post_meta( $post_id, 'mh_start_link', $webinarDetails->start_url );
-
-
-				//Create webinar here f
-				$postData = array(
-					'topic'      => $lesson->post_title,
-					'type'       => 5,
-					'start_time' => $start_time,
-					'duration' 	=> $duration,
-					'timezone'   => ! empty( $timezone ) ? $timezone : '',
-					'agenda'     => $lesson->post_content,
-					'settings'   => array(
-						'host_video'        => false,
-						'panelists_video'   => true,
-						'approval_type'     => 0,
-						'registration_type' => 1,
-						'auto_recording'    => 'cloud'
-					)
-				);
-
-				//Updated
-				dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
-				$user_id = get_current_user_id();
-				do_action( 'learn-press/zoom-update-lession-instructor', $post_id, $user_id );
-				do_action( 'learn-press/zoom-update-lession-user', $post_id, $user_id );
-				do_action( 'learn-press/zoom-update-lession-admin', $post_id, $user_id );
-			}
-
 
 
 	}
@@ -512,6 +469,18 @@ class Webinars_Admin {
 			$result       = json_decode( $created_user );
 			
 			if ( empty( $result->code ) ) {
+
+					// Change user picture
+					$userid = $result->id;
+					$dataArray = array(
+						'user_id' => $user_id, 
+						'hostid' => $userid
+					);
+					dcd_zoom_conference()->createUserPicture($dataArray);
+
+					// End Change Zoom profile picture. 
+
+
 					update_user_meta( $user_id, 'user_zoom_hostid', $result->id );
 					$curl = curl_init();
 					curl_setopt_array($curl, array(
@@ -588,6 +557,8 @@ class Webinars_Admin {
 					//Delete Webinar Details
 					$webinar_id = get_post_meta( $lesson, '_webinar_ID', true );
 					if ( $webinar_id ) {
+
+						dcd_zoom_conference()->deleteRecording( $webinar_id );
 						dcd_zoom_conference()->deleteWebinar( $webinar_id );
 					}
 					wp_delete_post( $lesson, true );	
@@ -639,7 +610,7 @@ class Webinars_Admin {
 									'duration' => $duration,
 									'start_time' => ! empty( $start_time ) ? $start_time : date( "Y-m-d\TH:i:s" ),
 									'timezone'   => ! empty( $timezone ) ? $timezone : '',
-									// 'agenda'     => $lesson->post_content,
+									'agenda'     => wp_strip_all_tags($lesson->post_content),
 									'settings'   => array(
 										'host_video'        => false,
 										'panelists_video'   => true,
@@ -684,7 +655,7 @@ class Webinars_Admin {
 									'start_time' => $start_time,
 									'duration' 	=> $duration,
 									'timezone'   => ! empty( $timezone ) ? $timezone : '',
-									'agenda'     => $lesson->post_content,
+									'agenda'     => wp_strip_all_tags($lesson->post_content),
 									'settings'   => array(
 										'host_video'        => false,
 										'panelists_video'   => true,
@@ -768,7 +739,7 @@ class Webinars_Admin {
 					'start_time' => $start_time,
 					'duration' 	=> $duration,
 					'timezone'   => ! empty( $timezone ) ? $timezone : '',
-					'agenda'     => $lesson->post_content,
+					'agenda'     => wp_strip_all_tags($lesson->post_content),
 					'settings'   => array(
 						'host_video'        => false,
 						'panelists_video'   => true,
@@ -943,7 +914,11 @@ class Webinars_Admin {
 	* Change sub-menu order
 	*/
 	public function changeAdminSubMenuOrderForLearnPress($menu_ord){
+
+
+
 		global $submenu;
+
 		$newarray = array();
 		$newarray[] = $submenu['learn_press'][0];
 		$newarray[] = $submenu['learn_press'][10];

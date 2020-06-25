@@ -100,45 +100,42 @@ if ( class_exists( 'WPEMS' ) ) {
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
         
 
+        $details = get_post_meta( $item->get_id(), '_webinar_details', true );
+        // $details = json_decode($details);
+        
+       
 
-
-
-        // $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
-        // $record_url = json_decode($record_url);
-        // $record_key = array_search('shared_screen_with_speaker_view', array_column($record_url->recording_files, 'recording_type'));  
-        // $play_url = $record_url->recording_files[$record_key]->download_url;
-        // echo '<pre>';
-        // print_r($record_url);
-        // echo '</pre>';
-
-        // echo 'target url: ' . $play_url . '<br/>';
 
 
 
         $zoom_status = get_post_meta( $item->get_id(), 'zoom_status', true );
         $play_url = '';
         $video_error = '';
-        if($zoom_status == 'passed'){
-            $play_url_meta = get_post_meta( $item->get_id(), 'play_url', true );
-            if(!$play_url_meta){
-                if(get_post_meta( $item->get_id(), 'cron_count', true ) < 2){
+
+        if($details->settings->auto_recording == 'cloud'){
+            if($zoom_status == 'passed'){
+                $play_url_meta = get_post_meta( $item->get_id(), 'play_url', true );
+                if(!$play_url_meta){
+                    if(get_post_meta( $item->get_id(), 'cron_count', true ) < 2){
+                        $userlocaltime = new DateTime("now", $browserTimezone);
+                        $userlocaltime = $userlocaltime->format('Y-m-d H:i:s');
+                        $nextEventSecond = wb_get_next_cron_time('webinar_5minafter');
+                        $nextAvailableLink = date('Y-m-d H:i:s', strtotime('+'.$nextEventSecond.' seconds', strtotime($userlocaltime)));
+                        
+                        $video_error .= sprintf('Webinar %s %s %s finished <br/>Please be patient we are awaiting the webinar recording. The webinar recording will be available at %s, please reload the page.', get_the_title($item->get_id()), date('Y-m-d', strtotime($start_time)),  $duration, $nextAvailableLink);    
+                    }
+                }
+            }else{
                     $userlocaltime = new DateTime("now", $browserTimezone);
                     $userlocaltime = $userlocaltime->format('Y-m-d H:i:s');
                     $nextEventSecond = wb_get_next_cron_time('webinar_5minafter');
                     $nextAvailableLink = date('Y-m-d H:i:s', strtotime('+'.$nextEventSecond.' seconds', strtotime($userlocaltime)));
                     
-                    $video_error .= sprintf('Webinar %s %s %s finished <br/>Please be patient we are awaiting the webinar recording. The webinar recording will be available at %s, please reload the page.', get_the_title($item->get_id()), date('Y-m-d', strtotime($start_time)),  $duration, $nextAvailableLink);    
-                }
+                    $video_error .= sprintf('Webinar %s %s %s finished <br/>Please be patient we are awaiting the webinar recording. The webinar recording will be available at %s, please reload the page.', get_the_title($item->get_id()), date('Y-m-d', strtotime($start_time)),  $duration, $nextAvailableLink);
             }
         }else{
-                $userlocaltime = new DateTime("now", $browserTimezone);
-                $userlocaltime = $userlocaltime->format('Y-m-d H:i:s');
-                $nextEventSecond = wb_get_next_cron_time('webinar_5minafter');
-                $nextAvailableLink = date('Y-m-d H:i:s', strtotime('+'.$nextEventSecond.' seconds', strtotime($userlocaltime)));
-                
-                $video_error .= sprintf('Webinar %s %s %s finished <br/>Please be patient we are awaiting the webinar recording. The webinar recording will be available at %s, please reload the page.', get_the_title($item->get_id()), date('Y-m-d', strtotime($start_time)),  $duration, $nextAvailableLink);
+            $video_error .= __('Webinar recording is not available.', 'webinar');
         }
-
             
 
            

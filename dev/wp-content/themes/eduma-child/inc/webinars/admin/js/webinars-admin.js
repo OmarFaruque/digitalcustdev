@@ -278,4 +278,9 @@
 	}
 
 
+	/*
+	* Select2 for timezone on lesson
+	*/
+	$('select#time_zone, select#_lp_course_author').select2();
+
 })( jQuery );

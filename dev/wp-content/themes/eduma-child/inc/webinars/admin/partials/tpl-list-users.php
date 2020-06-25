@@ -13,7 +13,7 @@ $users = cstm_video_conferencing_zoom_api_get_user_transients();
 ?>
 <div id="zvc-cover" style="display: none;"></div>
 <div class="wrap">
-	<h1><?php _e( 'Users', 'video-conferencing-with-zoom-api' ); ?></h1> <a href="?page=zoom-video-conferencing-list-users&flush=true"><?php _e( 'Flush User Cache', 'video-conferencing-with-zoom-api' ); ?></a>
+	<h1><?php _e( 'Users', 'video-conferencing-with-zoom-api' ); ?></h1> <a href="<?php echo admin_url( 'admin.php?page=cst-zoom-video-conferencing-list-users&flush=true' ) ?>"><?php _e( 'Flush User Cache', 'video-conferencing-with-zoom-api' ); ?></a>
 	<h2><?php _e( 'ATTENTION: Zoom Account Prerequisites for User Management', 'video-conferencing-with-zoom-api' ); ?></h2>
 	
 	<ol>

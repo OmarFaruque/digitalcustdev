@@ -194,9 +194,6 @@ if ( ! function_exists( 'thim_learnpress_breadcrumb' ) ) {
 if ( !function_exists( 'thim_item_meta_duration' ) ) {
 	function thim_item_meta_duration( $item, $return = '' ) {
 		
-		echo '<pre>';
-		print_r($item);
-		echo '</pre>';
 		
 		$duration = $item->get_duration();
 		$item_id = $item->get_id();

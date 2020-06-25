@@ -329,6 +329,60 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 
 			return $roles;
 		}
+
+
+		/*
+		* Delete Zoom recording while delete wp webinar
+		*/
+		public function deleteRecording($webinarid){
+			return $this->sendRequest( 'meetings/' . $webinarId . '/recordings?action=delete', false, "DELETE" );
+		}
+
+
+		/*
+		* Create User function for set picture
+		*/
+		public function createUserPicture($data){
+			$id = $data['hostid'];
+			$avatar_url = get_avatar_url( $data['user_id'] );
+			
+			$image = $avatar_url;
+			$fields = [
+				'pic_file' => new \CurlFile($image, 'image/png', 'avatar_03')
+			];
+			// echo 'file url: ' . $avatar_url . '<br/>';
+			$postFields = json_encode($daraArray);
+				$curl = curl_init();
+
+				curl_setopt_array($curl, array(
+				CURLOPT_URL => $this->api_url . "users/".$id."/picture",
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_ENCODING => "",
+				CURLOPT_MAXREDIRS => 10,
+				CURLOPT_TIMEOUT => 30,
+				CURLOPT_SSL_VERIFYPEER => false,
+				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+				CURLOPT_CUSTOMREQUEST => "POST",
+				CURLOPT_POSTFIELDS => $fields,
+				CURLOPT_HTTPHEADER => array(
+					"authorization: Bearer ".$this->generateJWTKey()."",
+					"content-type: multipart/form-data;"
+				),
+				));
+
+				$response = curl_exec($curl);
+				$err = curl_error($curl);
+
+				curl_close($curl);
+
+				if ($err) {
+					return "cURL Error #:" . $err;
+				} else {
+					return $response;
+				}
+
+
+		}
 	}
 
 	function dcd_zoom_conference() {

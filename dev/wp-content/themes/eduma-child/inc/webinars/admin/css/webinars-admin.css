@@ -64,3 +64,9 @@ td.zoom_master_host span.select2.select2-container,
     padding: 4px;
     display: block;
 }
+
+div#dcd_webinar_link .select2-container {
+    width: 100% !important;
+}
+form.zvc-meetings-form input.regular-text.w100,
+.w100{width:100% !important;}
