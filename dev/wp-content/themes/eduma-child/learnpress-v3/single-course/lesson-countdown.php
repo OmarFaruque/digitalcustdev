@@ -19,7 +19,7 @@ if ( class_exists( 'WPEMS' ) ) {
     $master_token = get_option('zoom_master_host_token');
     $ah_start_link = get_post_meta($item->get_id(), 'ah_start_link', true);
 
-
+    $details = get_post_meta( $item->get_id(), '_webinar_details', true );
 
 
     // echo 'ah_start_link: ' . $ah_start_link . '<br/>';
@@ -100,10 +100,7 @@ if ( class_exists( 'WPEMS' ) ) {
         $webinarId = get_post_meta( $item->get_id(), '_webinar_ID', true );
         
 
-        $details = get_post_meta( $item->get_id(), '_webinar_details', true );
-        // $details = json_decode($details);
-        
-       
+    
 
 
 
@@ -231,9 +228,11 @@ if ( class_exists( 'WPEMS' ) ) {
         $nextEventSecond = wb_get_next_cron_time('webinar_10mbefore');
         $nextAvailableLink = date('Y-m-d H:i:s', strtotime('+'.$nextEventSecond.' seconds', strtotime($userlocaltime)));
 
-        if(!$ah_start_link && $hoster){
+        if(!$ah_start_link && $hoster && get_user_meta(get_current_user_id(), 'user_zoom_hostid', true) != $master_host ){
             $errorMsg = sprintf('Please be patient we are awaiting webinar connection link. Your link will be available at %s, please reload the page.', $nextAvailableLink);
         }
+
+        
         
         ?>
         <?php ?>

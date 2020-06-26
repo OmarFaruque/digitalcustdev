@@ -176,10 +176,14 @@ class Webinars_Admin {
 		// );
 		//  echo dcd_zoom_conference()->createUserPicture($dataArray);
 
-			$posts = get_post(18050);
-			echo '<pre>';
-			print_r($posts);
-			echo '</pre>';
+		$webinar_id = get_post_meta( 18050, '_webinar_ID', true );
+
+		// echo '<pre>';
+		// print_r(get_post_meta(18050));
+		// echo '</pre>';
+			echo 'webinarid: ' . $webinar_id . '<br/>';
+			$delete = dcd_zoom_conference()->deleteRecording( $webinar_id );
+			echo 'Delte: ' . $delete . '<br/>';
 			
 
 

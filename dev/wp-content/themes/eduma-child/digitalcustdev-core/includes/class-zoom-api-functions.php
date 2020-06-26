@@ -335,7 +335,7 @@ if ( ! class_exists( 'DigitalCustDev_Zoom_API' ) && class_exists('Zoom_Video_Con
 		* Delete Zoom recording while delete wp webinar
 		*/
 		public function deleteRecording($webinarid){
-			return $this->sendRequest( 'meetings/' . $webinarId . '/recordings?action=delete', false, "DELETE" );
+			return $this->sendRequest( 'meetings/' . $webinarid . '/recordings?action=delete', false, "DELETE" );
 		}
 
 
