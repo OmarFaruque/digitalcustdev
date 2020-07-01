@@ -127,13 +127,16 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     
 
                         if( $now > $linkvisiable && $now < date('Y-m-d H:i', $endtime) ){
+                    
                             update_post_meta($lesson_id->post_id, 'zoom_status', 'active');
                         }else{
+                    
                             update_post_meta($lesson_id->post_id, 'zoom_status', 'inactive');
                         }
                     }
 
                     $zoom_active = get_post_meta($lesson_id->post_id, 'zoom_status', true);
+                    
                     
                     $course_id = 0;
                     $alternative_hoster = '';

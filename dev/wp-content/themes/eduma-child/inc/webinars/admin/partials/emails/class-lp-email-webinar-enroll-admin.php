@@ -1,6 +1,6 @@
 <?php
 /**
- * LP_Email_Enrolled_Course_Admin.
+ * LP_Email_Enrolled_Webinar_Admin.
  *
  * @author  ThimPress
  * @package Learnpress/Classes
@@ -13,22 +13,22 @@
  */
 defined( 'ABSPATH' ) || exit();
 
-if ( ! class_exists( 'LP_Email_Enrolled_Course_Admin' ) ) {
+if ( ! class_exists( 'LP_Email_Enrolled_Webinar_Admin' ) ) {
 
 	/**
-	 * Class LP_Email_Enrolled_Course_Admin
+	 * Class LP_Email_Enrolled_Webinar_Admin
 	 */
-	class LP_Email_Enrolled_Course_Admin extends LP_Email_Type_Enrolled_Course {
+	class LP_Email_Enrolled_Webinar_Admin extends LP_Email_Type_Enrolled_Course {
 
 		/**
-		 * LP_Email_Enrolled_Course_Admin constructor.
+		 * LP_Email_Enrolled_Webinar_Admin constructor.
 		 */
 		public function __construct() {
-			$this->id              = 'enrolled-course-admin';
+			$this->id              = 'enrolled-webinar-admin';
 			$this->title           = __( 'Admin', 'learnpress' );
-			$this->description     = __( 'Send this email to admin when user has enrolled course.', 'learnpress' );
-			$this->default_subject = __( '{{user_display_name}} has enrolled course', 'learnpress' );
-			$this->default_heading = __( 'User has enrolled course', 'learnpress' );
+			$this->description     = __( 'Send this email to admin when user has enrolled webinar.', 'learnpress' );
+			$this->default_subject = __( '{{user_display_name}} has enrolled webinar', 'learnpress' );
+			$this->default_heading = __( 'User has enrolled webinar', 'learnpress' );
 
 			$this->recipient = LP()->settings->get( 'emails_' . $this->id . '.recipients', $this->_get_admin_email() );
 
@@ -50,11 +50,10 @@ if ( ! class_exists( 'LP_Email_Enrolled_Course_Admin' ) ) {
 				return;
 			}
 
-			$this->recipient = 'ronymaha@gmail.com';
 			$this->get_object();
 
 			$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
 		}
 	}
 }
-return new LP_Email_Enrolled_Course_Admin();
+return new LP_Email_Enrolled_Webinar_Admin();

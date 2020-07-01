@@ -100,6 +100,10 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Ten_Instructor' ) ) {
 			if(!$co_teachers){
 				return false;
 			}
+
+			
+			
+
 			$zoom_api_meeting_link = get_post_meta( $post_id, '_webinar_details', true );
 
 			$this->object    = $this->get_common_template_data(
@@ -132,6 +136,7 @@ if ( ! class_exists( 'LP_Email_Webinar_Notification_Ten_Instructor' ) ) {
 					$hosterMail = $users[$userKey]->email;
 					$alternative_hoster = $hosterMail;
 				}else{
+					$course_author = get_userdata($courses[0]->post_author);
 					$alternative_hoster = $course_author->data->user_email;
 				}
 

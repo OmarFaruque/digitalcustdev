@@ -167,7 +167,8 @@ class Admin_DigitalCustDev_Webinar {
 		
 
 		if(isset($_POST['alternative_host_ids'])){
-			// echo 'st alternative host';
+			
+
 			update_post_meta( $lesson_id, '_lp_alternative_host', $_POST['alternative_host_ids'] );
 
 			
@@ -210,24 +211,42 @@ class Admin_DigitalCustDev_Webinar {
 		);
 
 		if($actiontozoom){
+			// echo 'action to zoom is active';
 			$postData['settings']['alternative_hosts'] = filter_input( INPUT_POST, 'alternative_host_ids' );
 
+			// echo 'current active hoster: ' . get_option( 'zoom_current_active_hoster') . '<br/>';
+
 			if(get_option( 'zoom_current_active_hoster')){
+				// echo 'inside current active hoster';
 				dcd_zoom_conference()->updateZoomUserType(get_option( 'zoom_current_active_hoster'), 1);	
 				dcd_zoom_conference()->enableUserStatistoActive(get_option( 'zoom_current_active_hoster'), 'deactivate');
 			}
 
 			$statusChange = dcd_zoom_conference()->enableUserStatistoActive(filter_input( INPUT_POST, 'alternative_host_ids' ), 'activate');
+
+			// echo 'change status <br/><pre>';
+			// print_r($statusChange);
+			// echo '</pre>';
+
 			$update = dcd_zoom_conference()->updateZoomUserType(filter_input( INPUT_POST, 'alternative_host_ids' ), 2);
 			if($update == 'success'){	
 				update_option( 'zoom_current_active_hoster', filter_input( INPUT_POST, 'alternative_host_ids' ));
 				// $token = dcd_zoom_conference()->zoomWebinarStartToken(filter_input( INPUT_POST, 'alternative_host_ids' ));
 			}
+
+			// Send mail for update alternative hosts
+			$post_author_id = get_post_field( 'post_author', $lesson_id );
+			do_action( 'zoom/zoom-notification-update-alternative-host-instructor', $lesson_id, $post_author_id );
+			do_action( 'zoom/zoom-notification-update-alternative-host-admin', $lesson_id, $post_author_id );
 		}
 
 
+		
+
 		//Updated
 		$updateWebinar = dcd_zoom_conference()->updateWebinar( $webinar_id, $postData );
+
+		
 
 		if ( ! empty( $updateWebinar->error ) ) {
 			self::set_message( 'error', $updateWebinar->error->message );
@@ -237,6 +256,8 @@ class Admin_DigitalCustDev_Webinar {
 			$localDetails = get_post_meta( $lesson_id, '_webinar_details', true );
 			$localDetails->settings->auto_recording = $option_auto_recording;
 			update_post_meta($lesson_id, '_webinar_details', $localDetails);
+
+
 
 			self::set_message( 'updated', __( "Updated meeting.", "video-conferencing-with-zoom-api" ) );
 		}

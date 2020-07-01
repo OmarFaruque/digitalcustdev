@@ -1628,6 +1628,17 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		$emails['LP_Email_Webinar_Notification_Evaluated_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-admin.php' );
 		$emails['LP_Email_Webinar_Notification_Evaluated_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-instructor.php' );
 
+
+		// Webinar email template 
+		$emails['LP_Email_Enrolled_Webinar_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-webinar-enroll-user.php' );
+		$emails['LP_Email_Enrolled_Webinar_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-webinar-enroll-admin.php' );
+		$emails['LP_Email_Enrolled_Webinar_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-webinar-enroll-instructor.php' );
+
+
+		// Hoster update notification from zoom webinar update from wp dashboard > zoom
+		$emails['LP_Email_Alternative_Host_Update_Notification_Admin'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-alternative-host-update-notification-admin.php' );
+		$emails['LP_Email_Alternative_Host_Update_Notification_Instructor'] = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-alternative-host-update-notification-instructor.php' );
+
 		// Notification before 10 minutes 
 		// Notification email template 
 		$emails['LP_Email_Webinar_Notification_Before_Ten_User']  = include( get_stylesheet_directory() . '/inc/webinars/admin/partials/emails/class-lp-email-evaluated-webinar-notification-ten-user.php' );
@@ -1823,16 +1834,24 @@ remove_filter( 'learn-press/row-action-links', 'e_course_row_action_links' );
 		);	
 
 		$webinars = get_posts($argc);
-		// echo 'webinars<pre>';
-		// print_r($webinars);
-		// echo '</pre>';
-
 
 		if(!empty($webinars)):
 			foreach($webinars as $swebinars):
 				update_post_meta($swebinars->ID, 'email_send_status_10min', 1);
 				$course = learn_press_get_item_courses( $swebinars->ID );
 				// $allAuthors = get_post_meta($course[0]->ID, '_lp_co_teacher', false);
+
+
+				// Update Meta to zoom_status
+				update_post_meta($swebinars->ID, 'zoom_status', 'active');
+				// End zoom_status update
+
+
+
+
+
+
+
 				
 				$allAuthors = array();
 				$webinar_author = get_post_field( 'post_author', $course[0]->ID );

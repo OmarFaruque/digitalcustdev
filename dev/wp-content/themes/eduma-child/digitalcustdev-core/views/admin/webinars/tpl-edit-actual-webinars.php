@@ -218,22 +218,37 @@ update_option( $option, $password, true );
 				<td>
 					<div class="alternativeHosterWrap">
 					<div class="pull-left w-50">
+
+
 					<select name="alternative_host_ids" class="zvc-hacking-select">
 						<option value=""><?php _e( 'Select a Host', 'video-conferencing-with-zoom-api' ); ?></option>
 						<?php
-						foreach ( $users->users as $user ) :
+						
+						foreach ( $users->users as $user ):
 							$user_found = false;
-							if ( in_array( $user->email, $option_alternative_hosts ) ) {
-								$user_found = true;
-							}
 							if($user->id == $authorHost){
 								$user_found = true;
 							}
+							// if ( in_array( $user->email, $option_alternative_hosts ) && !$user_found ) {
+							// 	$user_found = true;
+							// }
 							?>
 							<option value="<?php echo $user->id; ?>" <?php echo $user_found ? 'selected' : null; ?>><?php echo $user->first_name . ' ( ' . $user->email . ' )'; ?></option>
 						<?php endforeach; ?>
 					</select>
 					</div>
+
+
+<?php 
+
+// echo '<pre>';
+// print_r( get_post( $lesson_id->post_id )  );
+// echo '</pre>';
+
+?>
+
+
+					<?php if(get_post_meta($lesson_id->post_id, 'zoom_status', true) == 'active'): ?>
 					<div class="pull-left w-50">
 						<div class="form-group">
 							<label for="actiontozoom">
@@ -241,6 +256,10 @@ update_option( $option, $password, true );
 							<?php _e('Action to Zoom ?', 'webinar'); ?></label>
 						</div>
 					</div>
+					<?php endif; ?>
+
+
+
 					</div>
 					<p class="description" id="settings_alternative_hosts"><?php _e( 'Alternative hosts IDs. Multiple value separated by comma.', 'video-conferencing-with-zoom-api' ); ?></p>
 					<p class="description" id="settings_alternative_hosts"><strong><?php _e( 'This option is only available for a Licensed level Zoom account user. Check the Prerequisites for this feature <a target="_blank" href="https://support.zoom.us/hc/en-us/articles/208220166-Alternative-host">here</a>', 'video-conferencing-with-zoom-api' ); ?></strong>

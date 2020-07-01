@@ -140,9 +140,26 @@ class Webinars_Admin {
 		
 
 		// add_action('admin_init', array($this, 'tetF'));
+
+		// add_action( 'learn_press_user_enrolled_course_notification', array( $this, 'enrollTrigger' ), 99, 3 );
+		// add_action( 'learn-press/user-enrolled-course/notification', array( $this, 'enrollTrigger' ), 99, 3 );
 		
 	}
 
+
+	public function enrollTrigger($course_id, $user_id, $user_item_id){
+		$emailType = new LP_Email_Type_Finished_Course;
+		if ( ! $emailType->enable ) {
+			return;
+		}
+
+		$user_id = 138;
+		$emailType->course_id    = $course_id;
+		$emailType->user_id      = $user_id;
+		$emailType->user_item_id = $user_item_id;
+
+		LP_Emails::instance()->set_current( $this->id );
+	}
 
 	public function get_timezone_offset($remote_tz, $origin_tz = null) {
 		if($origin_tz === null) {
@@ -427,6 +444,8 @@ class Webinars_Admin {
 	}
 
 	public function addEmailTemplateForUpdateLession($groups){
+		echo 'omar email template';
+		
 		array_push(
 			$groups,
 			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_update_email.php'
@@ -434,6 +453,21 @@ class Webinars_Admin {
 		array_push(
 			$groups,
 			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_start_notification_email.php'
+		);
+
+		// Webinar Enroll Template
+		array_push(
+			$groups,
+			include get_stylesheet_directory() . '/inc/webinars/admin/partials/webinar_enroll_template_email.php'
+		);
+
+
+
+
+		// Alternative host update
+		array_push(
+			$groups,
+			include get_stylesheet_directory() . '/inc/webinars/admin/partials/alternative_hosts_update_notification_email.php'
 		);
 
 		// Notification before 10 minutes
