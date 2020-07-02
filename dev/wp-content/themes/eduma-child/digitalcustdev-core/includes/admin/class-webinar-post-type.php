@@ -273,6 +273,25 @@ class Admin_DigitalCustDev_Webinar {
 		do_action( 'zvc_after_updated_meeting' );
 	}
 
+
+
+
+	public function deleteZoomRecording(){
+		/*
+		* Delete zoom recording based on webinar
+		* Delete DB zoom recording
+		*/
+		$lesson = $_GET['id'];
+		$webinar_id = get_post_meta( $lesson, '_webinar_ID', true );
+		$play_url = get_post_meta( $lesson, 'play_url', true );
+		if ( $webinar_id && $play_url ) {
+			dcd_zoom_conference()->deleteRecording( $webinar_id );
+			delete_post_meta( $lesson, 'play_url' );
+			wp_safe_redirect( admin_url('admin.php?page=zoom-video-conferencing-webinars&status=passed') );
+			exit;
+		}
+	}
+
 	function webinars_list() {
 		wp_enqueue_script( 'video-conferencing-with-zoom-api-js' );
 		wp_enqueue_script( 'video-conferencing-with-zoom-api-select2-js' );
@@ -288,7 +307,21 @@ class Admin_DigitalCustDev_Webinar {
 			}
 			require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-edit-actual-webinars.php';
 		}else{
-			require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list-actual-webinars.php';
+
+			if(isset($_GET['status']) && $_GET['status'] == 'passed'){
+
+				// Delete recording Functionality
+				if(isset($_GET['action']) && $_GET['action'] == 'delete'){
+					$this->deleteZoomRecording();
+				}
+
+				require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list-actual-webinars-past.php';
+			}else{
+				require_once DIGITALCUSTDEV_PLUGIN_PATH . 'views/admin/webinars/tpl-list-actual-webinars.php';	
+			}
+			
+
+
 		}
 		
 	}

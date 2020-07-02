@@ -5,6 +5,7 @@
  */
 global $wpdb;
 $metatable = $wpdb->prefix . 'postmeta';
+$actual = $passed = 0;
 //Check if any transient by name is available
 $users = cstm_video_conferencing_zoom_api_get_user_transients();
 // $users = cstm_video_conferencing_zoom_api_get_user_transients();
@@ -21,8 +22,6 @@ if ( ! isset( $_GET['host_id'] ) ) {
 
 $encoded_meetings = dcd_zoom_conference()->listWebinar( $host_id );
 $decoded_meetings = json_decode( $encoded_meetings );
-
-
 
 $webinars         = false;
 if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
@@ -47,6 +46,14 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
     <h2><?php _e( "Webinars", "video-conferencing-with-zoom-api" ); ?></h2>
 	<?php $get_host_id = isset( $_GET['host_id'] ) ? $_GET['host_id'] : $users[0]->id; ?>
     <div class="select_zvc_user_listings_wrapp">
+
+        <div class="filter allignleft">
+            <ul class="inline subsubsub">
+            <li><a class="<?php echo (!isset($_GET['status'])) ? 'current':''; ?>" href="<?php echo admin_url('admin.php?page=zoom-video-conferencing-webinars'); ?>"><?php _e('Actual', 'webinar'); ?> (<span id="actual"></span>)</a> |</li>
+                <li><a class="<?php echo (isset($_GET['status'])) ? 'current':''; ?>" href="<?php echo admin_url('admin.php?page=zoom-video-conferencing-webinars&status=passed'); ?>"><?php _e('Passed', 'webinra'); ?> (<span id="passed"></span>)</a></li>
+            </ul>
+        </div>
+
         <div class="alignright">
             <select onchange="location = this.value;" class="zvc-hacking-select">
                 <option value="?page=zoom-video-conferencing-webinars"><?php _e( 'Select a User', 'video-conferencing-with-zoom-api' ); ?></option>
@@ -79,9 +86,6 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 			<?php
 			if ( ! empty( $webinars ) ) {
 				foreach ( $webinars as $webinar ) {
-
-               
-
                     // Hoster Mail
                     $userKey = array_search($webinar->host_id, array_column($users, 'id'));    
                     $hosterMail = $users[$userKey]->email;
@@ -199,7 +203,10 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     $date->setTimezone( $tz );
                     
                     if(date('Y-m-d') > $date->format( 'Y-m-d') ){
+                        $passed += 1;
                         continue;
+                    }else{
+                        $actual += 1;
                     }
 
                     // echo 'start time: ' . $webinar->start_time . '<br/>';
@@ -279,3 +286,8 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
         </table>
     </div>
 </div>
+
+<script>
+    document.getElementById('actual').innerText = "<?php echo $actual; ?>";
+    document.getElementById('passed').innerText = "<?php echo $passed; ?>";
+</script>
