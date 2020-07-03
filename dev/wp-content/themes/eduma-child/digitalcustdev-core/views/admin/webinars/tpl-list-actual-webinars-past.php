@@ -246,7 +246,8 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 						if(!isset($record_url->code)){	
 							$record_key = array_search('shared_screen_with_speaker_view', array_column($record_url->recording_files, 'recording_type'));  
 							$play_url = $record_url->recording_files[$record_key]->download_url;
-							$ercording_url = $play_url;
+                            $ercording_url = $play_url;
+                            update_post_meta( $lesson_id->post_id, 'play_url', $play_url);
 						}
                     }
                     

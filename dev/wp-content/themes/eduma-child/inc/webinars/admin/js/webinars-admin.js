@@ -258,7 +258,7 @@
 				"viewTotal": true,
 				"columns": [4, 5],
 			}],
-			"order": [[ 1, "asc" ]],
+			"order": [[ 1, "desc" ]],
 			"columnDefs": [{
 				"targets": 0,
 				"orderable": false
