@@ -72,7 +72,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
             <tr>
                 <th class="zvc-text-left"><?php _e( 'Webinar ID', 'video-conferencing-with-zoom-api' ); ?></th>
                 <th class="zvc-text-left" class="zvc-text-left"><?php _e( 'Action Time', 'video-conferencing-with-zoom-api' ); ?></th>
-                <th class="zvc-text-left"><?php //_e( 'Topic (Webinar Lesson)', 'video-conferencing-with-zoom-api' ); ?></th>
+                <th class="zvc-text-left"><?php _e( 'Topic (Webinar Lesson)', 'video-conferencing-with-zoom-api' ); ?></th>
                 <th class="zvc-text-left"><?php _e( 'Webinar Course', 'video-conferencing-with-zoom-api' ); ?></th>
                 
                 <th class="zvc-text-left"><?php _e( 'Host', 'video-conferencing-with-zoom-api' ); ?></th>
@@ -99,10 +99,9 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     $start_url = get_post_meta($lesson_id->post_id, 'ah_start_link', true);
                     // echo 'start url: ' . $start_url . '<br/>';
                     
-
-                   
-                    
-                    
+                    if(get_post_status($lesson_id->post_id) != 'publish'){
+                        continue;
+                    }
                     
                     $master_token = get_option('zoom_master_host_token');
                     $master_url = '';
@@ -129,10 +128,12 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     
                         // End Time 
                         $duration   = get_post_meta( $lesson_id->post_id, '_lp_duration', true );
+                        
                        
                         $endtime    = strtotime('+'.$duration, strtotime($time));
                         $endtime    = strtotime('+5 minutes', $endtime);
                       
+                        
                     
 
                         if( $now > $linkvisiable && $now < date('Y-m-d H:i', $endtime) ){
@@ -206,8 +207,12 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 					$tz       = new DateTimeZone( $timezone );
 					$date     = new DateTime( $webinar->start_time );
                     $date->setTimezone( $tz );
+
+                    // Now time 
+                    $utcTime = new DateTime("now", new DateTimeZone( $timezone ) );
                     
-                    if(date('Y-m-d') < $date->format( 'Y-m-d') ){
+                    
+                    if($utcTime->format('Y-m-d H:i:s') < $date->format( 'Y-m-d H:i:s') ){
                         $actual += 1;
                         continue;
                     }else{
@@ -219,6 +224,8 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 
                     $endtime = strtotime("+".$webinar->duration." minutes", strtotime($date->format( 'd.m.Y, G:i' )));
                     $endtime = date('G:i', $endtime);
+
+                    
                     
                     // Calculate GMT time 
                     $timezoneoffset = get_timezone_offset($webinar->timezone);
@@ -230,7 +237,18 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     // $lesson_id->post_id = 18072;
                     $ercording_url = get_post_meta($lesson_id->post_id, 'play_url', true);
                     $cron_count = get_post_meta( $lesson_id->post_id, 'cron_count', true);
-
+                    
+                    if(!$ercording_url){
+                        $webinarId = get_post_meta( $lesson_id->post_id, '_webinar_ID', true );
+                        $record_url = dcd_zoom_conference()->getMeetingRecordUrl($webinarId);
+                        $record_url = json_decode($record_url);
+                        
+						if(!isset($record_url->code)){	
+							$record_key = array_search('shared_screen_with_speaker_view', array_column($record_url->recording_files, 'recording_type'));  
+							$play_url = $record_url->recording_files[$record_key]->download_url;
+							$ercording_url = $play_url;
+						}
+                    }
                     
                     // echo '<pre>';
                     // print_r($webinar);
@@ -240,8 +258,8 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         <td><?php echo $webinar->id; ?></td>
                         <td 
                          data-sort="<?php 
-                         //echo $date->format( 'd-m-Y');
-                         echo $zoom_active;
+                         echo $date->format( 'd-m-Y H:i:s');
+                        //  echo $zoom_active;
                         ?>"><?php
                             echo '<small>' . $gmtStartTime . '-' . $gmtStartEnd . '</small>';
                             echo '<br/><small>(GMT)</small>';
@@ -283,7 +301,7 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                         </td>
                         <td>
                         <?php 
-                            echo ($ercording_url && $cron_count >= 2) ? sprintf('<a download href="%s">%s</a> | <a href="%s">%s</a>', $ercording_url, __('Download', 'webinar'), admin_url('admin.php?page=zoom-video-conferencing-webinars&status=passed&action=delete&id=' . $lesson_id->post_id), __('Delete', 'webinar') ) : '-';
+                            echo ($ercording_url && $cron_count >= 2) ? sprintf('<a download href="%s">%s</a> | <a href="%s">%s</a>', $ercording_url, __('Recording', 'webinar'), admin_url('admin.php?page=zoom-video-conferencing-webinars&status=passed&action=delete&id=' . $lesson_id->post_id), __('Delete', 'webinar') ) : '-';
                         ?>           
                         </td>
                         <td><?php echo date( 'd.m.Y, G:i', strtotime( $webinar->created_at ) ); ?></td>
@@ -296,6 +314,8 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
         </table>
     </div>
 </div>
+
+
 
 <script>
     document.getElementById('actual').innerText = "<?php echo $actual; ?>";

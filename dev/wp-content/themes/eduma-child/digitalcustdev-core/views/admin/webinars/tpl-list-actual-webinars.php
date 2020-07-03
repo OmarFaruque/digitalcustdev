@@ -95,7 +95,9 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
                     $start_url = get_post_meta($lesson_id->post_id, 'ah_start_link', true);
                     // echo 'start url: ' . $start_url . '<br/>';
                     
-
+                    if(get_post_status($lesson_id->post_id) != 'publish'){
+                        continue;
+                    }
                     
                     
                     
@@ -201,8 +203,11 @@ if ( ! empty( $decoded_meetings ) && !isset($decoded_meetings->code) ) {
 					$tz       = new DateTimeZone( $timezone );
 					$date     = new DateTime( $webinar->start_time );
                     $date->setTimezone( $tz );
+
+                    // Now time 
+                    $utcTime = new DateTime("now", new DateTimeZone( $timezone ) );
                     
-                    if(date('Y-m-d') > $date->format( 'Y-m-d') ){
+                    if($utcTime->format('Y-m-d H:i:s') > $date->format( 'Y-m-d H:i:s') ){
                         $passed += 1;
                         continue;
                     }else{

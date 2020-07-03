@@ -236,8 +236,6 @@ class Admin_DigitalCustDev_Webinar {
 
 			// Send mail for update alternative hosts
 			$post_author_id = get_post_field( 'post_author', $lesson_id );
-			do_action( 'zoom/zoom-notification-update-alternative-host-instructor', $lesson_id, $post_author_id );
-			do_action( 'zoom/zoom-notification-update-alternative-host-admin', $lesson_id, $post_author_id );
 		}
 
 
@@ -258,6 +256,9 @@ class Admin_DigitalCustDev_Webinar {
 			update_post_meta($lesson_id, '_webinar_details', $localDetails);
 
 
+			// Send Mail
+			do_action( 'zoom/zoom-notification-update-alternative-host-instructor', $lesson_id, $post_author_id );
+			do_action( 'zoom/zoom-notification-update-alternative-host-admin', $lesson_id, $post_author_id );
 
 			self::set_message( 'updated', __( "Updated meeting.", "video-conferencing-with-zoom-api" ) );
 		}
